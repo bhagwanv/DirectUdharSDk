@@ -26,6 +26,10 @@ public class MainDirectUdharActivity {
 
 
 
+    public static void SimpleToast(Activity activity,String massge){
+        Toast.makeText(activity, massge, Toast.LENGTH_SHORT).show();
+    }
+
     public static void callLeadApi(Activity activity,String url) {
         CommonClassForAPI commonClassForAPI = CommonClassForAPI.getInstance(activity);
         Utils.UtilsObject.showProgressDialog(activity);
