@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#ffffff</color>
+    <color name="colorAccent">#FFFF4500</color>
+    <color name="target_green">#99ffcc</color>
+    <color name="target_pink">#ffcccc</color>
+    <!--dark theme-->
+    <color name="colorPrimary1">#242D34</color>
+    <color name="colorPrimaryDark1">#0D1F23</color>
+    <!--text color-->
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="tertiary_text">#484848</color>
+    <color name="divider">#bdbdbd</color>
+    <!--seller store-->
+    <color name="orange_seller_bg">#F27019</color>
+    <!---->
+    <color name="topBarColor">#ffffff</color>
+    <color name="black_transparent">#40000000</color>
+    <color name="green_50">#4F971C</color>
+    <color name="green_dark">#00A704</color>
+    <color name="green_whats_app">#689f39</color>
+    <color name="grey">#BFBFBF</color>
+    <color name="Darkgrey">#9e9b9b</color>
+    <color name="dark_grey">#DCDCDC</color>
+    <color name="light_grey">#ECECEC</color>
+    <color name="holo_gray_dark">#424242</color>
+    <color name="White">#FFFFFF</color>
+    <color name="Black">#000</color>
+    <color name="black">#000000</color>
+    <color name="hint_color">#aaaaaa</color>
+    <color name="transparent1">#00000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="LightGrey">#D3D3D3</color>
+    <color name="dark_grey_blue">#33475c</color>
+    <color name="mobikwik_orange">#ff6e00</color>
+    <color name="grey_100">#b7b7b7</color>
+    <color name="grey_10">#EBEBEB</color>
+    <color name="text_color">#666666</color>
+    <color name="red">#fe4e4e</color>
+    <color name="holo_green">#82DF4F</color>
+    <color name="activity_background">#E6E6E6</color>
+    <color name="bs_divider_color">#1f000000</color>
+    <color name="very_light_gray">#f5f5f5</color>
+    <color name="font_color">#373737</color>
+    <color name="vertical_stepper_view_grey_100">#BDBDBD</color>
+    <color name="vertical_stepper_view_black_87">#DE000000</color>
+    <color name="vertical_stepper_view_black_38">#61000000</color>
+    <color name="text_shadow">#7F000000</color>
+    <color name="back_arrow_grey">#404040</color>
+    <color name="mobikwik_blue">@color/primary</color>
+    <color name="primary">#0073CF</color>
+    <color name="rotator_primary">@color/mobikwik_blue</color>
+    <color name="secondary">#000000</color>
+    <color name="text_color_tooltip_grey">#404040</color>
+    <color name="white">#fafafa</color>
+    <color name="white1">#fff</color>
+
+    <color name="colorTargetOne">#C8DCB7</color>
+    <color name="colorTargetTwo">#E4B0B2</color>
+    <color name="prime">#D19311</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+    <!--finbox-->
+    <color name="finboxColorPrimary">@color/colorAccent</color>
+    <color name="track_order_gray">#7E84A3</color>
+    <color name="order_detail_gray">#F5F6FA</color>
+    <color name="order_ray">#7E84A3</color>
+    <color name="overlay_transparent">#90000000</color>
+
+    <color name="greenish_cyan_color">#008D60</color>
+    <!--new offer enhancement color-->
+    <!--phase 2 new color -->
+    <color name="tealish_green">#4D9654</color>
+    <color name="slime_green">#C9E265</color>
+    <color name="cadmium_yellow">#FFF500</color>
+    <color name="red_light">#F0142F</color>
+    <color name="color_magnolia">#F5F6FA</color>
+
+    <color name="seashell">#FCF3F0</color>
+    <color name="chinese_orange">#F56B3B</color>
+    <color name="linen">#FDECE6</color>
+    <!--bucket-->
+    <color name="bucket_yellow">#FDB604</color>
+</resources>
