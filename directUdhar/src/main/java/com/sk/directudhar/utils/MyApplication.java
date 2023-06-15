@@ -29,10 +29,6 @@ public class MyApplication extends Application {
 
     public Activity activity;
 
-
-
-
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,12 +43,12 @@ public class MyApplication extends Application {
     }
 
 
-    public void token() {
+    /*public void token() {
         CommonClassForAPI.getInstance(activity).getToken(callTokenDes, "password",
                 SharePrefs.getInstance(getApplicationContext()).getString(SharePrefs.TOKEN_NAME),
                 SharePrefs.getInstance(getApplicationContext()).getString(SharePrefs.TOKEN_PASSWORD));
 
-    }
+    }*/
 
     // getting token response
     private final DisposableObserver<TokenResponse> callTokenDes = new DisposableObserver<TokenResponse>() {
