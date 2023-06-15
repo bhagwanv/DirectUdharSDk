@@ -25,13 +25,14 @@ public class MainDirectUdharActivity {
     private CommonClassForAPI commonClassForAPI;
 
 
-    public void callLeadApi(Activity activity,String url) {
-        commonClassForAPI = CommonClassForAPI.getInstance(activity);
+
+    public static void callLeadApi(Activity activity,String url) {
+        CommonClassForAPI commonClassForAPI = CommonClassForAPI.getInstance(activity);
         Utils.UtilsObject.showProgressDialog(activity);
         commonClassForAPI.generateLead(leadObserver, url);
     }
 
-    private final DisposableObserver<JsonObject> leadObserver = new DisposableObserver<JsonObject>() {
+    private static final DisposableObserver<JsonObject> leadObserver = new DisposableObserver<JsonObject>() {
         @Override
         public void onNext(@NonNull JsonObject jsonObject) {
             Utils.UtilsObject.hideProgressDialog();
