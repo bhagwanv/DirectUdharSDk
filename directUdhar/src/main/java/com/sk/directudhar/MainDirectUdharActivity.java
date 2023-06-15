@@ -1,30 +1,16 @@
 package com.sk.directudhar;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
+
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-
 import com.google.gson.JsonObject;
 import com.sk.directudhar.Api.CommonClassForAPI;
-import com.sk.directudhar.databinding.ActvityDirectUdharBinding;
-import com.sk.directudhar.databinding.ActvityMainBinding;
-import com.sk.directudhar.utils.SharePrefs;
 import com.sk.directudhar.utils.Utils;
 
 import io.reactivex.annotations.NonNull;
 import io.reactivex.observers.DisposableObserver;
 
 public class MainDirectUdharActivity {
-    private CommonClassForAPI commonClassForAPI;
-
-
 
     public static void SimpleToast(Activity activity,String massge){
         Toast.makeText(activity, massge, Toast.LENGTH_SHORT).show();
