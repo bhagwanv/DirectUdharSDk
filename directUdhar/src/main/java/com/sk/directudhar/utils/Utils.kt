@@ -6,6 +6,7 @@ import android.content.Context
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
+import android.widget.Toast
 import com.sk.directudhar.BuildConfig
 import com.sk.directudhar.R
 
@@ -70,6 +71,10 @@ class Utils {
                     e.printStackTrace()
                 }
             }
+        }
+
+        fun setToast(_mContext: Context?, str: String?) {
+            Toast.makeText(_mContext, str, Toast.LENGTH_SHORT).show()
         }
 
     }
