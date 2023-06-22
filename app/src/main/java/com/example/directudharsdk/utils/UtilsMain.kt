@@ -1,4 +1,4 @@
-package com.sk.directudhar.utils
+package com.example.directudharsdk.utils
 
 import android.app.Activity
 import android.app.Dialog
@@ -10,7 +10,8 @@ import android.widget.Toast
 import com.sk.directudhar.BuildConfig
 import com.sk.directudhar.R
 
-class Utils {
+
+class UtilsMain {
     private var context: Context? = null
 
     companion object UtilsObject {
@@ -20,16 +21,16 @@ class Utils {
         var BaseUrl= "https://udhaarservice.shopkirana.in/"
 
         fun getToken(context: Context?): String? {
-            return SharePrefs.getInstance(context).getString(SharePrefs.TOKEN)
+            return SharePrefsMain.getInstance(context).getString(SharePrefsMain.TOKEN)
         }
 
         fun getCustMobile(context: Context?): String? {
-            return SharePrefs.getInstance(context).getString(SharePrefs.MOBILE_NUMBER)
-                .plus("_") + SharePrefs.getInstance(context).getInt(SharePrefs.CUSTOMER_ID)
+            return SharePrefsMain.getInstance(context).getString(SharePrefsMain.MOBILE_NUMBER)
+                .plus("_") + SharePrefsMain.getInstance(context).getInt(SharePrefsMain.CUSTOMER_ID)
         }
 
         fun getHKCustomerID(context: Context?): String? {
-            return SharePrefs.getInstance(context).getString(SharePrefs.HISAB_KITAB_ID) + ""
+            return SharePrefsMain.getInstance(context).getString(SharePrefsMain.HISAB_KITAB_ID) + ""
         }
 
         fun getDeviceUniqueID(activity: Activity): String? {
@@ -46,7 +47,7 @@ class Utils {
         fun showProgressDialog(activity: Activity) {
             if (customDialog != null) {
                customDialog!!.dismiss()
-                customDialog=null
+                customDialog =null
             }
             customDialog = Dialog(activity, R.style.CustomDialog)
             val mView: View = LayoutInflater.from(activity).inflate(R.layout.progress_dialog, null)

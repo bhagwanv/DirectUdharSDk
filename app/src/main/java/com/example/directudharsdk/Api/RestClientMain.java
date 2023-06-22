@@ -1,10 +1,11 @@
-package com.sk.directudhar.Api;
+package com.example.directudharsdk.Api;
 
+import com.example.directudharsdk.MyApplicationMain;
+import com.example.directudharsdk.utils.Aes256Main;
 import com.google.gson.Gson;
 import com.sk.directudhar.BuildConfig;
 import com.sk.directudhar.utils.Aes256;
-import com.sk.directudhar.utils.MyApplication;
-import com.sk.directudhar.utils.Utils;
+import com.example.directudharsdk.utils.UtilsMain;
 
 import org.json.JSONObject;
 
@@ -23,32 +24,34 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-public class RestClient {
-    private static Retrofit retrofit = null;
-    private static final Retrofit retrofit1 = null;
-    private static final Retrofit retrofit2 = null;
-    private static final Retrofit retrofit3 = null;
+public class RestClientMain {
+    private static Retrofit retrofit = null, retrofit1 = null;
+    private static Retrofit retrofit2 = null;
+    private static Retrofit retrofit3 = null;
 
-    private static final RestClient ourInstance = new RestClient();
-    private static RestClient restClient3;
-    private static RestClient restClient1;
+    private static final RestClientMain ourInstance = new RestClientMain();
+    private static RestClientMain restClient3;
+    private static RestClientMain restClient1;
     private static String mSectionType;
     private Request request;
 
 
-    public static RestClient getInstance() {
+    public static RestClientMain getInstance() {
         mSectionType = "";
         return ourInstance;
     }
 
-    public static RestClient getInstance(String sectionType) {
+    public static RestClientMain getInstance(String sectionType) {
         mSectionType = sectionType;
         return ourInstance;
     }
 
 
 
-    private RestClient() {
+
+
+
+    private RestClientMain() {
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
@@ -62,7 +65,8 @@ public class RestClient {
                         request = chain.request();
                         response = chain.proceed(request);
                         if (response.code() == 401) {
-                            MyApplication.getInstance().token();
+                            MyApplicationMain.getInstance().token();
+
                         }
                         if (response.code() == 200) {
                             if (!request.url().toString().contains("/GetCompanyDetailsForRetailerWithToken") &&
@@ -76,7 +80,7 @@ public class RestClient {
                                     JSONObject jsonObject = new JSONObject();
                                     jsonObject.put("message", new JSONObject(response.body().string()));
                                     String data = jsonObject.getJSONObject("message").getString("Data");
-                                    String destr = Aes256.decrypt(data, new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH).format(new Date()) + "1201");
+                                    String destr = Aes256Main.decrypt(data, new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH).format(new Date()) + "1201");
                                     if (BuildConfig.DEBUG) {
                                         printMsg(destr);
                                     }
@@ -95,9 +99,9 @@ public class RestClient {
                 })
                 .addInterceptor(chain -> {
                     request = chain.request().newBuilder()
-                           // .header("username", Utils.UtilsObject.getCustMobile(MyApplication.getInstance()))
-                            //.header("activity", MyApplication.getInstance().activity == null ? "" : MyApplication.getInstance().activity.getClass().getSimpleName() + "")
-                            .addHeader("authorization", "Bearer " + Utils.UtilsObject.getToken(MyApplication.activity))
+                            .header("username", UtilsMain.UtilsObject.getCustMobile(MyApplicationMain.getInstance()))
+                            .header("activity", MyApplicationMain.getInstance().activity == null ? "" : MyApplicationMain.getInstance().activity.getClass().getSimpleName() + "")
+                            .addHeader("authorization", "Bearer " + UtilsMain.UtilsObject.getToken(MyApplicationMain.getInstance().activity))
 //                            .addHeader("NoEncryption", "1")
                             .build();
                     return chain.proceed(request);
@@ -107,7 +111,7 @@ public class RestClient {
 
         if (retrofit == null) {
             retrofit = new Retrofit.Builder()
-                    .baseUrl(Utils.UtilsObject.getBaseUrl())
+                    .baseUrl(UtilsMain.UtilsObject.getBaseUrl())
                     .addConverterFactory(GsonConverterFactory.create(new Gson()))
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                     .client(client)
@@ -116,20 +120,20 @@ public class RestClient {
     }
 
 
-    public APIServices getService() {
-        return retrofit.create(APIServices.class);
+    public APIMainServices getService() {
+        return retrofit.create(APIMainServices.class);
     }
 
-    public APIServices getService1() {
-        return retrofit1.create(APIServices.class);
+    public APIMainServices getService1() {
+        return retrofit1.create(APIMainServices.class);
     }
 
-    public APIServices getService3() {
-        return retrofit3.create(APIServices.class);
+    public APIMainServices getService3() {
+        return retrofit3.create(APIMainServices.class);
     }
 
-    public APIServices getService2() {
-        return retrofit2.create(APIServices.class);
+    public APIMainServices getService2() {
+        return retrofit2.create(APIMainServices.class);
     }
 
 

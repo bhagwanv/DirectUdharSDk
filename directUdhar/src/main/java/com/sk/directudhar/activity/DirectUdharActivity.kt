@@ -1,6 +1,7 @@
 package com.sk.directudhar.activity
 
 import android.Manifest
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.app.Notification
@@ -47,17 +48,24 @@ import androidx.core.content.FileProvider
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.google.gson.JsonObject
+import com.sk.directudhar.Api.CommonClassForAPI
 import com.sk.directudhar.R
 import com.sk.directudhar.databinding.ActvityDirectNewBinding
+import com.sk.directudhar.utils.MyApplication
 import com.sk.directudhar.utils.SharePrefs
+import com.sk.directudhar.utils.Utils
+import com.sk.directudhar.utils.Utils.UtilsObject.getToken
 import com.sk.directudhar.utils.Utils.UtilsObject.hideProgressDialog
 import com.sk.directudhar.utils.Utils.UtilsObject.setToast
+import com.sk.directudhar.utils.Utils.UtilsObject.showProgressDialog
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Picasso.LoadedFrom
 import com.squareup.picasso.Target
 import id.zelory.compressor.Compressor
 import id.zelory.compressor.constraint.format
 import id.zelory.compressor.constraint.quality
+import io.reactivex.observers.DisposableObserver
 import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
@@ -79,25 +87,31 @@ class DirectUdharActivity : AppCompatActivity() {
     private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
     private var mCameraPhotoPath: String? = null
     private var dialogRazor: Dialog? = null
-    var permissionResult = false
     private var contentType = "*/*"
     private var isCustomUrl = false
     private var isDisableBackButton = false
+    private var appToken: String? = null
+    private var mobileNumber: String? = null
+    private var appMain: Activity? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mBinding = DataBindingUtil.setContentView(this, R.layout.actvity_direct_new)
+        if (intent.extras != null) {
+            appToken = intent.extras!!.getString("token")
+            mobileNumber = intent.extras!!.getString("mobileNumber")
+        }
         activity = this
+        callLeadApi()
         initialization()
     }
+
+
+
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
         accessCameraPermission()
-        /* if (getIntent().getExtras() != null && getIntent().hasExtra("notificationId")) {
-            int notificationId = getIntent().getExtras().getInt("notificationId");
-            MyApplication.getInstance().notificationView(notificationId);
-            getIntent().getExtras().clear();
-        }*/
+
     }
 
     override fun onResume() {
@@ -132,6 +146,43 @@ class DirectUdharActivity : AppCompatActivity() {
         }
         // }
     }
+
+    fun callLeadApi() {
+        val commonClassForAPI = CommonClassForAPI.getInstance(activity)
+        showProgressDialog(activity!!)
+        commonClassForAPI.generateLead(leadObserver, mobileNumber)
+    }
+
+
+   private val leadObserver: DisposableObserver<JsonObject?> =
+        object : DisposableObserver<JsonObject?>() {
+            override fun onNext(jsonObject: JsonObject) {
+                hideProgressDialog()
+                try {
+                    if (jsonObject != null) {
+                        val isSuccess = jsonObject["Result"].asBoolean
+                        if (isSuccess) {
+                            val url = jsonObject["Data"].asString
+                            mBinding!!.webview.loadUrl(url)
+
+                        } else {
+                            val msg = jsonObject["Msg"].asString
+                        }
+                    }
+                } catch (e: java.lang.Exception) {
+                    e.printStackTrace()
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                e.printStackTrace()
+                hideProgressDialog()
+            }
+
+            override fun onComplete() {
+                dispose()
+            }
+        }
 
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (requestCode == UPI_REQUEST_CODE) {
@@ -247,12 +298,7 @@ class DirectUdharActivity : AppCompatActivity() {
                 println("DirectUrl:::$url")
                 if (url.contains("lead/UPIPaymentStatus?TxnNo")) {
                     isCustomUrl = true
-                    //                } else if (url.contains("lead-account/view-details")) {
-//                     mBinding.webview.loadUrl("https://directudhaaruatweb.shopkirana.in/#/lead/applyLoan/DU1SK151742");
-                } /*else  if (url.contains("lead/applyLoan/DU1SK151742")||url.contains("ead-account/payment-options/2YCDOQ3QH034RHAG/50067")||url.contains("lead-account/PaymentSuccess")||url.contains("lead-account/PaymentFailed")) {
-                    isDisableBackButton = true;
-                    System.out.println("Disable:::"+true);
-                }*/
+                }
             }
 
             override fun onUnhandledKeyEvent(view: WebView, event: KeyEvent) {
@@ -334,14 +380,11 @@ class DirectUdharActivity : AppCompatActivity() {
                 filePath: ValueCallback<Array<Uri>>,
                 fileChooserParams: FileChooserParams
             ): Boolean {
-                // Double check that we don't have any existing callbacks
                 if (mFilePathCallback != null) {
                     mFilePathCallback!!.onReceiveValue(null)
                 }
                 mFilePathCallback = filePath
                 var takePictureIntent: Intent? = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-                //                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                // Create the File where the photo should go
                 var photoFile: File? = null
                 try {
                     photoFile = createImageFile()
@@ -373,10 +416,10 @@ class DirectUdharActivity : AppCompatActivity() {
                 return true
             }
         }
-        if (intent.extras != null) {
+        /*if (intent.extras != null) {
             val s = replaceParams(intent.getStringExtra("url"))
             mBinding!!.webview.loadUrl(s)
-        }
+        }*/
     }
 
     private fun replaceParams(url: String?): String {
@@ -407,9 +450,7 @@ class DirectUdharActivity : AppCompatActivity() {
             val CHANNEL_ID = "chat"
             val CHANNEL_NAME = "chat"
             val intent = Intent(this, DirectUdharActivity::class.java)
-            //intent.putExtra("list", poModel);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            // Main PendingIntent that restarts
             val pendingIntent = PendingIntent.getActivity(
                 this,
                 0,
@@ -542,11 +583,11 @@ class DirectUdharActivity : AppCompatActivity() {
 
     private suspend fun compressImage(result: String?) {
         val fileToUpload = File(result!!)
-         val compressedImageFile = Compressor.compress(this, fileToUpload) {
-                 quality(90)
-                 format(Bitmap.CompressFormat.JPEG)
-                 }
-             mFilePathCallback!!.onReceiveValue(arrayOf(Uri.fromFile(compressedImageFile)))
+        val compressedImageFile = Compressor.compress(this, fileToUpload) {
+            quality(90)
+            format(Bitmap.CompressFormat.JPEG)
+        }
+        mFilePathCallback!!.onReceiveValue(arrayOf(Uri.fromFile(compressedImageFile)))
 
     }
 
@@ -755,16 +796,6 @@ class DirectUdharActivity : AppCompatActivity() {
         startActivity(i);*/
     }
 
-    private fun appInstalledOrNot(packageManager: String): Boolean {
-        val pm = getPackageManager()
-        try {
-            pm.getPackageInfo(packageManager, PackageManager.GET_ACTIVITIES)
-            return true
-        } catch (e: PackageManager.NameNotFoundException) {
-            e.printStackTrace()
-        }
-        return false
-    }
 
     /*private void showShareWhatsappDialog(String textMsg, String number) {
         BottomSheetDialog dialog = new BottomSheetDialog(activity, R.style.BottomTheme);
@@ -930,6 +961,10 @@ class DirectUdharActivity : AppCompatActivity() {
         fun askPermission() {
             accessCameraPermission()
         }
+        @JavascriptInterface
+        fun sendToken():String{
+            return appToken!!
+        }
 
         /*  @JavascriptInterface
         public String getCurrentLocation() {
@@ -943,7 +978,7 @@ class DirectUdharActivity : AppCompatActivity() {
 
         @get:JavascriptInterface
         val cameraPermission: Boolean
-            get() =accessCameraPermission()
+            get() = accessCameraPermission()
 
         /* @JavascriptInterface
         public void openPaymentPage() {

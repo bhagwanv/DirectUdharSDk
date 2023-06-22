@@ -1,21 +1,19 @@
-package com.sk.directudhar.utils;
+package com.example.directudharsdk;
 
 import android.app.Activity;
 import android.app.Application;
-import android.content.Context;
-import android.os.Bundle;
-import android.os.Parcelable;
 
 import androidx.appcompat.app.AppCompatDelegate;
 
+import com.example.directudharsdk.Api.CommonMainClassForAPI;
+import com.example.directudharsdk.utils.SharePrefsMain;
 import com.sk.directudhar.Api.CommonClassForAPI;
 import com.sk.directudhar.model.TokenResponse;
+import com.sk.directudhar.utils.MyApplication;
 
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.Locale;
 
@@ -24,46 +22,42 @@ import io.reactivex.observers.DisposableObserver;
 /**
  * Created by user on 5/26/2017.
  */
-public class MyApplication extends Application {
-    private static MyApplication mInstance;
-    public static Activity activity;
-    public static Context context;
+public class MyApplicationMain extends Application {
+    private static MyApplicationMain mInstance;
 
-
-    public static void initDirectUdhaarApp(@NotNull Activity activity1) {
-        activity = activity1;
-        mInstance = new MyApplication();
-
-    }
+    public Activity activity;
 
     @Override
     public void onCreate() {
         super.onCreate();
         mInstance = this;
         AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+        MyApplication.initDirectUdhaarApp(activity);
     }
 
 
-    public static synchronized MyApplication getInstance() {
+    public static synchronized MyApplicationMain getInstance() {
         return mInstance;
     }
 
 
     public void token() {
-        CommonClassForAPI.getInstance(activity).getTokenClint(callTokenDes, "password",
-                SharePrefs.getInstance(getApplicationContext()).getString(SharePrefs.TOKEN_NAME),
-                SharePrefs.getInstance(getApplicationContext()).getString(SharePrefs.TOKEN_PASSWORD));
+        CommonMainClassForAPI.getInstance(activity).getTokenClient(
+                callAppTokenDes, "client_credentials",
+                "b02013e9-b92b-4563-a330-aec123bf13d7",
+                "e57f97e0-46ea-4be0-9fdf-c92b410cf022"
+        );
 
     }
 
     // getting token response
-    private final DisposableObserver<TokenResponse> callTokenDes = new DisposableObserver<TokenResponse>() {
+    private final DisposableObserver<TokenResponse> callAppTokenDes = new DisposableObserver<TokenResponse>() {
         @Override
         public void onNext(@NotNull TokenResponse response) {
             try {
                 if (response != null) {
-                    SharePrefs.getInstance(getApplicationContext()).putString(SharePrefs.TOKEN, response.getAccess_token());
-                    SharePrefs.getInstance(getApplicationContext()).putString(SharePrefs.TOKEN_DATE, new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date()));
+                    SharePrefsMain.getInstance(getApplicationContext()).putString(SharePrefsMain.TOKEN, response.getAccess_token());
+                    SharePrefsMain.getInstance(getApplicationContext()).putString(SharePrefsMain.TOKEN_DATE, new SimpleDateFormat("dd/MM/yyyy", Locale.ENGLISH).format(new Date()));
                     if (activity != null)
                         activity.recreate();
                 }

@@ -1,13 +1,13 @@
-package com.sk.directudhar.Api;
+package com.example.directudharsdk.Api;
 
 import android.app.Activity;
-import android.app.Application;
 
 import androidx.annotation.NonNull;
-
+import com.example.directudharsdk.MyApplicationMain;
 import com.google.gson.JsonObject;
 import com.sk.directudhar.model.TokenResponse;
 import com.sk.directudhar.utils.MyApplication;
+
 
 import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -15,25 +15,25 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 
-public class CommonClassForAPI {
+public class CommonMainClassForAPI {
 
-    private static CommonClassForAPI commonClassForAPI;
+    private static CommonMainClassForAPI commonClassForAPI;
 
 
-    public static CommonClassForAPI getInstance(Activity activity) {
-        MyApplication.getInstance().activity = activity;
+    public static CommonMainClassForAPI getInstance(Activity activity) {
+        MyApplicationMain.getInstance().activity = activity;
         if (commonClassForAPI == null) {
-            commonClassForAPI = new CommonClassForAPI(activity);
+            commonClassForAPI = new CommonMainClassForAPI(activity);
         }
         return commonClassForAPI;
     }
 
-    private CommonClassForAPI(Activity activity) {
-        MyApplication.getInstance().activity = activity;
+    private CommonMainClassForAPI(Activity activity) {
+        MyApplicationMain.getInstance().activity = activity;
     }
 
-    public void getTokenClint(DisposableObserver<TokenResponse> fetchTokenDes, String password, String username, String Password) {
-        RestClient.getInstance().getService().getToken(password, username, Password)
+    public void getTokenClient(DisposableObserver<TokenResponse> fetchTokenDes, String password, String username, String Password) {
+        RestClientMain.getInstance().getService().getTokenClient(password, username, Password)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<TokenResponse>() {
@@ -59,8 +59,8 @@ public class CommonClassForAPI {
                 });
     }
 
-    public void generateLead(final DisposableObserver<JsonObject> observer, String mobileNumber) {
-        RestClient.getInstance().getService().Initiate(mobileNumber)
+    public void generateLead(final DisposableObserver<JsonObject> observer, String Url) {
+        RestClientMain.getInstance().getService().generateLead(Url)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<JsonObject>() {
