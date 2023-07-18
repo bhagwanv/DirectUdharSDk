@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph">
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.sk.directudhar.ui.mainhome.MainFragment"
+        android:label="Apply Loan"
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/action_registrationFragment_to_firstFragment"
+            app:destination="@id/myAccountFragment"/>
+        <argument
+            android:name="mobileNumber"
+            android:defaultValue="true"
+            app:argType="string" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/myAccountFragment"
+        android:name="com.sk.directudhar.ui.myaccount.MyAccountFragment"
+        android:label="My Account"
+        tools:layout="@layout/fragment_my_account">
+        <action
+            android:id="@+id/action_mainFragment_to_myAccountFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ApplyLoanFragment"
+        android:name="com.sk.directudhar.ui.applyloan.ApplyLoanFragment"
+        android:label="Apply Loan"
+        tools:layout="@layout/fragment_apply_loan">
+        <action
+            android:id="@+id/action_mainFragment_to_ApplyLoanFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/AadhaarFragment"
+        android:name="com.sk.directudhar.ui.adharcard.AadhaarCardFragment"
+        android:label="Aadhaar Card"
+        tools:layout="@layout/fragment_aadhaar_card">
+        <action
+            android:id="@+id/action_mainFragment_to_AadhaarFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/CibilScoreFragment"
+        android:name="com.sk.directudhar.ui.cibilscore.CibilScoreFragment"
+        android:label="Cibil Score"
+        tools:layout="@layout/fragment_cibil_score">
+        <action
+            android:id="@+id/action_mainFragment_to_CibilScoreFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/ApprovalPendingFragment"
+        android:name="com.sk.directudhar.ui.approvalpending.ApprovalPendingFragment"
+        android:label="Approval Pending"
+        tools:layout="@layout/fragment_approval_pending">
+        <action
+            android:id="@+id/action_mainFragment_to_ApprovalPendingFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/EAgreementFragment"
+        android:name="com.sk.directudhar.ui.agreement.EAgreementFragment"
+        android:label="E Agreement"
+        tools:layout="@layout/fragment_e_agreement">
+        <action
+            android:id="@+id/action_mainFragment_to_EAgreementFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/EMandateFragment"
+        android:name="com.sk.directudhar.ui.mandate.EMandateFragment"
+        android:label="E Mandate"
+        tools:layout="@layout/fragment_e_mandate">
+        <action
+            android:id="@+id/action_mainFragment_to_EMandateFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/SuccessFragment"
+        android:name="com.sk.directudhar.ui.success.SuccessFragment"
+        android:label="Success"
+        tools:layout="@layout/fragment_success">
+        <action
+            android:id="@+id/action_mainFragment_to_SuccessFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/PanCardFragment"
+        android:name="com.sk.directudhar.ui.pancard.PanCardFragment"
+        android:label="Pan Card"
+        tools:layout="@layout/fragment_pan_card">
+        <action
+            android:id="@+id/action_mainFragment_to_PanCardFragment" />
+    </fragment>
+
+</navigation>

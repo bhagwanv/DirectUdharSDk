@@ -11,8 +11,6 @@ package com.sk.directudhar.utils;
 import static java.nio.charset.StandardCharsets.US_ASCII;
 import static java.nio.charset.StandardCharsets.UTF_8;
 
-import android.util.Log;
-
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -127,10 +125,8 @@ public class Aes256 {
     public static void main(String[] args) throws Exception {
         String encrypted = Aes256.encrypt("TEXT", "PASSWORD");
 
-        Log.d("encrypted",encrypted);
-
         String decrypted = Aes256.decrypt(encrypted, "PASSWORD");
-        Log.d("decrypted",decrypted);
-
     }
+
 }
+
