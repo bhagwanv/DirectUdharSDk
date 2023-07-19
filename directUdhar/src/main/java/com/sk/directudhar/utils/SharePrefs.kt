@@ -50,6 +50,7 @@ class SharePrefs(private val ctx: Context) {
         var PREFERENCE = "SkDirectSDK"
         var TOKEN = "token"
         var SEQUENCENO = "SequenceNo"
+        var LEAD_MASTERID = "LeadMasterId"
         private var instance: SharePrefs? = null
 
         fun getInstance(ctx: Context): SharePrefs? {
