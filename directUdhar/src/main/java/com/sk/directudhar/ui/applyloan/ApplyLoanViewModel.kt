@@ -18,7 +18,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanRepository) : ViewModel() {
+class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanRepository) :
+    ViewModel() {
 
     private val logInResult = MutableLiveData<String>()
 
@@ -35,20 +36,20 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             logInResult.value = "Please Enter Name"
         } else if (applyLoanRequestModel.FirmName.isNullOrEmpty()) {
             logInResult.value = "Please Business Name "
-        }else if (applyLoanRequestModel.Address.isNullOrEmpty()){
+        } else if (applyLoanRequestModel.Address.isNullOrEmpty()) {
             logInResult.value = "Please Business Address"
-        }else if (applyLoanRequestModel.MobileNo.isNullOrEmpty()){
-            logInResult.value ="Please Enter Mobile Number"
-        }else if (applyLoanRequestModel.MobileNo.length<10){
-            logInResult.value ="Please Enter Valid Mobile number"
-        }else if (applyLoanRequestModel.EmailId.isNullOrEmpty()){
-            logInResult.value ="Please Enter Email id"
-        }else if (applyLoanRequestModel.BusinessTurnOver.isNullOrEmpty()){
-            logInResult.value="Please Enter Your company turn over"
-        }else {
-          postFromData(applyLoanRequestModel)
+        } else if (applyLoanRequestModel.MobileNo.isNullOrEmpty()) {
+            logInResult.value = "Please Enter Mobile Number"
+        } else if (applyLoanRequestModel.MobileNo.length < 10) {
+            logInResult.value = "Please Enter Valid Mobile number"
+        } else if (applyLoanRequestModel.EmailId.isNullOrEmpty()) {
+            logInResult.value = "Please Enter Email id"
+        } else if (applyLoanRequestModel.BusinessTurnOver.isNullOrEmpty()) {
+            logInResult.value = "Please Enter Your company turn over"
+        } else {
+            postFromData(applyLoanRequestModel)
         }
-        }
+    }
 
     private fun postFromData(applyLoanRequestModel: ApplyLoanRequestModel) {
 
@@ -66,7 +67,8 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
         }
 
     }
-    fun callCity(stateId:Int) {
+
+    fun callCity(stateId: Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
                 repository.getCity(stateId).collect() {
