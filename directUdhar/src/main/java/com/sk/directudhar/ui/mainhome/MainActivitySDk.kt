@@ -101,6 +101,10 @@ class MainActivitySDk :AppCompatActivity() {
                             SharePrefs.SEQUENCENO,
                             initiateAccountModel.Data.SequenceNo
                         )
+                        SharePrefs.getInstance(this)?.putInt(
+                            SharePrefs.LEAD_MASTERID,
+                            initiateAccountModel.Data.LeadMasterId
+                        )
                         checkSequenceNo(initiateAccountModel.Data.SequenceNo)
                     } else {
                         this.toast(initiateAccountModel.Msg)

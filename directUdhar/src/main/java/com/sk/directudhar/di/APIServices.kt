@@ -2,6 +2,8 @@ package com.sk.directudhar.di
 
 import com.google.gson.JsonObject
 import com.sk.directudhar.data.TokenResponse
+import com.sk.directudhar.ui.applyloan.CityModel
+import com.sk.directudhar.ui.applyloan.StateModel
 import io.reactivex.Observable
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -22,6 +24,12 @@ interface APIServices {
 
     @GET("api/Borrower/Initiate?")
     suspend  fun initiate(@Query("MobileNo") MobileNo: String): JsonObject
+
+    @GET("api/StateMaster")
+    suspend  fun stateMaster(): ArrayList<StateModel>
+
+    @GET("api/CityMaster/GetCityByStateId")
+    suspend  fun stateMaster(@Query("StateId")StateId:Int ): ArrayList<CityModel>
 
  /*   @GET
    suspend fun generateLead(@Url url: String?): Observable<JsonObject?>?
