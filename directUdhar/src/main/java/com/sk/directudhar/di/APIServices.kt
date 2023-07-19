@@ -2,13 +2,14 @@ package com.sk.directudhar.di
 
 import com.google.gson.JsonObject
 import com.sk.directudhar.data.TokenResponse
-import io.reactivex.Observable
+import okhttp3.MultipartBody
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
+import retrofit2.http.Part
 import retrofit2.http.Query
-import retrofit2.http.Url
 
 interface APIServices {
 
@@ -27,5 +28,9 @@ interface APIServices {
    suspend fun generateLead(@Url url: String?): Observable<JsonObject?>?
 
     */
+
+    @Multipart
+    @POST("api/Borrower/ImageUploadBase64")
+    suspend  fun uploadPanCard(@Part body: MultipartBody.Part ): JsonObject
 
 }
