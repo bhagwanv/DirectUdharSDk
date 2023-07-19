@@ -7,8 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import com.sk.directudhar.databinding.FragmentApprovalPendingBinding
-import com.sk.directudhar.databinding.FragmentCibilScoreBinding
-import com.sk.directudhar.ui.MainActivitySDk
+import com.sk.directudhar.ui.mainhome.MainActivitySDk
 
 class ApprovalPendingFragment:Fragment() {
 

@@ -16,7 +16,7 @@
         android:largeHeap="true"
         android:hardwareAccelerated="true"
         android:supportsRtl="true">
-        <activity android:name=".ui.MainActivitySDk"
+        <activity android:name=".ui.mainhome.MainActivitySDk"
             android:screenOrientation="portrait"/>
 
         <provider
