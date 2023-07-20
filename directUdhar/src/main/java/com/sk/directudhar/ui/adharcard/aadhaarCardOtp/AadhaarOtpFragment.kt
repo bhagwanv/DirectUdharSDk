@@ -5,12 +5,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sk.directudhar.databinding.FragmentAadharOtpBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import javax.inject.Inject
+
 
 class AadhaarOtpFragment : Fragment() {
 
@@ -40,6 +42,10 @@ class AadhaarOtpFragment : Fragment() {
         component.injectAadhaarOtp(this)
         aadhaarOtpViewModel =
             ViewModelProvider(this, aadhaarOtpFactory)[AadhaarOtpViewModel::class.java]
+
+
     }
+
+
 
 }
