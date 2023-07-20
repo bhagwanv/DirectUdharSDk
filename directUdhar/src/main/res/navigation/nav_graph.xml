@@ -41,7 +41,8 @@
         android:label="Aadhaar Card"
         tools:layout="@layout/fragment_aadhaar_card">
         <action
-            android:id="@+id/action_mainFragment_to_AadhaarFragment" />
+            android:id="@+id/action_AadhaarFragment_to_aadharOtpFragment"
+            app:destination="@id/aadharOtpFragment" />
     </fragment>
 
     <fragment
@@ -97,5 +98,11 @@
         <action
             android:id="@+id/action_mainFragment_to_PanCardFragment" />
     </fragment>
+
+    <fragment
+        android:id="@+id/aadharOtpFragment"
+        android:name="com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment"
+        android:label="Enter OTP"
+        tools:layout="@layout/fragment_aadhar_otp" />
 
 </navigation>

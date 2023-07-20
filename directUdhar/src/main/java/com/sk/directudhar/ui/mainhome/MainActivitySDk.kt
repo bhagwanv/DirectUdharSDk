@@ -9,7 +9,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.gson.Gson
-import com.sk.directudhar.MyApplication
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.data.SequenceEnumClass
@@ -21,7 +20,7 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 
-class MainActivitySDk :AppCompatActivity() {
+class MainActivitySDk : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
@@ -31,6 +30,8 @@ class MainActivitySDk :AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
 
     lateinit var mobilNumber: String
+
+    lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +47,7 @@ class MainActivitySDk :AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        val navHostFragment =
+        navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         setSupportActionBar(findViewById(R.id.toolbarNew))
@@ -105,7 +106,8 @@ class MainActivitySDk :AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                        checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        //  checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        checkSequenceNo(4)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
@@ -199,8 +201,12 @@ class MainActivitySDk :AppCompatActivity() {
     val callback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-              finish()
+                finish()
             }
         }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
 
 }

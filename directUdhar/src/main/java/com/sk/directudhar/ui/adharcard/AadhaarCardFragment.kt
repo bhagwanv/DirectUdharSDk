@@ -11,9 +11,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import com.sk.directudhar.R
 import com.sk.directudhar.databinding.FragmentAadhaarCardBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
+import com.sk.directudhar.utils.Utils
 import javax.inject.Inject
 
 class AadhaarCardFragment : Fragment() {
@@ -49,7 +52,13 @@ class AadhaarCardFragment : Fragment() {
         mBinding.etAdhaarNumber.addTextChangedListener(aadhaarTextWatcher)
 
         aadhaarCardViewModel.getAadhaarResult().observe(activitySDk, Observer { result ->
-            Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
+            if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
+                val action =
+                    AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment()
+                findNavController().navigate(action)
+            } else {
+                Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
+            }
         })
 
         mBinding.btnVerifyAadhaar.setOnClickListener {
