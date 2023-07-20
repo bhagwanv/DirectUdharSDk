@@ -2,9 +2,12 @@ package com.sk.directudhar.di
 
 import com.google.gson.JsonObject
 import com.sk.directudhar.data.TokenResponse
+import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.StateModel
+import com.sk.directudhar.ui.mainhome.InitiateAccountModel
+import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
 import retrofit2.http.GET
@@ -32,13 +35,12 @@ interface APIServices {
     @GET("api/CityMaster/GetCityByStateId")
     suspend  fun stateMaster(@Query("StateId")StateId:Int ): ArrayList<CityModel>
 
- /*   @GET
-   suspend fun generateLead(@Url url: String?): Observable<JsonObject?>?
 
-    */
+    @POST("api/Borrower/addlead")
+    suspend  fun postData(@Body applyLoanRequestModel: ApplyLoanRequestModel ): InitiateAccountModel
 
     @Multipart
-    @POST("api/Borrower/ImageUploadBase64")
-    suspend  fun uploadPanCard(@Part body: MultipartBody.Part ): JsonObject
+    @POST("api/Borrower/PanImageUpload")
+    suspend  fun uploadPanCard(@Query("LeadMasterId")LeadMasterId:Int, @Part body: MultipartBody.Part ): JsonObject
 
 }

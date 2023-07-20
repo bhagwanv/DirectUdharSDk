@@ -22,4 +22,5 @@ interface ApplicationComponent {
     fun injectAadhaarCard(fragment: AadhaarCardFragment)
     fun injectAadhaarOtp(fragment: AadhaarOtpFragment)
 
+
 }

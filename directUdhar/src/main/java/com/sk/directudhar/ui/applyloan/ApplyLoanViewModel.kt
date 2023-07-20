@@ -1,17 +1,16 @@
 package com.sk.directudhar.ui.applyloan
 
-import android.text.TextUtils
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.android.material.textfield.TextInputEditText
-import com.google.gson.JsonObject
+import com.google.gson.Gson
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
-import com.sk.directudhar.data.TokenResponse
+import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
+import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -29,7 +28,11 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
     private var _cityResponse = MutableLiveData<NetworkResult<ArrayList<CityModel>>>()
     val cityResponse: LiveData<NetworkResult<ArrayList<CityModel>>> = _cityResponse
 
+    private var _postDataResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
+    val postResponse: LiveData<NetworkResult<InitiateAccountModel>> = _postDataResponse
+
     fun getLogInResult(): LiveData<String> = logInResult
+    fun getSuccessResualt(): LiveData<String> = logInResult
 
     fun performValidation(applyLoanRequestModel: ApplyLoanRequestModel) {
         if (applyLoanRequestModel.Name.isNullOrEmpty()) {
@@ -46,13 +49,23 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             logInResult.value = "Please Enter Email id"
         } else if (applyLoanRequestModel.BusinessTurnOver.isNullOrEmpty()) {
             logInResult.value = "Please Enter Your company turn over"
+        } else if (!applyLoanRequestModel.IsAgreementAccept) {
+            logInResult.value = "Please Check Term Policy"
         } else {
-            postFromData(applyLoanRequestModel)
+            logInResult.value =SuccessType
         }
     }
 
-    private fun postFromData(applyLoanRequestModel: ApplyLoanRequestModel) {
-
+    fun postFromData(applyLoanRequestModel: ApplyLoanRequestModel) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.postData(applyLoanRequestModel).collect() {
+                    _postDataResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
     }
 
     fun callState() {
