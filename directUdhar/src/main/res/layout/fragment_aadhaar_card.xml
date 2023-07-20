@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,7 +15,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:src="@drawable/adhaar_user_bg"/>
+                android:src="@drawable/adhaar_user_bg" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/tilAadhaarNumber"
@@ -33,8 +31,8 @@
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
                     android:inputType="numberSigned"
-                    android:minLines="1"
-                    android:maxLength="12"/>
+                    android:maxLength="12"
+                    android:minLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
@@ -49,10 +47,10 @@
                     android:id="@+id/cbUserDeclaration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:checked="false"
-                    android:backgroundTint="@color/holo_gray_dark"/>
+                    android:backgroundTint="@color/holo_gray_dark"
+                    android:checked="false" />
 
-                <TextView
+                <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvTermsOfUse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -61,43 +59,43 @@
                     android:textColor="@color/holo_gray_dark" />
             </LinearLayout>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnVerifyAadhaar"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="40dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
-                android:paddingHorizontal="16dp"
+                android:layout_marginTop="40dp"
                 android:background="@drawable/bg_squre_btn_corner"
+                android:gravity="center"
                 android:maxLines="1"
+                android:paddingHorizontal="16dp"
                 android:text="E-Verify Aadhaar"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
 
-            <TextView
+            <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="OR"
+                android:layout_gravity="center_horizontal"
                 android:layout_marginTop="12dp"
                 android:layout_marginBottom="12dp"
-                android:textSize="18sp"
-                android:layout_gravity="center_horizontal"
+                android:text="OR"
                 android:textAllCaps="true"
-                android:textColor="@color/holo_gray_dark" />
+                android:textColor="@color/holo_gray_dark"
+                android:textSize="18sp" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnManuallyUploadAadhaar"
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
+                android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
-                android:paddingHorizontal="16dp"
                 android:background="@drawable/bg_squre_btn_corner"
+                android:gravity="center"
                 android:maxLines="1"
+                android:paddingHorizontal="16dp"
                 android:text="Manually Upload Aadhaar"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
-
-
 </layout>

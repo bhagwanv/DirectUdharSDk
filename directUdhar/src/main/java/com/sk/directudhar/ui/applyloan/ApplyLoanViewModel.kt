@@ -17,7 +17,8 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanRepository) : ViewModel() {
+class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanRepository) :
+    ViewModel() {
 
     private val logInResult = MutableLiveData<String>()
 
@@ -79,7 +80,8 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
         }
 
     }
-    fun callCity(stateId:Int) {
+
+    fun callCity(stateId: Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
                 repository.getCity(stateId).collect() {
