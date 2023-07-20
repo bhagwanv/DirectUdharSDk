@@ -131,7 +131,6 @@ class PanCardFragment:Fragment(), View.OnClickListener {
 
     fun openSomeActivityForResult() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-
         val photoFile: File
         try {
             photoFile = createImageFile()
@@ -161,23 +160,11 @@ class PanCardFragment:Fragment(), View.OnClickListener {
                     uploadFilePth()
                 }
 
-                if (pickImage) {
-                    val imageUri: Uri? = data!!.data;
-                    val bitmap: Bitmap = MediaStore.Images.Media.getBitmap(
-                        activitySDk.getContentResolver(),
-                        Uri.parse(imageUri.toString())
-                    )
-                    mBinding.ivPanCardFrontImage.setImageBitmap(bitmap)
-
-                    pickImage = false
-                } else {
-                    val photo: Bitmap = data?.extras?.get("data") as Bitmap
-                    mBinding.ivPanCardFrontImage.setImageBitmap(photo)
-                }
             }
         }
 
-    fun imageChooser() {
+
+    private fun imageChooser() {
         pickImage=true
         val i = Intent()
         i.type = "image/*"
@@ -208,15 +195,6 @@ class PanCardFragment:Fragment(), View.OnClickListener {
         }
     }
 
-    fun showCustomAlertDialog(context: Context) {
-        val customView = layoutInflater.inflate(R.layout.pan_card_image_popup, null)
-
-        val alertDialogBuilder = AlertDialog.Builder(context)
-        alertDialogBuilder.setView(customView)
-        val alertDialog = alertDialogBuilder.create()
-
-        alertDialog.show()
-    }
     private fun createImageFile(): File {
        var LEAD_MASTERID= SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
         panUpload = "trip" + LEAD_MASTERID + "image" + ".jpg"

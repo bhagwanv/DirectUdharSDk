@@ -22,7 +22,8 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
     val panCardResponse: LiveData<NetworkResult<JsonObject>> = _panCardResponse
 
     fun getLogInResult(): LiveData<String> = logInResult
-    fun uploadPanCard(leadMasterId :Int ,body: MultipartBody.Part) {
+    fun uploadPanCard(leadMasterId:Int ,body: MultipartBody.Part) {
+
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
                 repository.uploadPanCard(leadMasterId,body).collect() {
