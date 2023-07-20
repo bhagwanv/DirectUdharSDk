@@ -17,15 +17,15 @@ import javax.inject.Inject
 class PanCardViewModel @Inject constructor(private val repository: PanCardRepository):ViewModel() {
     var username: String = ""
 
-
+    private val logInResult = MutableLiveData<String>()
     private var _panCardResponse = MutableLiveData<NetworkResult<JsonObject>>()
     val panCardResponse: LiveData<NetworkResult<JsonObject>> = _panCardResponse
 
-
-    fun uploadPanCard(body: MultipartBody.Part) {
+    fun getLogInResult(): LiveData<String> = logInResult
+    fun uploadPanCard(leadMasterId :Int ,body: MultipartBody.Part) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                repository.uploadPanCard(body).collect() {
+                repository.uploadPanCard(leadMasterId,body).collect() {
                     _panCardResponse.postValue(it)
                 }
             }
@@ -35,5 +35,24 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
 
 
     }
+
+    fun performValidation(panCardRequestModel: PanCardRequestModel) {
+        if (panCardRequestModel.NameAsPAN.isNullOrEmpty()) {
+            logInResult.value = "Please Enter Name As PAN"
+        } else if (panCardRequestModel.EmailID .isNullOrEmpty()) {
+            logInResult.value = "Please Enter Email Id "
+        }else if (panCardRequestModel.PanNumber.isNullOrEmpty()){
+            logInResult.value = "Please Enter PanNumber"
+        }else if (panCardRequestModel.RefrralCode.isNullOrEmpty()){
+            logInResult.value ="Please Enter RefrralCode"
+        } else {
+            postFromData(panCardRequestModel)
+        }
+    }
+
+    private fun postFromData(panCardRequestModel: PanCardRequestModel) {
+
+    }
+
 
 }

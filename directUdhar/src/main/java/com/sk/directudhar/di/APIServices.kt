@@ -38,7 +38,7 @@ interface APIServices {
     */
 
     @Multipart
-    @POST("api/Borrower/ImageUploadBase64")
-    suspend  fun uploadPanCard(@Part body: MultipartBody.Part ): JsonObject
+    @POST("api/Borrower/PanImageUpload")
+    suspend  fun uploadPanCard(@Query("LeadMasterId")LeadMasterId:Int, @Part body: MultipartBody.Part ): JsonObject
 
 }

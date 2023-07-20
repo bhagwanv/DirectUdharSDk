@@ -101,8 +101,9 @@ dependencies {
 
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
+    implementation 'id.zelory:compressor:3.0.0'
 
-
+    implementation 'com.nabinbhandari.android:permissions:3.8'
 
 
 
