@@ -114,7 +114,7 @@ class MainActivitySDk :AppCompatActivity() {
         }
     }
 
-    private fun checkSequenceNo(sequenceNo: Int) {
+     fun checkSequenceNo(sequenceNo: Int) {
         val sequence = SequenceEnumClass.from(sequenceNo)
         when (sequence) {
             SequenceEnumClass.APPLY_LOAN -> applyLoanCall()

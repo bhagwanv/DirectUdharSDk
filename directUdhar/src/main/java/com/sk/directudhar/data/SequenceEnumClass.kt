@@ -3,13 +3,13 @@ package com.sk.directudhar.data
 enum class SequenceEnumClass(val sequence:Int ) {
     APPLY_LOAN(2),
     PAN_CARD(3),
-    ADHAR_CARD(4),
-    CIBIL_SCORE(5),
-    E_MANDATE(9),
-    E_AGREEMENT(10),
-    SUCCESS(11),
-    APPRAVAL_PENDING(12),
-    MY_ACCOUNT(13);
+    ADHAR_CARD(5),
+    CIBIL_SCORE(14),
+    E_MANDATE(6),
+    E_AGREEMENT(9),
+    SUCCESS(12),
+    APPRAVAL_PENDING(17),
+    MY_ACCOUNT(18);
 
 
     companion object {

@@ -80,10 +80,6 @@ class PanCardFragment:Fragment() {
 
 
 
-
-
-
-
     //    panCardViewModel.getPanCard("9522392801")
         panCardViewModel.panCardResponse.observe(activitySDk) {
             when (it) {
@@ -135,7 +131,7 @@ class PanCardFragment:Fragment() {
         }
     }
 
-    fun SaveImage(showedImgae: Bitmap) {
+    private fun SaveImage(showedImgae: Bitmap) {
         val root = Environment.getExternalStorageDirectory().toString()
         val myDir = File("$root/DCIM/myCapturedImages")
         Log.e("Mydirectory", "$root/DCIM/myCapturedImages: ")
@@ -156,7 +152,7 @@ class PanCardFragment:Fragment() {
             e.printStackTrace()
         }
     }
-    fun imageChooser() {
+    private fun imageChooser() {
         pickImage=true
         val i = Intent()
         i.type = "image/*"

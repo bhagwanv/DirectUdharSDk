@@ -24,4 +24,12 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
+
+    suspend fun postData(applyLoanRequestModel: ApplyLoanRequestModel)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.postData(applyLoanRequestModel)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 }

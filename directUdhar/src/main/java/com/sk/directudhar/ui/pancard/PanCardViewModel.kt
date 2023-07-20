@@ -20,8 +20,6 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
 
     private var _panCardResponse = MutableLiveData<NetworkResult<JsonObject>>()
     val panCardResponse: LiveData<NetworkResult<JsonObject>> = _panCardResponse
-
-
     fun uploadPanCard(body: MultipartBody.Part) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {

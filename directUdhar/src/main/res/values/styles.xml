@@ -33,5 +33,11 @@
         <item name="android:windowIsFloating">false</item>
     </style>
 
+    <style name="Theme.Design.BottomSheetDialog" parent="Theme.AppCompat.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+        <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+    </style>
+
 
 </resources>

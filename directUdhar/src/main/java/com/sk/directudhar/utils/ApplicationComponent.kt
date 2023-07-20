@@ -18,4 +18,5 @@ interface ApplicationComponent {
     fun injectApplyLoan(fragment: ApplyLoanFragment)
     fun injectPanCard(fragment: PanCardFragment)
 
+
 }
