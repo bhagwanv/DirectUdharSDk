@@ -68,6 +68,7 @@ class AadhaarOtpFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
                     it.data.Msg?.let { it1 -> activitySDk.toast(it1) }
                     if (it.data.Result!!) {
+                        activitySDk.toast(it.data.Msg!!)
                     }
                 }
             }
