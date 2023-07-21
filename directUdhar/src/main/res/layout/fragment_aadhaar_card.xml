@@ -44,7 +44,7 @@
                 android:orientation="horizontal">
 
                 <CheckBox
-                    android:id="@+id/cbUserDeclaration"
+                    android:id="@+id/cbTermsOfUse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/holo_gray_dark"

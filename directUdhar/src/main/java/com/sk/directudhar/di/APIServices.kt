@@ -7,8 +7,6 @@ import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.StateModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
-import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
-import com.sk.directudhar.ui.pancard.UpdatePanInfoResponseModel
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -45,6 +43,4 @@ interface APIServices {
     @POST("api/Borrower/PanImageUpload")
     suspend  fun uploadPanCard(@Query("LeadMasterId")LeadMasterId:Int, @Part body: MultipartBody.Part ): JsonObject
 
-    @POST("api/Borrower/UpdatePanInfo")
-    suspend  fun updatePanInfo(@Body updatePanInfoRequestModel: UpdatePanInfoRequestModel ): UpdatePanInfoResponseModel
 }

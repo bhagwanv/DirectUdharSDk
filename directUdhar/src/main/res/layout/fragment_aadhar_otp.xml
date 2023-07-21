@@ -40,7 +40,7 @@
                 android:layout_marginTop="40dp" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnVerifyAadhaar"
+                android:id="@+id/btnChangeAadhaar"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
@@ -55,7 +55,7 @@
                 android:textColor="@color/chinese_orange" />
 
             <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnManuallyUploadAadhaar"
+                android:id="@+id/btnNext"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"

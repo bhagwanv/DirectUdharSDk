@@ -12,10 +12,14 @@ import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadhaarCardBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
+import com.sk.directudhar.utils.ProgressDialog
+import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
+import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 class AadhaarCardFragment : Fragment() {
@@ -23,6 +27,7 @@ class AadhaarCardFragment : Fragment() {
     private lateinit var activitySDk: MainActivitySDk
     private lateinit var mBinding: FragmentAadhaarCardBinding
     lateinit var aadhaarCardViewModel: AadhaarCardViewModel
+    var aadharNo:String = ""
 
     @Inject
     lateinit var aadhaarCardFactory: AadhaarCardFactory
@@ -52,19 +57,47 @@ class AadhaarCardFragment : Fragment() {
 
         aadhaarCardViewModel.getAadhaarResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
-                val action =
-                    AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment()
-                findNavController().navigate(action)
+                aadhaarCardViewModel.updateAadhaarInfo(UpdateAadhaarInfoRequestModel(
+                    leadMasterId = SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,
+                    aadharNo = aadharNo
+                ))
             } else {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             }
         }
 
-        mBinding.btnVerifyAadhaar.setOnClickListener {
-            aadhaarCardViewModel.validateAadhaar(mBinding.etAdhaarNumber.text.toString())
+        aadhaarCardViewModel.postResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.Msg?.let { it1 -> activitySDk.toast(it1) }
+                    if (it.data.Result!!) {
+
+                        val action =
+                            it.data.DynamicData!!.requestId?.let { it1 ->
+                                AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(aadharNo,
+                                    it1
+                                )
+                            }
+                        findNavController().navigate(action!!)
+                    }
+                }
+            }
         }
         
 
+        mBinding.btnVerifyAadhaar.setOnClickListener {
+            aadhaarCardViewModel.validateAadhaar(mBinding.etAdhaarNumber.text.toString(), mBinding.cbTermsOfUse.isChecked)
+        }
     }
 
     private val aadhaarTextWatcher = object : TextWatcher {
@@ -82,6 +115,7 @@ class AadhaarCardFragment : Fragment() {
                 mBinding.tilAadhaarNumber.error = "Invalid Aadhaar number"
             } else {
                 mBinding.tilAadhaarNumber.error = null
+                aadharNo = aadhaarNumber
             }
         }
     }
