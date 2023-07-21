@@ -1,16 +1,15 @@
 package com.sk.directudhar.ui.mainhome
 
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import android.widget.Toast
-import android.widget.Toolbar
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.gson.Gson
 import com.sk.directudhar.R
@@ -24,7 +23,7 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 
-class MainActivitySDk : AppCompatActivity() {
+class MainActivitySDk : AppCompatActivity(), View.OnClickListener {
 
     private lateinit var navController: NavController
 
@@ -51,11 +50,9 @@ class MainActivitySDk : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         setSupportActionBar(findViewById(R.id.toolbarNew))
-
     }
 
     private fun initView() {
@@ -123,15 +120,15 @@ class MainActivitySDk : AppCompatActivity() {
      fun checkSequenceNo(sequenceNo: Int) {
         val sequence = SequenceEnumClass.from(sequenceNo)
         when (sequence) {
-            SequenceEnumClass.APPLY_LOAN -> applyLoanCall()
-            SequenceEnumClass.ADHAR_CARD -> aadhaarCardCall()
-            SequenceEnumClass.CIBIL_SCORE -> checkCibilScore()
-            SequenceEnumClass.APPRAVAL_PENDING -> approvalPending()
-            SequenceEnumClass.E_AGREEMENT -> agreement()
-            SequenceEnumClass.E_MANDATE -> mandate()
-            SequenceEnumClass.SUCCESS -> successCall()
-            SequenceEnumClass.PAN_CARD -> panCardCall()
-            SequenceEnumClass.MY_ACCOUNT -> myAccountCall()
+            SequenceEnumClass.APPLY_LOAN -> navigateViewCall(R.id.ApplyLoanFragment)
+            SequenceEnumClass.ADHAR_CARD -> navigateViewCall(R.id.AadhaarFragment)
+            SequenceEnumClass.CIBIL_SCORE -> navigateViewCall(R.id.CibilScoreFragment)
+            SequenceEnumClass.APPRAVAL_PENDING -> navigateViewCall(R.id.ApprovalPendingFragment)
+            SequenceEnumClass.E_AGREEMENT -> navigateViewCall(R.id.EAgreementFragment)
+            SequenceEnumClass.E_MANDATE -> navigateViewCall(R.id.EMandateFragment)
+            SequenceEnumClass.SUCCESS -> navigateViewCall( R.id.SuccessFragment)
+            SequenceEnumClass.PAN_CARD -> navigateViewCall(R.id.PanCardFragment)
+            SequenceEnumClass.MY_ACCOUNT -> navigateViewCall(R.id.myAccountFragment)
             else -> {
                 this.toast("Sequence Not Found")
 
@@ -139,76 +136,19 @@ class MainActivitySDk : AppCompatActivity() {
         }
     }
 
-    private fun panCardCall() {
+    private fun navigateViewCall(fragment: Int) {
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.startDestination = R.id.PanCardFragment
+        navGraph.startDestination = fragment
         navController.graph = navGraph
         setupActionBarWithNavController(navController)
     }
 
-    private fun successCall() {
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.startDestination = R.id.SuccessFragment
-        navController.graph = navGraph
-        setupActionBarWithNavController(navController)
-    }
-
-    private fun mandate() {
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.startDestination = R.id.EMandateFragment
-        navController.graph = navGraph
-        setupActionBarWithNavController(navController)
-    }
-
-    private fun agreement() {
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.startDestination = R.id.EAgreementFragment
-        navController.graph = navGraph
-        setupActionBarWithNavController(navController)
-    }
-
-    private fun approvalPending() {
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.startDestination = R.id.ApprovalPendingFragment
-        navController.graph = navGraph
-        setupActionBarWithNavController(navController)
-    }
-
-    private fun checkCibilScore() {
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.startDestination = R.id.CibilScoreFragment
-        navController.graph = navGraph
-        setupActionBarWithNavController(navController)
-    }
-
-    private fun aadhaarCardCall() {
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.startDestination = R.id.AadhaarFragment
-        navController.graph = navGraph
-        setupActionBarWithNavController(navController)
-    }
-
-    private fun myAccountCall() {
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.startDestination = R.id.myAccountFragment
-        navController.graph = navGraph
-        setupActionBarWithNavController(navController)
-
-    }
-
-    private fun applyLoanCall() {
-        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
-        navGraph.startDestination = R.id.ApplyLoanFragment
-        navController.graph = navGraph
-        setupActionBarWithNavController(navController)
-    }
 
     val callback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
-                if (navHostFragment != null){
-
+                if(navController.graph.startDestination == navController.currentDestination?.id) {
+                    finish()
                 } else {
                    onBackPressed()
                 }
@@ -218,6 +158,10 @@ class MainActivitySDk : AppCompatActivity() {
 
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
+    }
+
+    override fun onClick(v: View?) {
+       toast("Back")
     }
 
 }
