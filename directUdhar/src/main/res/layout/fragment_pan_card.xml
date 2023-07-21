@@ -26,7 +26,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapSentences"
+                    android:inputType="textCapSentences|text"
                     android:minLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -45,7 +45,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapSentences"
+                    android:inputType="textEmailAddress"
                     android:minLines="1" />
 
             </com.google.android.material.textfield.TextInputLayout>
@@ -64,12 +64,14 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapSentences"
-                    android:minLines="1" />
+                    android:inputType="textCapCharacters"
+                    android:minLines="1"
+                    android:maxLength="10" />
 
             </com.google.android.material.textfield.TextInputLayout>
 
             <RelativeLayout
+                android:id="@+id/rlCameraClick"
                 android:layout_width="match_parent"
                 android:layout_height="200dp"
                 android:background="@drawable/dotted_border_pancard"
@@ -82,7 +84,8 @@
                     android:layout_width="50dp"
                     android:layout_height="50dp"
                     android:background="@drawable/baseline_camera_alt_24"
-                    android:layout_centerInParent="true" />
+                    android:layout_centerInParent="true"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -92,13 +95,19 @@
                     android:layout_centerInParent="true"
                     android:layout_marginTop="30dp"
                     android:textSize="20dp"
-                    android:textColor="#94F44336"/>
+                    android:textColor="#94F44336"
+                    android:visibility="gone"/>
 
                 <ImageView
                     android:id="@+id/ivPanCardFrontImage"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_centerInParent="true" />
+                    android:layout_centerInParent="true"
+                    android:layout_marginStart="-8dp"
+                    android:layout_marginTop="-8dp"
+                    android:layout_marginEnd="-8dp"
+                    android:layout_marginBottom="-8dp"
+                    android:scaleType="fitXY" />
 
             </RelativeLayout>
 
@@ -125,10 +134,26 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapSentences"
-                    android:minLines="1" />
+                    android:inputType="number"
+                    android:minLines="1"
+                    android:maxLength="6"/>
 
             </com.google.android.material.textfield.TextInputLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="32dp"
+                android:background="@drawable/bg_squre_btn_corner"
+                android:maxLines="1"
+                android:text="Submit"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
         </LinearLayout>
     </ScrollView>
 

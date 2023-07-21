@@ -18,4 +18,12 @@ class PanCardRepository @Inject constructor(private val apiServices: APIServices
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
+
+    suspend fun updatePanInfo(model: UpdatePanInfoRequestModel)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.updatePanInfo(model)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 }

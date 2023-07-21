@@ -8,29 +8,43 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
 import android.net.Uri
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.Toast
+import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
+import com.sk.directudhar.databinding.DialogChooseImageBinding
+import com.sk.directudhar.databinding.DialogPocessBinding
 import com.sk.directudhar.databinding.FragmentPanCardBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
+import com.sk.directudhar.utils.SharePrefs.Companion.LEAD_MASTERID
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
+import com.squareup.picasso.Picasso
 import id.zelory.compressor.Compressor
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -45,7 +59,7 @@ import java.security.Permissions
 import javax.inject.Inject
 
 
-class PanCardFragment:Fragment(), View.OnClickListener {
+class PanCardFragment:Fragment(),OnClickListener {
 
     lateinit var activitySDk: MainActivitySDk
 
@@ -60,7 +74,17 @@ class PanCardFragment:Fragment(), View.OnClickListener {
 
     private var imageFilePath: String? = null
 
+    var leadMasterId=0
+    var imageUrl=""
+    var isAcceptPP= true
+    var panNo=""
+    var panName=""
+
+
     private var panUpload: String? = null
+    private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
+    private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
+    lateinit var imageChooseBottomDialog: BottomSheetDialog
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -83,8 +107,11 @@ class PanCardFragment:Fragment(), View.OnClickListener {
         val component = DaggerApplicationComponent.builder().build()
         component.injectPanCard(this)
         panCardViewModel = ViewModelProvider(this, panCardFactory)[PanCardViewModel::class.java]
-        mBinding.ivCameraImage.setOnClickListener {
 
+        leadMasterId= SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
+        mBinding.btSubmit.setOnClickListener(this)
+
+        mBinding.rlCameraClick.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     activitySDk,
                     Manifest.permission.CAMERA
@@ -95,10 +122,75 @@ class PanCardFragment:Fragment(), View.OnClickListener {
                     arrayOf(Manifest.permission.CAMERA),
                     Utils.cameraRequest
                 )
-            openSomeActivityForResult()
+            chooseOptionImage()
         }
 
         panCardViewModel.panCardResponse.observe(activitySDk) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Log.e("TAG", "dismiss: ", )
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    val panCardUplodResponseModel =
+                        Gson().fromJson(it.data, PanCardUplodResponseModel::class.java)
+                    if (panCardUplodResponseModel.Result) {
+                        imageUrl= panCardUplodResponseModel.Data
+                        Glide.with(activitySDk)
+                            .load(imageUrl)
+                            .into(mBinding.ivPanCardFrontImage)
+                    } else {
+                        activitySDk.toast(panCardUplodResponseModel.Msg)
+                    }
+
+                }
+            }
+        }
+
+        cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val imageBitmap = result.data?.extras?.get("data") as? Bitmap
+
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    uploadFilePth()
+                }
+            }
+        }
+
+        imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == Activity.RESULT_OK) {
+                val imageUri = result.data?.data
+
+                CoroutineScope(Dispatchers.IO).launch {
+                    uploadFilePth()
+                }
+            }
+        }
+        panCardViewModel.getLogInResult().observe(activitySDk, Observer { result ->
+
+            if (!result.equals(Utils.SuccessType)) {
+                Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
+            }else{
+                if (imageUrl.isNullOrEmpty()){
+                    panName=mBinding.etNameAsPAN.text.toString().trim()
+                    panNo=mBinding.etPanNumber.text.toString().trim()
+
+                    var model=UpdatePanInfoRequestModel(leadMasterId,panNo,imageUrl,panName,isAcceptPP)
+                    panCardViewModel.updatePanInfo(model)
+                }
+
+            }
+        })
+
+        panCardViewModel.updatePanInfoResponse.observe(activitySDk) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -111,17 +203,11 @@ class PanCardFragment:Fragment(), View.OnClickListener {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                   /* Log.e("TAG", "uploadFilePth:1111 ", )
-                    val jsonObject = it.data*/
-
-                    val panCardUplodResponseModel =
-                        Gson().fromJson(it.data, PanCardUplodResponseModel::class.java)
-
-                    if (panCardUplodResponseModel.Result) {
-                        val ImageUrl= panCardUplodResponseModel.Data
-
+                    if (it.data != null) {
+                      //  Log.e("TAG", "initView: ${it.data.Msg}", )
+                        activitySDk.toast(it.data.Msg)
                     } else {
-                        activitySDk.toast(panCardUplodResponseModel.Msg)
+                       // activitySDk.toast("City not available")
                     }
 
                 }
@@ -129,7 +215,7 @@ class PanCardFragment:Fragment(), View.OnClickListener {
         }
     }
 
-    fun openSomeActivityForResult() {
+    fun chooseCamera() {
         val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         val photoFile: File
         try {
@@ -144,45 +230,41 @@ class PanCardFragment:Fragment(), View.OnClickListener {
             photoFile
         )
         intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri)
-        resultLauncher.launch(intent)
+        cameraLauncher.launch(intent)
     }
+    private fun chooseGallery() {
+      //  pickImage=true
+        val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
 
-    var resultLauncher =
-        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val data: Intent? = result.data
-                /*var FILE_PATH = "filePath"
-                val filePath = data?.getStringExtra(FILE_PATH).toString()
-                val file = File(filePath)
-*/
-
-                CoroutineScope(Dispatchers.IO).launch {
-                    uploadFilePth()
-                }
-
-            }
+        val photoFile: File
+        try {
+            photoFile = createImageFile()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return
         }
+        val photoUri = FileProvider.getUriForFile(
+            (activitySDk)!!,
+            requireActivity().packageName + ".provider",
+            photoFile
+        )
 
-
-    private fun imageChooser() {
-        pickImage=true
-        val i = Intent()
-        i.type = "image/*"
-        i.action = Intent.ACTION_GET_CONTENT
-        resultLauncher.launch(i)
+        imagePickerLauncher.launch(intent)
 
     }
+  
     private suspend fun uploadFilePth() {
         val fileToUpload = File(imageFilePath)
         val compressedImageFile = Compressor.compress(activitySDk, fileToUpload)
         val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), compressedImageFile)
         val body: MultipartBody.Part = createFormData("file",compressedImageFile.name,  requestFile)
-        panCardViewModel.uploadPanCard(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),body)
+        panCardViewModel.uploadPanCard(leadMasterId,body)
+
     }
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btNext -> {
+            R.id.btSubmit -> {
                 panCardViewModel.performValidation(
                     PanCardRequestModel(
                         mBinding.etNameAsPAN.text.toString().trim(),
@@ -196,13 +278,34 @@ class PanCardFragment:Fragment(), View.OnClickListener {
     }
 
     private fun createImageFile(): File {
-       var LEAD_MASTERID= SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
-        panUpload = "trip" + LEAD_MASTERID + "image" + ".jpg"
+
+        panUpload = "trip" + leadMasterId + "image" + ".jpg"
         val storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val myDir = File(Environment.getExternalStorageDirectory().toString() + "/ShopKirana")
         myDir.mkdirs()
         val file = File(storageDir, panUpload)
         imageFilePath = file.absolutePath
         return file
+    }
+
+    fun chooseOptionImage(){
+        imageChooseBottomDialog = BottomSheetDialog(activitySDk, R.style.Theme_Design_BottomSheetDialog)
+        val mDialogChooseImageBinding: DialogChooseImageBinding = DataBindingUtil.inflate(layoutInflater, R.layout.dialog_choose_image, null, false)
+        imageChooseBottomDialog.setContentView(mDialogChooseImageBinding.root)
+      //  mDialogChooseImageBinding.processPolicy.text=Utils.PROCESS_TEXT
+        imageChooseBottomDialog.show()
+
+        mDialogChooseImageBinding.ivCamera.setOnClickListener {
+            chooseCamera()
+            imageChooseBottomDialog.dismiss()
+        }
+        mDialogChooseImageBinding.ivGallery.setOnClickListener {
+            chooseGallery()
+            imageChooseBottomDialog.dismiss()
+        }
+        mDialogChooseImageBinding.imClose.setOnClickListener {
+            chooseGallery()
+            imageChooseBottomDialog.dismiss()
+        }
     }
 }
