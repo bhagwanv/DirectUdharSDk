@@ -37,7 +37,8 @@ object NetworkModule {
                 val request = chain.request()
                 val response = chain.proceed(request)
                 if (response.code == 200) {
-                    if (!request.url.toString().contains("/token")
+                    if (!request.url.toString().contains("/token") && !request.url.toString()
+                            .contains("/Borrower/PanImageUpload")
                     ) {
                         try {
                             val jsonObject = JSONObject()

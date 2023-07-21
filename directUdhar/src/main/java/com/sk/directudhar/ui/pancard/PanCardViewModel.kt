@@ -72,9 +72,6 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
         }
     }
 
-    private fun postFromData(panCardRequestModel: PanCardRequestModel) {
-
-    }
 
 
 }
