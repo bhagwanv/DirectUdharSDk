@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.adharcard
+package com.sk.directudhar.ui.adharcard.aadhaarCardOtp
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 
 @HiltViewModel
-class AadhaarCardViewModel @Inject constructor(private val repository: AadhaarCardRepository) :
+class AadhaarOtpViewModel @Inject constructor(private val repository: AadhaarOtpRepository) :
     ViewModel() {
 
     private val aadhaarResultResult = MutableLiveData<String>()

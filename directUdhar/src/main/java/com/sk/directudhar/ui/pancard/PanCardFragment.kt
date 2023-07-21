@@ -2,13 +2,10 @@ package com.sk.directudhar.ui.pancard
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
-import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -32,6 +29,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
+
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.DialogChooseImageBinding
@@ -54,8 +52,6 @@ import okhttp3.MultipartBody
 import okhttp3.MultipartBody.Part.Companion.createFormData
 import okhttp3.RequestBody
 import java.io.File
-import java.security.Permissions
-
 import javax.inject.Inject
 
 
@@ -111,7 +107,7 @@ class PanCardFragment:Fragment(),OnClickListener {
         leadMasterId= SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
         mBinding.btSubmit.setOnClickListener(this)
 
-        mBinding.rlCameraClick.setOnClickListener {
+        mBinding.rlCamerImage.setOnClickListener {
             if (ContextCompat.checkSelfPermission(
                     activitySDk,
                     Manifest.permission.CAMERA
@@ -287,6 +283,7 @@ class PanCardFragment:Fragment(),OnClickListener {
         imageFilePath = file.absolutePath
         return file
     }
+
 
     fun chooseOptionImage(){
         imageChooseBottomDialog = BottomSheetDialog(activitySDk, R.style.Theme_Design_BottomSheetDialog)

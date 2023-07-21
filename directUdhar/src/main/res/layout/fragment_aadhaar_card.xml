@@ -29,7 +29,7 @@
                     android:id="@+id/etAdhaarNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="numberSigned"
                     android:maxLength="12"
                     android:minLines="1" />

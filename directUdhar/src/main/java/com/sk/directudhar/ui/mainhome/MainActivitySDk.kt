@@ -1,15 +1,18 @@
 package com.sk.directudhar.ui.mainhome
 
 import android.os.Bundle
+import android.util.Log
 import android.widget.Toast
+import android.widget.Toolbar
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.gson.Gson
-import com.sk.directudhar.MyApplication
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.data.SequenceEnumClass
@@ -21,7 +24,7 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 
-class MainActivitySDk :AppCompatActivity() {
+class MainActivitySDk : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
@@ -31,6 +34,8 @@ class MainActivitySDk :AppCompatActivity() {
     lateinit var mainViewModel: MainViewModel
 
     lateinit var mobilNumber: String
+
+    lateinit var navHostFragment: NavHostFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +51,7 @@ class MainActivitySDk :AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        val navHostFragment =
+        navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
         setSupportActionBar(findViewById(R.id.toolbarNew))
@@ -105,7 +110,8 @@ class MainActivitySDk :AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                        checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        //  checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        checkSequenceNo(5)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
@@ -187,6 +193,7 @@ class MainActivitySDk :AppCompatActivity() {
         navGraph.startDestination = R.id.myAccountFragment
         navController.graph = navGraph
         setupActionBarWithNavController(navController)
+
     }
 
     private fun applyLoanCall() {
@@ -199,8 +206,18 @@ class MainActivitySDk :AppCompatActivity() {
     val callback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-              finish()
+                val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
+                if (navHostFragment != null){
+
+                } else {
+                   onBackPressed()
+                }
             }
         }
+
+
+    override fun onSupportNavigateUp(): Boolean {
+        return navController.navigateUp() || super.onSupportNavigateUp()
+    }
 
 }
