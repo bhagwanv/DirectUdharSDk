@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadharOtpBinding
@@ -52,8 +53,28 @@ class AadhaarOtpFragment : Fragment() {
         aadhaarOtpViewModel =
             ViewModelProvider(this, aadhaarOtpFactory)[AadhaarOtpViewModel::class.java]
 
-        mBinding.btnChangeAadhaar.setOnClickListener {
+        aadhaarOtpViewModel.postResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
 
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.Msg?.let { it1 -> activitySDk.toast(it1) }
+                    if (it.data.Result!!) {
+                    }
+                }
+            }
+        }
+
+        mBinding.btnChangeAadhaar.setOnClickListener {
+            findNavController().popBackStack()
         }
 
         mBinding.btnNext.setOnClickListener {
@@ -75,26 +96,6 @@ class AadhaarOtpFragment : Fragment() {
                 )
             } else {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
-            }
-        }
-
-        aadhaarOtpViewModel.postResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
-
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-                }
-
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-                    it.data.Msg?.let { it1 -> activitySDk.toast(it1) }
-                    if (it.data.Result!!) {
-                    }
-                }
             }
         }
     }
