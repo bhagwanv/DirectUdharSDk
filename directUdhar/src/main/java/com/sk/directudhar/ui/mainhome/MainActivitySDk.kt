@@ -8,8 +8,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.gson.Gson
 import com.sk.directudhar.R
@@ -107,7 +105,8 @@ class MainActivitySDk : AppCompatActivity(), View.OnClickListener {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                          checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        //  checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        checkSequenceNo(3)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
