@@ -5,7 +5,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.os.Environment
 import android.provider.MediaStore
@@ -14,11 +13,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.RequiresApi
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.FileProvider
@@ -32,21 +29,15 @@ import com.google.gson.Gson
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.DialogChooseImageBinding
-import com.sk.directudhar.databinding.DialogPocessBinding
 import com.sk.directudhar.databinding.FragmentPanCardBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
-import com.sk.directudhar.utils.SharePrefs.Companion.LEAD_MASTERID
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import com.squareup.picasso.Picasso
 import id.zelory.compressor.Compressor
-import id.zelory.compressor.constraint.format
-import id.zelory.compressor.constraint.quality
-import id.zelory.compressor.constraint.resolution
-import id.zelory.compressor.constraint.size
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -72,12 +63,8 @@ class PanCardFragment:Fragment(),OnClickListener {
     var pickImage: Boolean = false
 
     private var imageFilePath: String? = null
-
-    var leadMasterId=0
     var imageUrl=""
-    var isAcceptPP= true
-    var panNo=""
-    var panName=""
+
 
 
     private var panUpload: String? = null
@@ -106,8 +93,6 @@ class PanCardFragment:Fragment(),OnClickListener {
         val component = DaggerApplicationComponent.builder().build()
         component.injectPanCard(this)
         panCardViewModel = ViewModelProvider(this, panCardFactory)[PanCardViewModel::class.java]
-
-        leadMasterId= SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
         mBinding.btSubmit.setOnClickListener(this)
 
         mBinding.rlCamerImage.setOnClickListener {
@@ -132,7 +117,6 @@ class PanCardFragment:Fragment(),OnClickListener {
 
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
-                    Log.e("TAG", "dismiss: ", )
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
                 }
 
@@ -167,18 +151,11 @@ class PanCardFragment:Fragment(),OnClickListener {
             }
         }
         panCardViewModel.getLogInResult().observe(activitySDk, Observer { result ->
-
             if (!result.equals(Utils.SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             }else{
-                 if (imageUrl.isNullOrEmpty()){
-                    panName=mBinding.etNameAsPAN.text.toString().trim()
-                    panNo=mBinding.etPanNumber.text.toString().trim()
-
-                    var model=UpdatePanInfoRequestModel(leadMasterId,panNo,imageUrl,panName,isAcceptPP)
-                    panCardViewModel.updatePanInfo(model)
-                }
-
+                var model=UpdatePanInfoRequestModel(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),mBinding.etPanNumber.text.toString().trim(),imageUrl,mBinding.etNameAsPAN.text.toString().trim(),mBinding.cbAuthorize.isChecked)
+                panCardViewModel.updatePanInfo(model)
             }
         })
 
@@ -198,6 +175,7 @@ class PanCardFragment:Fragment(),OnClickListener {
                     if (it.data != null) {
                         activitySDk.toast(it.data.Msg)
                     } else {
+                        activitySDk.toast(it.data.Msg)
                     }
 
                 }
@@ -215,7 +193,7 @@ class PanCardFragment:Fragment(),OnClickListener {
             return
         }
         val photoUri = FileProvider.getUriForFile(
-            (activitySDk)!!,
+            (activitySDk),
             requireActivity().packageName + ".provider",
             photoFile
         )
@@ -247,7 +225,7 @@ class PanCardFragment:Fragment(),OnClickListener {
         val compressedImageFile = Compressor.compress(activitySDk, fileToUpload,Dispatchers.Main)
         val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), compressedImageFile)
         val body: MultipartBody.Part = createFormData("file",compressedImageFile.name,  requestFile)
-        panCardViewModel.uploadPanCard(leadMasterId,body)
+        panCardViewModel.uploadPanCard(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),body)
 
     }
 
@@ -260,6 +238,8 @@ class PanCardFragment:Fragment(),OnClickListener {
                         mBinding.etEmailID.text.toString().trim(),
                         mBinding.etPanNumber.text.toString().trim(),
                         mBinding.etRefrralCode.text.toString().trim(),
+                        imageUrl,
+                        mBinding.cbAuthorize.isChecked
                     )
                 )
             }
@@ -267,7 +247,7 @@ class PanCardFragment:Fragment(),OnClickListener {
     }
 
     private fun createImageFile(): File {
-        panUpload = "trip" + leadMasterId + "image" + ".jpg"
+        panUpload = "trip" + SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID) + "image" + ".jpg"
         val storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val myDir = File(Environment.getExternalStorageDirectory().toString() + "/ShopKirana")
         myDir.mkdirs()
@@ -281,7 +261,6 @@ class PanCardFragment:Fragment(),OnClickListener {
         imageChooseBottomDialog = BottomSheetDialog(activitySDk, R.style.Theme_Design_BottomSheetDialog)
         val mDialogChooseImageBinding: DialogChooseImageBinding = DataBindingUtil.inflate(layoutInflater, R.layout.dialog_choose_image, null, false)
         imageChooseBottomDialog.setContentView(mDialogChooseImageBinding.root)
-      //  mDialogChooseImageBinding.processPolicy.text=Utils.PROCESS_TEXT
         imageChooseBottomDialog.show()
 
         mDialogChooseImageBinding.ivCamera.setOnClickListener {
