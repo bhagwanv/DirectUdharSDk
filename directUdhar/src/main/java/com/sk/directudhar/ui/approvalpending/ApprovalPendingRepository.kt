@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.myaccount
+package com.sk.directudhar.ui.approvalpending
 
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.di.APIServices
@@ -6,22 +6,22 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
-class MyAccountRepository @Inject constructor(private val apiServices: APIServices) {
+class ApprovalPendingRepository @Inject constructor(private val apiServices: APIServices) {
 
-    suspend fun getLoanAccountDetail(leadMasterId:Int)  = flow {
+
+    suspend fun displayDisbursalAmount(leadMasterId:Int)  = flow {
         emit(NetworkResult.Loading(true))
-        val response = apiServices.getLoanAccountDetail(leadMasterId)
+        val response = apiServices.displayDisbursalAmount(leadMasterId)
         emit(NetworkResult.Success(response))
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun getUdharStatement(accountId:Int, flag:Int)  = flow {
+    suspend fun updateLeadSuccess(leadMasterId:Int)  = flow {
         emit(NetworkResult.Loading(true))
-        val response = apiServices.getUdharStatement(accountId, flag)
+        val response = apiServices.updateLeadSuccess(leadMasterId)
         emit(NetworkResult.Success(response))
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
-
 }

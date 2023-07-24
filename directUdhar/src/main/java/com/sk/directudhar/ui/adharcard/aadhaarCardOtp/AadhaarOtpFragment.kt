@@ -77,7 +77,7 @@ class AadhaarOtpFragment : Fragment() {
             }
         }
 
-        mBinding.btnChangeAadhaar.setOnClickListener {
+        mBinding.btnChangeAadhaarNumber.setOnClickListener {
             findNavController().popBackStack()
         }
 

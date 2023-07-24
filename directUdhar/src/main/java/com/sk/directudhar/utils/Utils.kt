@@ -4,8 +4,12 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
+import android.os.Build
 import android.widget.Toast
-
+import androidx.annotation.RequiresApi
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 class Utils(private var context: Context) {
 
@@ -61,6 +65,20 @@ class Utils(private var context: Context) {
             val s = cursor.getString(column_index)
             cursor.close()
             return s
+        }
+        @RequiresApi(Build.VERSION_CODES.O)
+        fun simpleDateFormate(inputDate:String): String? {
+            // Define the input and output date formats
+            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH)
+            val outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm a", Locale.ENGLISH)
+
+            // Parse the input date string to LocalDateTime
+            val dateTime = LocalDateTime.parse(inputDate, inputFormatter)
+
+            // Format the LocalDateTime to the desired output format
+            val outputDateStr = dateTime.format(outputFormatter)
+
+            return outputDateStr
         }
     }
 }

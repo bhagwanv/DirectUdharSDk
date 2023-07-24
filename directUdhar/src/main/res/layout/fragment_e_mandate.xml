@@ -50,7 +50,6 @@
                         android:layout_height="wrap_content"
                         android:imeOptions="actionNext"
                         android:inputType="number"
-                        android:maxLength="11"
                         android:minLines="1" />
 
                 </com.google.android.material.textfield.TextInputLayout>
