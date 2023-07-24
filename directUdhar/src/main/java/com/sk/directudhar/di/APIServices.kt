@@ -9,12 +9,14 @@ import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.StateModel
+import com.sk.directudhar.ui.cibilscore.CibilRequestModel
+import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
+import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.ui.mandate.BankListResponse
 import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
 import com.sk.directudhar.ui.mandate.EMandateAddResponseModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
-import com.sk.directudhar.ui.pancard.UpdatePanInfoResponseModel
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -52,7 +54,7 @@ interface APIServices {
     suspend fun uploadPanCard(@Query("LeadMasterId")LeadMasterId:Int, @Part body: MultipartBody.Part ): JsonObject
 
     @POST("api/Borrower/UpdatePanInfo")
-    suspend  fun updatePanInfo(@Body updatePanInfoRequestModel: UpdatePanInfoRequestModel ): UpdatePanInfoResponseModel
+    suspend  fun updatePanInfo(@Body updatePanInfoRequestModel: UpdatePanInfoRequestModel ): InitiateAccountModel
 
     @GET("api/eMandate/BankList")
     suspend  fun bankList(): BankListResponse
@@ -63,6 +65,15 @@ interface APIServices {
     suspend  fun updateAadhaarInfo(@Body updateAadhaarInfoRequestModel: UpdateAadhaarInfoRequestModel): AadhaarUpdateResponseModel
 
     @POST("api/Borrower/AadharVerification")
-    suspend  fun aadharVerification(@Body aadharVerificationRequestModel: AadharVerificationRequestModel): AadhaarUpdateResponseModel
+    suspend  fun aadharVerification(@Body aadharVerificationRequestModel: AadharVerificationRequestModel): InitiateAccountModel
+
+    @POST("api/Borrower/PostCreditBeurau")
+    suspend  fun PostCreditScore(@Body cibilRequestModel: CibilRequestModel): CiBilResponceModel
+
+    @GET("api/Borrower/GetCreditBeurau")
+    suspend  fun getUserCreditInfo(@Query("LeadMasterId")LeadMasterId:Int ): CibilRequestModel
+
+ @POST("api/Borrower/OTPGeneratRequest")
+ suspend  fun OTPGeneratRequest(@Body genrateOtpModel: GenrateOtpModel): JsonObject
 
 }

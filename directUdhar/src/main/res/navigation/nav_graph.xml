@@ -51,7 +51,8 @@
         android:label="Cibil Score"
         tools:layout="@layout/fragment_cibil_score">
         <action
-            android:id="@+id/action_mainFragment_to_CibilScoreFragment" />
+            android:id="@+id/actionCibilScoreFragmentToCiBilOtpFragment"
+            app:destination="@id/CiBilOtpFragment"/>
     </fragment>
 
     <fragment
@@ -79,6 +80,8 @@
         tools:layout="@layout/fragment_e_mandate">
         <action
             android:id="@+id/action_mainFragment_to_EMandateFragment" />
+
+
     </fragment>
 
     <fragment
@@ -115,4 +118,12 @@
 
     </fragment>
 
+
+    <fragment
+        android:id="@+id/CiBilOtpFragment"
+        android:name="com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment"
+        android:label="Enter OTP"
+        tools:layout="@layout/fragment_cibil_opt">
+
+    </fragment>
 </navigation>

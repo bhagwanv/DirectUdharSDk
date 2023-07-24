@@ -72,8 +72,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectApplyLoan(this)
-        applyLoanViewModel =
-            ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
+        applyLoanViewModel = ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
         mBinding.tvTeramCondiction.text = Utils.APPLY_LOAN_POLICY
         applyLoanViewModel.callState()
         callBussinessVintage()

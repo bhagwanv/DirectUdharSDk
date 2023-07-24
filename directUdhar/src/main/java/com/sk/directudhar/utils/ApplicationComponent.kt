@@ -4,6 +4,8 @@ import com.sk.directudhar.di.NetworkModule
 import com.sk.directudhar.ui.adharcard.AadhaarCardFragment
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment
 import com.sk.directudhar.ui.applyloan.ApplyLoanFragment
+import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
+import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.ui.mandate.EMandateFragment
 import com.sk.directudhar.ui.myaccount.MyAccountFragment
@@ -23,6 +25,8 @@ interface ApplicationComponent {
     fun injectAadhaarCard(fragment: AadhaarCardFragment)
     fun injectAadhaarOtp(fragment: AadhaarOtpFragment)
     fun injectEMandate(fragment: EMandateFragment)
+    fun injectCiBil(fragment: CibilScoreFragment)
+    fun injectCiBilOTP(fragment: CiBilOtpFragment)
 
 
 }

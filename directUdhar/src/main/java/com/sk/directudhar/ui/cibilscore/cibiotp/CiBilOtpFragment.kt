@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.adharcard.aadhaarCardOtp
+package com.sk.directudhar.ui.cibilscore.cibiotp
 
 import android.content.Context
 import android.os.Bundle
@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadharOtpBinding
+import com.sk.directudhar.databinding.FragmentCibilOptBinding
 import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
@@ -22,16 +23,16 @@ import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
-class AadhaarOtpFragment : Fragment() {
+class CiBilOtpFragment : Fragment() {
 
     private lateinit var activitySDk: MainActivitySDk
-    private lateinit var mBinding: FragmentAadharOtpBinding
-    private lateinit var aadhaarOtpViewModel: AadhaarOtpViewModel
+    private lateinit var mBinding: FragmentCibilOptBinding
+    private lateinit var ciBilOtpViewModel: CiBilOtpViewModel
     private var otp: String = ""
-    private val args: AadhaarOtpFragmentArgs by navArgs()
+
 
     @Inject
-    lateinit var aadhaarOtpFactory: AadhaarOtpFactory
+    lateinit var ciBilOtpFactory: CiBilOtpFactory
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -42,18 +43,17 @@ class AadhaarOtpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentAadharOtpBinding.inflate(inflater, container, false)
+        mBinding = FragmentCibilOptBinding.inflate(inflater, container, false)
         initView()
         return mBinding.root
     }
 
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
-        component.injectAadhaarOtp(this)
-        aadhaarOtpViewModel =
-            ViewModelProvider(this, aadhaarOtpFactory)[AadhaarOtpViewModel::class.java]
+        component.injectCiBilOTP(this)
+        ciBilOtpViewModel = ViewModelProvider(this, ciBilOtpFactory)[CiBilOtpViewModel::class.java]
 
-        aadhaarOtpViewModel.postResponse.observe(viewLifecycleOwner) {
+       /* ciBilOtpViewModel.postResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -87,7 +87,7 @@ class AadhaarOtpFragment : Fragment() {
             aadhaarOtpViewModel.validateOtp(otp)
         }
 
-        aadhaarOtpViewModel.getAadhaarResult().observe(activitySDk) { result ->
+        ciBilOtpViewModel.getAadhaarResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_OTP_VALIDATE_SUCCESSFULLY)) {
                 aadhaarOtpViewModel.aadharVerification(
                     AadharVerificationRequestModel(
@@ -101,6 +101,6 @@ class AadhaarOtpFragment : Fragment() {
             } else {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             }
-        }
+        }*/
     }
 }

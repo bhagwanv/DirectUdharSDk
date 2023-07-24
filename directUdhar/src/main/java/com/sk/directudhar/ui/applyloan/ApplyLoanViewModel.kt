@@ -32,7 +32,6 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
     val postResponse: LiveData<NetworkResult<InitiateAccountModel>> = _postDataResponse
 
     fun getLogInResult(): LiveData<String> = logInResult
-    fun getSuccessResualt(): LiveData<String> = logInResult
 
     fun performValidation(applyLoanRequestModel: ApplyLoanRequestModel) {
         if (applyLoanRequestModel.Name.isNullOrEmpty()) {

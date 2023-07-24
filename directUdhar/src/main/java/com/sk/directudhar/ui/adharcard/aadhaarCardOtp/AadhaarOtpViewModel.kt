@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.ui.adharcard.AadhaarUpdateResponseModel
+import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
 import com.sk.directudhar.utils.Utils.Companion.AADHAAR_OTP_VALIDATE_SUCCESSFULLY
 import com.sk.directudhar.utils.Utils.Companion.toast
@@ -21,8 +22,8 @@ class AadhaarOtpViewModel @Inject constructor(private val repository: AadhaarOtp
     private val aadhaarResultResult = MutableLiveData<String>()
     fun getAadhaarResult(): LiveData<String> = aadhaarResultResult
 
-    private var _postDataResponse = MutableLiveData<NetworkResult<AadhaarUpdateResponseModel>>()
-    val postResponse: LiveData<NetworkResult<AadhaarUpdateResponseModel>> = _postDataResponse
+    private var _postDataResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
+    val postResponse: LiveData<NetworkResult<InitiateAccountModel>> = _postDataResponse
 
 
     fun validateOtp(otp: String) {

@@ -1,8 +1,10 @@
 package com.sk.directudhar.utils
 
 import android.content.Context
+import android.database.Cursor
+import android.net.Uri
+import android.provider.MediaStore
 import android.widget.Toast
-
 
 
 class Utils(private var context: Context) {
@@ -15,6 +17,7 @@ class Utils(private var context: Context) {
         var  AADHAAR_VALIDATE_SUCCESSFULLY ="AADHAAR_VALIDATE_SUCCESSFULLY"
         var  AADHAAR_OTP_VALIDATE_SUCCESSFULLY ="AADHAAR_OTP_VALIDATE_SUCCESSFULLY"
         var cameraRequest = 1888
+        var WRITE_PERMISSION = 0x01
         var  SuccessType ="success_type_al"
         val vintageList = arrayOf<String>("Select Business Vintage", "Less than 2 years", "Greater Than 2 Years")
         val accountTypeList = arrayOf<String>(" Select Account Type","Saving", "Current")
@@ -46,6 +49,18 @@ class Utils(private var context: Context) {
                 return false
             }
             return true
+        }
+
+        fun getPath(context: Context,uri: Uri?): String? {
+            val projection = arrayOf(MediaStore.Images.Media.DATA)
+            val cursor: Cursor =
+                context.getContentResolver().query(uri!!, projection, null, null, null)
+                    ?: return null
+            val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+            cursor.moveToFirst()
+            val s = cursor.getString(column_index)
+            cursor.close()
+            return s
         }
     }
 }

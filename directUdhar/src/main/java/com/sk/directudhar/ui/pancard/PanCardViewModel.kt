@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
+import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
 import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
@@ -22,8 +23,8 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
     private var _panCardResponse = MutableLiveData<NetworkResult<JsonObject>>()
     val panCardResponse: LiveData<NetworkResult<JsonObject>> = _panCardResponse
 
-    private var _updatePanInfoResponse = MutableLiveData<NetworkResult<UpdatePanInfoResponseModel>>()
-    val updatePanInfoResponse: LiveData<NetworkResult<UpdatePanInfoResponseModel>> = _updatePanInfoResponse
+    private var _updatePanInfoResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
+    val updatePanInfoResponse: LiveData<NetworkResult<InitiateAccountModel>> = _updatePanInfoResponse
 
     fun getLogInResult(): LiveData<String> = panCardResult
     fun uploadPanCard(leadMasterId:Int ,body: MultipartBody.Part) {
