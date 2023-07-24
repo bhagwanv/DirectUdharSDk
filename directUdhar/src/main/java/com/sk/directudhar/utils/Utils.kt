@@ -15,8 +15,9 @@ class Utils(private var context: Context) {
         var  AADHAAR_VALIDATE_SUCCESSFULLY ="AADHAAR_VALIDATE_SUCCESSFULLY"
         var cameraRequest = 1888
         var  SuccessType ="success_type_al"
-        val vintageList =
-            arrayOf<String>("Select Business Vintage", "Less than 2 years", "Greater Than 2 Years")
+        val vintageList = arrayOf<String>("Select Business Vintage", "Less than 2 years", "Greater Than 2 Years")
+        val accountTypeList = arrayOf<String>(" Select Account Type","Saving", "Current")
+        val channelList = arrayOf<String>("Select Channel Type","Net", "Debit")
 
         var APPLY_LOAN_POLICY="I Authorize Direct Udhar and its representatives " +
                 "to SMS,Call or commpunicate via Whatsup regarding my application " +
