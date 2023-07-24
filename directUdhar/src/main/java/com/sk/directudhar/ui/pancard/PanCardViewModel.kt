@@ -1,6 +1,5 @@
 package com.sk.directudhar.ui.pancard
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,7 +8,6 @@ import com.google.gson.JsonObject
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.utils.Network
-import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -64,9 +62,12 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
             panCardResult.value = "Please Enter Email Id "
         }else if (panCardRequestModel.PanNumber.isNullOrEmpty()){
             panCardResult.value = "Please Enter PanNumber"
-        }else if (panCardRequestModel.RefrralCode.isNullOrEmpty()){
-            panCardResult.value ="Please Enter RefrralCode"
-            panCardResult.value = SuccessType
+        }else if (panCardRequestModel.PanNumber.length<10) {
+            panCardResult.value = "Please Enter Valid PanNumber"
+        }else if (panCardRequestModel.imageUrl.isNullOrEmpty())
+            panCardResult.value = "Please upload Pan Card Image"
+        else if (!panCardRequestModel.checked) {
+            panCardResult.value = "Please check terms and Condition"
         } else {
             panCardResult.value = SuccessType
         }

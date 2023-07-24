@@ -9,7 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.sk.directudhar.databinding.FragmentMyAccountBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
-import com.sk.directudhar.ui.mainhome.MainViewModel
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import javax.inject.Inject
 
@@ -43,7 +42,22 @@ class MyAccountFragment : Fragment() {
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectMyAccount(this)
-        myAccountViewModel = ViewModelProvider(this, myAccountFactory)[MyAccountViewModel::class.java]
+        myAccountViewModel =
+            ViewModelProvider(this, myAccountFactory)[MyAccountViewModel::class.java]
 
+        mBinding.liOutStanding.setOnClickListener {
+            mBinding.liTotalOutstandingTxnDetails.visibility = View.VISIBLE
+            mBinding.liTxnDueDetails.visibility = View.GONE
+        }
+
+        mBinding.liNextDue.setOnClickListener {
+            mBinding.liTxnDueDetails.visibility = View.VISIBLE
+            mBinding.liTotalOutstandingTxnDetails.visibility = View.GONE
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mBinding.unbind()
     }
 }
