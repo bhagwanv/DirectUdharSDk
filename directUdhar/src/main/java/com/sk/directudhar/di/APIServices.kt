@@ -9,12 +9,14 @@ import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.StateModel
+import com.sk.directudhar.ui.approvalpending.DisplayDisbursalAmountResponse
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.ui.mandate.BankListResponse
 import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
 import com.sk.directudhar.ui.mandate.EMandateAddResponseModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoResponseModel
+import com.sk.directudhar.ui.success.SuccessDisplayDisbursalAmountResponse
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -65,4 +67,15 @@ interface APIServices {
     @POST("api/Borrower/AadharVerification")
     suspend  fun aadharVerification(@Body aadharVerificationRequestModel: AadharVerificationRequestModel): AadhaarUpdateResponseModel
 
+    @GET("api/Application/DisplayDisbursalAmount")
+    suspend  fun displayDisbursalAmount(@Query("LeadMasterId")LeadMasterId:Int): DisplayDisbursalAmountResponse
+
+    @GET("api/borrower/UpdateLeadSuccess")
+    suspend  fun updateLeadSuccess(@Query("LeadMasterId")LeadMasterId:Int): InitiateAccountModel
+
+ @GET("api/Application/DisplayDisbursalAmount")
+ suspend  fun successDisplayDisbursalAmount(@Query("LeadMasterId")LeadMasterId:Int): SuccessDisplayDisbursalAmountResponse
+
+ @GET("api/borrower/UpdateLeadSuccess")
+ suspend  fun successUpdateLeadSuccess(@Query("LeadMasterId")LeadMasterId:Int): InitiateAccountModel
 }
