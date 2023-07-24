@@ -2,6 +2,9 @@ package com.sk.directudhar.di
 
 import com.google.gson.JsonObject
 import com.sk.directudhar.data.TokenResponse
+import com.sk.directudhar.ui.adharcard.AadhaarUpdateResponseModel
+import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
+import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadharVerificationRequestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
@@ -46,7 +49,7 @@ interface APIServices {
 
     @Multipart
     @POST("api/Borrower/PanImageUpload")
-    suspend  fun uploadPanCard(@Query("LeadMasterId")LeadMasterId:Int, @Part body: MultipartBody.Part ): JsonObject
+    suspend fun uploadPanCard(@Query("LeadMasterId")LeadMasterId:Int, @Part body: MultipartBody.Part ): JsonObject
 
     @POST("api/Borrower/UpdatePanInfo")
     suspend  fun updatePanInfo(@Body updatePanInfoRequestModel: UpdatePanInfoRequestModel ): UpdatePanInfoResponseModel
@@ -56,4 +59,10 @@ interface APIServices {
 
     @POST("api/eMandate/Add")
     suspend  fun setUpEMandateAdd(@Body eMandateAddRequestModel: EMandateAddRequestModel  ): EMandateAddResponseModel
+    @POST("api/Borrower/UpdateAdhaarInfo")
+    suspend  fun updateAadhaarInfo(@Body updateAadhaarInfoRequestModel: UpdateAadhaarInfoRequestModel): AadhaarUpdateResponseModel
+
+    @POST("api/Borrower/AadharVerification")
+    suspend  fun aadharVerification(@Body aadharVerificationRequestModel: AadharVerificationRequestModel): AadhaarUpdateResponseModel
+
 }

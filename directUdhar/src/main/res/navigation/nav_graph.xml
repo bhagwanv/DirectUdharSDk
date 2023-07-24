@@ -103,6 +103,16 @@
         android:id="@+id/aadharOtpFragment"
         android:name="com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment"
         android:label="Enter OTP"
-        tools:layout="@layout/fragment_aadhar_otp" />
+        tools:layout="@layout/fragment_aadhar_otp">
+
+        <argument
+            android:name="aadhaarNumber"
+            app:argType="string" />
+
+        <argument
+            android:name="requestId"
+            app:argType="string" />
+
+    </fragment>
 
 </navigation>

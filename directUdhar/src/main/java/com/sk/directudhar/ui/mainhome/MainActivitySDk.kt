@@ -1,15 +1,13 @@
 package com.sk.directudhar.ui.mainhome
 
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.google.gson.Gson
 import com.sk.directudhar.R
@@ -23,7 +21,7 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 
-class MainActivitySDk : AppCompatActivity(), View.OnClickListener {
+class MainActivitySDk : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
@@ -142,25 +140,18 @@ class MainActivitySDk : AppCompatActivity(), View.OnClickListener {
         setupActionBarWithNavController(navController)
     }
 
-
     val callback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(navController.graph.startDestination == navController.currentDestination?.id) {
                     finish()
                 } else {
-                   onBackPressed()
+                    navController.popBackStack()
                 }
             }
         }
 
-
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-    override fun onClick(v: View?) {
-       toast("Back")
-    }
-
 }

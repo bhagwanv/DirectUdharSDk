@@ -26,7 +26,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
 
@@ -44,6 +43,10 @@ import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import com.squareup.picasso.Picasso
 import id.zelory.compressor.Compressor
+import id.zelory.compressor.constraint.format
+import id.zelory.compressor.constraint.quality
+import id.zelory.compressor.constraint.resolution
+import id.zelory.compressor.constraint.size
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -139,9 +142,7 @@ class PanCardFragment:Fragment(),OnClickListener {
                         Gson().fromJson(it.data, PanCardUplodResponseModel::class.java)
                     if (panCardUplodResponseModel.Result) {
                         imageUrl= panCardUplodResponseModel.Data
-                        Glide.with(activitySDk)
-                            .load(imageUrl)
-                            .into(mBinding.ivPanCardFrontImage)
+                        Picasso.get().load(panCardUplodResponseModel.Data).into(mBinding.ivPanCardFrontImage)
                     } else {
                         activitySDk.toast(panCardUplodResponseModel.Msg)
                     }
@@ -152,9 +153,6 @@ class PanCardFragment:Fragment(),OnClickListener {
 
         cameraLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val imageBitmap = result.data?.extras?.get("data") as? Bitmap
-
-
                 CoroutineScope(Dispatchers.IO).launch {
                     uploadFilePth()
                 }
@@ -163,8 +161,6 @@ class PanCardFragment:Fragment(),OnClickListener {
 
         imagePickerLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                val imageUri = result.data?.data
-
                 CoroutineScope(Dispatchers.IO).launch {
                     uploadFilePth()
                 }
@@ -175,7 +171,7 @@ class PanCardFragment:Fragment(),OnClickListener {
             if (!result.equals(Utils.SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             }else{
-                if (imageUrl.isNullOrEmpty()){
+                 if (imageUrl.isNullOrEmpty()){
                     panName=mBinding.etNameAsPAN.text.toString().trim()
                     panNo=mBinding.etPanNumber.text.toString().trim()
 
@@ -200,10 +196,8 @@ class PanCardFragment:Fragment(),OnClickListener {
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     if (it.data != null) {
-                      //  Log.e("TAG", "initView: ${it.data.Msg}", )
                         activitySDk.toast(it.data.Msg)
                     } else {
-                       // activitySDk.toast("City not available")
                     }
 
                 }
@@ -229,7 +223,6 @@ class PanCardFragment:Fragment(),OnClickListener {
         cameraLauncher.launch(intent)
     }
     private fun chooseGallery() {
-      //  pickImage=true
         val intent = Intent(MediaStore.ACTION_PICK_IMAGES)
 
         val photoFile: File
@@ -251,7 +244,7 @@ class PanCardFragment:Fragment(),OnClickListener {
   
     private suspend fun uploadFilePth() {
         val fileToUpload = File(imageFilePath)
-        val compressedImageFile = Compressor.compress(activitySDk, fileToUpload)
+        val compressedImageFile = Compressor.compress(activitySDk, fileToUpload,Dispatchers.Main)
         val requestFile = RequestBody.create("image/jpeg".toMediaTypeOrNull(), compressedImageFile)
         val body: MultipartBody.Part = createFormData("file",compressedImageFile.name,  requestFile)
         panCardViewModel.uploadPanCard(leadMasterId,body)
@@ -274,7 +267,6 @@ class PanCardFragment:Fragment(),OnClickListener {
     }
 
     private fun createImageFile(): File {
-
         panUpload = "trip" + leadMasterId + "image" + ".jpg"
         val storageDir = requireActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         val myDir = File(Environment.getExternalStorageDirectory().toString() + "/ShopKirana")
