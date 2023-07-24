@@ -13,6 +13,8 @@ import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.ui.mandate.BankListResponse
 import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
 import com.sk.directudhar.ui.mandate.EMandateAddResponseModel
+import com.sk.directudhar.ui.myaccount.MyAccountDetailsModel
+import com.sk.directudhar.ui.myaccount.UdharStatementModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoResponseModel
 import retrofit2.http.Body
@@ -64,5 +66,11 @@ interface APIServices {
 
     @POST("api/Borrower/AadharVerification")
     suspend  fun aadharVerification(@Body aadharVerificationRequestModel: AadharVerificationRequestModel): AadhaarUpdateResponseModel
+
+    @GET("api/borrower/GetLoanAccountDetail")
+    suspend fun getLoanAccountDetail(@Query("LeadId") leadMasterId:Int): MyAccountDetailsModel
+
+    @GET("api/AccountTransaction/GetUdharStatement")
+    suspend fun getUdharStatement(@Query("AccountId") accountId:Int, @Query("flag") flag:Int): ArrayList<UdharStatementModel>
 
 }
