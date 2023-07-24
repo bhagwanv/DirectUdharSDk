@@ -10,6 +10,9 @@ import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.StateModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
+import com.sk.directudhar.ui.mandate.BankListResponse
+import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
+import com.sk.directudhar.ui.mandate.EMandateAddResponseModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoResponseModel
 import retrofit2.http.Body
@@ -49,9 +52,13 @@ interface APIServices {
     suspend fun uploadPanCard(@Query("LeadMasterId")LeadMasterId:Int, @Part body: MultipartBody.Part ): JsonObject
 
     @POST("api/Borrower/UpdatePanInfo")
-    suspend  fun updatePanInfo(@Body updatePanInfoRequestModel: UpdatePanInfoRequestModel): UpdatePanInfoResponseModel
+    suspend  fun updatePanInfo(@Body updatePanInfoRequestModel: UpdatePanInfoRequestModel ): UpdatePanInfoResponseModel
 
+    @GET("api/eMandate/BankList")
+    suspend  fun bankList(): BankListResponse
 
+    @POST("api/eMandate/Add")
+    suspend  fun setUpEMandateAdd(@Body eMandateAddRequestModel: EMandateAddRequestModel  ): EMandateAddResponseModel
     @POST("api/Borrower/UpdateAdhaarInfo")
     suspend  fun updateAadhaarInfo(@Body updateAadhaarInfoRequestModel: UpdateAadhaarInfoRequestModel): AadhaarUpdateResponseModel
 
