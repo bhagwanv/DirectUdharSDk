@@ -1,7 +1,7 @@
 package com.sk.directudhar.ui.mainhome
 
 import android.os.Bundle
-import android.view.View
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
@@ -21,7 +21,7 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 
-class MainActivitySDk : AppCompatActivity(), View.OnClickListener {
+class MainActivitySDk : AppCompatActivity() {
 
     private lateinit var navController: NavController
 
@@ -105,8 +105,7 @@ class MainActivitySDk : AppCompatActivity(), View.OnClickListener {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                        //  checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                        checkSequenceNo(3)
+                        checkSequenceNo(initiateAccountModel.Data.SequenceNo)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
@@ -141,25 +140,18 @@ class MainActivitySDk : AppCompatActivity(), View.OnClickListener {
         setupActionBarWithNavController(navController)
     }
 
-
     val callback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 if(navController.graph.startDestination == navController.currentDestination?.id) {
                     finish()
                 } else {
-                   onBackPressed()
+                    navController.popBackStack()
                 }
             }
         }
 
-
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp() || super.onSupportNavigateUp()
     }
-
-    override fun onClick(v: View?) {
-       toast("Back")
-    }
-
 }
