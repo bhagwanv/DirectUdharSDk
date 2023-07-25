@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sk.directudhar.R
+import com.sk.directudhar.utils.Utils
 
 class TxnDetailsAdapter(private val items: ArrayList<UdharStatementModel>) : RecyclerView.Adapter<TxnDetailsAdapter.ViewHolder>() {
 
@@ -24,7 +25,7 @@ class TxnDetailsAdapter(private val items: ArrayList<UdharStatementModel>) : Rec
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.date.text = item.TransactionDate
+        holder.date.text = Utils.simpleDateFormate(item.TransactionDate!!, "dd MMMM yyyy")
         holder.txnId.text = item.TrasanctionId
         holder.status.text = item.status
         holder.dueAmount.text = item.DueAmount.toString()

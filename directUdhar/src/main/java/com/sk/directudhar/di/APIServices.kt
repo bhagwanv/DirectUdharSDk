@@ -111,7 +111,7 @@ interface APIServices {
     ): ArrayList<UdharStatementModel>
 
     @POST("api/Borrower/OTPValidationRequest")
-    suspend fun OTPPostOTPRequest(@Body postOTPRequestModel: PostOTPRequestModel): JsonObject
+    suspend fun OTPPostOTPRequest(@Body postOTPRequestModel: PostOTPRequestModel): InitiateAccountModel
 
     @GET("api/borrower/Agreement")
     suspend fun getAgreement(@Query("LeadMasterId") leadMasterId: Int): AgreementResponseModel
