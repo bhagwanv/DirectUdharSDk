@@ -10,7 +10,7 @@
         tools:layout="@layout/fragment_main">
         <action
             android:id="@+id/action_registrationFragment_to_firstFragment"
-            app:destination="@id/myAccountFragment"/>
+            app:destination="@id/myAccountFragment" />
         <argument
             android:name="mobileNumber"
             android:defaultValue="true"
@@ -22,8 +22,10 @@
         android:name="com.sk.directudhar.ui.myaccount.MyAccountFragment"
         android:label="My Account"
         tools:layout="@layout/fragment_my_account">
+
         <action
-            android:id="@+id/action_mainFragment_to_myAccountFragment" />
+            android:id="@+id/action_myAccountFragment_to_udharStatementFragment"
+            app:destination="@id/udharStatementFragment" />
     </fragment>
 
     <fragment
@@ -31,8 +33,7 @@
         android:name="com.sk.directudhar.ui.applyloan.ApplyLoanFragment"
         android:label="Apply Loan"
         tools:layout="@layout/fragment_apply_loan">
-        <action
-            android:id="@+id/action_mainFragment_to_ApplyLoanFragment" />
+        <action android:id="@+id/action_mainFragment_to_ApplyLoanFragment" />
     </fragment>
 
     <fragment
@@ -52,7 +53,7 @@
         tools:layout="@layout/fragment_cibil_score">
         <action
             android:id="@+id/actionCibilScoreFragmentToCiBilOtpFragment"
-            app:destination="@id/CiBilOtpFragment"/>
+            app:destination="@id/CiBilOtpFragment" />
     </fragment>
 
     <fragment
@@ -60,8 +61,7 @@
         android:name="com.sk.directudhar.ui.approvalpending.ApprovalPendingFragment"
         android:label="Approval Pending"
         tools:layout="@layout/fragment_approval_pending">
-        <action
-            android:id="@+id/action_mainFragment_to_ApprovalPendingFragment" />
+        <action android:id="@+id/action_mainFragment_to_ApprovalPendingFragment" />
     </fragment>
 
     <fragment
@@ -80,8 +80,7 @@
         android:name="com.sk.directudhar.ui.mandate.EMandateFragment"
         android:label="E Mandate"
         tools:layout="@layout/fragment_e_mandate">
-        <action
-            android:id="@+id/action_mainFragment_to_EMandateFragment" />
+        <action android:id="@+id/action_mainFragment_to_EMandateFragment" />
 
 
     </fragment>
@@ -91,8 +90,7 @@
         android:name="com.sk.directudhar.ui.success.SuccessFragment"
         android:label="Success"
         tools:layout="@layout/fragment_success">
-        <action
-            android:id="@+id/action_mainFragment_to_SuccessFragment" />
+        <action android:id="@+id/action_mainFragment_to_SuccessFragment" />
     </fragment>
 
     <fragment
@@ -100,8 +98,7 @@
         android:name="com.sk.directudhar.ui.pancard.PanCardFragment"
         android:label="Pan Card"
         tools:layout="@layout/fragment_pan_card">
-        <action
-            android:id="@+id/action_mainFragment_to_PanCardFragment" />
+        <action android:id="@+id/action_mainFragment_to_PanCardFragment" />
     </fragment>
 
     <fragment
@@ -153,5 +150,16 @@
         <argument
             android:name="mobileNo"
             app:argType="string" />
+
+    </fragment>
+    <fragment
+        android:id="@+id/udharStatementFragment"
+        android:name="com.sk.directudhar.ui.myaccount.udharStatement.UdharStatementFragment"
+        android:label="Udhar Statement"
+        tools:layout="@layout/fragment_udhar_statement">
+
+        <argument
+            android:name="accountId"
+            app:argType="long" />
     </fragment>
 </navigation>

@@ -102,11 +102,11 @@ interface APIServices {
     suspend fun successUpdateLeadSuccess(@Query("LeadMasterId") LeadMasterId: Int): InitiateAccountModel
 
     @GET("api/borrower/GetLoanAccountDetail")
-    suspend fun getLoanAccountDetail(@Query("LeadId") leadMasterId: Int): MyAccountDetailsModel
+    suspend fun getLoanAccountDetail(@Query("LeadId") leadMasterId: Long): MyAccountDetailsModel
 
     @GET("api/AccountTransaction/GetUdharStatement")
     suspend fun getUdharStatement(
-        @Query("AccountId") accountId: Int,
+        @Query("AccountId") accountId: Long,
         @Query("flag") flag: Int
     ): ArrayList<UdharStatementModel>
 
@@ -121,5 +121,9 @@ interface APIServices {
 
     @POST("api/borrower/eAgreement")
     suspend fun eAgreementOtpVerification(@Body eAgreementOtpResquestModel: EAgreementOtpResquestModel): AgreementResponseModel
+    @GET("api/Borrower/CreditLimitRequest")
+    suspend fun creditLimitRequest(
+        @Query("LeadMasterId") leadMasterId: Long,
+    ): JsonObject
 
 }
