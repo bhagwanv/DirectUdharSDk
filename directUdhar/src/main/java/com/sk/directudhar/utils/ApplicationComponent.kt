@@ -10,6 +10,7 @@ import com.sk.directudhar.ui.approvalpending.ApprovalPendingFragment
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.ui.mandate.EMandateFragment
 import com.sk.directudhar.ui.myaccount.MyAccountFragment
+import com.sk.directudhar.ui.myaccount.udharStatement.UdharStatementFragment
 import com.sk.directudhar.ui.pancard.PanCardFragment
 import com.sk.directudhar.ui.success.SuccessFragment
 import dagger.Component
@@ -31,7 +32,5 @@ interface ApplicationComponent {
     fun injectCiBilOTP(fragment: CiBilOtpFragment)
     fun injectApprovalPending(fragment: ApprovalPendingFragment)
     fun injectSuccessPending(fragment: SuccessFragment)
-
-
-
+    fun injectUdharStatementFragment(fragment: UdharStatementFragment)
 }

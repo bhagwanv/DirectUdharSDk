@@ -5,15 +5,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentMyAccountBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
+import com.sk.directudhar.utils.Utils.Companion.toast
+import org.json.JSONObject
 import javax.inject.Inject
 
 class MyAccountFragment : Fragment() {
@@ -24,12 +27,15 @@ class MyAccountFragment : Fragment() {
 
     private lateinit var myAccountViewModel: MyAccountViewModel
 
-    private var leadMasterId: Int = 0
-    private var accountId: Int = 0
+    private var leadMasterId: Long = 0
+    private var accountId: Long = 0
     private var flag: Int = 0  //outstanding=1 and Paid =2 ,  Next Due =3
 
     @Inject
     lateinit var myAccountFactory: MyAccountFactory
+
+    @Inject
+    lateinit var dialog: AppDialogClass
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -53,6 +59,9 @@ class MyAccountFragment : Fragment() {
         myAccountViewModel =
             ViewModelProvider(this, myAccountFactory)[MyAccountViewModel::class.java]
 
+        //  leadMasterId = SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!.toLong()
+        leadMasterId = 60286
+
         mBinding.liOutStanding.setOnClickListener {
             flag = 1
             mBinding.tvTxnDetailTitle.text = "Total Outstanding Txn Details"
@@ -65,8 +74,14 @@ class MyAccountFragment : Fragment() {
             myAccountViewModel.getUdharStatement(accountId, flag)
         }
 
-        // leadMasterId = SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!
-        leadMasterId = 60286
+        mBinding.btnUpgrade.setOnClickListener {
+            myAccountViewModel.creditLimitRequest(leadMasterId)
+        }
+
+        mBinding.btnViewStatement.setOnClickListener {
+            val action = MyAccountFragmentDirections.actionMyAccountFragmentToUdharStatementFragment(accountId)
+            findNavController().navigate(action)
+        }
 
         myAccountViewModel.myAccountDetailsModelResponse.observe(viewLifecycleOwner) {
             when (it) {
@@ -76,7 +91,7 @@ class MyAccountFragment : Fragment() {
 
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                    activitySDk.toast(it.errorMessage)
                 }
 
                 is NetworkResult.Success -> {
@@ -84,7 +99,7 @@ class MyAccountFragment : Fragment() {
                     if (it.data != null) {
                         setUI(it.data)
                     } else {
-                        Toast.makeText(activitySDk, "Data Not Found", Toast.LENGTH_SHORT).show()
+                        activitySDk.toast("Data Not Found")
                     }
                 }
             }
@@ -97,7 +112,7 @@ class MyAccountFragment : Fragment() {
 
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                    activitySDk.toast(it.errorMessage)
                 }
 
                 is NetworkResult.Success -> {
@@ -105,8 +120,33 @@ class MyAccountFragment : Fragment() {
                     if (it.data != null && it.data.size > 0) {
                         initRecyclerViewAdapter(it.data)
                     } else {
-                        Toast.makeText(activitySDk, "Data Not Found", Toast.LENGTH_SHORT).show()
+                        activitySDk.toast("Data Not Found")
                     }
+                }
+            }
+        }
+        myAccountViewModel.creditLimitRequestResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    activitySDk.toast(it.errorMessage)
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    val `object` = JSONObject(it.data.toString())
+
+                    val msg = `object`.getString("Msg")
+                    dialog.accountCreatedDialog(activitySDk, msg, "OK")
+                    dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
+                        override fun onContinueClicked() {
+
+                        }
+                    })
                 }
             }
         }
@@ -123,7 +163,7 @@ class MyAccountFragment : Fragment() {
 
     private fun setUI(data: MyAccountDetailsModel) {
         if (data.AccountId != null) {
-           // accountId = data.AccountId!!
+            // accountId = data.AccountId!!
             accountId = 60089
         }
         if (data.AccountNo != null) {

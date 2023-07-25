@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class MyAccountRepository @Inject constructor(private val apiServices: APIServices) {
 
-    suspend fun getLoanAccountDetail(leadMasterId:Int)  = flow {
+    suspend fun getLoanAccountDetail(leadMasterId:Long)  = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.getLoanAccountDetail(leadMasterId)
         emit(NetworkResult.Success(response))
@@ -16,7 +16,7 @@ class MyAccountRepository @Inject constructor(private val apiServices: APIServic
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun getUdharStatement(accountId:Int, flag:Int)  = flow {
+    suspend fun getUdharStatement(accountId:Long, flag:Int)  = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.getUdharStatement(accountId, flag)
         emit(NetworkResult.Success(response))
@@ -24,4 +24,11 @@ class MyAccountRepository @Inject constructor(private val apiServices: APIServic
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
+    suspend fun creditLimitRequest(leadMasterId: Long)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.creditLimitRequest(leadMasterId)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 }

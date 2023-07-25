@@ -22,8 +22,10 @@
         android:name="com.sk.directudhar.ui.myaccount.MyAccountFragment"
         android:label="My Account"
         tools:layout="@layout/fragment_my_account">
+
         <action
-            android:id="@+id/action_mainFragment_to_myAccountFragment" />
+            android:id="@+id/action_myAccountFragment_to_udharStatementFragment"
+            app:destination="@id/udharStatementFragment" />
     </fragment>
 
     <fragment
@@ -136,6 +138,18 @@
         <argument
             android:name="mobileNO"
             app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/udharStatementFragment"
+        android:name="com.sk.directudhar.ui.myaccount.udharStatement.UdharStatementFragment"
+        android:label="Udhar Statement"
+        tools:layout="@layout/fragment_udhar_statement">
+
+        <argument
+            android:name="accountId"
+            app:argType="long" />
 
     </fragment>
 </navigation>
