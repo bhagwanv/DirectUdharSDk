@@ -129,7 +129,8 @@ class CibilScoreFragment : Fragment(),OnClickListener {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    findNavController().navigate(R.id.actionCibilScoreFragmentToCiBilOtpFragment)
+                    val  action = CibilScoreFragmentDirections.actionCibilScoreFragmentToCiBilOtpFragment(it.data.stgOneHitId,it.data.stgTwoHitId,userInfoModel.MobileNo)
+                    findNavController().navigate(action)
                 }
             }
         }

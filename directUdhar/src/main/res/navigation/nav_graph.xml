@@ -125,5 +125,17 @@
         android:label="Enter OTP"
         tools:layout="@layout/fragment_cibil_opt">
 
+        <argument
+            android:name="stgOneHitId"
+            app:argType="string" />
+
+        <argument
+            android:name="stgTwoHitId"
+            app:argType="string" />
+
+        <argument
+            android:name="mobileNO"
+            app:argType="string" />
+
     </fragment>
 </navigation>

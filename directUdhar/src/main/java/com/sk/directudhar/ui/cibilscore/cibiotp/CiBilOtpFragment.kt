@@ -53,7 +53,7 @@ class CiBilOtpFragment : Fragment() {
         component.injectCiBilOTP(this)
         ciBilOtpViewModel = ViewModelProvider(this, ciBilOtpFactory)[CiBilOtpViewModel::class.java]
 
-       /* ciBilOtpViewModel.postResponse.observe(viewLifecycleOwner) {
+        /*ciBilOtpViewModel.postResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)

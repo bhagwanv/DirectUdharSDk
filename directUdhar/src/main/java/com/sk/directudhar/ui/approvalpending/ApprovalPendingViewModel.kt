@@ -34,7 +34,6 @@ class ApprovalPendingViewModel @Inject constructor(private val repository: Appro
     val updateLeadSuccessResponse: LiveData<NetworkResult<InitiateAccountModel>> = _updateLeadSuccessResponse
 
     fun displayDisbursalAmount(leadMasterId:Int) {
-
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
                 repository.displayDisbursalAmount(leadMasterId).collect() {

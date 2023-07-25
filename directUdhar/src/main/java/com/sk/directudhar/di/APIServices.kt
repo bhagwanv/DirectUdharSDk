@@ -13,6 +13,8 @@ import com.sk.directudhar.ui.cibilscore.CibilRequestModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
 import com.sk.directudhar.ui.approvalpending.DisplayDisbursalAmountResponse
+import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOTPResponceModel
+import com.sk.directudhar.ui.cibilscore.cibiotp.PostOTPRequestModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.ui.mandate.BankListResponse
 import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
@@ -83,7 +85,7 @@ interface APIServices {
     suspend fun getUserCreditInfo(@Query("LeadMasterId") LeadMasterId: Int): CibilRequestModel
 
     @POST("api/Borrower/OTPGeneratRequest")
-    suspend fun OTPGeneratRequest(@Body genrateOtpModel: GenrateOtpModel): JsonObject
+    suspend fun OTPGeneratRequest(@Body genrateOtpModel: GenrateOtpModel): CiBilOTPResponceModel
 
     @GET("api/Application/DisplayDisbursalAmount")
     suspend fun displayDisbursalAmount(@Query("LeadMasterId") LeadMasterId: Int): DisplayDisbursalAmountResponse
@@ -105,5 +107,8 @@ interface APIServices {
         @Query("AccountId") accountId: Int,
         @Query("flag") flag: Int
     ): ArrayList<UdharStatementModel>
+
+    @POST("api/Borrower/OTPValidationRequest")
+    suspend fun OTPPostOTPRequest(@Body postOTPRequestModel: PostOTPRequestModel): JsonObject
 
 }
