@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
+import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
@@ -21,8 +22,8 @@ class CiBilOtpViewModel @Inject constructor(val respository: CiBilOtpRespository
     private val cibilResultResult = MutableLiveData<String>()
     fun getCiBilResult(): LiveData<String> = cibilResultResult
 
-    private var _postOTPResponse = MutableLiveData<NetworkResult<JsonObject>>()
-    val postOtpResponse: LiveData<NetworkResult<JsonObject>> = _postOTPResponse
+    private var _postOTPResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
+    val postOtpResponse: LiveData<NetworkResult<InitiateAccountModel>> = _postOTPResponse
 
     fun validateOtp(otp: String) {
         if (otp.isNullOrEmpty()) {

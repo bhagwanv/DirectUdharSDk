@@ -61,7 +61,7 @@ class AadhaarOtpFragment : Fragment() {
 
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                    activitySDk.toast(it.errorMessage)
                 }
 
                 is NetworkResult.Success -> {
@@ -70,7 +70,7 @@ class AadhaarOtpFragment : Fragment() {
                     if (it.data.Result!!) {
                         activitySDk.toast(it.data.Msg!!)
                         activitySDk.checkSequenceNo(it.data.Data.SequenceNo)
-                    }else{
+                    } else {
                         activitySDk.toast(it.data.Msg!!)
                     }
                 }
@@ -99,7 +99,7 @@ class AadhaarOtpFragment : Fragment() {
                     )
                 )
             } else {
-                Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
+                activitySDk.toast(result)
             }
         }
     }
