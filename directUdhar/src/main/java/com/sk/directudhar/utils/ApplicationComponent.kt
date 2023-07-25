@@ -8,6 +8,7 @@ import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment
 import com.sk.directudhar.ui.approvalpending.ApprovalPendingFragment
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.ui.mandate.bank.BankMandateFragment
 import com.sk.directudhar.ui.mandate.EMandateFragment
 import com.sk.directudhar.ui.myaccount.MyAccountFragment
 import com.sk.directudhar.ui.pancard.PanCardFragment
@@ -31,6 +32,7 @@ interface ApplicationComponent {
     fun injectCiBilOTP(fragment: CiBilOtpFragment)
     fun injectApprovalPending(fragment: ApprovalPendingFragment)
     fun injectSuccessPending(fragment: SuccessFragment)
+    fun injectBankMandate(fragment: BankMandateFragment)
 
 
 

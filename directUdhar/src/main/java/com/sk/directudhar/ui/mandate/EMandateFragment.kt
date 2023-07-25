@@ -17,6 +17,7 @@ import com.sk.directudhar.databinding.FragmentEMandateBinding
 import android.view.View.OnClickListener
 import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.sk.directudhar.R
 import com.sk.directudhar.ui.applyloan.StateModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
@@ -138,14 +139,12 @@ class EMandateFragment : Fragment(), OnClickListener {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
+                    if (it.data.status){
+                        val action= EMandateFragmentDirections.actionEMandateFragmentToBankMandateFragment( it.data.url,it.data.request)
+                        findNavController().navigate(action)
 
-                    if (it.data != null) {
-                        if (it.data.request != null) {
-                            var data = it.data.error
-
-                        } else {
-                           activitySDk.toast(it.data.error!!)
-                        }
+                    }else{
+                        activitySDk.toast(it.data.error!!)
                     }
                 }
             }

@@ -79,7 +79,8 @@
         android:label="E Mandate"
         tools:layout="@layout/fragment_e_mandate">
         <action
-            android:id="@+id/action_mainFragment_to_EMandateFragment" />
+            android:id="@+id/action_EMandateFragment_to_BankMandateFragment"
+            app:destination="@+id/bankMandateFragment"/>
 
 
     </fragment>
@@ -136,6 +137,23 @@
         <argument
             android:name="mobileNO"
             app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/bankMandateFragment"
+        android:name="com.sk.directudhar.ui.mandate.bank.BankMandateFragment"
+        android:label="Bank Mandate"
+        tools:layout="@layout/fragment_bank_mandate">
+
+        <argument
+            android:name="url"
+            app:argType="string" />
+
+        <argument
+            android:name="request"
+            app:argType="com.sk.directudhar.ui.mandate.Request" />
+
 
     </fragment>
 </navigation>
