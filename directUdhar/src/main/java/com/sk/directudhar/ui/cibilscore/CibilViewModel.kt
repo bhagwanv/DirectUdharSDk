@@ -12,6 +12,7 @@ import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.StateModel
+import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOTPResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
@@ -40,8 +41,8 @@ class CibilViewModel @Inject constructor(private val repository: CibilRepository
     private var _postDataResponse = MutableLiveData<NetworkResult<CiBilResponceModel>>()
     val postResponse: LiveData<NetworkResult<CiBilResponceModel>> = _postDataResponse
 
-    private var _genrateOtpResponse = MutableLiveData<NetworkResult<JsonObject>>()
-    val genrateOtpResponse: LiveData<NetworkResult<JsonObject>> = _genrateOtpResponse
+    private var _genrateOtpResponse = MutableLiveData<NetworkResult<CiBilOTPResponceModel>>()
+    val genrateOtpResponse: LiveData<NetworkResult<CiBilOTPResponceModel>> = _genrateOtpResponse
 
     fun getCiBilResult(): LiveData<String> = cibilResult
 
