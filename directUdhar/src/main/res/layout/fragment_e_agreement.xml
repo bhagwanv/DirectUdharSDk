@@ -3,19 +3,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <LinearLayout
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <WebView
+            android:id="@+id/tvTermCondition"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:paddingBottom="48dp"/>
+
+        <CheckBox
+            android:id="@+id/cbAuthorize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="70dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="32dp"
+            />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btIAgree"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginBottom="16dp"
+            android:background="@drawable/bg_squre_btn_corner"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="I Agree"
+            android:textAllCaps="false"
+            android:textColor="@color/white" />
 
 
-
-        </LinearLayout>
-    </ScrollView>
-
+    </RelativeLayout>
 
 </layout>

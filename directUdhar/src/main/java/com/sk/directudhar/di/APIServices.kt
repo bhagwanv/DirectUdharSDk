@@ -5,6 +5,8 @@ import com.sk.directudhar.data.TokenResponse
 import com.sk.directudhar.ui.adharcard.AadhaarUpdateResponseModel
 import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadharVerificationRequestModel
+import com.sk.directudhar.ui.agreement.AgreementResponseModel
+import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
@@ -110,5 +112,14 @@ interface APIServices {
 
     @POST("api/Borrower/OTPValidationRequest")
     suspend fun OTPPostOTPRequest(@Body postOTPRequestModel: PostOTPRequestModel): JsonObject
+
+    @GET("api/borrower/Agreement")
+    suspend fun getAgreement(@Query("LeadMasterId") leadMasterId: Int): AgreementResponseModel
+
+    @GET("api/borrower/SendOtp")
+    suspend fun sendOtp(@Query("MobileNo") mobileNo: String): AgreementResponseModel
+
+    @POST("api/borrower/eAgreement")
+    suspend fun eAgreementOtpVerification(@Body eAgreementOtpResquestModel: EAgreementOtpResquestModel): AgreementResponseModel
 
 }

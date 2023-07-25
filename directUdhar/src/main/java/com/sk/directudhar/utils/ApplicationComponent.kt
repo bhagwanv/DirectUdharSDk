@@ -3,6 +3,8 @@ package com.sk.directudhar.utils
 import com.sk.directudhar.di.NetworkModule
 import com.sk.directudhar.ui.adharcard.AadhaarCardFragment
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment
+import com.sk.directudhar.ui.agreement.EAgreementFragment
+import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment
 import com.sk.directudhar.ui.applyloan.ApplyLoanFragment
 import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment
@@ -31,6 +33,8 @@ interface ApplicationComponent {
     fun injectCiBilOTP(fragment: CiBilOtpFragment)
     fun injectApprovalPending(fragment: ApprovalPendingFragment)
     fun injectSuccessPending(fragment: SuccessFragment)
+    fun injectAgreement(fragment: EAgreementFragment)
+    fun injectAgreementOtp(fragment: EAgreementOtpFragment)
 
 
 

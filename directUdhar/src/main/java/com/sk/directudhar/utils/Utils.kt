@@ -35,6 +35,8 @@ class Utils(private var context: Context) {
 
         var PROCESS_TEXT="By Clicking Apply now i agree to the terms and  condition " +
                 "and authorize Direct Udhar to send promotional communication to me "
+        var  EAGREEMENT_OTP_VALIDATE_SUCCESSFULLY ="EAGREEMENT_OTP_VALIDATE_SUCCESSFULLY"
+        val countdownDuration: Long = 50000
 
         fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 

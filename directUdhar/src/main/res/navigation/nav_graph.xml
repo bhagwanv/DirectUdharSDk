@@ -69,8 +69,10 @@
         android:name="com.sk.directudhar.ui.agreement.EAgreementFragment"
         android:label="E Agreement"
         tools:layout="@layout/fragment_e_agreement">
+
         <action
-            android:id="@+id/action_mainFragment_to_EAgreementFragment" />
+            android:id="@+id/action_EAgreementFragment_to_EAgreementOtpFragment"
+            app:destination="@id/EAgreementOtpFragment" />
     </fragment>
 
     <fragment
@@ -137,5 +139,19 @@
             android:name="mobileNO"
             app:argType="string" />
 
+    </fragment>
+
+    <fragment
+        android:id="@+id/EAgreementOtpFragment"
+        android:name="com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment"
+        android:label="E Agreement Otp"
+        tools:layout="@layout/fragment_agreement_otp">
+        <argument
+            android:name="OtpTxnNo"
+            app:argType="string" />
+
+        <argument
+            android:name="mobileNo"
+            app:argType="string" />
     </fragment>
 </navigation>
