@@ -49,9 +49,7 @@ class SuccessFragment:Fragment() {
         return mBinding.root
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     private fun initView() {
-
         val component = DaggerApplicationComponent.builder().build()
         component.injectSuccessPending(this)
         successViewModel =
@@ -89,7 +87,7 @@ class SuccessFragment:Fragment() {
                         mBinding.tvProcessingFee.setText("₹ "+it.data.ProcessingFee.toString())
                         mBinding.tvGST.setText("₹ "+it.data.GSTAmount.toString())
                         mBinding.tvDate.setText(it.data.CreatedDate)
-                        mBinding.tvDate.setText("Applied Date: "+ Utils.simpleDateFormate(it.data.CreatedDate))
+                        mBinding.tvDate.setText("Applied Date: "+ Utils.simpleDateFormate(it.data.CreatedDate, "dd MMM yyyy HH:mm a"))
                         mBinding.tvConvenienceFee.setText("Convenience Fee "+it.data.ConvenionFeeRate.toString()+" % will be Charge on every transaction")
                     }
                 }
