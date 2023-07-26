@@ -45,6 +45,5 @@ class BankMandateFragment:Fragment() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectBankMandate(this)
         bankMandateViewModel = ViewModelProvider(this, bankMandateFactory)[BankMandateViewModel::class.java]
-
     }
 }
