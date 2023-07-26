@@ -80,9 +80,9 @@
         android:name="com.sk.directudhar.ui.mandate.EMandateFragment"
         android:label="E Mandate"
         tools:layout="@layout/fragment_e_mandate">
-        <action android:id="@+id/action_mainFragment_to_EMandateFragment" />
-
-
+        <action
+            android:id="@+id/action_EMandateFragment_to_BankMandateFragment"
+            app:destination="@+id/bankMandateFragment" />
     </fragment>
 
     <fragment
@@ -139,17 +139,18 @@
     </fragment>
 
     <fragment
-        android:id="@+id/EAgreementOtpFragment"
-        android:name="com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment"
-        android:label="E Agreement Otp"
-        tools:layout="@layout/fragment_agreement_otp">
+        android:id="@+id/bankMandateFragment"
+        android:name="com.sk.directudhar.ui.mandate.bank.BankMandateFragment"
+        android:label="Bank Mandate"
+        tools:layout="@layout/fragment_bank_mandate">
+
         <argument
-            android:name="OtpTxnNo"
+            android:name="url"
             app:argType="string" />
 
         <argument
-            android:name="mobileNo"
-            app:argType="string" />
+            android:name="request"
+            app:argType="com.sk.directudhar.ui.mandate.Request" />
 
     </fragment>
     <fragment
@@ -161,5 +162,18 @@
         <argument
             android:name="accountId"
             app:argType="long" />
+    </fragment>
+    <fragment
+        android:id="@+id/EAgreementOtpFragment"
+        android:name="com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment"
+        android:label="E Agreement Otp"
+        tools:layout="@layout/fragment_agreement_otp">
+        <argument
+            android:name="OtpTxnNo"
+            app:argType="string" />
+
+        <argument
+            android:name="mobileNo"
+            app:argType="string" />
     </fragment>
 </navigation>
