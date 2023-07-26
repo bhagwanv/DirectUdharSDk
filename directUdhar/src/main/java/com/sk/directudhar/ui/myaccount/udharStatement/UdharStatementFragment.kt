@@ -19,7 +19,6 @@ import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
-
 class UdharStatementFragment : Fragment() {
 
     @Inject
