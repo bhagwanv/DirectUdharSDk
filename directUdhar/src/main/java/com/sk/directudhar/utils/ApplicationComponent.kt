@@ -3,6 +3,8 @@ package com.sk.directudhar.utils
 import com.sk.directudhar.di.NetworkModule
 import com.sk.directudhar.ui.adharcard.AadhaarCardFragment
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment
+import com.sk.directudhar.ui.agreement.EAgreementFragment
+import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment
 import com.sk.directudhar.ui.applyloan.ApplyLoanFragment
 import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment
@@ -11,6 +13,7 @@ import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.ui.mandate.bank.BankMandateFragment
 import com.sk.directudhar.ui.mandate.EMandateFragment
 import com.sk.directudhar.ui.myaccount.MyAccountFragment
+import com.sk.directudhar.ui.myaccount.udharStatement.UdharStatementFragment
 import com.sk.directudhar.ui.pancard.PanCardFragment
 import com.sk.directudhar.ui.success.SuccessFragment
 import dagger.Component
@@ -33,7 +36,8 @@ interface ApplicationComponent {
     fun injectApprovalPending(fragment: ApprovalPendingFragment)
     fun injectSuccessPending(fragment: SuccessFragment)
     fun injectBankMandate(fragment: BankMandateFragment)
-
-
+    fun injectAgreement(fragment: EAgreementFragment)
+    fun injectAgreementOtp(fragment: EAgreementOtpFragment)
+    fun injectUdharStatementFragment(fragment: UdharStatementFragment)
 
 }

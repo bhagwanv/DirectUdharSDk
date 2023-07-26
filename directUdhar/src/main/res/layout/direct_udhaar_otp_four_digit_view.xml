@@ -1,0 +1,56 @@
+<!-- custom_otp_view.xml -->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="8dp">
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/otpDigit1"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_otp_squre_outer_line"
+        android:gravity="center"
+        android:hint="x"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/otpDigit2"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_otp_squre_outer_line"
+        android:gravity="center"
+        android:hint="x"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/otpDigit3"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_otp_squre_outer_line"
+        android:gravity="center"
+        android:hint="x"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="14sp" />
+
+    <androidx.appcompat.widget.AppCompatEditText
+        android:id="@+id/otpDigit4"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:layout_marginStart="4dp"
+        android:background="@drawable/bg_otp_squre_outer_line"
+        android:gravity="center"
+        android:hint="x"
+        android:inputType="number"
+        android:maxLength="1"
+        android:textSize="14sp" />
+</LinearLayout>

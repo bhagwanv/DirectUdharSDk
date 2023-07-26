@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.myaccount
+package com.sk.directudhar.ui.myaccount.udharStatement
 
 import android.view.LayoutInflater
 import android.view.View
@@ -6,9 +6,10 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sk.directudhar.R
+import com.sk.directudhar.ui.myaccount.UdharStatementModel
 import com.sk.directudhar.utils.Utils
 
-class TxnDetailsAdapter(private val items: ArrayList<UdharStatementModel>) : RecyclerView.Adapter<TxnDetailsAdapter.ViewHolder>() {
+class UdharStatementAdapter(private val items: ArrayList<UdharStatementModel>) : RecyclerView.Adapter<UdharStatementAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val date: TextView = itemView.findViewById(R.id.tvDate)
@@ -19,7 +20,7 @@ class TxnDetailsAdapter(private val items: ArrayList<UdharStatementModel>) : Rec
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.txn_details_items, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.udhar_statement_items, parent, false)
         return ViewHolder(itemView)
     }
 

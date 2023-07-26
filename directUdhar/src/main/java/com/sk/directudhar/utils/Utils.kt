@@ -4,39 +4,40 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
-import android.os.Build
 import android.widget.Toast
-import androidx.annotation.RequiresApi
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
+import java.text.SimpleDateFormat
 import java.util.Locale
 
 class Utils(private var context: Context) {
 
     companion object {
-        val BASE_URL ="https://udhaarservice.shopkirana.in/"
-        var  CLIENT_CREDENTIALS ="client_credentials"
-        var  SECRETKEY ="b02013e9-b92b-4563-a330-aec123bf13d7"
-        var  APIKYYE ="e57f97e0-46ea-4be0-9fdf-c92b410cf022"
-        var  AADHAAR_VALIDATE_SUCCESSFULLY ="AADHAAR_VALIDATE_SUCCESSFULLY"
-        var  AADHAAR_OTP_VALIDATE_SUCCESSFULLY ="AADHAAR_OTP_VALIDATE_SUCCESSFULLY"
+        val BASE_URL = "https://udhaarservice.shopkirana.in/"
+        var CLIENT_CREDENTIALS = "client_credentials"
+        var SECRETKEY = "b02013e9-b92b-4563-a330-aec123bf13d7"
+        var APIKYYE = "e57f97e0-46ea-4be0-9fdf-c92b410cf022"
+        var AADHAAR_VALIDATE_SUCCESSFULLY = "AADHAAR_VALIDATE_SUCCESSFULLY"
+        var AADHAAR_OTP_VALIDATE_SUCCESSFULLY = "AADHAAR_OTP_VALIDATE_SUCCESSFULLY"
         var cameraRequest = 1888
         var WRITE_PERMISSION = 0x01
-        var  SuccessType ="success_type_al"
-        val vintageList = arrayOf<String>("Select Business Vintage", "Less than 2 years", "Greater Than 2 Years")
-        val accountTypeList = arrayOf<String>(" Select Account Type","Saving", "Current")
-        val channelList = arrayOf<String>("Select Channel Type","Net", "Debit")
+        var SuccessType = "success_type_al"
+        val vintageList =
+            arrayOf<String>("Select Business Vintage", "Less than 2 years", "Greater Than 2 Years")
+        val accountTypeList = arrayOf<String>(" Select Account Type", "Saving", "Current")
+        val channelList = arrayOf<String>("Select Channel Type", "Net", "Debit")
 
-        var APPLY_LOAN_POLICY="I Authorize Direct Udhar and its representatives " +
+        var APPLY_LOAN_POLICY = "I Authorize Direct Udhar and its representatives " +
                 "to SMS,Call or commpunicate via Whatsup regarding my application " +
                 "and other applicable offers.This consent overrides any registratio" +
                 "n for DNC/NDNC.I confirm I am in India,I am a major and a resident\n" +
                 "of India and I have read I accept Indusland Bank's"
 
-        var PROCESS_TEXT="By Clicking Apply now i agree to the terms and  condition " +
+        var PROCESS_TEXT = "By Clicking Apply now i agree to the terms and  condition " +
                 "and authorize Direct Udhar to send promotional communication to me "
+        var  EAGREEMENT_OTP_VALIDATE_SUCCESSFULLY ="EAGREEMENT_OTP_VALIDATE_SUCCESSFULLY"
+        val countdownDuration: Long = 50000
 
-        fun Context.toast(message: CharSequence) = Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+        fun Context.toast(message: CharSequence) =
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
 
         fun isValidAadhaar(aadhaarNumber: String): Boolean {
             val cleanAadhaarNumber = aadhaarNumber.replace("\\s".toRegex(), "")
@@ -55,7 +56,7 @@ class Utils(private var context: Context) {
             return true
         }
 
-        fun getPath(context: Context,uri: Uri?): String? {
+        fun getPath(context: Context, uri: Uri?): String? {
             val projection = arrayOf(MediaStore.Images.Media.DATA)
             val cursor: Cursor =
                 context.getContentResolver().query(uri!!, projection, null, null, null)
@@ -66,19 +67,12 @@ class Utils(private var context: Context) {
             cursor.close()
             return s
         }
-        @RequiresApi(Build.VERSION_CODES.O)
-        fun simpleDateFormate(inputDate:String): String? {
-            // Define the input and output date formats
-            val inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.ENGLISH)
-            val outputFormatter = DateTimeFormatter.ofPattern("dd MMM yyyy HH:mm a", Locale.ENGLISH)
 
-            // Parse the input date string to LocalDateTime
-            val dateTime = LocalDateTime.parse(inputDate, inputFormatter)
-
-            // Format the LocalDateTime to the desired output format
-            val outputDateStr = dateTime.format(outputFormatter)
-
-            return outputDateStr
+        fun simpleDateFormate(inputDate: String, outputFormat: String): String? {
+            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
+            val outputFormat = SimpleDateFormat(outputFormat, Locale.getDefault())
+            val date = inputFormat.parse(inputDate)
+            return outputFormat.format(date!!)
         }
     }
 }
