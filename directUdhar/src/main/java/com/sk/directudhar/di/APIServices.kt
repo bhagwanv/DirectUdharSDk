@@ -23,6 +23,9 @@ import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
 import com.sk.directudhar.ui.mandate.EMandateAddResponseModel
 import com.sk.directudhar.ui.myaccount.MyAccountDetailsModel
 import com.sk.directudhar.ui.myaccount.UdharStatementModel
+import com.sk.directudhar.ui.myaccount.udharStatement.DownloadLedgerReportResquestModel
+import com.sk.directudhar.ui.myaccount.udharStatement.LedgerReportResponseModel
+import com.sk.directudhar.ui.myaccount.udharStatement.TransactionDetailResponseModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
 import com.sk.directudhar.ui.success.SuccessDisplayDisbursalAmountResponse
 import retrofit2.http.Body
@@ -35,7 +38,6 @@ import retrofit2.http.Part
 import retrofit2.http.Query
 
 interface APIServices {
-
     @FormUrlEncoded
     @POST("/token")
     suspend fun getToken(
@@ -126,4 +128,9 @@ interface APIServices {
         @Query("LeadMasterId") leadMasterId: Long,
     ): JsonObject
 
+    @POST("api/AccountTransaction/LedgerReport")
+    suspend fun downloadReport(@Body downloadLedgerReportResquestModel: DownloadLedgerReportResquestModel): LedgerReportResponseModel
+
+    @GET("api/AccountTransaction/TransactionDetail")
+    suspend fun getTransactionDetail(@Query("TransactionId") transactionId: String): ArrayList<TransactionDetailResponseModel>
 }

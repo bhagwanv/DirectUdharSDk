@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/llBottomCheckOut"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:behavior_hideable="false"
+        app:behavior_peekHeight="0dp"
+        app:layout_behavior="@string/bottom_sheet_behavior">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/round_corner_background"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:padding="5dp"
+                    android:text="Customize Statement"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textStyle="bold" />
+
+                <ImageView
+                    android:id="@+id/imClose"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_gravity="left"
+                    android:src="@drawable/ic_close_round_black" />
+            </RelativeLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RadioButton
+                    android:id="@+id/rbThisMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/date_selector_background_selector"
+                    android:button="@android:color/transparent"
+                    android:layout_marginTop="16dp"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="This Month"
+                    android:textAlignment="center"
+                    android:textColor="@color/date_selector_text_selector"
+                    android:textSize="16sp"
+                    app:drawableTint="@color/date_selector_text_selector" />
+
+                <RadioButton
+                    android:id="@+id/rbLastMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/date_selector_background_selector"
+                    android:button="@android:color/transparent"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="Last Month"
+                    android:textAlignment="center"
+                    android:textColor="@color/date_selector_text_selector"
+                    android:textSize="16sp"
+                    app:drawableTint="@color/date_selector_text_selector" />
+
+                <RadioButton
+                    android:id="@+id/rbLastPreviewsMonth"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/date_selector_background_selector"
+                    android:button="@android:color/transparent"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="Last Previews Month"
+                    android:textAlignment="center"
+                    android:textColor="@color/date_selector_text_selector"
+                    android:textSize="16sp"
+                    app:drawableTint="@color/date_selector_text_selector" />
+
+                <RadioButton
+                    android:id="@+id/rbCustomeDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:background="@drawable/date_selector_background_selector"
+                    android:button="@android:color/transparent"
+                    android:checked="true"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="8dp"
+                    android:text="Custom Date Select"
+                    android:textAlignment="center"
+                    android:textColor="@color/date_selector_text_selector"
+                    android:textSize="16sp"
+                    app:drawableTint="@color/date_selector_text_selector" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/llCustomDatePicker"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:visibility="visible"
+                android:weightSum="2">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:text="From"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvFormDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_text_outer_line"
+                        android:drawableEnd="@drawable/baseline_date_range_black_24"
+                        android:drawablePadding="6dp"
+                        android:padding="6dp"
+                        android:text="dd--mm-yyyy"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:padding="6dp"
+                        android:text="To"
+                        android:textSize="14sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvToDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/bg_text_outer_line"
+                        android:drawableEnd="@drawable/baseline_date_range_black_24"
+                        android:drawablePadding="6dp"
+                        android:padding="6dp"
+                        android:text="dd--mm-yyyy"
+                        android:textSize="14sp" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDownload"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/bg_squre_btn_corner"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingHorizontal="16dp"
+                android:text="Download"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+
+        </LinearLayout>
+    </LinearLayout>
+</layout>

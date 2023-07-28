@@ -16,4 +16,20 @@ class UdharStatementRepository @Inject constructor(private val apiServices: APIS
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
+    suspend fun downloadReport(downloadLedgerReportResquestModel: DownloadLedgerReportResquestModel)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.downloadReport(downloadLedgerReportResquestModel)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
+    suspend fun getTransactionDetail(transactionId: String)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.getTransactionDetail(transactionId)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
 }

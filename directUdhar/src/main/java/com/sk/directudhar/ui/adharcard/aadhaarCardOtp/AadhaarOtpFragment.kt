@@ -53,6 +53,8 @@ class AadhaarOtpFragment : Fragment() {
         aadhaarOtpViewModel =
             ViewModelProvider(this, aadhaarOtpFactory)[AadhaarOtpViewModel::class.java]
 
+        setToolBar()
+
         aadhaarOtpViewModel.postResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -102,5 +104,9 @@ class AadhaarOtpFragment : Fragment() {
                 activitySDk.toast(result)
             }
         }
+    }
+
+    private fun setToolBar() {
+        activitySDk.ivDateFilterToolbar.visibility = View.GONE
     }
 }

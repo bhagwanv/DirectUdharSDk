@@ -68,11 +68,23 @@ class Utils(private var context: Context) {
             return s
         }
 
-        fun simpleDateFormate(inputDate: String, outputFormat: String): String? {
-            val inputFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS", Locale.getDefault())
-            val outputFormat = SimpleDateFormat(outputFormat, Locale.getDefault())
-            val date = inputFormat.parse(inputDate)
-            return outputFormat.format(date!!)
+        fun simpleDateFormate(inputDate: String, inputFormat: String, outputFormat: String): String? {
+            return try {
+                val inputFormats = SimpleDateFormat(inputFormat, Locale.getDefault())
+                val outputFormats = SimpleDateFormat(outputFormat, Locale.getDefault())
+                val date = inputFormats.parse(inputDate)
+                return outputFormats.format(date!!)
+            } catch (e: java.text.ParseException) {
+                try {
+                    val inputFormats = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
+                    val outputFormats = SimpleDateFormat(outputFormat, Locale.getDefault())
+                    val date = inputFormats.parse(inputDate)
+                    return outputFormats.format(date!!)
+                } catch (e: java.text.ParseException) {
+                    e.printStackTrace()
+                    return ""
+                }
+            }
         }
     }
 }

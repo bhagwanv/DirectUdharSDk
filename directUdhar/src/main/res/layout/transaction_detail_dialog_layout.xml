@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cvItem"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="6dp"
-    android:elevation="2dp"
-    android:layout_marginHorizontal="16dp"
-    android:layout_marginTop="16dp"
-    android:layout_marginBottom="4dp">
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="5dp"
+            android:text="Statement Details"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/dialogButton"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="left"
+            android:src="@drawable/ic_close_round_black" />
+    </RelativeLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
         android:orientation="vertical">
 
         <LinearLayout
@@ -57,7 +77,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/liDueAmount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -118,7 +137,6 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/liDueDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
@@ -138,55 +156,18 @@
                 android:textSize="14sp" />
         </LinearLayout>
 
-        <LinearLayout
-            android:id="@+id/liPaidDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:text="Paid Date: "
-                android:textSize="14sp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvPaidDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textSize="14sp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/liBtn"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0.5dp"
-                android:background="@color/grey_10"
-                android:layout_marginVertical="12dp"/>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnPayNow"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@drawable/bg_squre_btn_corner"
-                android:backgroundTint="@color/green_50"
-                android:gravity="center"
-                android:maxLines="1"
-                android:paddingHorizontal="16dp"
-                android:text="Pay Now"
-                android:textStyle="bold"
-                android:textAllCaps="false"
-                android:textColor="@color/white" />
-
-        </LinearLayout>
     </LinearLayout>
 
-</androidx.cardview.widget.CardView>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Details"
+        android:layout_marginVertical="8dp"
+        android:textColor="@color/black"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvTransactionDetails"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+</LinearLayout>

@@ -1,10 +1,12 @@
 package com.sk.directudhar.ui.mainhome
 
 import android.os.Bundle
-import android.util.Log
+import android.view.View
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -33,6 +35,7 @@ class MainActivitySDk : AppCompatActivity() {
     lateinit var mobilNumber: String
 
     lateinit var navHostFragment: NavHostFragment
+    lateinit  var ivDateFilterToolbar: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,7 +53,12 @@ class MainActivitySDk : AppCompatActivity() {
     private fun setupToolbar() {
         navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        setSupportActionBar(findViewById(R.id.toolbarNew))
+        var toolbar:Toolbar = findViewById(R.id.toolbarNew)
+        ivDateFilterToolbar = findViewById(R.id.ivDateFilter)
+
+        ivDateFilterToolbar.visibility = View.GONE
+
+        setSupportActionBar(toolbar)
     }
 
     private fun initView() {
@@ -105,7 +113,6 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                       // checkSequenceNo(14)
                         checkSequenceNo(initiateAccountModel.Data.SequenceNo)
                     } else {
                         this.toast(initiateAccountModel.Msg)

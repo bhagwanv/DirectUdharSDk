@@ -9,12 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentMyAccountBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
+import com.sk.directudhar.utils.SharePrefs
+import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import org.json.JSONObject
 import javax.inject.Inject
@@ -22,11 +25,8 @@ import javax.inject.Inject
 class MyAccountFragment : Fragment() {
 
     lateinit var activitySDk: MainActivitySDk
-
     private lateinit var mBinding: FragmentMyAccountBinding
-
     private lateinit var myAccountViewModel: MyAccountViewModel
-
     private var leadMasterId: Long = 0
     private var accountId: Long = 0
     private var flag: Int = 0  //outstanding=1 and Paid =2 ,  Next Due =3
@@ -59,18 +59,20 @@ class MyAccountFragment : Fragment() {
         myAccountViewModel =
             ViewModelProvider(this, myAccountFactory)[MyAccountViewModel::class.java]
 
-        //  leadMasterId = SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!.toLong()
-        leadMasterId = 60286
+        leadMasterId =
+            SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!.toLong()
+
+        setToolBar()
 
         mBinding.liOutStanding.setOnClickListener {
             flag = 1
-            mBinding.tvTxnDetailTitle.text = "Total Outstanding Txn Details"
+            mBinding.tvTxnDetailTitle.text = getString(R.string.total_outstanding_txn_details)
             myAccountViewModel.getUdharStatement(accountId, flag)
         }
 
         mBinding.liNextDue.setOnClickListener {
             flag = 3
-            mBinding.tvTxnDetailTitle.text = "Next Due Txn Details"
+            mBinding.tvTxnDetailTitle.text = getString(R.string.next_due_txn_details)
             myAccountViewModel.getUdharStatement(accountId, flag)
         }
 
@@ -79,7 +81,10 @@ class MyAccountFragment : Fragment() {
         }
 
         mBinding.btnViewStatement.setOnClickListener {
-            val action = MyAccountFragmentDirections.actionMyAccountFragmentToUdharStatementFragment(accountId)
+            val action =
+                MyAccountFragmentDirections.actionMyAccountFragmentToUdharStatementFragment(
+                    accountId
+                )
             findNavController().navigate(action)
         }
 
@@ -96,11 +101,7 @@ class MyAccountFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    if (it.data != null) {
-                        setUI(it.data)
-                    } else {
-                        activitySDk.toast("Data Not Found")
-                    }
+                    setUI(it.data)
                 }
             }
         }
@@ -117,7 +118,7 @@ class MyAccountFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    if (it.data != null && it.data.size > 0) {
+                    if (it.data.size > 0) {
                         initRecyclerViewAdapter(it.data)
                     } else {
                         activitySDk.toast("Data Not Found")
@@ -154,6 +155,10 @@ class MyAccountFragment : Fragment() {
 
     }
 
+    private fun setToolBar() {
+        activitySDk.ivDateFilterToolbar.visibility = View.GONE
+    }
+
     private fun initRecyclerViewAdapter(data: ArrayList<UdharStatementModel>) {
         mBinding.liTxnDueDetails.visibility = View.VISIBLE
         mBinding.rvTxnDetails.layoutManager = LinearLayoutManager(activitySDk)
@@ -162,36 +167,30 @@ class MyAccountFragment : Fragment() {
     }
 
     private fun setUI(data: MyAccountDetailsModel) {
-        if (data.AccountId != null) {
-            // accountId = data.AccountId!!
-            accountId = 60089
+        if (data.accountId != null) {
+            accountId = data.accountId!!.toLong()
         }
-        if (data.AccountNo != null) {
-            mBinding.tvLoanAccountNumber.text = data.AccountNo.toString()
+        if (data.accountNo != null) {
+            mBinding.tvLoanAccountNumber.text = data.accountNo.toString()
         }
-
-        if (data.TotalUdharLimit != null) {
-            mBinding.tvTotalUdhaLimit.text = data.TotalUdharLimit.toString()
+        if (data.totalUdharLimit != null) {
+            mBinding.tvTotalUdhaLimit.text = data.totalUdharLimit.toString()
         }
-
-        if (data.AvailableUdharLimit != null) {
-            mBinding.tvAvailableUdharLimit.text = data.AvailableUdharLimit.toString()
+        if (data.availableUdharLimit != null) {
+            mBinding.tvAvailableUdharLimit.text = data.availableUdharLimit.toString()
         }
-
-        if (data.Outstanding != null) {
-            mBinding.tvTotalOutStanding.text = data.Outstanding.toString()
+        if (data.outstanding != null) {
+            mBinding.tvTotalOutStanding.text = data.outstanding.toString()
         }
-
-        if (data.NextDueAmount != null) {
-            if (data.NextDueDate != null) {
-                mBinding.tvNextDueOn.text =
-                    "${data.NextDueAmount.toString()}/n ${data.NextDueDate.toString()}"
+        if (data.nextDueAmount != null) {
+            if (data.nextDueDate != null) {
+                val dueDate = Utils.simpleDateFormate(data.nextDueDate!!,"yyyy-MM-dd'T'HH:mm:ss.SSS","dd MMMM yyyy" )
+                val textToShow = "$dueDate \n${data.nextDueAmount}"
+                mBinding.tvNextDueOn.text = textToShow
             } else {
-                mBinding.tvNextDueOn.text = data.NextDueAmount.toString()
+                mBinding.tvNextDueOn.text = data.nextDueAmount.toString()
             }
         }
-
-
     }
 
     override fun onDestroy() {

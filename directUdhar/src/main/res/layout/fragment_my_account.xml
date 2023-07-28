@@ -143,8 +143,9 @@
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvNextDueOn"
-                            android:layout_width="wrap_content"
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:gravity="center"
                             android:textSize="14sp" />
 
 

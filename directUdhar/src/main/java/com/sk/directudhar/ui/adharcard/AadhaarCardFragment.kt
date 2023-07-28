@@ -53,6 +53,8 @@ class AadhaarCardFragment : Fragment() {
         aadhaarCardViewModel =
             ViewModelProvider(this, aadhaarCardFactory)[AadhaarCardViewModel::class.java]
 
+        setToolBar()
+
         mBinding.etAdhaarNumber.addTextChangedListener(aadhaarTextWatcher)
 
         aadhaarCardViewModel.getAadhaarResult().observe(activitySDk) { result ->
@@ -98,6 +100,10 @@ class AadhaarCardFragment : Fragment() {
         mBinding.btnVerifyAadhaar.setOnClickListener {
             aadhaarCardViewModel.validateAadhaar(mBinding.etAdhaarNumber.text.toString(), mBinding.cbTermsOfUse.isChecked)
         }
+    }
+
+    private fun setToolBar() {
+        activitySDk.ivDateFilterToolbar.visibility = View.GONE
     }
 
     private val aadhaarTextWatcher = object : TextWatcher {

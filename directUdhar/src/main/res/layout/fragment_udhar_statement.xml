@@ -16,21 +16,44 @@
             app:tabMode="fixed"
             />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rvUdharStatement"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="visible"
-            android:layout_marginBottom="16dp"
-            />
+            android:layout_height="match_parent">
 
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/tvDataNotFound"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Data not Found"
-            android:visibility="gone"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rvUdharStatement"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:paddingBottom="72dp"
+                />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnDownload"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/bg_squre_btn_corner"
+                android:gravity="center"
+                android:layout_marginHorizontal="16dp"
+                android:maxLines="1"
+                android:paddingHorizontal="16dp"
+                android:text="Download"
+                android:textAllCaps="false"
+                android:textColor="@color/white" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvDataNotFound"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="Data not Found"
+                android:visibility="gone"/>
+
+        </RelativeLayout>
+
 
     </LinearLayout>
 

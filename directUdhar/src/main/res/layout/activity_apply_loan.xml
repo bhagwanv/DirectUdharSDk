@@ -11,7 +11,18 @@
         android:layout_height="wrap_content"
         android:background="@color/mobikwik_blue"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" >
+
+
+        <ImageView
+            android:id="@+id/ivDateFilter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/baseline_date_range_24"
+            android:layout_gravity="end"
+            android:layout_marginHorizontal="16dp"
+            android:layout_centerVertical="true" />
+    </androidx.appcompat.widget.Toolbar>
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/nav_host_fragment"

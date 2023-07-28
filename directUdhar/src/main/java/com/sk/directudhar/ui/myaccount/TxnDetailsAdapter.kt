@@ -8,7 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sk.directudhar.R
 import com.sk.directudhar.utils.Utils
 
-class TxnDetailsAdapter(private val items: ArrayList<UdharStatementModel>) : RecyclerView.Adapter<TxnDetailsAdapter.ViewHolder>() {
+class TxnDetailsAdapter(private val items: ArrayList<UdharStatementModel>) :
+    RecyclerView.Adapter<TxnDetailsAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val date: TextView = itemView.findViewById(R.id.tvDate)
@@ -19,17 +20,22 @@ class TxnDetailsAdapter(private val items: ArrayList<UdharStatementModel>) : Rec
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.txn_details_items, parent, false)
+        val itemView =
+            LayoutInflater.from(parent.context).inflate(R.layout.txn_details_items, parent, false)
         return ViewHolder(itemView)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = items[position]
-        holder.date.text = Utils.simpleDateFormate(item.TransactionDate!!, "dd MMMM yyyy")
-        holder.txnId.text = item.TrasanctionId
+        holder.date.text = Utils.simpleDateFormate(
+            item.transactionDate!!,
+            "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "dd MMMM yyyy"
+        )
+        holder.txnId.text = item.transactionId
         holder.status.text = item.status
-        holder.dueAmount.text = item.DueAmount.toString()
-        holder.dueDate.text = item.DueDate
+        holder.dueAmount.text = item.dueAmount.toString()
+        holder.dueDate.text = Utils.simpleDateFormate(item.dueDate!!, "yyyy-MM-dd'T'HH:mm:ss.SSS", "dd MMMM yyyy")
     }
 
     override fun getItemCount(): Int {

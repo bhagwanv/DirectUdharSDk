@@ -37,7 +37,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
 
     lateinit var applyLoanViewModel: ApplyLoanViewModel
 
-    lateinit var checkoutReasonBottomDialog: BottomSheetDialog
+    lateinit var proceedBottomDialog: BottomSheetDialog
 
     @Inject
     lateinit var applyLoanFactory: ApplyLoanFactory
@@ -214,14 +214,14 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     }
 
     private fun processDialog() {
-        checkoutReasonBottomDialog = BottomSheetDialog(activitySDk, R.style.Theme_Design_BottomSheetDialog)
+        proceedBottomDialog = BottomSheetDialog(activitySDk, R.style.Theme_Design_BottomSheetDialog)
         val mDialogCheckOutReasonBinding: DialogPocessBinding = DataBindingUtil.inflate(layoutInflater, R.layout.dialog_pocess, null, false)
-        checkoutReasonBottomDialog.setContentView(mDialogCheckOutReasonBinding.root)
+        proceedBottomDialog.setContentView(mDialogCheckOutReasonBinding.root)
         mDialogCheckOutReasonBinding.processPolicy.text=Utils.PROCESS_TEXT
-        checkoutReasonBottomDialog.show()
+        proceedBottomDialog.show()
 
         mDialogCheckOutReasonBinding.btProcess.setOnClickListener {
-            checkoutReasonBottomDialog.dismiss()
+            proceedBottomDialog.dismiss()
            applyLoanViewModel.postFromData(ApplyLoanRequestModel(
                mBinding.EtFullName.text.toString().trim(),
                mBinding.etBusinessName.text.toString().trim(),
@@ -241,7 +241,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         }
 
         mDialogCheckOutReasonBinding.imClose.setOnClickListener {
-            checkoutReasonBottomDialog.dismiss()
+            proceedBottomDialog.dismiss()
         }
     }
 

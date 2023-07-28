@@ -3,19 +3,19 @@ package com.sk.directudhar.ui.myaccount
 import com.google.gson.annotations.SerializedName
 
 data class MyAccountDetailsModel(
-    @SerializedName("LeadMasterId") var LeadMasterId: Int? = null,
-    @SerializedName("AccountId") var AccountId: Int? = null,
-    @SerializedName("AccountNo") var AccountNo: String? = null,
-    @SerializedName("TotalUdharLimit") var TotalUdharLimit: Int? = null,
-    @SerializedName("AvailableUdharLimit") var AvailableUdharLimit: Int? = null,
-    @SerializedName("Outstanding") var Outstanding: Int? = null,
-    @SerializedName("NextDueAmount") var NextDueAmount: Int? = null,
-    @SerializedName("TotalOverDueAmt") var TotalOverDueAmt: Int? = null,
-    @SerializedName("NextDueDate") var NextDueDate: String? = null,
-    @SerializedName("CreatedDate") var CreatedDate: String? = null,
-    @SerializedName("IsActive") var IsActive: Boolean? = null,
-    @SerializedName("LeadNo") var LeadNo: String? = null,
-    @SerializedName("Name") var Name: String? = null,
-    @SerializedName("MobileNo") var MobileNo: String? = null,
-    @SerializedName("UpdatedDate") var UpdatedDate: String? = null
+    @SerializedName("LeadMasterId") var leadMasterId: Int? = null,
+    @SerializedName("AccountId") var accountId: Int? = null,
+    @SerializedName("AccountNo") var accountNo: String? = null,
+    @SerializedName("TotalUdharLimit") var totalUdharLimit: Double? = null,
+    @SerializedName("AvailableUdharLimit") var availableUdharLimit: Double? = null,
+    @SerializedName("Outstanding") var outstanding: Double? = null,
+    @SerializedName("NextDueAmount") var nextDueAmount: Double? = null,
+    @SerializedName("TotalOverDueAmt") var totalOverDueAmt: Double? = null,
+    @SerializedName("NextDueDate") var nextDueDate: String? = null,
+    @SerializedName("CreatedDate") var createdDate: String? = null,
+    @SerializedName("IsActive") var isActive: Boolean? = null,
+    @SerializedName("LeadNo") var leadNo: String? = null,
+    @SerializedName("Name") var name: String? = null,
+    @SerializedName("MobileNo") var mobileNo: String? = null,
+    @SerializedName("UpdatedDate") var updatedDate: String? = null
 )

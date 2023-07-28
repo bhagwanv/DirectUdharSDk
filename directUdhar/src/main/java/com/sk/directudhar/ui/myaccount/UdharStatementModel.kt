@@ -3,13 +3,13 @@ package com.sk.directudhar.ui.myaccount
 import com.google.gson.annotations.SerializedName
 
 data class UdharStatementModel(
-    @SerializedName("DueDate") var DueDate: String? = null,
-    @SerializedName("TransactionDate") var TransactionDate: String? = null,
-    @SerializedName("TxnAmount") var TxnAmount: Double? = null,
-    @SerializedName("DueAmount") var DueAmount: Double? = null,
-    @SerializedName("TrasanctionId") var TrasanctionId: String? = null,
+    @SerializedName("DueDate") var dueDate: String? = null,
+    @SerializedName("TransactionDate") var transactionDate: String? = null,
+    @SerializedName("TxnAmount") var txnAmount: Double? = null,
+    @SerializedName("DueAmount") var dueAmount: Double? = null,
+    @SerializedName("TrasanctionId") var transactionId: String? = null,
     @SerializedName("status") var status: String? = null,
-    @SerializedName("PaidAmount") var PaidAmount: Int? = null,
-    @SerializedName("PaidDate") var PaidDate: String? = null,
-    @SerializedName("IsUPIEnable") var IsUPIEnable: Boolean? = null
+    @SerializedName("PaidAmount") var paidAmount: Double? = null,
+    @SerializedName("PaidDate") var paidDate: String? = null,
+    @SerializedName("IsUPIEnable") var isUPIEnable: Boolean? = null
 )

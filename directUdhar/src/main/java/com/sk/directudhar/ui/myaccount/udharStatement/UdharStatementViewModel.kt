@@ -22,11 +22,45 @@ class UdharStatementViewModel @Inject constructor(private val repository: UdharS
     val getUdharStatementResponse: LiveData<NetworkResult<ArrayList<UdharStatementModel>>> =
         _getUdharStatementResponse
 
+    private var _downloadReportResponse =
+        MutableLiveData<NetworkResult<LedgerReportResponseModel>>()
+    val downloadReportResponse: LiveData<NetworkResult<LedgerReportResponseModel>> =
+        _downloadReportResponse
+
+    private var _transactionDetailResponse =
+        MutableLiveData<NetworkResult<ArrayList<TransactionDetailResponseModel>>>()
+    val transactionDetailResponse: LiveData<NetworkResult<ArrayList<TransactionDetailResponseModel>>> =
+        _transactionDetailResponse
+
     fun getUdharStatement(accountId: Long, flag: Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                repository.getUdharStatement(accountId, flag).collect() {
+                repository.getUdharStatement(accountId, flag).collect {
                     _getUdharStatementResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun downloadReport(downloadLedgerReportResquestModel: DownloadLedgerReportResquestModel) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.downloadReport(downloadLedgerReportResquestModel).collect {
+                    _downloadReportResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun getTransactionDetail(transactionId: String) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.getTransactionDetail(transactionId).collect {
+                    _transactionDetailResponse.postValue(it)
                 }
             }
         } else {

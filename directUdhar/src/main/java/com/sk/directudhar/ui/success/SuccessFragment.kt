@@ -87,7 +87,7 @@ class SuccessFragment:Fragment() {
                         mBinding.tvProcessingFee.setText("₹ "+it.data.ProcessingFee.toString())
                         mBinding.tvGST.setText("₹ "+it.data.GSTAmount.toString())
                         mBinding.tvDate.setText(it.data.CreatedDate)
-                        mBinding.tvDate.setText("Applied Date: "+ Utils.simpleDateFormate(it.data.CreatedDate, "dd MMM yyyy HH:mm a"))
+                        mBinding.tvDate.setText("Applied Date: "+ Utils.simpleDateFormate(it.data.CreatedDate,"yyyy-MM-dd'T'HH:mm:ss.SSS", "dd MMM yyyy HH:mm a"))
                         mBinding.tvConvenienceFee.setText("Convenience Fee "+it.data.ConvenionFeeRate.toString()+" % will be Charge on every transaction")
                     }
                 }
