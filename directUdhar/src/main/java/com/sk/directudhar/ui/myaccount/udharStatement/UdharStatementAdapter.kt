@@ -5,16 +5,18 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
-import android.widget.Toast
 import androidx.appcompat.widget.AppCompatButton
 import androidx.cardview.widget.CardView
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.RecyclerView
-import com.sk.directudhar.MyApplication
 import com.sk.directudhar.R
 import com.sk.directudhar.ui.myaccount.UdharStatementModel
 import com.sk.directudhar.utils.Utils
 
-class UdharStatementAdapter(private val items: ArrayList<UdharStatementModel>, private val onButtonClick: (itemId: UdharStatementModel) -> Unit) : RecyclerView.Adapter<UdharStatementAdapter.ViewHolder>() {
+class UdharStatementAdapter(
+    private val items: ArrayList<UdharStatementModel>,
+    private val onButtonClick: (itemId: UdharStatementModel) -> Unit
+) : RecyclerView.Adapter<UdharStatementAdapter.ViewHolder>() {
 
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val cvItem: CardView = itemView.findViewById(R.id.cvItem)
@@ -33,7 +35,8 @@ class UdharStatementAdapter(private val items: ArrayList<UdharStatementModel>, p
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.udhar_statement_items, parent, false)
+        val itemView = LayoutInflater.from(parent.context)
+            .inflate(R.layout.udhar_statement_items, parent, false)
         return ViewHolder(itemView)
     }
 
@@ -42,7 +45,11 @@ class UdharStatementAdapter(private val items: ArrayList<UdharStatementModel>, p
 
         holder.txnId.text = item.transactionId
         holder.status.text = item.status
-        holder.date.text = Utils.simpleDateFormate(item.transactionDate!!,"yyyy-MM-dd'T'HH:mm:ss.SSS", "dd MMMM yyyy")
+        holder.date.text = Utils.simpleDateFormate(
+            item.transactionDate!!,
+            "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "dd MMMM yyyy"
+        )
 
 
         if (item.status == "Paid") {
@@ -50,14 +57,19 @@ class UdharStatementAdapter(private val items: ArrayList<UdharStatementModel>, p
             holder.liDueAmount.visibility = View.GONE
             holder.liDueDate.visibility = View.GONE
             holder.liPaidDate.visibility = View.VISIBLE
-            holder.tvPaidDate.text = Utils.simpleDateFormate(item.paidDate!!,"yyyy-MM-dd'T'HH:mm:ss.SSS", "dd MMMM yyyy")
+            holder.tvPaidDate.text = Utils.simpleDateFormate(
+                item.paidDate!!,
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                "dd MMMM yyyy"
+            )
         } else {
             holder.dueAmount.text = item.dueAmount.toString()
             holder.tvPaidAmount.text = item.paidAmount.toString()
             holder.liDueAmount.visibility = View.VISIBLE
             holder.liDueDate.visibility = View.VISIBLE
             holder.liPaidDate.visibility = View.GONE
-            holder.dueDate.text = Utils.simpleDateFormate(item.dueDate!!,"yyyy-MM-dd'T'HH:mm:ss.SSS", "dd MMMM yyyy")
+            holder.dueDate.text =
+                Utils.simpleDateFormate(item.dueDate!!, "yyyy-MM-dd'T'HH:mm:ss.SSS", "dd MMMM yyyy")
         }
 
         if (item.isUPIEnable!!) {
@@ -67,7 +79,12 @@ class UdharStatementAdapter(private val items: ArrayList<UdharStatementModel>, p
         }
 
         holder.btnPayNow.setOnClickListener {
-            Toast.makeText(MyApplication.context, "CLicked", Toast.LENGTH_SHORT).show()
+            val action =
+                UdharStatementFragmentDirections.actionUdharStatementFragmentToPaymentOptionsFragment(
+                    item.transactionId!!
+                )
+            val navController = Navigation.findNavController(it)
+            navController.navigate(action)
         }
 
         holder.cvItem.setOnClickListener {

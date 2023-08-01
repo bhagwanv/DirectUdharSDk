@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEAgreementBinding
+import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementFragmentDirections
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
@@ -20,7 +21,6 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 class EAgreementFragment : Fragment() {
-
     lateinit var activitySDk: MainActivitySDk
 
     private lateinit var mBinding: FragmentEAgreementBinding
@@ -30,7 +30,7 @@ class EAgreementFragment : Fragment() {
     @Inject
     lateinit var eAgreementFactory: EAgreementFactory
 
-    var mobileNo="9522392801"
+    var mobileNo=""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -76,12 +76,8 @@ class EAgreementFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
 
                     if (it.data != null) {
-                        mBinding.tvTermCondition.settings.javaScriptEnabled =
-                            true // Enable JavaScript if needed
-
-                        // Set a WebViewClient to handle page navigation within the WebView
+                        mBinding.tvTermCondition.settings.javaScriptEnabled = true
                         mBinding.tvTermCondition.webViewClient = WebViewClient()
-
                         mBinding.tvTermCondition.loadDataWithBaseURL(
                             null,
                             it.data.Data,
@@ -96,7 +92,11 @@ class EAgreementFragment : Fragment() {
 
         mBinding.btIAgree.setOnClickListener {
             if (mBinding.cbAuthorize.isChecked){
-                eAgreementViewModel.sendOtp(mobileNo)
+                if (mobileNo.isEmpty()) {
+                    activitySDk.toast("Please Enter Mobile Number")
+                } else {
+                    eAgreementViewModel.sendOtp(mobileNo)
+                }
             }else{
                 activitySDk.toast("Please click checkbox to Agree term & Conditions")
             }
@@ -120,7 +120,10 @@ class EAgreementFragment : Fragment() {
                         if (it.data.Data!=null){
                             val action =
                                 it.data.Data.let { it1 ->
-                                    EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOtpFragment(it1,mobileNo)
+                                    EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOtpFragment(
+                                        it1,
+                                        mobileNo
+                                    )
                                 }
                             findNavController().navigate(action!!)
                         }

@@ -4,4 +4,6 @@
     <string name="total_outstanding_txn_details">"Total Outstanding Txn Details</string>
     <string name="next_due_label">Next Due:</string>
     <string name="txn_amount_label">dssa</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

@@ -32,6 +32,11 @@ class UdharStatementViewModel @Inject constructor(private val repository: UdharS
     val transactionDetailResponse: LiveData<NetworkResult<ArrayList<TransactionDetailResponseModel>>> =
         _transactionDetailResponse
 
+    private var _historyResponse =
+        MutableLiveData<NetworkResult<ArrayList<HistoryResponseModel>>>()
+    val historyResponse: LiveData<NetworkResult<ArrayList<HistoryResponseModel>>> =
+        _historyResponse
+
     fun getUdharStatement(accountId: Long, flag: Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
@@ -61,6 +66,18 @@ class UdharStatementViewModel @Inject constructor(private val repository: UdharS
             viewModelScope.launch {
                 repository.getTransactionDetail(transactionId).collect {
                     _transactionDetailResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun getPaidTransactionHistory(transactionId: String) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.getPaidTransactionHistory(transactionId).collect {
+                    _historyResponse.postValue(it)
                 }
             }
         } else {

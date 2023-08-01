@@ -2,19 +2,19 @@ package com.sk.directudhar.ui.myaccount.udharStatement
 
 import android.app.AlertDialog
 import android.app.DatePickerDialog
-import android.app.Dialog
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.widget.AppCompatButton
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
@@ -26,6 +26,7 @@ import com.google.android.material.tabs.TabLayout
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.DialogDateFilterApplyBinding
+import com.sk.directudhar.databinding.DialogHistoryBinding
 import com.sk.directudhar.databinding.FragmentUdharStatementBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.ui.myaccount.UdharStatementModel
@@ -60,7 +61,7 @@ class UdharStatementFragment : Fragment() {
     private var fromDate = ""
     private var toDate = ""
     private lateinit var transDetail: UdharStatementModel
-
+    private var dialog: AlertDialog? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -77,6 +78,15 @@ class UdharStatementFragment : Fragment() {
         return mBinding.root
     }
 
+    override fun onPause() {
+        super.onPause()
+        dialog?.dismiss()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        dialog?.dismiss()
+    }
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectUdharStatementFragment(this)
@@ -85,7 +95,6 @@ class UdharStatementFragment : Fragment() {
 
         bindWidgetsWithAnEvent()
         setupTabLayout()
-        initRecyclerView()
 
         mBinding.btnDownload.setOnClickListener {
             filterDialog()
@@ -163,17 +172,104 @@ class UdharStatementFragment : Fragment() {
                 }
 
                 is NetworkResult.Success -> {
+                    Log.e("TAG", "initView: dsds12113231", )
                     ProgressDialog.instance!!.dismiss()
                     openTransactionDetailPopup(it.data)
 
                 }
             }
         }
+
+        udharStatementViewModel.historyResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    activitySDk.toast(it.errorMessage)
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    if (it.data.isEmpty()) {
+                        activitySDk.toast("Data Not Found")
+                    } else {
+                        openHistoryBottomsheet(activitySDk, it.data)
+                    }
+                }
+            }
+        }
     }
 
-    private fun openTransactionDetailPopup(data: ArrayList<TransactionDetailResponseModel>) {
-        val customDialog = TransactionDetailDialogFragment(data, transDetail)
-        customDialog.show(parentFragmentManager, "TransactionDetailDialog")
+    private fun openHistoryBottomsheet(
+        mContx: MainActivitySDk,
+        data: ArrayList<HistoryResponseModel>
+    ) {
+        val historyBottomDialog = BottomSheetDialog(mContx, R.style.Theme_Design_BottomSheetDialog)
+        val mHistoryBottomDialogBinding: DialogHistoryBinding =
+            DataBindingUtil.inflate(layoutInflater, R.layout.dialog_history, null, false)
+        historyBottomDialog.setContentView(mHistoryBottomDialogBinding.root)
+        historyBottomDialog.show()
+
+        mHistoryBottomDialogBinding.imClose.setOnClickListener {
+            historyBottomDialog.dismiss()
+        }
+        val adapter = HistoryAdapter(data)
+        mHistoryBottomDialogBinding.rvHistory.layoutManager = LinearLayoutManager(requireContext())
+        mHistoryBottomDialogBinding.rvHistory.adapter = adapter
+    }
+
+    private fun openTransactionDetailPopup(
+        data: ArrayList<TransactionDetailResponseModel>,
+    ) {
+
+        val alertDialogBuilder = AlertDialog.Builder(context)
+        val inflater = LayoutInflater.from(context)
+        val view = inflater.inflate(R.layout.transaction_detail_dialog_layout, null)
+        alertDialogBuilder.setView(view)
+        alertDialogBuilder.setCancelable(true)
+        dialog = alertDialogBuilder.create()
+        dialog?.show()
+
+        val date = view.findViewById<TextView>(R.id.tvDate)
+        val txnId = view.findViewById<TextView>(R.id.tvTxnId)
+        val status = view.findViewById<TextView>(R.id.tvStatus)
+        val dueAmount = view.findViewById<TextView>(R.id.tvDueAmount)
+        val dueDate = view.findViewById<TextView>(R.id.tvDueDate)
+        val btnHistory = view.findViewById<AppCompatButton>(R.id.btnHistory)
+
+        val dialogButton = view.findViewById<ImageView>(R.id.dialogButton)
+        dialogButton.setOnClickListener {
+            dialog?.dismiss()
+        }
+
+        date.text = Utils.simpleDateFormate(
+            transDetail.transactionDate!!,
+            "yyyy-MM-dd'T'HH:mm:ss.SSS",
+            "dd MMMM yyyy"
+        )
+        txnId.text = transDetail.transactionId
+        status.text = transDetail.status
+        dueAmount.text = transDetail.dueAmount.toString()
+        dueDate.text = transDetail.dueDate
+
+        val recyclerView = view.findViewById<RecyclerView>(R.id.rvTransactionDetails)
+        val adapter = TransactionDetailsAdapter(data)
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = adapter
+
+        btnHistory.setOnClickListener {
+            callHistoryApi(transDetail.transactionId)
+        }
+
+    }
+
+    private fun callHistoryApi(
+        transactionId: String?
+    ) {
+        udharStatementViewModel.getPaidTransactionHistory(transactionId!!)
     }
 
     private fun setToolBar(visibleFilterIcon: Boolean) {
@@ -186,15 +282,6 @@ class UdharStatementFragment : Fragment() {
             filterDialog()
         }
     }
-
-    private fun initRecyclerView() {
-        mBinding.rvUdharStatement.layoutManager = LinearLayoutManager(activitySDk)
-        adapter = UdharStatementAdapter(ArrayList()) { itemId ->
-            transactionDetailsApiCall(itemId)
-        }
-        mBinding.rvUdharStatement.adapter = adapter
-    }
-
 
     private fun setupTabLayout() {
         mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Outstanding Txn"), true)
@@ -235,6 +322,7 @@ class UdharStatementFragment : Fragment() {
     }
 
     private fun setRecyclerViewData(data: ArrayList<UdharStatementModel>) {
+        mBinding.rvUdharStatement.layoutManager = LinearLayoutManager(activitySDk)
         adapter = UdharStatementAdapter(data) { itemId ->
             transactionDetailsApiCall(itemId)
         }
@@ -259,6 +347,9 @@ class UdharStatementFragment : Fragment() {
     }
 
     private fun filterDialog() {
+        monthType = 4
+        fromDate = ""
+        toDate = ""
         filterBottomDialog = BottomSheetDialog(activitySDk, R.style.Theme_Design_BottomSheetDialog)
         mFilterBottomDialogBinding =
             DataBindingUtil.inflate(layoutInflater, R.layout.dialog_date_filter_apply, null, false)
@@ -412,46 +503,4 @@ class UdharStatementFragment : Fragment() {
         }
     }
 
-    class TransactionDetailDialogFragment(
-        data: ArrayList<TransactionDetailResponseModel>,
-        transDetail: UdharStatementModel
-    ) : DialogFragment() {
-        private var listData: ArrayList<TransactionDetailResponseModel> = data
-        private var transData: UdharStatementModel = transDetail
-        override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-            val inflater = requireActivity().layoutInflater
-            val view = inflater.inflate(R.layout.transaction_detail_dialog_layout, null)
-
-            val dialogBuilder = AlertDialog.Builder(requireContext())
-            dialogBuilder.setView(view)
-
-            val dialogButton = view.findViewById<ImageView>(R.id.dialogButton)
-            dialogButton.setOnClickListener {
-                dismiss()
-            }
-
-            val date = view.findViewById<TextView>(R.id.tvDate)
-            val txnId = view.findViewById<TextView>(R.id.tvTxnId)
-            val status = view.findViewById<TextView>(R.id.tvStatus)
-            val dueAmount = view.findViewById<TextView>(R.id.tvDueAmount)
-            val dueDate = view.findViewById<TextView>(R.id.tvDueDate)
-
-            date.text = Utils.simpleDateFormate(
-                transData.transactionDate!!,
-                "yyyy-MM-dd'T'HH:mm:ss.SSS",
-                "dd MMMM yyyy"
-            )
-            txnId.text = transData.transactionId
-            status.text = transData.status
-            dueAmount.text = transData.dueAmount.toString()
-            dueDate.text = transData.dueDate
-
-            val recyclerView = view.findViewById<RecyclerView>(R.id.rvTransactionDetails)
-            val adapter = TransactionDetailsAdapter(listData)
-            recyclerView.layoutManager = LinearLayoutManager(requireContext())
-            recyclerView.adapter = adapter
-
-            return dialogBuilder.create()
-        }
-    }
 }

@@ -32,4 +32,12 @@ class UdharStatementRepository @Inject constructor(private val apiServices: APIS
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
+    suspend fun getPaidTransactionHistory(transactionId: String)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.getPaidTransactionHistory(transactionId)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
 }

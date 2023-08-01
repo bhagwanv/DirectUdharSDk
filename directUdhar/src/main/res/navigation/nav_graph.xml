@@ -162,6 +162,11 @@
         <argument
             android:name="accountId"
             app:argType="long" />
+        <action
+            android:id="@+id/action_udharStatementFragment_to_paymentOptionsFragment"
+            app:destination="@id/paymentOptionsFragment"
+            app:popUpTo="@id/udharStatementFragment"
+            app:popUpToInclusive="false"/>
     </fragment>
     <fragment
         android:id="@+id/EAgreementOtpFragment"
@@ -175,5 +180,16 @@
         <argument
             android:name="mobileNo"
             app:argType="string" />
+    </fragment>
+    <fragment
+        android:id="@+id/paymentOptionsFragment"
+        android:name="com.sk.directudhar.ui.myaccount.paymentOptions.PaymentOptionsFragment"
+        android:label="fragment_payment_options"
+        tools:layout="@layout/fragment_payment_options" >
+
+        <argument
+            android:name="TransactionId"
+            app:argType="string" />
+
     </fragment>
 </navigation>

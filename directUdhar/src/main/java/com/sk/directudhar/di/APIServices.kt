@@ -24,6 +24,7 @@ import com.sk.directudhar.ui.mandate.EMandateAddResponseModel
 import com.sk.directudhar.ui.myaccount.MyAccountDetailsModel
 import com.sk.directudhar.ui.myaccount.UdharStatementModel
 import com.sk.directudhar.ui.myaccount.udharStatement.DownloadLedgerReportResquestModel
+import com.sk.directudhar.ui.myaccount.udharStatement.HistoryResponseModel
 import com.sk.directudhar.ui.myaccount.udharStatement.LedgerReportResponseModel
 import com.sk.directudhar.ui.myaccount.udharStatement.TransactionDetailResponseModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
@@ -133,4 +134,7 @@ interface APIServices {
 
     @GET("api/AccountTransaction/TransactionDetail")
     suspend fun getTransactionDetail(@Query("TransactionId") transactionId: String): ArrayList<TransactionDetailResponseModel>
+
+    @GET("api/AccountTransaction/GetPaidTransactionHistory")
+    suspend fun getPaidTransactionHistory(@Query("TransactionId") transactionId: String): ArrayList<HistoryResponseModel>
 }

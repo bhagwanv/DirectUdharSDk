@@ -170,4 +170,21 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btnHistory"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/bg_squre_btn_corner"
+        android:gravity="center"
+        android:layout_marginHorizontal="16dp"
+        android:maxLines="1"
+        android:paddingHorizontal="32dp"
+        android:text="History"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
 </LinearLayout>
