@@ -23,24 +23,21 @@ import org.json.JSONObject
 import javax.inject.Inject
 
 class MyAccountFragment : Fragment() {
+    @Inject
+    lateinit var myAccountFactory: MyAccountFactory
+    @Inject
+    lateinit var dialog: AppDialogClass
 
     lateinit var activitySDk: MainActivitySDk
-    private lateinit var mBinding: FragmentMyAccountBinding
+    private var mBinding: FragmentMyAccountBinding? = null
     private lateinit var myAccountViewModel: MyAccountViewModel
     private var leadMasterId: Long = 0
     private var accountId: Long = 0
     private var flag: Int = 0  //outstanding=1 and Paid =2 ,  Next Due =3
 
-    @Inject
-    lateinit var myAccountFactory: MyAccountFactory
-
-    @Inject
-    lateinit var dialog: AppDialogClass
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
-
     }
 
     override fun onCreateView(
@@ -48,9 +45,11 @@ class MyAccountFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
+        if (mBinding == null) {
         mBinding = FragmentMyAccountBinding.inflate(inflater, container, false)
         initView()
-        return mBinding.root
+        }
+        return mBinding!!.root
     }
 
     private fun initView() {
@@ -63,24 +62,25 @@ class MyAccountFragment : Fragment() {
             SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!.toLong()
 
         setToolBar()
+        setObserver()
 
-        mBinding.liOutStanding.setOnClickListener {
+        mBinding!!.liOutStanding.setOnClickListener {
             flag = 1
-            mBinding.tvTxnDetailTitle.text = getString(R.string.total_outstanding_txn_details)
+            mBinding!!.tvTxnDetailTitle.text = getString(R.string.total_outstanding_txn_details)
             myAccountViewModel.getUdharStatement(accountId, flag)
         }
 
-        mBinding.liNextDue.setOnClickListener {
+        mBinding!!.liNextDue.setOnClickListener {
             flag = 3
-            mBinding.tvTxnDetailTitle.text = getString(R.string.next_due_txn_details)
+            mBinding!!.tvTxnDetailTitle.text = getString(R.string.next_due_txn_details)
             myAccountViewModel.getUdharStatement(accountId, flag)
         }
 
-        mBinding.btnUpgrade.setOnClickListener {
+        mBinding!!.btnUpgrade.setOnClickListener {
             myAccountViewModel.creditLimitRequest(leadMasterId)
         }
 
-        mBinding.btnViewStatement.setOnClickListener {
+        mBinding!!.btnViewStatement.setOnClickListener {
             val action =
                 MyAccountFragmentDirections.actionMyAccountFragmentToUdharStatementFragment(
                     accountId
@@ -88,6 +88,11 @@ class MyAccountFragment : Fragment() {
             findNavController().navigate(action)
         }
 
+        myAccountViewModel.getLoanAccountDetail(leadMasterId)
+
+    }
+
+    private fun setObserver() {
         myAccountViewModel.myAccountDetailsModelResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -151,8 +156,6 @@ class MyAccountFragment : Fragment() {
                 }
             }
         }
-        myAccountViewModel.getLoanAccountDetail(leadMasterId)
-
     }
 
     private fun setToolBar() {
@@ -160,10 +163,10 @@ class MyAccountFragment : Fragment() {
     }
 
     private fun initRecyclerViewAdapter(data: ArrayList<UdharStatementModel>) {
-        mBinding.liTxnDueDetails.visibility = View.VISIBLE
-        mBinding.rvTxnDetails.layoutManager = LinearLayoutManager(activitySDk)
+        mBinding!!.liTxnDueDetails.visibility = View.VISIBLE
+        mBinding!!.rvTxnDetails.layoutManager = LinearLayoutManager(activitySDk)
         val adapter = TxnDetailsAdapter(data)
-        mBinding.rvTxnDetails.adapter = adapter
+        mBinding!!.rvTxnDetails.adapter = adapter
     }
 
     private fun setUI(data: MyAccountDetailsModel) {
@@ -171,30 +174,30 @@ class MyAccountFragment : Fragment() {
             accountId = data.accountId!!.toLong()
         }
         if (data.accountNo != null) {
-            mBinding.tvLoanAccountNumber.text = data.accountNo.toString()
+            mBinding!!.tvLoanAccountNumber.text = data.accountNo.toString()
         }
         if (data.totalUdharLimit != null) {
-            mBinding.tvTotalUdhaLimit.text = data.totalUdharLimit.toString()
+            mBinding!!.tvTotalUdhaLimit.text = data.totalUdharLimit.toString()
         }
         if (data.availableUdharLimit != null) {
-            mBinding.tvAvailableUdharLimit.text = data.availableUdharLimit.toString()
+            mBinding!!.tvAvailableUdharLimit.text = data.availableUdharLimit.toString()
         }
         if (data.outstanding != null) {
-            mBinding.tvTotalOutStanding.text = data.outstanding.toString()
+            mBinding!!.tvTotalOutStanding.text = data.outstanding.toString()
         }
         if (data.nextDueAmount != null) {
             if (data.nextDueDate != null) {
                 val dueDate = Utils.simpleDateFormate(data.nextDueDate!!,"yyyy-MM-dd'T'HH:mm:ss.SSS","dd MMMM yyyy" )
                 val textToShow = "$dueDate \n${data.nextDueAmount}"
-                mBinding.tvNextDueOn.text = textToShow
+                mBinding!!.tvNextDueOn.text = textToShow
             } else {
-                mBinding.tvNextDueOn.text = data.nextDueAmount.toString()
+                mBinding!!.tvNextDueOn.text = data.nextDueAmount.toString()
             }
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        mBinding.unbind()
+        mBinding!!.unbind()
     }
 }

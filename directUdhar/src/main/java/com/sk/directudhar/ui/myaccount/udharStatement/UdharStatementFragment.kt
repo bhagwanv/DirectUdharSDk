@@ -6,7 +6,6 @@ import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -46,16 +45,11 @@ class UdharStatementFragment : Fragment() {
     lateinit var udharStatementFactory: UdharStatementFactory
 
     lateinit var activitySDk: MainActivitySDk
-
-    private lateinit var mBinding: FragmentUdharStatementBinding
-
+    private var mBinding: FragmentUdharStatementBinding? = null
     private lateinit var udharStatementViewModel: UdharStatementViewModel
-
     private val args: UdharStatementFragmentArgs by navArgs()
-
     private lateinit var adapter: UdharStatementAdapter
     private lateinit var filterBottomDialog: BottomSheetDialog
-
     private lateinit var mFilterBottomDialogBinding: DialogDateFilterApplyBinding
     private var monthType: Int = 4
     private var fromDate = ""
@@ -73,32 +67,28 @@ class UdharStatementFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentUdharStatementBinding.inflate(inflater, container, false)
-        initView()
-        return mBinding.root
+        if (mBinding == null) {
+            mBinding = FragmentUdharStatementBinding.inflate(inflater, container, false)
+            initView()
+        }
+        return mBinding!!.root
     }
 
-    override fun onPause() {
-        super.onPause()
-        dialog?.dismiss()
-    }
-
-    override fun onResume() {
-        super.onResume()
-        dialog?.dismiss()
-    }
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectUdharStatementFragment(this)
         udharStatementViewModel =
             ViewModelProvider(this, udharStatementFactory)[UdharStatementViewModel::class.java]
-
         bindWidgetsWithAnEvent()
         setupTabLayout()
+        setObserver()
 
-        mBinding.btnDownload.setOnClickListener {
+        mBinding!!.btnDownload.setOnClickListener {
             filterDialog()
         }
+    }
+
+    private fun setObserver() {
         udharStatementViewModel.getUdharStatementResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -108,8 +98,8 @@ class UdharStatementFragment : Fragment() {
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     activitySDk.toast(it.errorMessage)
-                    mBinding.rvUdharStatement.visibility = View.GONE
-                    mBinding.tvDataNotFound.visibility = View.VISIBLE
+                    mBinding!!.rvUdharStatement.visibility = View.GONE
+                    mBinding!!.tvDataNotFound.visibility = View.VISIBLE
                 }
 
                 is NetworkResult.Success -> {
@@ -172,10 +162,8 @@ class UdharStatementFragment : Fragment() {
                 }
 
                 is NetworkResult.Success -> {
-                    Log.e("TAG", "initView: dsds12113231", )
                     ProgressDialog.instance!!.dismiss()
                     openTransactionDetailPopup(it.data)
-
                 }
             }
         }
@@ -196,14 +184,14 @@ class UdharStatementFragment : Fragment() {
                     if (it.data.isEmpty()) {
                         activitySDk.toast("Data Not Found")
                     } else {
-                        openHistoryBottomsheet(activitySDk, it.data)
+                        openHistoryBottomSheet(activitySDk, it.data)
                     }
                 }
             }
         }
     }
 
-    private fun openHistoryBottomsheet(
+    private fun openHistoryBottomSheet(
         mContx: MainActivitySDk,
         data: ArrayList<HistoryResponseModel>
     ) {
@@ -284,12 +272,12 @@ class UdharStatementFragment : Fragment() {
     }
 
     private fun setupTabLayout() {
-        mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Outstanding Txn"), true)
-        mBinding.tabs.addTab(mBinding.tabs.newTab().setText("Paid Txn"))
+        mBinding!!.tabs.addTab(mBinding!!.tabs.newTab().setText("Outstanding Txn"), true)
+        mBinding!!.tabs.addTab(mBinding!!.tabs.newTab().setText("Paid Txn"))
     }
 
     private fun bindWidgetsWithAnEvent() {
-        mBinding.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        mBinding!!.tabs.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabReselected(p0: TabLayout.Tab?) {
             }
 
@@ -322,21 +310,21 @@ class UdharStatementFragment : Fragment() {
     }
 
     private fun setRecyclerViewData(data: ArrayList<UdharStatementModel>) {
-        mBinding.rvUdharStatement.layoutManager = LinearLayoutManager(activitySDk)
+        mBinding!!.rvUdharStatement.layoutManager = LinearLayoutManager(activitySDk)
         adapter = UdharStatementAdapter(data) { itemId ->
             transactionDetailsApiCall(itemId)
         }
-        mBinding.rvUdharStatement.adapter = adapter
+        mBinding!!.rvUdharStatement.adapter = adapter
         if (data.size > 0) {
             setToolBar(true)
-            mBinding.rvUdharStatement.visibility = View.VISIBLE
-            mBinding.tvDataNotFound.visibility = View.GONE
-            mBinding.btnDownload.visibility = View.VISIBLE
+            mBinding!!.rvUdharStatement.visibility = View.VISIBLE
+            mBinding!!.tvDataNotFound.visibility = View.GONE
+            mBinding!!.btnDownload.visibility = View.VISIBLE
         } else {
             setToolBar(false)
-            mBinding.rvUdharStatement.visibility = View.GONE
-            mBinding.tvDataNotFound.visibility = View.VISIBLE
-            mBinding.btnDownload.visibility = View.GONE
+            mBinding!!.rvUdharStatement.visibility = View.GONE
+            mBinding!!.tvDataNotFound.visibility = View.VISIBLE
+            mBinding!!.btnDownload.visibility = View.GONE
 
         }
     }
@@ -502,5 +490,8 @@ class UdharStatementFragment : Fragment() {
             }
         }
     }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        mBinding!!.unbind()
+    }
 }

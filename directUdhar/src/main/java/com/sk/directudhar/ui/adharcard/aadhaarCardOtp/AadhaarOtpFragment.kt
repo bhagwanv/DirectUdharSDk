@@ -6,7 +6,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -25,7 +24,7 @@ import javax.inject.Inject
 class AadhaarOtpFragment : Fragment() {
 
     private lateinit var activitySDk: MainActivitySDk
-    private lateinit var mBinding: FragmentAadharOtpBinding
+    private var mBinding: FragmentAadharOtpBinding? = null
     private lateinit var aadhaarOtpViewModel: AadhaarOtpViewModel
     private var otp: String = ""
     private val args: AadhaarOtpFragmentArgs by navArgs()
@@ -42,9 +41,11 @@ class AadhaarOtpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentAadharOtpBinding.inflate(inflater, container, false)
-        initView()
-        return mBinding.root
+        if (mBinding == null) {
+            mBinding = FragmentAadharOtpBinding.inflate(inflater, container, false)
+            initView()
+        }
+        return mBinding!!.root
     }
 
     private fun initView() {
@@ -54,7 +55,20 @@ class AadhaarOtpFragment : Fragment() {
             ViewModelProvider(this, aadhaarOtpFactory)[AadhaarOtpViewModel::class.java]
 
         setToolBar()
+        setObserver()
 
+        mBinding!!.btnChangeAadhaarNumber.setOnClickListener {
+            findNavController().popBackStack()
+        }
+
+        mBinding!!.btnNext.setOnClickListener {
+            Log.i("TAG", "get Otp>>> ${mBinding!!.customOTPView.getOTP()}")
+            otp = mBinding!!.customOTPView.getOTP()
+            aadhaarOtpViewModel.validateOtp(otp)
+        }
+    }
+
+    private fun setObserver() {
         aadhaarOtpViewModel.postResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -68,27 +82,16 @@ class AadhaarOtpFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    it.data.Msg?.let { it1 -> activitySDk.toast(it1) }
-                    if (it.data.Result!!) {
-                        activitySDk.toast(it.data.Msg!!)
+                    it.data.Msg.let { it1 -> activitySDk.toast(it1) }
+                    if (it.data.Result) {
+                        activitySDk.toast(it.data.Msg)
                         activitySDk.checkSequenceNo(it.data.Data.SequenceNo)
                     } else {
-                        activitySDk.toast(it.data.Msg!!)
+                        activitySDk.toast(it.data.Msg)
                     }
                 }
             }
         }
-
-        mBinding.btnChangeAadhaarNumber.setOnClickListener {
-            findNavController().popBackStack()
-        }
-
-        mBinding.btnNext.setOnClickListener {
-            Log.i("TAG", "get Otp>>> ${mBinding.customOTPView.getOTP()}")
-            otp = mBinding.customOTPView.getOTP()
-            aadhaarOtpViewModel.validateOtp(otp)
-        }
-
         aadhaarOtpViewModel.getAadhaarResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_OTP_VALIDATE_SUCCESSFULLY)) {
                 aadhaarOtpViewModel.aadharVerification(
@@ -108,5 +111,10 @@ class AadhaarOtpFragment : Fragment() {
 
     private fun setToolBar() {
         activitySDk.ivDateFilterToolbar.visibility = View.GONE
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mBinding!!.unbind()
     }
 }

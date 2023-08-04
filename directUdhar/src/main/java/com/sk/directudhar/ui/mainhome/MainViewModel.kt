@@ -27,29 +27,24 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
     fun callToken(password: String, secretkey: String, apikey: String) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                repository.getToken(password, secretkey, apikey).collect() {
+                repository.getToken(password, secretkey, apikey).collect {
                     _tokenResponse.postValue(it)
                 }
             }
         } else {
             (MyApplication.context)!!.toast("No internet connectivity")
         }
-
     }
 
     fun getAccountInitiateResponse(mobilNumber: String) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                repository.getAccountInitiate(mobilNumber).collect() {
+                repository.getAccountInitiate(mobilNumber).collect {
                     _initiateResponse.postValue(it)
                 }
             }
         } else {
             (MyApplication.context)!!.toast("No internet connectivity")
         }
-
-
     }
-
-
 }

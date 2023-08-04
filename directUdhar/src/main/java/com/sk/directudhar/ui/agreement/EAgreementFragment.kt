@@ -12,7 +12,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEAgreementBinding
-import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementFragmentDirections
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog

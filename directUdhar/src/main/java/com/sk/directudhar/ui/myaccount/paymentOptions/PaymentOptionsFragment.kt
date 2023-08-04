@@ -15,32 +15,35 @@ import javax.inject.Inject
 
 class PaymentOptionsFragment : Fragment() {
 
-    private val args:PaymentOptionsFragmentArgs by navArgs()
     @Inject
     lateinit var udharStatementFactory: UdharStatementFactory
 
+    private val args: PaymentOptionsFragmentArgs by navArgs()
     lateinit var activitySDk: MainActivitySDk
-
-    private lateinit var mBinding: FragmentPaymentOptionsBinding
+    private var mBinding: FragmentPaymentOptionsBinding? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
-
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentPaymentOptionsBinding.inflate(inflater, container, false)
-        initView()
-        return mBinding.root
+        if (mBinding == null) {
+            mBinding = FragmentPaymentOptionsBinding.inflate(inflater, container, false)
+            initView()
+        }
+        return mBinding!!.root
     }
 
     private fun initView() {
         Log.i("TAG", "initView: ${args.transactionId}")
-
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        mBinding!!.unbind()
+    }
 }

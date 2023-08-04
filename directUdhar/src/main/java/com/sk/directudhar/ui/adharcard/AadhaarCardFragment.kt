@@ -8,7 +8,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -25,8 +24,8 @@ import javax.inject.Inject
 class AadhaarCardFragment : Fragment() {
 
     private lateinit var activitySDk: MainActivitySDk
-    private lateinit var mBinding: FragmentAadhaarCardBinding
-    lateinit var aadhaarCardViewModel: AadhaarCardViewModel
+    private var mBinding: FragmentAadhaarCardBinding? = null
+    private lateinit var aadhaarCardViewModel: AadhaarCardViewModel
     var aadharNo:String = ""
 
     @Inject
@@ -42,9 +41,11 @@ class AadhaarCardFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentAadhaarCardBinding.inflate(inflater, container, false)
-        initView()
-        return mBinding.root
+        if (mBinding == null) {
+            mBinding = FragmentAadhaarCardBinding.inflate(inflater, container, false)
+            initView()
+        }
+        return mBinding!!.root
     }
 
     private fun initView() {
@@ -54,8 +55,11 @@ class AadhaarCardFragment : Fragment() {
             ViewModelProvider(this, aadhaarCardFactory)[AadhaarCardViewModel::class.java]
 
         setToolBar()
+        setObserver()
+    }
 
-        mBinding.etAdhaarNumber.addTextChangedListener(aadhaarTextWatcher)
+    private fun setObserver() {
+        mBinding!!.etAdhaarNumber.addTextChangedListener(aadhaarTextWatcher)
 
         aadhaarCardViewModel.getAadhaarResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
@@ -95,10 +99,10 @@ class AadhaarCardFragment : Fragment() {
                 }
             }
         }
-        
 
-        mBinding.btnVerifyAadhaar.setOnClickListener {
-            aadhaarCardViewModel.validateAadhaar(mBinding.etAdhaarNumber.text.toString(), mBinding.cbTermsOfUse.isChecked)
+
+        mBinding!!.btnVerifyAadhaar.setOnClickListener {
+            aadhaarCardViewModel.validateAadhaar(mBinding!!.etAdhaarNumber.text.toString(), mBinding!!.cbTermsOfUse.isChecked)
         }
     }
 
@@ -118,11 +122,16 @@ class AadhaarCardFragment : Fragment() {
         override fun afterTextChanged(s: Editable?) {
             val aadhaarNumber = s.toString().trim()
             if (aadhaarNumber.length < 12) {
-                mBinding.tilAadhaarNumber.error = "Invalid Aadhaar number"
+                mBinding!!.tilAadhaarNumber.error = "Invalid Aadhaar number"
             } else {
-                mBinding.tilAadhaarNumber.error = null
+                mBinding!!.tilAadhaarNumber.error = null
                 aadharNo = aadhaarNumber
             }
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        mBinding!!.unbind()
     }
 }

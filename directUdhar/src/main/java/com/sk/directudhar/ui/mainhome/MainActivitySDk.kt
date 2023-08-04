@@ -31,11 +31,9 @@ class MainActivitySDk : AppCompatActivity() {
     lateinit var mainViewModelFactory: MainViewFactory
 
     lateinit var mainViewModel: MainViewModel
-
     lateinit var mobilNumber: String
-
     lateinit var navHostFragment: NavHostFragment
-    lateinit  var ivDateFilterToolbar: ImageView
+    lateinit var ivDateFilterToolbar: ImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,11 +49,11 @@ class MainActivitySDk : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+        navHostFragment =
+            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        var toolbar:Toolbar = findViewById(R.id.toolbarNew)
+        val toolbar: Toolbar = findViewById(R.id.toolbarNew)
         ivDateFilterToolbar = findViewById(R.id.ivDateFilter)
-
         ivDateFilterToolbar.visibility = View.GONE
 
         setSupportActionBar(toolbar)
@@ -66,8 +64,11 @@ class MainActivitySDk : AppCompatActivity() {
         component.inject(this)
         mainViewModel = ViewModelProvider(this, mainViewModelFactory)[MainViewModel::class.java]
         this.onBackPressedDispatcher.addCallback(this, callback)
-
         mainViewModel.callToken(Utils.CLIENT_CREDENTIALS, Utils.SECRETKEY, Utils.APIKYYE)
+        setObserber()
+    }
+
+    private fun setObserber() {
         mainViewModel.tokenResponse.observe(this) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -113,7 +114,8 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                        checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        //  checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        checkSequenceNo(3)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
@@ -122,16 +124,15 @@ class MainActivitySDk : AppCompatActivity() {
         }
     }
 
-     fun checkSequenceNo(sequenceNo: Int) {
-        val sequence = SequenceEnumClass.from(sequenceNo)
-        when (sequence) {
+    fun checkSequenceNo(sequenceNo: Int) {
+        when (SequenceEnumClass.from(sequenceNo)) {
             SequenceEnumClass.APPLY_LOAN -> navigateViewCall(R.id.ApplyLoanFragment)
             SequenceEnumClass.ADHAR_CARD -> navigateViewCall(R.id.AadhaarFragment)
             SequenceEnumClass.CIBIL_SCORE -> navigateViewCall(R.id.CibilScoreFragment)
             SequenceEnumClass.APPRAVAL_PENDING -> navigateViewCall(R.id.ApprovalPendingFragment)
             SequenceEnumClass.E_AGREEMENT -> navigateViewCall(R.id.EAgreementFragment)
             SequenceEnumClass.E_MANDATE -> navigateViewCall(R.id.EMandateFragment)
-            SequenceEnumClass.SUCCESS -> navigateViewCall( R.id.SuccessFragment)
+            SequenceEnumClass.SUCCESS -> navigateViewCall(R.id.SuccessFragment)
             SequenceEnumClass.PAN_CARD -> navigateViewCall(R.id.PanCardFragment)
             SequenceEnumClass.MY_ACCOUNT -> navigateViewCall(R.id.myAccountFragment)
             else -> {
