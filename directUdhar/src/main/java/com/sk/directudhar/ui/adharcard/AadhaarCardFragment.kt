@@ -8,9 +8,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadhaarCardBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
@@ -26,7 +28,7 @@ class AadhaarCardFragment : Fragment() {
     private lateinit var activitySDk: MainActivitySDk
     private var mBinding: FragmentAadhaarCardBinding? = null
     private lateinit var aadhaarCardViewModel: AadhaarCardViewModel
-    var aadharNo:String = ""
+    var aadharNo: String = ""
 
     @Inject
     lateinit var aadhaarCardFactory: AadhaarCardFactory
@@ -63,10 +65,13 @@ class AadhaarCardFragment : Fragment() {
 
         aadhaarCardViewModel.getAadhaarResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
-                aadhaarCardViewModel.updateAadhaarInfo(UpdateAadhaarInfoRequestModel(
-                    leadMasterId = SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,
-                    aadharNo = aadharNo
-                ))
+                aadhaarCardViewModel.updateAadhaarInfo(
+                    UpdateAadhaarInfoRequestModel(
+                        leadMasterId = SharePrefs.getInstance(activitySDk)
+                            ?.getInt(SharePrefs.LEAD_MASTERID)!!,
+                        aadharNo = aadharNo
+                    )
+                )
             } else {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             }
@@ -90,7 +95,8 @@ class AadhaarCardFragment : Fragment() {
 
                         val action =
                             it.data.DynamicData!!.requestId?.let { it1 ->
-                                AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(aadharNo,
+                                AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
+                                    aadharNo,
                                     it1
                                 )
                             }
@@ -102,7 +108,10 @@ class AadhaarCardFragment : Fragment() {
 
 
         mBinding!!.btnVerifyAadhaar.setOnClickListener {
-            aadhaarCardViewModel.validateAadhaar(mBinding!!.etAdhaarNumber.text.toString(), mBinding!!.cbTermsOfUse.isChecked)
+            aadhaarCardViewModel.validateAadhaar(
+                mBinding!!.etAdhaarNumber.text.toString(),
+                mBinding!!.cbTermsOfUse.isChecked
+            )
         }
     }
 
@@ -122,9 +131,11 @@ class AadhaarCardFragment : Fragment() {
         override fun afterTextChanged(s: Editable?) {
             val aadhaarNumber = s.toString().trim()
             if (aadhaarNumber.length < 12) {
-                mBinding!!.tilAadhaarNumber.error = "Invalid Aadhaar number"
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                mBinding!!.btnVerifyAadhaar.backgroundTintList = tintList
             } else {
-                mBinding!!.tilAadhaarNumber.error = null
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                mBinding!!.btnVerifyAadhaar.backgroundTintList = tintList
                 aadharNo = aadhaarNumber
             }
         }

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#ffffff</color>
-    <color name="colorAccent">#FFFF4500</color>
+    <color name="colorPrimary">#2E58FF</color>
+    <color name="colorPrimaryDark">#2E58FF</color>
+    <color name="colorAccent">#2E58FF</color>
     <color name="target_green">#99ffcc</color>
     <color name="target_pink">#ffcccc</color>
     <!--dark theme-->
@@ -85,4 +85,10 @@
     <color name="linen">#FDECE6</color>
     <!--bucket-->
     <color name="bucket_yellow">#FDB604</color>
+
+
+    <!--new color from figma-->
+    <color name="text_color_black_variant1">#030303</color>
+    <color name="bg_color_gray_variant1">#CACACA</color>
+
 </resources>
