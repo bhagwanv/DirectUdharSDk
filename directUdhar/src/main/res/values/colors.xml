@@ -89,5 +89,6 @@
 
     <!--new color from figma-->
     <color name="text_color_black_variant1">#030303</color>
+    <color name="bg_color_gray_variant1">#CACACA</color>
 
 </resources>

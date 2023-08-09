@@ -53,6 +53,12 @@
                 </LinearLayout>
             </RelativeLayout>
 
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etAdhaarNumber"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="1234 1234 1234"/>
+
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -91,6 +97,7 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bg_squre_btn_corner"
+                android:backgroundTint="@color/bg_color_gray_variant1"
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingHorizontal="16dp"
