@@ -26,7 +26,7 @@ class AadhaarCardFragment : Fragment() {
     private lateinit var activitySDk: MainActivitySDk
     private var mBinding: FragmentAadhaarCardBinding? = null
     private lateinit var aadhaarCardViewModel: AadhaarCardViewModel
-    var aadharNo:String = ""
+    var aadharNo: String = ""
 
     @Inject
     lateinit var aadhaarCardFactory: AadhaarCardFactory
@@ -63,10 +63,13 @@ class AadhaarCardFragment : Fragment() {
 
         aadhaarCardViewModel.getAadhaarResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
-                aadhaarCardViewModel.updateAadhaarInfo(UpdateAadhaarInfoRequestModel(
-                    leadMasterId = SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,
-                    aadharNo = aadharNo
-                ))
+                aadhaarCardViewModel.updateAadhaarInfo(
+                    UpdateAadhaarInfoRequestModel(
+                        leadMasterId = SharePrefs.getInstance(activitySDk)
+                            ?.getInt(SharePrefs.LEAD_MASTERID)!!,
+                        aadharNo = aadharNo
+                    )
+                )
             } else {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             }
@@ -90,7 +93,8 @@ class AadhaarCardFragment : Fragment() {
 
                         val action =
                             it.data.DynamicData!!.requestId?.let { it1 ->
-                                AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(aadharNo,
+                                AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
+                                    aadharNo,
                                     it1
                                 )
                             }
@@ -102,7 +106,10 @@ class AadhaarCardFragment : Fragment() {
 
 
         mBinding!!.btnVerifyAadhaar.setOnClickListener {
-            aadhaarCardViewModel.validateAadhaar(mBinding!!.etAdhaarNumber.text.toString(), mBinding!!.cbTermsOfUse.isChecked)
+            aadhaarCardViewModel.validateAadhaar(
+                mBinding!!.etAdhaarNumber.text.toString(),
+                mBinding!!.cbTermsOfUse.isChecked
+            )
         }
     }
 
