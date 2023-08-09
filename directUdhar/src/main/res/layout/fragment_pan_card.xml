@@ -10,135 +10,219 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="32dp">
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <!-- <com.google.android.material.textfield.TextInputLayout
+                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="32dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginEnd="32dp"
+                 android:hint="Name(As On PAN)">
+
+                 <com.google.android.material.textfield.TextInputEditText
+                     android:id="@+id/etNameAsPAN"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:imeOptions="actionNext"
+                     android:inputType="textCapSentences|text"
+                     android:minLines="1" />
+
+             </com.google.android.material.textfield.TextInputLayout>
+
+             <com.google.android.material.textfield.TextInputLayout
+                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="32dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginEnd="32dp"
+                 android:hint="Email Id">
+
+                 <com.google.android.material.textfield.TextInputEditText
+                     android:id="@+id/etEmailID"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:imeOptions="actionNext"
+                     android:inputType="textEmailAddress"
+                     android:minLines="1" />
+
+             </com.google.android.material.textfield.TextInputLayout>
+
+             <com.google.android.material.textfield.TextInputLayout
+                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="32dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginEnd="32dp"
+                 android:hint="PAN Number">
+
+                 <com.google.android.material.textfield.TextInputEditText
+                     android:id="@+id/etPanNumber"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:imeOptions="actionNext"
+                     android:inputType="textCapCharacters"
+                     android:minLines="1"
+                     android:maxLength="10" />
+
+             </com.google.android.material.textfield.TextInputLayout>
+
+             <RelativeLayout
+                 android:id="@+id/rlCamerImage"
+                 android:layout_width="match_parent"
+                 android:layout_height="200dp"
+                 android:background="@drawable/dotted_border_pancard"
+                 android:layout_marginStart="40dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginEnd="40dp">
+
+                 <ImageView
+                     android:id="@+id/ivCameraImage"
+                     android:layout_width="50dp"
+                     android:layout_height="50dp"
+                     android:background="@drawable/baseline_camera_alt_24"
+                     android:layout_centerInParent="true"
+                     android:visibility="visible"/>
+
+                 <TextView
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:text="Pan Card Front Image"
+                     android:layout_below="@+id/ivCameraImage"
+                     android:layout_centerInParent="true"
+                     android:layout_marginTop="30dp"
+                     android:textSize="20dp"
+                     android:textColor="#94F44336"
+                     android:visibility="visible"/>
+
+                 <ImageView
+                     android:id="@+id/ivPanCardFrontImage"
+                     android:layout_width="match_parent"
+                     android:layout_height="match_parent"
+                     android:layout_centerInParent="true"
+                     android:layout_marginStart="-8dp"
+                     android:layout_marginTop="-8dp"
+                     android:layout_marginEnd="-8dp"
+                     android:layout_marginBottom="-8dp"
+                     android:scaleType="fitXY" />
+
+             </RelativeLayout>
+
+             <CheckBox
+                 android:id="@+id/cbAuthorize"
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="40dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginEnd="40dp"
+                 android:text="I authorize"/>
+
+             <com.google.android.material.textfield.TextInputLayout
+                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:layout_marginStart="32dp"
+                 android:layout_marginTop="10dp"
+                 android:layout_marginEnd="32dp"
+                 android:hint="Refrral Code (Optional)">
+
+                 <com.google.android.material.textfield.TextInputEditText
+                     android:id="@+id/etRefrralCode"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:imeOptions="actionNext"
+                     android:inputType="number"
+                     android:minLines="1"
+                     android:maxLength="6"/>
+
+             </com.google.android.material.textfield.TextInputLayout>
+
+             <androidx.appcompat.widget.AppCompatButton
+                 android:id="@+id/btSubmit"
+                 android:layout_width="match_parent"
+                 android:layout_height="48dp"
+                 android:layout_gravity="center_horizontal"
+                 android:gravity="center"
+                 android:layout_marginStart="32dp"
+                 android:layout_marginTop="30dp"
+                 android:layout_marginEnd="32dp"
+                 android:layout_marginBottom="30dp"
+                 android:background="@drawable/bg_squre_btn_corner"
+                 android:maxLines="1"
+                 android:text="Submit"
+                 android:textAllCaps="false"
+                 android:textColor="@color/white" />-->
+
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="32dp"
-                android:hint="Name(As On PAN)">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etNameAsPAN"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapSentences|text"
-                    android:minLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="32dp"
-                android:hint="Email Id">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etEmailID"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="textEmailAddress"
-                    android:minLines="1" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="32dp"
-                android:hint="PAN Number">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etPanNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="textCapCharacters"
-                    android:minLines="1"
-                    android:maxLength="10" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <RelativeLayout
-                android:id="@+id/rlCamerImage"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"
-                android:background="@drawable/dotted_border_pancard"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="40dp">
+                android:orientation="horizontal">
 
                 <ImageView
-                    android:id="@+id/ivCameraImage"
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:background="@drawable/baseline_camera_alt_24"
-                    android:layout_centerInParent="true"
-                    android:visibility="visible"/>
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:background="@drawable/baseline_insert_photo_24" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pan Card Front Image"
-                    android:layout_below="@+id/ivCameraImage"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="30dp"
-                    android:textSize="20dp"
-                    android:textColor="#94F44336"
-                    android:visibility="visible"/>
-
-                <ImageView
-                    android:id="@+id/ivPanCardFrontImage"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_centerInParent="true"
-                    android:layout_marginStart="-8dp"
-                    android:layout_marginTop="-8dp"
-                    android:layout_marginEnd="-8dp"
-                    android:layout_marginBottom="-8dp"
-                    android:scaleType="fitXY" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginStart="30dp">
 
-            </RelativeLayout>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Enter your PAN" />
 
-            <CheckBox
-                android:id="@+id/cbAuthorize"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="40dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="40dp"
-                android:text="I authorize"/>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Verify the PAN number and name against the UIDAI"
+                        android:layout_marginTop="10dp"/>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+            <androidx.cardview.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="32dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginEnd="32dp"
-                android:hint="Refrral Code (Optional)">
+                app:cardCornerRadius="10dp"
+                app:cardElevation="2dp"
+                android:layout_marginVertical="16dp"
+                android:layout_marginHorizontal="4dp">
 
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/etRefrralCode"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:imeOptions="actionNext"
-                    android:inputType="number"
-                    android:minLines="1"
-                    android:maxLength="6"/>
+                    android:padding="10dp"
+                    android:orientation="vertical">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Enter your PAN" />
+
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/background_edittext"
+                        android:hint="sdfsgahkjfdksaf" />
+
+
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
 
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btSubmit"

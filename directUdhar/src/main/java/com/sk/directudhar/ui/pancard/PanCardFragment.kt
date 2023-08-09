@@ -87,11 +87,11 @@ class PanCardFragment : Fragment(), OnClickListener {
         panCardViewModel = ViewModelProvider(this, panCardFactory)[PanCardViewModel::class.java]
         mBinding.btSubmit.setOnClickListener(this)
 
-        mBinding.rlCamerImage.setOnClickListener {
+       /* mBinding.rlCamerImage.setOnClickListener {
             requestWritePermission()
 
-        }
-        panCardViewModel.panCardResponse.observe(activitySDk) {
+        }*/
+        /*panCardViewModel.panCardResponse.observe(activitySDk) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -115,7 +115,7 @@ class PanCardFragment : Fragment(), OnClickListener {
                     }
                 }
             }
-        }
+        }*/
 
         cameraLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
@@ -138,7 +138,7 @@ class PanCardFragment : Fragment(), OnClickListener {
                     }
                 }
             }
-        panCardViewModel.getLogInResult().observe(activitySDk, Observer { result ->
+     /*   panCardViewModel.getLogInResult().observe(activitySDk, Observer { result ->
             if (!result.equals(Utils.SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             } else {
@@ -151,7 +151,7 @@ class PanCardFragment : Fragment(), OnClickListener {
                 )
                 panCardViewModel.updatePanInfo(model)
             }
-        })
+        })*/
 
         panCardViewModel.updatePanInfoResponse.observe(activitySDk) {
             when (it) {
@@ -268,7 +268,7 @@ class PanCardFragment : Fragment(), OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btSubmit -> {
-                panCardViewModel.performValidation(
+               /* panCardViewModel.performValidation(
                     PanCardRequestModel(
                         mBinding.etNameAsPAN.text.toString().trim(),
                         mBinding.etEmailID.text.toString().trim(),
@@ -277,7 +277,7 @@ class PanCardFragment : Fragment(), OnClickListener {
                         imageUrl,
                         mBinding.cbAuthorize.isChecked
                     )
-                )
+                )*/
             }
         }
     }
