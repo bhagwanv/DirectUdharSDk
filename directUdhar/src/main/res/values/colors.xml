@@ -92,5 +92,8 @@
     <color name="bg_color_white">#ffffff</color>
     <color name="bg_color_gray_variant1">#CACACA</color>
     <color name="bg_color_gray_variant2">#F6F5FA</color>
+    <color name="text_color_gray_variant2">#858585</color>
+    <color name="bg_color_blue_variant2">#E5EBFF</color>
+    <color name="text_color_greeb_variant1">#29B95A</color>
 
 </resources>

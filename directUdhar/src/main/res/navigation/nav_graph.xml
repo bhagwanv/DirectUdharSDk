@@ -33,7 +33,9 @@
         android:name="com.sk.directudhar.ui.applyloan.ApplyLoanFragment"
         android:label="Apply Loan"
         tools:layout="@layout/fragment_apply_loan">
-        <action android:id="@+id/action_mainFragment_to_ApplyLoanFragment" />
+        <action
+            android:id="@+id/action_ApplyLoanFragment_to_BusinessDetailsFragment"
+            app:destination="@id/businessDetailsFragment" />
     </fragment>
 
     <fragment
@@ -228,4 +230,9 @@
         android:name="com.sk.directudhar.ui.kyc.KycFailedFragment"
         android:label="fragment_kyc_failed"
         tools:layout="@layout/fragment_kyc_failed" />
+    <fragment
+        android:id="@+id/businessDetailsFragment"
+        android:name="com.sk.directudhar.ui.applyloan.BusinessDetailsFragment"
+        android:label="Business Details"
+        tools:layout="@layout/fragment_business_details" />
 </navigation>
