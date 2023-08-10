@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEAgreementBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
@@ -89,8 +90,18 @@ class EAgreementFragment : Fragment() {
             }
         }
 
+        mBinding.cbAuthorize.setOnClickListener {
+            if(mBinding.cbAuthorize.isChecked){
+                mBinding.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
+            }else{
+                mBinding.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
+            }
+
+        }
+
         mBinding.btIAgree.setOnClickListener {
             if (mBinding.cbAuthorize.isChecked){
+
                 if (mobileNo.isEmpty()) {
                     activitySDk.toast("Please Enter Mobile Number")
                 } else {

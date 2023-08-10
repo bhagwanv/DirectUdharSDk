@@ -26,7 +26,7 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
     private var _updatePanInfoResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
     val updatePanInfoResponse: LiveData<NetworkResult<InitiateAccountModel>> = _updatePanInfoResponse
 
-    fun getLogInResult(): LiveData<String> = panCardResult
+    fun getPanCard(): LiveData<String> = panCardResult
     fun uploadPanCard(leadMasterId:Int ,body: MultipartBody.Part) {
 
         if (Network.checkConnectivity(MyApplication.context!!)) {
@@ -56,20 +56,12 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
 
 
     }
-    fun performValidation(panCardRequestModel: PanCardRequestModel) {
-        if (panCardRequestModel.NameAsPAN.isNullOrEmpty()) {
-            panCardResult.value = "Please Enter Name As PAN"
-        } else if (panCardRequestModel.EmailID .isNullOrEmpty()) {
-            panCardResult.value = "Please Enter Email Id "
-        }else if (panCardRequestModel.PanNumber.isNullOrEmpty()){
+    fun performValidation(panNumber: String) {
+        if (panNumber.isNullOrEmpty()){
             panCardResult.value = "Please Enter PanNumber"
-        }else if (panCardRequestModel.PanNumber.length<10) {
+        }else if (panNumber.length<10) {
             panCardResult.value = "Please Enter Valid PanNumber"
-        }else if (panCardRequestModel.imageUrl.isNullOrEmpty())
-            panCardResult.value = "Please upload Pan Card Image"
-        else if (!panCardRequestModel.checked) {
-            panCardResult.value = "Please check terms and Condition"
-        } else {
+        }else {
             panCardResult.value = SuccessType
         }
     }

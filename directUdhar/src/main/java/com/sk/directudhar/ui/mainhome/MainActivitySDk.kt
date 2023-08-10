@@ -57,7 +57,6 @@ class MainActivitySDk : AppCompatActivity() {
         ivDateFilterToolbar = findViewById(R.id.ivDateFilter)
         ivDateFilterToolbar.visibility = View.GONE
 
-
         setSupportActionBar(toolbar)
     }
 
