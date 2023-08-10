@@ -13,6 +13,9 @@
         <item name="android:windowIsTranslucent">false</item>
         <item name="android:splitMotionEvents">false</item>
         <item name="android:windowEnableSplitTouch">false</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
     <style name="CustomDialog" parent="@style/AppTheme.NoActionBar">

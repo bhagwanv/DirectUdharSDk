@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadharOtpBinding
 import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
@@ -57,14 +58,18 @@ class AadhaarOtpFragment : Fragment() {
         setToolBar()
         setObserver()
 
-        mBinding!!.btnChangeAadhaarNumber.setOnClickListener {
+        mBinding!!.tvResendAadhaarOtp.setOnClickListener {
             findNavController().popBackStack()
         }
 
-        mBinding!!.btnNext.setOnClickListener {
+        mBinding!!.btnVerifyAadhaarOtp.setOnClickListener {
             Log.i("TAG", "get Otp>>> ${mBinding!!.customOTPView.getOTP()}")
             otp = mBinding!!.customOTPView.getOTP()
-            aadhaarOtpViewModel.validateOtp(otp)
+         //   aadhaarOtpViewModel.validateOtp(otp)
+
+
+            findNavController().navigate(R.id.kycSuccessFragment)
+
         }
     }
 
@@ -112,6 +117,38 @@ class AadhaarOtpFragment : Fragment() {
     private fun setToolBar() {
         activitySDk.ivDateFilterToolbar.visibility = View.GONE
     }
+
+    /*private val aadhaarOtpTextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+           if (otp.length == 6) {
+               val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+               mBinding!!.btnVerifyAadhaarOtp.backgroundTintList = tintList
+           } else {
+               val tintList = ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+               mBinding!!.btnVerifyAadhaarOtp.backgroundTintList = tintList
+           }
+        }
+
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (otp.length == 6) {
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                mBinding!!.btnVerifyAadhaarOtp.backgroundTintList = tintList
+            } else {
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                mBinding!!.btnVerifyAadhaarOtp.backgroundTintList = tintList
+            }
+        }
+
+        override fun afterTextChanged(s: Editable?) {
+            if (otp.length == 6) {
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                mBinding!!.btnVerifyAadhaarOtp.backgroundTintList = tintList
+            } else {
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                mBinding!!.btnVerifyAadhaarOtp.backgroundTintList = tintList
+            }
+        }
+    }*/
 
     override fun onDestroy() {
         super.onDestroy()

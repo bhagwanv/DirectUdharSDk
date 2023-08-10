@@ -58,10 +58,28 @@ class AadhaarCardFragment : Fragment() {
 
         setToolBar()
         setObserver()
+
+        mBinding!!.btnVerifyAadhaar.setOnClickListener {
+            /*aadhaarCardViewModel.validateAadhaar(
+                mBinding!!.etAadhaarNumber.text.toString(),
+                mBinding!!.cbTermsOfUse.isChecked
+            )*/
+            val action = AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
+                aadharNo,
+                "21212121"
+            )
+            findNavController().navigate(action)
+        }
+
+        mBinding!!.tvManuallyUploadAadhaar.setOnClickListener {
+            val action =
+                AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharManuallyUploadFragment()
+            findNavController().navigate(action)
+        }
     }
 
     private fun setObserver() {
-        mBinding!!.etAdhaarNumber.addTextChangedListener(aadhaarTextWatcher)
+        mBinding!!.etAadhaarNumber.addTextChangedListener(aadhaarTextWatcher)
 
         aadhaarCardViewModel.getAadhaarResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
@@ -105,14 +123,6 @@ class AadhaarCardFragment : Fragment() {
                 }
             }
         }
-
-
-        mBinding!!.btnVerifyAadhaar.setOnClickListener {
-            aadhaarCardViewModel.validateAadhaar(
-                mBinding!!.etAdhaarNumber.text.toString(),
-                mBinding!!.cbTermsOfUse.isChecked
-            )
-        }
     }
 
     private fun setToolBar() {
@@ -131,7 +141,8 @@ class AadhaarCardFragment : Fragment() {
         override fun afterTextChanged(s: Editable?) {
             val aadhaarNumber = s.toString().trim()
             if (aadhaarNumber.length < 12) {
-                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                val tintList =
+                    ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
                 mBinding!!.btnVerifyAadhaar.backgroundTintList = tintList
             } else {
                 val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)

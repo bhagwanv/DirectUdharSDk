@@ -4,11 +4,14 @@ import com.sk.directudhar.ui.agreement.EAgreementFragment
 import com.sk.directudhar.di.NetworkModule
 import com.sk.directudhar.ui.adharcard.AadhaarCardFragment
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment
+import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadFragment
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment
 import com.sk.directudhar.ui.applyloan.ApplyLoanFragment
 import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment
 import com.sk.directudhar.ui.approvalpending.ApprovalPendingFragment
+import com.sk.directudhar.ui.kyc.KycFailedFragment
+import com.sk.directudhar.ui.kyc.KycSuccessFragment
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.ui.mandate.bank.BankMandateFragment
 import com.sk.directudhar.ui.mandate.EMandateFragment
@@ -39,5 +42,8 @@ interface ApplicationComponent {
     fun injectAgreement(fragment: EAgreementFragment)
     fun injectAgreementOtp(fragment: EAgreementOtpFragment)
     fun injectUdharStatementFragment(fragment: UdharStatementFragment)
+    fun injectAadhaarManuallyUpload(fragment: AadhaarManuallyUploadFragment)
+    fun injectKycFailed(fragment: KycFailedFragment)
+    fun injectKycSuccess(fragment: KycSuccessFragment)
 
 }

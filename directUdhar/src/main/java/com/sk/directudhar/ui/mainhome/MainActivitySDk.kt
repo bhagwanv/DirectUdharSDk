@@ -34,6 +34,7 @@ class MainActivitySDk : AppCompatActivity() {
     lateinit var mobilNumber: String
     lateinit var navHostFragment: NavHostFragment
     lateinit var ivDateFilterToolbar: ImageView
+    lateinit var toolbar: Toolbar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,9 +53,10 @@ class MainActivitySDk : AppCompatActivity() {
         navHostFragment =
             supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         navController = navHostFragment.navController
-        val toolbar: Toolbar = findViewById(R.id.toolbarNew)
+        toolbar = findViewById(R.id.toolbarNew)
         ivDateFilterToolbar = findViewById(R.id.ivDateFilter)
         ivDateFilterToolbar.visibility = View.GONE
+
 
         setSupportActionBar(toolbar)
     }
@@ -66,7 +68,7 @@ class MainActivitySDk : AppCompatActivity() {
         this.onBackPressedDispatcher.addCallback(this, callback)
         mainViewModel.callToken(Utils.CLIENT_CREDENTIALS, Utils.SECRETKEY, Utils.APIKYYE)
         setObserber()
-        checkSequenceNo(3)
+        checkSequenceNo(5)
     }
 
     private fun setObserber() {
