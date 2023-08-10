@@ -13,11 +13,13 @@ import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.DialogPocessBinding
 import com.sk.directudhar.databinding.FragmentApplyLoanBinding
+import com.sk.directudhar.ui.adharcard.AadhaarCardFragmentDirections
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
@@ -73,15 +75,15 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         val component = DaggerApplicationComponent.builder().build()
         component.injectApplyLoan(this)
         applyLoanViewModel = ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
-        mBinding.tvTeramCondiction.text = Utils.APPLY_LOAN_POLICY
         applyLoanViewModel.callState()
-        callBussinessVintage()
-        mBinding.btNext.setOnClickListener(this)
+        mBinding.btnNext.setOnClickListener(this)
+        setObserber()
+    }
+
+    private fun setObserber() {
         applyLoanViewModel.getLogInResult().observe(activitySDk, Observer { result ->
             if (!result.equals(SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
-            }else{
-                processDialog()
             }
         })
 
@@ -137,15 +139,6 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         }
     }
 
-    private fun callBussinessVintage() {
-        val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, Utils.vintageList)
-        mBinding.SpBussniesVitage.setAdapter(adapter)
-        mBinding.SpBussniesVitage.onItemClickListener =
-            OnItemClickListener { parent, view, position, id ->
-                vintageValue =  Utils.vintageList[position]
-            }
-    }
-
 
 
     private fun setupStateAutoComplete() {
@@ -190,59 +183,26 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btNext -> {
-                applyLoanViewModel.performValidation(
+            R.id.btnNext -> {
+                /*applyLoanViewModel.performValidation(
                     ApplyLoanRequestModel(
-                        mBinding.EtFullName.text.toString().trim(),
-                        mBinding.etBusinessName.text.toString().trim(),
-                        mBinding.etBusinessAddress.text.toString().trim(),
-                        mBinding.etMobileNumber.text.toString().trim(),
-                        mBinding.etEmailID.text.toString().trim(),
-                        mBinding.etGstNumber.text.toString().trim(),
-                        mBinding.EtPincode.text.toString().trim(),
-                        mBinding.EtBussniesTurnover.text.toString().trim(),
-                        mBinding.EtPincode.text.toString().trim(),
+                        mBinding.etFirstName.text.toString().trim(),
+                        mBinding.etLastName.text.toString().trim(),
+                        mBinding.etAlternateNumber.text.toString().trim(),
+                        mBinding.etEmailId.text.toString().trim(),
+                        mBinding.etPinCode.text.toString().trim(),
                         cityIDValue,
                         stateIDValue,
                         vintageValue,
                         mBinding.cbIsMandate.isChecked
                     )
-                )
+                )*/
+
+              /*  val action = ApplyLoanFragmentDirections.(
+                        )
+                findNavController().navigate(action)*/
 
             }
         }
     }
-
-    private fun processDialog() {
-        proceedBottomDialog = BottomSheetDialog(activitySDk, R.style.Theme_Design_BottomSheetDialog)
-        val mDialogCheckOutReasonBinding: DialogPocessBinding = DataBindingUtil.inflate(layoutInflater, R.layout.dialog_pocess, null, false)
-        proceedBottomDialog.setContentView(mDialogCheckOutReasonBinding.root)
-        mDialogCheckOutReasonBinding.processPolicy.text=Utils.PROCESS_TEXT
-        proceedBottomDialog.show()
-
-        mDialogCheckOutReasonBinding.btProcess.setOnClickListener {
-            proceedBottomDialog.dismiss()
-           applyLoanViewModel.postFromData(ApplyLoanRequestModel(
-               mBinding.EtFullName.text.toString().trim(),
-               mBinding.etBusinessName.text.toString().trim(),
-               mBinding.etBusinessAddress.text.toString().trim(),
-               mBinding.etMobileNumber.text.toString().trim(),
-               mBinding.etEmailID.text.toString().trim(),
-               mBinding.etGstNumber.text.toString().trim(),
-               mBinding.EtPincode.text.toString().trim(),
-               mBinding.EtBussniesTurnover.text.toString().trim(),
-               mBinding.EtPincode.text.toString().trim(),
-               cityIDValue,
-               stateIDValue,
-               vintageValue,
-               mBinding.cbIsMandate.isChecked
-           ))
-
-        }
-
-        mDialogCheckOutReasonBinding.imClose.setOnClickListener {
-            proceedBottomDialog.dismiss()
-        }
-    }
-
 }

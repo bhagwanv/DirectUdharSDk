@@ -5,6 +5,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="fontFamily">@font/urbanist_regular</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -16,6 +17,7 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="fontFamily">@font/urbanist_regular</item>
     </style>
 
     <style name="CustomDialog" parent="@style/AppTheme.NoActionBar">
@@ -26,6 +28,7 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowIsFloating">false</item>
+        <item name="fontFamily">@font/urbanist_regular</item>
     </style>
 
     <style name="BottomTheme" parent="@style/AppTheme.NoActionBar">
@@ -34,12 +37,14 @@
         <item name="windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">false</item>
         <item name="android:windowIsFloating">false</item>
+        <item name="fontFamily">@font/urbanist_regular</item>
     </style>
 
     <style name="Theme.Design.BottomSheetDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
         <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+        <item name="fontFamily">@font/urbanist_regular</item>
     </style>
 
 

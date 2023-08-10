@@ -23,18 +23,19 @@ import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
-class SuccessFragment:Fragment() {
+class SuccessFragment : Fragment() {
 
     lateinit var activitySDk: MainActivitySDk
 
-    private lateinit var mBinding:FragmentSuccessBinding
+    private lateinit var mBinding: FragmentSuccessBinding
 
     lateinit var successViewModel: SuccessViewModel
+
     @Inject
     lateinit var successFactory: SuccessFactory
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        activitySDk= context as MainActivitySDk
+        activitySDk = context as MainActivitySDk
 
     }
 
@@ -57,69 +58,8 @@ class SuccessFragment:Fragment() {
 
         successViewModel.displayDisbursalAmount(
             SharePrefs.getInstance(activitySDk)!!.getInt(
-                SharePrefs.LEAD_MASTERID))
-
-        mBinding.btContinueShopping.setOnClickListener{
-            successViewModel.updateLeadSuccess(
-                SharePrefs.getInstance(activitySDk)!!.getInt(
-                    SharePrefs.LEAD_MASTERID))
-        }
-
-
-
-        successViewModel.displayDisbursalAmountResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
-
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-
-                }
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-
-                    if (it.data != null) {
-                        mBinding.tvLeadNumber.setText("Lead No.: "+it.data.LeadNo)
-                        mBinding.tvCreditLimit.setText("₹ "+it.data.CreditLimit.toString())
-                        mBinding.tvProcessingFee.setText("₹ "+it.data.ProcessingFee.toString())
-                        mBinding.tvGST.setText("₹ "+it.data.GSTAmount.toString())
-                        mBinding.tvDate.setText(it.data.CreatedDate)
-                        mBinding.tvDate.setText("Applied Date: "+ Utils.simpleDateFormate(it.data.CreatedDate,"yyyy-MM-dd'T'HH:mm:ss.SSS", "dd MMM yyyy HH:mm a"))
-                        mBinding.tvConvenienceFee.setText("Convenience Fee "+it.data.ConvenionFeeRate.toString()+" % will be Charge on every transaction")
-                    }
-                }
-            }
-        }
-
-        successViewModel.updateLeadSuccessResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
-
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-
-                }
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-
-                    if (it.data.Result != null) {
-                        activitySDk.checkSequenceNo(it.data.Data.SequenceNo)
-
-                    }else{
-                        if (it.data.Msg!=null){
-                            activitySDk.toast(it.data.Msg)
-                        }
-                    }
-                }
-            }
-        }
-
-
+                SharePrefs.LEAD_MASTERID
+            )
+        )
     }
 }
