@@ -91,5 +91,10 @@
     <color name="text_color_black_variant1">#030303</color>
     <color name="bg_color_gray_variant1">#CACACA</color>
     <color name="bg_color_gray_variant2">#F6F5FA</color>
-
+    <color name="bg_color_gray_variant3">#7F7F7F</color>
+    <color name="orange_orange_variant">#FF886F</color>
+    <color name="blue_variant">#A5D0FF</color>
+    <color name="blue_variant2">#E8F3FF</color>
+    <color name="white_variant">#FFFFFF</color>
+    <color name="blue_variant1">#2E58FF</color>
 </resources>

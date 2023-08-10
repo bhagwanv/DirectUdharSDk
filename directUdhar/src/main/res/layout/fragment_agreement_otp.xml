@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/white1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -11,7 +13,7 @@
             android:layout_margin="32dp"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatTextView
+          <!--  <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
@@ -98,8 +100,209 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:layout_marginTop="30dp"/>
+-->
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/tab_ractangle_bg">
+
+                <com.google.android.material.tabs.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:tabIndicatorColor="@null"
+                    app:tabSelectedTextColor="@color/colorAccent"
+                    app:tabGravity="fill"
+                    app:tabMode="fixed"
+                    app:tabBackground="@drawable/tab_selected_bg"
+                    android:layout_marginVertical="5dp"
+                    android:layout_marginHorizontal="5dp"
+                    app:tabIndicator="@null"
+                    android:background="@color/blue_variant2"
+                   />
+
+            </LinearLayout>
+
+
+
+
+            <LinearLayout
+                android:id="@+id/llAadharESign"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="32dp"
+                android:visibility="gone">
+
+           <androidx.appcompat.widget.AppCompatTextView
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:text="Draw your Signature below"
+               android:layout_marginVertical="15dp"
+               android:textColor="@color/bg_color_gray_variant3"
+               android:gravity="center"/>
+
+
+                <androidx.cardview.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:cardCornerRadius="10dp"
+                    android:elevation="2dp"
+                    android:layout_marginVertical="15dp">
+
+                    <com.sk.directudhar.ui.agreement.agreementOtp.SignatureView
+                        android:id="@+id/signatureView"
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_weight="1"
+                        android:background="@android:color/white" />
+                </androidx.cardview.widget.CardView>
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/btnNext"
+                    android:layout_width="match_parent"
+                    android:layout_height="48dp"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/bg_squre_btn_corner"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:paddingHorizontal="16dp"
+                    android:text="Confirm Signature"
+                    android:textAllCaps="false"
+                    android:textColor="@color/white"
+                    android:layout_marginTop="30dp"/>
+
+
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/clearButton"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Clear Signature"
+                    android:layout_marginVertical="10dp"
+                    android:textSize="16dp"
+                    android:textColor="@color/orange_orange_variant"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+
+            <LinearLayout
+                android:id="@+id/llOTPVerification"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginVertical="32dp"
+                android:visibility="visible">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/ivU"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentStart="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_alignParentBottom="true"
+                            android:layout_gravity="center_horizontal"
+                            android:src="@drawable/ic_otp" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginStart="24dp"
+                            android:layout_toEndOf="@+id/ivU"
+                            android:orientation="vertical">
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Enter Code"
+                                android:textColor="@color/text_color_black_variant1"
+                                android:textSize="16sp" />
+
+                            <androidx.appcompat.widget.AppCompatTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Enter the verification code we just sent to 1234 567 895"
+                                android:textColor="@color/text_color_black_variant1"
+                                android:textFontWeight="2"
+                                android:textSize="14sp" />
+                        </LinearLayout>
+                    </RelativeLayout>
+
+                    <com.sk.directudhar.utils.DirectUdhaarOtpFourDigitView
+                        android:id="@+id/customOTPView"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginVertical="40dp" />
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etWatchOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"/>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="16dp"
+                        android:gravity="center">
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tv1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="If you didn’t received a code! "
+                            android:gravity="center"
+                            android:textColor="@color/text_color_black_variant1"
+                            android:textFontWeight="2"
+                            android:textSize="14sp" />
+
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:id="@+id/tvResendAadhaarOtp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_toEndOf="@+id/tv1"
+                            android:gravity="center"
+                            android:text="Resend"
+                            android:textColor="@color/colorPrimary"
+                            android:textStyle="bold"
+                            android:textSize="14sp" />
+                    </RelativeLayout>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnVerifyAadhaarOtp"
+                        android:layout_width="match_parent"
+                        android:layout_height="58dp"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/bg_squre_btn_corner"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Verify Code"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white" />
+                </LinearLayout>
+
+
+
+            </LinearLayout>
+
 
 
         </LinearLayout>
+
+
     </ScrollView>
 </layout>

@@ -228,4 +228,9 @@
         android:name="com.sk.directudhar.ui.kyc.KycFailedFragment"
         android:label="fragment_kyc_failed"
         tools:layout="@layout/fragment_kyc_failed" />
+    <fragment
+        android:id="@+id/ESignFragment"
+        android:name="com.sk.directudhar.ui.agreement.eSign.ESignFragment"
+        android:label="fragment_e_sign"
+        tools:layout="@layout/fragment_e_sign" />
 </navigation>

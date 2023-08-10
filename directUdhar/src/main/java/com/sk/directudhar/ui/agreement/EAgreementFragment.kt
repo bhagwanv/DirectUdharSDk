@@ -2,6 +2,7 @@ package com.sk.directudhar.ui.agreement
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -102,11 +103,20 @@ class EAgreementFragment : Fragment() {
         mBinding.btIAgree.setOnClickListener {
             if (mBinding.cbAuthorize.isChecked){
 
-                if (mobileNo.isEmpty()) {
+               /* if (mobileNo.isEmpty()) {
                     activitySDk.toast("Please Enter Mobile Number")
                 } else {
                     eAgreementViewModel.sendOtp(mobileNo)
-                }
+                }*/
+
+
+
+               var action= EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOtpFragment(
+                    "",
+                    mobileNo
+                )
+                findNavController().navigate(action)
+                Log.e("TAG", "initView11: ", )
             }else{
                 activitySDk.toast("Please click checkbox to Agree term & Conditions")
             }
