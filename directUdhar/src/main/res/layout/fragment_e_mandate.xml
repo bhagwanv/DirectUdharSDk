@@ -10,7 +10,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="32dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -107,22 +108,84 @@
                         android:inputType="none" />
 
                 </com.google.android.material.textfield.TextInputLayout>
+
+
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btSetupAutoPay"
+                    android:id="@+id/btnNext"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_gravity="center_horizontal"
-                    android:gravity="center"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="30dp"
-                    android:layout_marginEnd="32dp"
                     android:background="@drawable/bg_squre_btn_corner"
+                    android:backgroundTint="@color/bg_color_gray_variant1"
+                    android:gravity="center"
                     android:maxLines="1"
-                    android:text="Setup AutoPay"
+                    android:paddingHorizontal="16dp"
+                    android:text="Next"
                     android:textAllCaps="false"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:textSize="16sp"
+                    android:layout_marginTop="10dp"/>
 
             </LinearLayout>
+
+
+
+
+
+         <!--   <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edittext"
+                android:layout_marginVertical="10dp">
+
+                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
+                    android:id="@+id/spBank"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:hint="Bank"
+                    android:inputType="none"
+                    android:textAllCaps="true"
+                    />
+
+                <ImageView
+                    android:id="@+id/ivArrowBank"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/arrow_up"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp" />
+            </RelativeLayout>
+-->
+
+
+           <!-- <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edittext"
+                android:layout_marginVertical="10dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etAccountNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:hint="IFCS Code"
+                    android:inputType="textCapCharacters"
+                    android:textAllCaps="true"
+                    android:maxLength="10" />
+
+                <ImageView
+                    android:id="@+id/ivarrow_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/arrow_up"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp" />
+            </RelativeLayout>-->
+
 
         </LinearLayout>
     </ScrollView>

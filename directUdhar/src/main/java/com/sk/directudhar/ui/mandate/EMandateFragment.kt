@@ -3,6 +3,8 @@ package com.sk.directudhar.ui.mandate
 
 import android.content.Context
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -15,6 +17,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEMandateBinding
 import android.view.View.OnClickListener
+import androidx.core.content.ContextCompat
 import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
@@ -73,7 +76,7 @@ class EMandateFragment : Fragment(), OnClickListener {
         eMandateViewModel =
             ViewModelProvider(this, eMandateFactory)[EMandateViewModel::class.java]
 
-        mBinding.btSetupAutoPay.setOnClickListener(this)
+        mBinding.btnNext.setOnClickListener(this)
 
         eMandateViewModel.getEMandateResult().observe(activitySDk, Observer { result ->
             if (!result.equals(Utils.SuccessType)) {
@@ -117,7 +120,7 @@ class EMandateFragment : Fragment(), OnClickListener {
                     if (it.data != null) {
                         bankList = it.data.liveBankList as MutableList<LiveBank>
 
-                        mBinding.spBank.setText(" ")
+                      //  mBinding.spBank.setText(" ")
                         setupBank()
                     } else {
                         activitySDk.toast("Bank not available")
@@ -161,7 +164,6 @@ class EMandateFragment : Fragment(), OnClickListener {
                 bankIDValue = bankList[position].bankName
             }
     }
-
     private fun callAccountType() {
         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, Utils.accountTypeList)
         mBinding.spAccountType .setAdapter(adapter)
@@ -183,7 +185,7 @@ class EMandateFragment : Fragment(), OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.btSetupAutoPay -> {
+            R.id.btnNext -> {
                 eMandateViewModel.performValidation(
                     EMandateAddRequestModel(
                         mBinding.etAccountNumber.text.toString().trim(),

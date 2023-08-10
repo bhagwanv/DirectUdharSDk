@@ -66,7 +66,7 @@ class MainActivitySDk : AppCompatActivity() {
         this.onBackPressedDispatcher.addCallback(this, callback)
         mainViewModel.callToken(Utils.CLIENT_CREDENTIALS, Utils.SECRETKEY, Utils.APIKYYE)
         setObserber()
-        checkSequenceNo(3)
+        checkSequenceNo(9)
     }
 
     private fun setObserber() {
