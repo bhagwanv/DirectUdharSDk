@@ -12,11 +12,13 @@
         android:layout_height="36dp"
         android:layout_marginStart="4dp"
         android:background="@drawable/bg_otp_circle_outer_line"
+        android:fontFamily="@font/urbanist_semibold"
         android:gravity="center"
         android:hint="x"
         android:inputType="number"
         android:maxLength="1"
-        android:textSize="14sp" />
+        android:textColor="@color/text_color_black_variant1"
+        android:textSize="20sp" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/otpDigit2"
@@ -24,11 +26,13 @@
         android:layout_height="36dp"
         android:layout_marginStart="4dp"
         android:background="@drawable/bg_otp_circle_outer_line"
+        android:fontFamily="@font/urbanist_semibold"
         android:gravity="center"
         android:hint="x"
         android:inputType="number"
         android:maxLength="1"
-        android:textSize="14sp" />
+        android:textColor="@color/text_color_black_variant1"
+        android:textSize="20sp" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/otpDigit3"
@@ -36,11 +40,13 @@
         android:layout_height="36dp"
         android:layout_marginStart="4dp"
         android:background="@drawable/bg_otp_circle_outer_line"
+        android:fontFamily="@font/urbanist_semibold"
         android:gravity="center"
         android:hint="x"
         android:inputType="number"
         android:maxLength="1"
-        android:textSize="14sp" />
+        android:textColor="@color/text_color_black_variant1"
+        android:textSize="20sp" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/otpDigit4"
@@ -48,11 +54,13 @@
         android:layout_height="36dp"
         android:layout_marginStart="4dp"
         android:background="@drawable/bg_otp_circle_outer_line"
+        android:fontFamily="@font/urbanist_semibold"
         android:gravity="center"
         android:hint="x"
         android:inputType="number"
         android:maxLength="1"
-        android:textSize="14sp" />
+        android:textColor="@color/text_color_black_variant1"
+        android:textSize="20sp" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/otpDigit5"
@@ -60,11 +68,13 @@
         android:layout_height="36dp"
         android:layout_marginStart="4dp"
         android:background="@drawable/bg_otp_circle_outer_line"
+        android:fontFamily="@font/urbanist_semibold"
         android:gravity="center"
         android:hint="x"
         android:inputType="number"
         android:maxLength="1"
-        android:textSize="14sp" />
+        android:textColor="@color/text_color_black_variant1"
+        android:textSize="20sp" />
 
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/otpDigit6"
@@ -73,10 +83,12 @@
         android:layout_marginStart="4dp"
         android:layout_marginEnd="4dp"
         android:background="@drawable/bg_otp_circle_outer_line"
+        android:fontFamily="@font/urbanist_semibold"
         android:gravity="center"
         android:hint="x"
         android:inputType="number"
         android:maxLength="1"
-        android:textSize="14sp" />
+        android:textColor="@color/text_color_black_variant1"
+        android:textSize="20sp" />
 
 </LinearLayout>

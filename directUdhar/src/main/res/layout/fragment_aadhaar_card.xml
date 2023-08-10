@@ -4,7 +4,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/bg_color_white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,6 +40,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Enter your Aadhar"
+                        android:fontFamily="@font/urbanist_semibold"
                         android:textColor="@color/text_color_black_variant1"
                         android:textSize="16sp" />
 
@@ -47,7 +49,7 @@
                         android:layout_height="wrap_content"
                         android:text="Verify the Aadhar number and name against the UIDAI"
                         android:textColor="@color/text_color_black_variant1"
-                        android:textFontWeight="2"
+                        android:fontFamily="@font/urbanist_regular"
                         android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
@@ -56,7 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="16dp"
+                android:layout_marginVertical="24dp"
+                android:background="@color/white1"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="2dp">
 
@@ -69,6 +72,9 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/urbanist_regular"
+                        android:textColor="@color/text_color_black_variant1"
+                        android:textSize="14sp"
                         android:text="Aadhaar" />
 
 
@@ -79,6 +85,7 @@
                         android:layout_marginTop="10dp"
                         android:background="@drawable/background_edittext"
                         android:hint="1234 1234 1234"
+                        android:fontFamily="@font/urbanist_medium"
                         android:inputType="numberSigned"
                         android:maxLength="12"
                         android:maxLines="1"
@@ -95,9 +102,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="Manual upload"
+                android:fontFamily="@font/urbanist_semibold"
                 android:textColor="@color/colorPrimary"
-                android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:id="@+id/rl_cb_terms"
@@ -117,7 +124,7 @@
                     android:id="@+id/tvTermsOfUse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:justificationMode="inter_word"
+                    android:fontFamily="@font/urbanist_regular"
                     android:text="By Proceeding, you agree Terms &amp; Conditions."
                     android:textColor="@color/holo_gray_dark" />
             </LinearLayout>
@@ -134,6 +141,7 @@
                 android:maxLines="1"
                 android:paddingHorizontal="16dp"
                 android:text="Send OTP"
+                android:fontFamily="@font/urbanist_bold"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />

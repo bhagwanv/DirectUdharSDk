@@ -37,13 +37,15 @@
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Enter your Aadhar"
+                    android:fontFamily="@font/urbanist_semibold"
+                    android:text="Enter your Aadhaar"
                     android:textColor="@color/text_color_black_variant1"
                     android:textSize="16sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/urbanist_regular"
                     android:text="Upload Your Aadhar Photo for the verification"
                     android:textColor="@color/text_color_black_variant1"
                     android:textSize="14sp" />
@@ -56,8 +58,8 @@
             android:layout_height="150dp"
             android:layout_marginVertical="16dp"
             android:background="@drawable/background_edittext"
-            android:orientation="horizontal"
             android:gravity="center"
+            android:orientation="horizontal"
             app:layout_constraintBottom_toTopOf="@+id/rl_cb_terms"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -70,19 +72,21 @@
                 android:layout_height="wrap_content"
                 android:gravity="center"
                 android:orientation="vertical">
+
                 <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/gallery"/>
+                    app:srcCompat="@drawable/gallery" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Upload Aadhaar"
                     android:layout_marginTop="2dp"
+                    android:fontFamily="@font/urbanist_regular"
+                    android:text="Upload Aadhaar"
                     android:textColor="@color/colorPrimary"
                     android:textFontWeight="2"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
             </LinearLayout>
 
 
@@ -101,8 +105,8 @@
                 android:id="@+id/cbTermsOfUse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/holo_gray_dark"
                 android:layout_marginTop="3dp"
+                android:backgroundTint="@color/holo_gray_dark"
                 android:checked="false" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -110,8 +114,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
+                android:fontFamily="@font/urbanist_regular"
                 android:text="By Proceeding, you agree Terms &amp; Conditions.fdfd fdfd fdfdfdf ff "
-                android:textColor="@color/holo_gray_dark" />
+                android:textColor="@color/holo_gray_dark"
+                android:textSize="12sp" />
         </LinearLayout>
 
         <androidx.appcompat.widget.AppCompatButton
@@ -121,6 +127,7 @@
             android:layout_gravity="center_horizontal"
             android:background="@drawable/bg_squre_btn_corner"
             android:backgroundTint="@color/bg_color_gray_variant1"
+            android:fontFamily="@font/urbanist_bold"
             android:gravity="center"
             android:maxLines="1"
             android:paddingHorizontal="16dp"

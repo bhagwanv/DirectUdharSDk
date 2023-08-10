@@ -3,7 +3,8 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/bg_color_white">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -37,6 +38,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/urbanist_semibold"
                         android:text="Enter Code"
                         android:textColor="@color/text_color_black_variant1"
                         android:textSize="16sp" />
@@ -44,9 +46,9 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/urbanist_regular"
                         android:text="Enter the verification code we just sent to Aadhaar registered mobile number"
                         android:textColor="@color/text_color_black_variant1"
-                        android:textFontWeight="2"
                         android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
@@ -60,22 +62,24 @@
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etWatchOtp"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"/>
+                android:layout_height="0dp" />
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="16dp"
                 android:gravity="center">
+
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tv1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="If you didn’t received a code! "
                     android:gravity="center"
+                    android:fontFamily="@font/urbanist_regular"
+                    android:text="If you didn’t received a code! "
                     android:textColor="@color/text_color_black_variant1"
                     android:textFontWeight="2"
-                    android:textSize="14sp" />
+                    android:textSize="12sp" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvResendAadhaarOtp"
@@ -84,9 +88,10 @@
                     android:layout_toEndOf="@+id/tv1"
                     android:gravity="center"
                     android:text="Resend"
+                    android:fontFamily="@font/urbanist_semibold"
                     android:textColor="@color/colorPrimary"
-                    android:textStyle="bold"
-                    android:textSize="14sp" />
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -94,11 +99,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_squre_btn_corner"
                 android:gravity="center"
                 android:maxLines="1"
+                android:fontFamily="@font/urbanist_bold"
                 android:paddingHorizontal="16dp"
-                android:layout_marginBottom="16dp"
                 android:text="Verify Code"
                 android:textAllCaps="false"
                 android:textColor="@color/white" />
