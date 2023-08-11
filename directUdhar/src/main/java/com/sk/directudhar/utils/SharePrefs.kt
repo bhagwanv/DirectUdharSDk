@@ -51,6 +51,7 @@ class SharePrefs(private val ctx: Context) {
         var TOKEN = "token"
         var SEQUENCENO = "SequenceNo"
         var LEAD_MASTERID = "LeadMasterId"
+        var MOBILE_NUMBER = "MobileNumber"
         private var instance: SharePrefs? = null
 
         fun getInstance(ctx: Context): SharePrefs? {

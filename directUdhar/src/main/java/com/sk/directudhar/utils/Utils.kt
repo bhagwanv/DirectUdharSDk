@@ -13,8 +13,8 @@ class Utils(private var context: Context) {
     companion object {
         val BASE_URL = "https://udhaarservice.shopkirana.in/"
         var CLIENT_CREDENTIALS = "client_credentials"
-        var SECRETKEY = "95f883fa-b4df-0cff-ce1b-f7608f88f075"
-        var APIKYYE = "88662f90-43c2-5fc5-6d77-9b80f1bf3337"
+        var SECRETKEY = "88662f90-43c2-5fc5-6d77-9b80f1bf3337"
+        var APIKYYE = "95f883fa-b4df-0cff-ce1b-f7608f88f075"
         var AADHAAR_VALIDATE_SUCCESSFULLY = "AADHAAR_VALIDATE_SUCCESSFULLY"
         var AADHAAR_OTP_VALIDATE_SUCCESSFULLY = "AADHAAR_OTP_VALIDATE_SUCCESSFULLY"
         var cameraRequest = 1888

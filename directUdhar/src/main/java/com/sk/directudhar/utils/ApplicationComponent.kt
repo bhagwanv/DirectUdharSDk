@@ -18,6 +18,8 @@ import com.sk.directudhar.ui.mandate.EMandateFragment
 import com.sk.directudhar.ui.myaccount.MyAccountFragment
 import com.sk.directudhar.ui.myaccount.udharStatement.UdharStatementFragment
 import com.sk.directudhar.ui.pancard.PanCardFragment
+import com.sk.directudhar.ui.phoneVerification.OtpVerificationFragment
+import com.sk.directudhar.ui.phoneVerification.PhoneVerificationFragment
 import com.sk.directudhar.ui.success.SuccessFragment
 import dagger.Component
 import javax.inject.Singleton
@@ -27,8 +29,9 @@ import javax.inject.Singleton
 @Component(modules = [NetworkModule::class])
 interface ApplicationComponent {
     fun inject(mainActivitySDk: MainActivitySDk)
-
     fun injectMyAccount(fragment: MyAccountFragment)
+    fun injectPhoneVerification(fragment: PhoneVerificationFragment)
+    fun injectOtpVerify(fragment: OtpVerificationFragment)
     fun injectApplyLoan(fragment: ApplyLoanFragment)
     fun injectPanCard(fragment: PanCardFragment)
     fun injectAadhaarCard(fragment: AadhaarCardFragment)

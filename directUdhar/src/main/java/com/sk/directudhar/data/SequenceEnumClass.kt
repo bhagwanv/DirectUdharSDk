@@ -1,6 +1,7 @@
 package com.sk.directudhar.data
 
 enum class SequenceEnumClass(val sequence:Int ) {
+    PHONE_VERIFICATION(1),
     APPLY_LOAN(2),
     PAN_CARD(3),
     ADHAR_CARD(5),
