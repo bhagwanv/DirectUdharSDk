@@ -48,4 +48,12 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
+
+    suspend fun addBusinessDetail( businessDetailsRequestModel: BusinessDetailsRequestModel)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.addBusinessDetail(businessDetailsRequestModel)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 }

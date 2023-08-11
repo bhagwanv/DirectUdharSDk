@@ -8,6 +8,8 @@ import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadharVerificationRequestM
 import com.sk.directudhar.ui.agreement.AgreementResponseModel
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
+import com.sk.directudhar.ui.applyloan.BusinessDetailsRequestModel
+import com.sk.directudhar.ui.applyloan.BusinessDetailsResponseModel
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.GetPersonalInformationResponseModel
@@ -162,5 +164,7 @@ interface APIServices {
     @POST("api/Borrower/PostCreditBeurau")
     suspend fun postCreditBeurau(@Body postCreditBeurauRequestModel: PostCreditBeurauRequestModel): PostCreditBeurauResponseModel
 
+    @POST("api/Borrower/AddBusinessDetail")
+    suspend fun addBusinessDetail(@Body businessDetailsRequestModel: BusinessDetailsRequestModel): BusinessDetailsResponseModel
 
 }

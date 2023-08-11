@@ -14,13 +14,18 @@ import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadhaarCardBinding
 import com.sk.directudhar.databinding.FragmentApplyLoanBinding
 import com.sk.directudhar.databinding.FragmentBusinessDetailsBinding
+import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanFactory
 import com.sk.directudhar.ui.applyloan.ApplyLoanViewModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.ProgressDialog
+import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
+import com.sk.directudhar.utils.Utils.Companion.toast
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -38,6 +43,7 @@ class BusinessDetailsFragment : Fragment() {
     @Inject
     lateinit var applyLoanFactory: ApplyLoanFactory
 
+    private var isGSTVerify = false
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -51,6 +57,7 @@ class BusinessDetailsFragment : Fragment() {
         mBinding = FragmentBusinessDetailsBinding.inflate(inflater, container, false)
         initView()
         spinnerView()
+        setObserber()
         return mBinding.root
     }
 
@@ -58,10 +65,13 @@ class BusinessDetailsFragment : Fragment() {
 
         mBinding.etusinessIncorporationDate.setOnClickListener {
             showDatePicker(mBinding.etusinessIncorporationDate)
-
-
         }
-
+        mBinding.btnNext.setOnClickListener {
+            applyLoanViewModel.validateBusinessDetails(
+                isGSTVerify,
+                false
+            )
+        }
     }
 
     fun spinnerView() {
@@ -175,6 +185,7 @@ class BusinessDetailsFragment : Fragment() {
             }
 
     }
+
     private fun showDatePicker(etDate: EditText) {
         val c = Calendar.getInstance()
         val currentYear = c[Calendar.YEAR]
@@ -185,7 +196,7 @@ class BusinessDetailsFragment : Fragment() {
             requireActivity(),
             { _, year, monthOfYear, dayOfMonth ->
                 val selectedDate = formatDate(year, monthOfYear, dayOfMonth)
-            //    etDate.setText(selectedDate)
+                //    etDate.setText(selectedDate)
                 etDate.setText(
                     StringBuilder() // Month is 0 based so add 1
                         .append(dayOfMonth).append("/").append(monthOfYear + 1).append("/")
@@ -206,5 +217,39 @@ class BusinessDetailsFragment : Fragment() {
         calendar.set(year, month, day)
         val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
         return dateFormat.format(calendar.time)
+    }
+
+    fun setObserber() {
+        applyLoanViewModel.getBusinessValidResult().observe(activitySDk) { result ->
+            if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
+                /* var model = BusinessDetailsRequestModel()
+           applyLoanViewModel.addBusinessDetail(model)*/
+            } else {
+                Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
+            }
+        }
+        applyLoanViewModel.getBusinessDetailsResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.Result) {
+                            activitySDk.toast("SuccessFully ${it.Msg}")
+                        }
+                    }
+                }
+            }
+        }
+
     }
 }

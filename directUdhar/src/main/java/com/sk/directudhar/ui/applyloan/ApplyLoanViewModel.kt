@@ -10,6 +10,7 @@ import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
+import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -21,6 +22,7 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
     ViewModel() {
 
     private val logInResult = MutableLiveData<String>()
+    fun getLogInResult(): LiveData<String> = logInResult
 
     private var _stateResponse = MutableLiveData<NetworkResult<ArrayList<StateModel>>>()
     val stateResponse: LiveData<NetworkResult<ArrayList<StateModel>>> = _stateResponse
@@ -37,7 +39,11 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
     private var _postCreditBeurauResponse = MutableLiveData<NetworkResult<PostCreditBeurauResponseModel>>()
     val postCreditBeurauResponse: LiveData<NetworkResult<PostCreditBeurauResponseModel>> = _postCreditBeurauResponse
 
-    fun getLogInResult(): LiveData<String> = logInResult
+    private var putBusinessDetailsResponse= MutableLiveData<NetworkResult<BusinessDetailsResponseModel>>()
+    val getBusinessDetailsResponse: LiveData<NetworkResult<BusinessDetailsResponseModel>> = putBusinessDetailsResponse
+
+    private val businessValidResult = MutableLiveData<String>()
+    fun getBusinessValidResult(): LiveData<String> = businessValidResult
 
     fun performValidation() {
         /*if (postCreditBeurauRequestModel.FirstName.isNullOrEmpty()) {
@@ -125,5 +131,25 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             (MyApplication.context)!!.toast("No internet connectivity")
         }
 
+    }
+
+    fun addBusinessDetail(businessDetailsRequestModel: BusinessDetailsRequestModel) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.addBusinessDetail(businessDetailsRequestModel).collect() {
+                    putBusinessDetailsResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun validateBusinessDetails(isGSTVerify: Boolean, tnCchecked: Boolean) {
+        if (isGSTVerify) {
+            businessValidResult.value = "Please verify GST Number"
+        } else {
+            businessValidResult.value = Utils.AADHAAR_VALIDATE_SUCCESSFULLY
+        }
     }
 }
