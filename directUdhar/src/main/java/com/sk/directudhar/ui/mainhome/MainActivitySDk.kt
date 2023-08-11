@@ -119,8 +119,8 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                         checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                        Log.e("TAG", "setObserber1111: ", )
+                        // checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        checkSequenceNo(2)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
