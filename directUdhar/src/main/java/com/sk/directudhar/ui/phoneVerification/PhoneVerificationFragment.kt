@@ -58,7 +58,7 @@ class PhoneVerificationFragment : Fragment() {
         )[PhoneVerificationViewModel::class.java]
 
         mobileNumber = SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
-
+        mBinding!!.etMobileNumber.text = mobileNumber
         setToolBar()
         setObserver()
 
@@ -66,9 +66,10 @@ class PhoneVerificationFragment : Fragment() {
             var mobileNumber = mBinding!!.etMobileNumber.text.toString()
             if (mobileNumber.isNullOrEmpty()) {
                 activitySDk.toast("Please enter mobile number")
+            } else if (!mBinding!!.cbTermsOfUse.isChecked) {
+                activitySDk.toast("Please Check Term and Condition")
             } else {
                 phoneVerificationViewModel.callGenOtp(mobileNumber)
-
             }
         }
     }
@@ -89,10 +90,11 @@ class PhoneVerificationFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
-                            activitySDk.toast(it.Msg)
+                            //  activitySDk.toast(it.Msg)
                             val action =
                                 PhoneVerificationFragmentDirections.actionPhoneVerificationFragment(
-                                    mobileNumber
+                                    mobileNumber,
+                                    it.Data.TxnNo
                                 )
                             findNavController().navigate(action)
                         } else {

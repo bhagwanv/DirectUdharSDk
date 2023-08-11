@@ -95,7 +95,6 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_squre_btn_corner"
-                android:backgroundTint="@color/bg_color_gray_variant1"
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingHorizontal="16dp"
@@ -103,6 +102,7 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
+            <!-- android:backgroundTint="@color/bg_color_gray_variant1"-->
         </LinearLayout>
     </ScrollView>
 </layout>

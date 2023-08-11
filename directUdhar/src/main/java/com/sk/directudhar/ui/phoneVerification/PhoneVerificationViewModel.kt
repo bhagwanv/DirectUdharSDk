@@ -18,13 +18,13 @@ class PhoneVerificationViewModel @Inject constructor(private val repository: Pho
     ViewModel() {
 
     private var putGenOptResponse =
-        MutableLiveData<NetworkResult<GenOtpResponseModel>>()
-    val getGenOptResponse: LiveData<NetworkResult<GenOtpResponseModel>> =
+        MutableLiveData<NetworkResult<PhoneVerifyResponseModel>>()
+    val getGenOptResponse: LiveData<NetworkResult<PhoneVerifyResponseModel>> =
         putGenOptResponse
 
     private var putOptVerifyResponse =
-        MutableLiveData<NetworkResult<GenOtpResponseModel>>()
-    val getOptVerifyResponse: LiveData<NetworkResult<GenOtpResponseModel>> =
+        MutableLiveData<NetworkResult<OtpVerifyResponseModel>>()
+    val getOptVerifyResponse: LiveData<NetworkResult<OtpVerifyResponseModel>> =
         putOptVerifyResponse
 
 
@@ -40,10 +40,10 @@ class PhoneVerificationViewModel @Inject constructor(private val repository: Pho
         }
     }
 
-    fun callOtpVerify(mobile: String,otp: String) {
+    fun callOtpVerify(mobile: String,otp: String,txnNo: String) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                repository.getOtpVerify(mobile, otp).collect {
+                repository.getOtpVerify(mobile, otp,txnNo).collect {
                     putOptVerifyResponse.postValue(it)
                 }
             }

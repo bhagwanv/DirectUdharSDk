@@ -39,6 +39,9 @@
         <argument
             android:name="mobileNumber"
             app:argType="string" />
+        <argument
+            android:name="TxnNo"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/myAccountFragment"

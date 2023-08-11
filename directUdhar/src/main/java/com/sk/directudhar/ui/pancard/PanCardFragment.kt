@@ -101,16 +101,11 @@ class PanCardFragment : Fragment(), OnClickListener {
             if (!result.equals(Utils.SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             } else {
-               /* var model = UpdatePanInfoRequestModel(
+                var model = UpdatePanInfoRequestModel(
                     SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
                     mBinding.etPanNumber.text.toString().trim(),
-                    imageUrl,
-                    mBinding.etNameAsPAN.text.toString().trim(),
-                    mBinding.cbAuthorize.isChecked
                 )
-                panCardViewModel.updatePanInfo(model)*/
-                Log.e("TAG", "successs: ", )
-
+                panCardViewModel.updatePanInfo(model)
                 mBinding.ivRight.visibility=View.VISIBLE
                 mBinding.btnVerifyPanCard.setText("Next")
             }

@@ -1,8 +1,8 @@
 package com.sk.directudhar.ui.phoneVerification
 
-data class GenOtpResponseModel(
-    val Data: String,
-    val DynamicData: Any,
+data class PhoneVerifyResponseModel(
+    val Data: Data,
     val Msg: String,
     val Result: Boolean
 )
+class Data(val TxnNo :String)

@@ -65,10 +65,7 @@ class AadhaarOtpFragment : Fragment() {
         mBinding!!.btnVerifyAadhaarOtp.setOnClickListener {
             Log.i("TAG", "get Otp>>> ${mBinding!!.customOTPView.getOTP()}")
             otp = mBinding!!.customOTPView.getOTP()
-         //   aadhaarOtpViewModel.validateOtp(otp)
-
-
-            findNavController().navigate(R.id.kycSuccessFragment)
+           aadhaarOtpViewModel.validateOtp(otp)
 
         }
     }
@@ -79,7 +76,6 @@ class AadhaarOtpFragment : Fragment() {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
-
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     activitySDk.toast(it.errorMessage)
@@ -87,12 +83,13 @@ class AadhaarOtpFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    it.data.Msg.let { it1 -> activitySDk.toast(it1) }
-                    if (it.data.Result) {
-                        activitySDk.toast(it.data.Msg)
-                        activitySDk.checkSequenceNo(it.data.Data.SequenceNo)
-                    } else {
-                        activitySDk.toast(it.data.Msg)
+                    it.data.let {
+                        if (it.Result) {
+                            activitySDk.toast(it.Msg)
+                            activitySDk.checkSequenceNo(it.Data.SequenceNo)
+                        } else {
+                            activitySDk.toast(it.Msg)
+                        }
                     }
                 }
             }
