@@ -121,6 +121,7 @@ class MainActivitySDk : AppCompatActivity() {
                         )
                         // checkSequenceNo(initiateAccountModel.Data.SequenceNo)
                         checkSequenceNo(19)
+
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
