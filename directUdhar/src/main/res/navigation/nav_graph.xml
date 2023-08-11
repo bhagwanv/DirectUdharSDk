@@ -18,6 +18,29 @@
     </fragment>
 
     <fragment
+        android:id="@+id/phoneVerificationFragment"
+        android:name="com.sk.directudhar.ui.phoneVerification.PhoneVerificationFragment"
+        android:label="Phone Verification"
+        tools:layout="@layout/fragment_phone_verification">
+        <action
+            android:id="@+id/actionPhoneVerificationFragment"
+            app:destination="@id/otpVerificationFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/otpVerificationFragment"
+        android:name="com.sk.directudhar.ui.phoneVerification.OtpVerificationFragment"
+        android:label="Phone Verification"
+        tools:layout="@layout/fragment_otp_verification">
+        <action
+            android:id="@+id/actionOtpVerificationFragment"
+            app:destination="@id/otpVerificationFragment" />
+        <argument
+            android:name="mobileNumber"
+            app:argType="string" />
+    </fragment>
+    <fragment
         android:id="@+id/myAccountFragment"
         android:name="com.sk.directudhar.ui.myaccount.MyAccountFragment"
         android:label="My Account"
