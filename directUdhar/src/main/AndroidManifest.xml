@@ -30,6 +30,16 @@
                 android:resource="@xml/provider_path" />
         </provider>
 
+        <activity
+            android:name=".utils.permission.PermissionsActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Translucent" />
+
+        <activity
+            android:name="com.sk.directudhar.image.ImageCaptureActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/AppTheme_translucent" />
     </application>
 
 
