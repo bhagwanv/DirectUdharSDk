@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -30,7 +31,9 @@ import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
+import kotlinx.coroutines.NonDisposableHandle.parent
 import javax.inject.Inject
+
 
 
 class ApplyLoanFragment : Fragment(), OnClickListener {
@@ -80,8 +83,11 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         applyLoanViewModel.getPersonalInformation(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID))
         //applyLoanViewModel.callState()
         mBinding.btnNext.setOnClickListener(this)
+      //  setupSpinner()
+        setupStateAutoComplete()
         setObserber()
     }
+
 
     private fun setObserber() {
 
@@ -89,28 +95,23 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
-                    Log.e("TAG", "setObserber:111 ", )
                 }
 
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-                    Log.e("TAG", "setObserber:2 ", )
 
                 }
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    Log.e("TAG", "setObserber3: ", )
 
-                    if (it.data!=null) {
-
-                        Log.e("TAG", "setObserber:4 ", )
-                       mBinding.etFirstName.setText(it.data.FirstName)
-                       mBinding.etLastName.setText(it.data.LastName)
-                       mBinding.etLastName.setText(it.data.MobileNo)
-                       mBinding.etEmailId.setText(it.data.EmailId)
-                       mBinding.etPinCode.setText(it.data.PinCode)
-
+                    it.data.let {
+                        mBinding.etFirstName.setText(it.FirstName)
+                        mBinding.etLastName.setText(it.LastName)
+                        mBinding.etLastName.setText(it.MobileNo)
+                        mBinding.etEmailId.setText(it.EmailId)
+                        mBinding.etPinCode.setText(it.PinCode)
+                        mBinding.etAddress.setText(it.Address)
                     }
                 }
             }
@@ -123,6 +124,11 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         applyLoanViewModel.getLogInResult().observe(activitySDk, Observer { result ->
             if (!result.equals(SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
+
+
+               /* var model=PostCreditBeurauRequestModel()
+
+                applyLoanViewModel.postCreditBeurau(model)*/
             }
         })
 
@@ -142,7 +148,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     if (it.data != null && it.data.size > 0) {
                         stateList = it.data
                         cityList.clear()
-                        mBinding.SpCity.setText(" ")
+                       // mBinding.SpCity.setText(" ")
                         setupStateAutoComplete()
                     } else {
                         activitySDk.toast("City not available")
@@ -184,9 +190,27 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         val stateNameList: List<String> = stateList.map { it.StateName }
         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, stateNameList)
         mBinding.spState.setAdapter(adapter)
-        mBinding.spState.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+        /*mBinding.spState.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             stateIDValue = stateList[position].Id
             applyLoanViewModel.callCity(stateIDValue)
+        }*/
+
+        mBinding.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(activitySDk,
+                    "getString(R.string.selected_item)" + " " + stateList[position],
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
         }
         applyLoanViewModel.cityResponse.observe(viewLifecycleOwner) {
             when (it) {
@@ -214,17 +238,35 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         val cityNameList: List<String> = cityList.map { it.CityName }
         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, cityNameList)
         mBinding.SpCity.setAdapter(adapter)
-        mBinding.SpCity.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+        /*mBinding.SpCity.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             cityIDValue = cityList[position].Id
             applyLoanViewModel.callCity(cityIDValue)
+        }*/
+
+        mBinding.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(activitySDk,
+                    "getString(R.string.selected_item)" + " " + stateList[position],
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
         }
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnNext -> {
-                /*applyLoanViewModel.performValidation(
-                    ApplyLoanRequestModel(
+                applyLoanViewModel.performValidation(
+                   /* ApplyLoanRequestModel(
                         mBinding.etFirstName.text.toString().trim(),
                         mBinding.etLastName.text.toString().trim(),
                         mBinding.etAlternateNumber.text.toString().trim(),
@@ -234,8 +276,8 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                         stateIDValue,
                         vintageValue,
                         mBinding.cbIsMandate.isChecked
-                    )
-                )*/
+                    )*/
+                )
 
               /*  val action = ApplyLoanFragmentDirections.(
                         )
@@ -244,4 +286,30 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
             }
         }
     }
+
+   /* private fun setupSpinner() {
+
+        val stateNameList: List<String> = stateList.map { it.StateName }
+        val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, stateNameList)
+        mBinding.Spinner.setAdapter(adapter)
+
+        mBinding.Spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(activitySDk,
+                    "getString(R.string.selected_item)" + " " + stateList[position],
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+        }
+    }*/
+
 }

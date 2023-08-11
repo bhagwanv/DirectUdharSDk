@@ -11,6 +11,8 @@ import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.GetPersonalInformationResponseModel
+import com.sk.directudhar.ui.applyloan.PostCreditBeurauRequestModel
+import com.sk.directudhar.ui.applyloan.PostCreditBeurauResponseModel
 import com.sk.directudhar.ui.applyloan.StateModel
 import com.sk.directudhar.ui.cibilscore.CibilRequestModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
@@ -150,5 +152,8 @@ interface APIServices {
 
     @GET("api/Borrower/ValidateOtp")
     suspend fun getOtpVerify(@Query("MobileNo") mobile: String,@Query("Otp") Otp: String): GenOtpResponseModel
+
+    @POST("api/Borrower/PostCreditBeurau")
+    suspend fun postCreditBeurau(@Body postCreditBeurauRequestModel: PostCreditBeurauRequestModel): PostCreditBeurauResponseModel
 
 }

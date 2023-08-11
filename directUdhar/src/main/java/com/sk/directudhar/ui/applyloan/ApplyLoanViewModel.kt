@@ -34,10 +34,13 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
     private var _getPersonalInformationResponse = MutableLiveData<NetworkResult<GetPersonalInformationResponseModel>>()
     val getPersonalInformationResponse: LiveData<NetworkResult<GetPersonalInformationResponseModel>> = _getPersonalInformationResponse
 
+    private var _postCreditBeurauResponse = MutableLiveData<NetworkResult<PostCreditBeurauResponseModel>>()
+    val postCreditBeurauResponse: LiveData<NetworkResult<PostCreditBeurauResponseModel>> = _postCreditBeurauResponse
+
     fun getLogInResult(): LiveData<String> = logInResult
 
-    fun performValidation(applyLoanRequestModel: ApplyLoanRequestModel) {
-        if (applyLoanRequestModel.Name.isNullOrEmpty()) {
+    fun performValidation() {
+        /*if (postCreditBeurauRequestModel.FirstName.isNullOrEmpty()) {
             logInResult.value = "Please Enter Name"
         } else if (applyLoanRequestModel.FirmName.isNullOrEmpty()) {
             logInResult.value = "Please Business Name "
@@ -55,7 +58,9 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             logInResult.value = "Please Check Term Policy"
         } else {
             logInResult.value =SuccessType
-        }
+        }*/
+
+        logInResult.value =SuccessType
     }
 
     fun postFromData(applyLoanRequestModel: ApplyLoanRequestModel) {
@@ -101,6 +106,19 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             viewModelScope.launch {
                 repository.getPersonalInformation(leadMasterId).collect() {
                     _getPersonalInformationResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+
+    }
+
+    fun postCreditBeurau(postCreditBeurauRequestModel:PostCreditBeurauRequestModel) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.postCreditBeurau(postCreditBeurauRequestModel).collect() {
+                    _postCreditBeurauResponse.postValue(it)
                 }
             }
         } else {

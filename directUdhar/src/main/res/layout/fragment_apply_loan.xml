@@ -76,7 +76,7 @@
                 android:textSize="12sp" />
 
 
-            <com.google.android.material.textfield.TextInputLayout
+          <!--  <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -90,9 +90,35 @@
                     android:padding="16dp"
                     android:inputType="none" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>-->
 
-            <com.google.android.material.textfield.TextInputLayout
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edittext"
+                android:layout_marginVertical="10dp">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:hint="Bank"
+                    android:inputType="none"
+                    android:textAllCaps="true"
+                    android:spinnerMode="dropdown"
+                    android:background="@android:color/transparent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/arrow_up"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp" />
+            </RelativeLayout>
+
+        <!--    <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -106,7 +132,33 @@
                     android:padding="16dp"
                     android:inputType="none" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>-->
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_edittext"
+                android:layout_marginVertical="10dp">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/SpCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:hint="Bank"
+                    android:inputType="none"
+                    android:textAllCaps="true"
+                    android:spinnerMode="dropdown"
+                    android:background="@android:color/transparent" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/arrow_up"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp" />
+            </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etPinCode"
@@ -119,6 +171,34 @@
                 android:maxLines="1"
                 android:padding="16dp"
                 android:textSize="12sp" />
+
+
+          <!--     <RelativeLayout
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:background="@drawable/background_edittext"
+               android:layout_marginVertical="10dp">
+
+               <androidx.appcompat.widget.AppCompatSpinner
+                   android:id="@+id/Spinner"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:layout_marginStart="20dp"
+                   android:hint="Bank"
+                   android:inputType="none"
+                   android:textAllCaps="true"
+                   android:spinnerMode="dropdown"
+                   android:background="@android:color/transparent" />
+
+               <ImageView
+                   android:id="@+id/ivArrowBank"
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:background="@drawable/arrow_up"
+                   android:layout_alignParentRight="true"
+                   android:layout_centerVertical="true"
+                   android:layout_marginEnd="20dp" />
+           </RelativeLayout>-->
 
 
             <LinearLayout
