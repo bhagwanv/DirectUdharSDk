@@ -1,11 +1,15 @@
 package com.sk.directudhar.ui.applyloan
 
+import android.R
 import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.ArrayAdapter
+import android.widget.Toast
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.databinding.FragmentAadhaarCardBinding
 import com.sk.directudhar.databinding.FragmentApplyLoanBinding
@@ -44,5 +48,35 @@ class BusinessDetailsFragment : Fragment() {
 
     private fun initView() {
 
+
+    }
+
+    fun businessType(){
+        val stateNameList: List<String> = stateList.map { it.StateName }
+        val adapter = ArrayAdapter(activitySDk, R.layout.simple_list_item_1, stateNameList)
+        mBinding.spState.setAdapter(adapter)
+        /*mBinding.spState.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+            stateIDValue = stateList[position].Id
+            applyLoanViewModel.callCity(stateIDValue)
+        }*/
+
+        mBinding.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(
+                    activitySDk,
+                    "getString(R.string.selected_item)" + " " + stateList[position],
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+        }
     }
 }
