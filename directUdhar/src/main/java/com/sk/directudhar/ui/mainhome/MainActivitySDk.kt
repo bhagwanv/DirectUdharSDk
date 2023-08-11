@@ -47,6 +47,10 @@ class MainActivitySDk : AppCompatActivity() {
     private fun getIntentValueFromCompanyApp() {
         val intent = intent
         mobilNumber = intent.getStringExtra("mobileNumber")!!
+        SharePrefs.getInstance(this)?.putString(
+            SharePrefs.MOBILE_NUMBER,
+            mobilNumber
+        )
     }
 
     private fun setupToolbar() {
@@ -65,9 +69,8 @@ class MainActivitySDk : AppCompatActivity() {
         component.inject(this)
         mainViewModel = ViewModelProvider(this, mainViewModelFactory)[MainViewModel::class.java]
         this.onBackPressedDispatcher.addCallback(this, callback)
-        mainViewModel.callToken(Utils.CLIENT_CREDENTIALS, Utils.SECRETKEY, Utils.APIKYYE)
+        mainViewModel.callToken(Utils.CLIENT_CREDENTIALS, Utils.APIKYYE,Utils.SECRETKEY)
         setObserber()
-        checkSequenceNo(9)
     }
 
     private fun setObserber() {
@@ -88,7 +91,6 @@ class MainActivitySDk : AppCompatActivity() {
                     SharePrefs.getInstance(this)
                         ?.putString(SharePrefs.TOKEN, it.data.access_token)
                     mainViewModel.getAccountInitiateResponse(mobilNumber)
-
                 }
             }
         }
@@ -116,8 +118,8 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                        //  checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                        checkSequenceNo(5)
+                        checkSequenceNo(1)
+                       // checkSequenceNo(initiateAccountModel.Data.SequenceNo)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
@@ -128,6 +130,7 @@ class MainActivitySDk : AppCompatActivity() {
 
     fun checkSequenceNo(sequenceNo: Int) {
         when (SequenceEnumClass.from(sequenceNo)) {
+            SequenceEnumClass.PHONE_VERIFICATION -> navigateViewCall(R.id.phoneVerificationFragment)
             SequenceEnumClass.APPLY_LOAN -> navigateViewCall(R.id.ApplyLoanFragment)
             SequenceEnumClass.ADHAR_CARD -> navigateViewCall(R.id.AadhaarFragment)
             SequenceEnumClass.CIBIL_SCORE -> navigateViewCall(R.id.CibilScoreFragment)
