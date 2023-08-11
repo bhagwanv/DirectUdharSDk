@@ -48,4 +48,20 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
+
+    suspend fun getGSTDetails( GSTNo: String)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.getGSTDetails(GSTNo)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
+    suspend fun getBusinessTypeList()  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.getBusinessTypeList()
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 }

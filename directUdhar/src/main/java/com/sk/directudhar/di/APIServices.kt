@@ -8,8 +8,10 @@ import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadharVerificationRequestM
 import com.sk.directudhar.ui.agreement.AgreementResponseModel
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
+import com.sk.directudhar.ui.applyloan.BusinessTypeListResponse
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
+import com.sk.directudhar.ui.applyloan.GSTDetailsResponse
 import com.sk.directudhar.ui.applyloan.GetPersonalInformationResponseModel
 import com.sk.directudhar.ui.applyloan.PostCreditBeurauRequestModel
 import com.sk.directudhar.ui.applyloan.PostCreditBeurauResponseModel
@@ -161,6 +163,12 @@ interface APIServices {
 
     @POST("api/Borrower/PostCreditBeurau")
     suspend fun postCreditBeurau(@Body postCreditBeurauRequestModel: PostCreditBeurauRequestModel): PostCreditBeurauResponseModel
+
+    @GET("api/borrower/GetGSTDetails")
+    suspend fun getGSTDetails(@Query("GSTNo") GSTNo: String): GSTDetailsResponse
+
+    @GET("api/Anchor/GetBusinessTypeList")
+    suspend fun getBusinessTypeList() : BusinessTypeListResponse
 
 
 }

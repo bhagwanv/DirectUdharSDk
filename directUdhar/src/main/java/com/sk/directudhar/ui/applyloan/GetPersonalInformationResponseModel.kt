@@ -1,8 +1,8 @@
 package com.sk.directudhar.ui.applyloan
 
 data class GetPersonalInformationResponseModel(
-    val Data: Data)
-data class Data(val Address: String,
+    val Data: PersonalInformation)
+data class PersonalInformation(val Address: String,
                 val EmailId: String,
                 val FirstName: String,
                 val Gender: String,

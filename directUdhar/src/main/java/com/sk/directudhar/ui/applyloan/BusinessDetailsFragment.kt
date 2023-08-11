@@ -4,6 +4,7 @@ import android.R
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,13 +14,17 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadhaarCardBinding
 import com.sk.directudhar.databinding.FragmentApplyLoanBinding
 import com.sk.directudhar.databinding.FragmentBusinessDetailsBinding
 import com.sk.directudhar.ui.applyloan.ApplyLoanFactory
 import com.sk.directudhar.ui.applyloan.ApplyLoanViewModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.ProgressDialog
+import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -58,10 +63,33 @@ class BusinessDetailsFragment : Fragment() {
 
         mBinding.etusinessIncorporationDate.setOnClickListener {
             showDatePicker(mBinding.etusinessIncorporationDate)
-
-
         }
+        applyLoanViewModel.getGSTDetails(mBinding.etGstNumber.text.toString().trim())
+        applyLoanViewModel.getBusinessTypeList()
 
+
+        applyLoanViewModel.getGSTDetailsResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+
+                    it.data.Data.let {
+                        Log.e("TAG", "setObserber: ${it.Name}", )
+                    }
+
+                }
+            }
+        }
     }
 
     fun spinnerView() {
