@@ -83,7 +83,6 @@ class AadhaarManuallyUploadFragment : Fragment() {
     }
 
     private fun setToolBar() {
-
         activitySDk.ivDateFilterToolbar.visibility = View.GONE
     }
 
