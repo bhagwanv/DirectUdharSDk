@@ -11,7 +11,9 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="32dp"
+            android:layout_marginHorizontal="30dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="60dp"
             android:orientation="vertical">
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -39,13 +41,12 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="45dp"
                 android:layout_marginVertical="10dp"
-                android:background="@drawable/background_edittext"
-                >
+                android:background="@drawable/background_edittext">
 
                 <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/SpCity"
+                    android:id="@+id/spBusinessType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="20dp"
@@ -70,7 +71,6 @@
                 android:id="@+id/etBusinessTurnover"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
                 android:fontFamily="@font/urbanist_medium"
                 android:hint="Business Turnover"
@@ -91,89 +91,98 @@
                 android:padding="12dp"
                 android:textSize="12sp" />
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Income Slab">
+                android:layout_height="45dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/background_edittext">
 
-                <AutoCompleteTextView
+                <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spIncomeSlab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@android:color/transparent"
                     android:inputType="none"
-                    android:padding="16dp" />
+                    android:spinnerMode="dropdown"
+                    android:textAllCaps="true" />
 
-            </com.google.android.material.textfield.TextInputLayout>
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/arrow_up" />
+            </RelativeLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Ownership type">
+                android:layout_height="45dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/background_edittext">
 
-                <AutoCompleteTextView
-                    android:id="@+id/spOwnershipType"
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spOwnerShipType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Bank"
                     android:inputType="none"
-                    android:padding="16dp" />
+                    android:spinnerMode="dropdown"
+                    android:textAllCaps="true" />
 
-            </com.google.android.material.textfield.TextInputLayout>
-
-
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etAddress"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="Flat/ Building Number*"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Select State">
-
-                <AutoCompleteTextView
-                    android:id="@+id/spState"
-                    android:layout_width="match_parent"
+                <ImageView
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:padding="16dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Select City">
-
-                <AutoCompleteTextView
-                    android:id="@+id/SpCity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="none"
-                    android:padding="16dp" />
-
-            </com.google.android.material.textfield.TextInputLayout>
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/arrow_up" />
+            </RelativeLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/urbanist_regular"
                 android:text="Address Verification"
+                android:textColor="@color/text_color_gray_variant2"
+                android:textSize="14sp" />
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="45dp"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/background_edittext">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spManualBillUploadType"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Bank"
+                    android:inputType="none"
+                    android:spinnerMode="dropdown"
+                    android:textAllCaps="true" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/arrow_up" />
+            </RelativeLayout>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/urbanist_regular"
+                android:text="Bank Statement"
                 android:textColor="@color/text_color_gray_variant2"
                 android:textSize="14sp" />
 

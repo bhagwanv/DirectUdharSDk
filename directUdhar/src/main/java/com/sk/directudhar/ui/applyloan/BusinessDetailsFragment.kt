@@ -43,6 +43,7 @@ class BusinessDetailsFragment : Fragment() {
     ): View? {
         mBinding = FragmentBusinessDetailsBinding.inflate(inflater, container, false)
         initView()
+        spinnerView()
         return mBinding.root
     }
 
@@ -51,16 +52,30 @@ class BusinessDetailsFragment : Fragment() {
 
     }
 
-    fun businessType(){
-        val stateNameList: List<String> = stateList.map { it.StateName }
-        val adapter = ArrayAdapter(activitySDk, R.layout.simple_list_item_1, stateNameList)
-        mBinding.spState.setAdapter(adapter)
-        /*mBinding.spState.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-            stateIDValue = stateList[position].Id
-            applyLoanViewModel.callCity(stateIDValue)
-        }*/
+    fun spinnerView(){
+         val businessArray = listOf(
+            "One",
+            "Two"
+        )
+        val incomeSlabArray = listOf(
+            "1 lac-3 lac",
+            "3 lac-5 lac"
+        )
+        val ownerShipArray = listOf(
+            "Rented",
+            "Owned",
+            "Owned by parents",
+            "Owned by Spouse"
+        )
 
-        mBinding.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        val manualBillUploadArray = listOf(
+            "Electricity bill upload",
+            "Upload Bill Manual",
+            "Customer Number"
+        )
+        val businessAdapter = ArrayAdapter(activitySDk, R.layout.simple_list_item_1, businessArray)
+        mBinding.spBusinessType.adapter = businessAdapter
+        mBinding.spBusinessType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View,
@@ -69,7 +84,70 @@ class BusinessDetailsFragment : Fragment() {
             ) {
                 Toast.makeText(
                     activitySDk,
-                    "getString(R.string.selected_item)" + " " + stateList[position],
+                    "Type" + " " + businessArray[position],
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+        }
+
+        val incomeAdapter = ArrayAdapter(activitySDk, R.layout.simple_list_item_1, incomeSlabArray)
+        mBinding.spIncomeSlab.adapter = incomeAdapter
+        mBinding.spIncomeSlab.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(
+                    activitySDk,
+                    "Type" + " " + incomeSlabArray[position],
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+        }
+
+        val ownerShipAdapter = ArrayAdapter(activitySDk, R.layout.simple_list_item_1, ownerShipArray)
+        mBinding.spOwnerShipType.adapter = ownerShipAdapter
+        mBinding.spOwnerShipType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(
+                    activitySDk,
+                    "Type" + " " + ownerShipArray[position],
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
+        }
+
+        val manualBillUploadArrayAdapter = ArrayAdapter(activitySDk, R.layout.simple_list_item_1, manualBillUploadArray)
+        mBinding.spManualBillUploadType.adapter = manualBillUploadArrayAdapter
+        mBinding.spManualBillUploadType.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(
+                    activitySDk,
+                    "Type" + " " + ownerShipArray[position],
                     Toast.LENGTH_SHORT
                 ).show()
             }

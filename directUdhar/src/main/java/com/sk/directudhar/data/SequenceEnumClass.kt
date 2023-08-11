@@ -10,7 +10,8 @@ enum class SequenceEnumClass(val sequence:Int ) {
     E_AGREEMENT(9),
     SUCCESS(12),
     APPRAVAL_PENDING(17),
-    MY_ACCOUNT(18);
+    MY_ACCOUNT(18),
+    BUSINESS_DETAILS(19);
 
     companion object {
         infix fun from(value: Int): SequenceEnumClass? = SequenceEnumClass.values().firstOrNull {

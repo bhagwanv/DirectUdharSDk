@@ -120,7 +120,7 @@ class MainActivitySDk : AppCompatActivity() {
                             initiateAccountModel.Data.LeadMasterId
                         )
                         // checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                        checkSequenceNo(5)
+                        checkSequenceNo(19)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
@@ -132,6 +132,7 @@ class MainActivitySDk : AppCompatActivity() {
     fun checkSequenceNo(sequenceNo: Int) {
         when (SequenceEnumClass.from(sequenceNo)) {
             SequenceEnumClass.PHONE_VERIFICATION -> navigateViewCall(R.id.phoneVerificationFragment)
+            SequenceEnumClass.BUSINESS_DETAILS -> navigateViewCall(R.id.businessDetailsFragment)
             SequenceEnumClass.APPLY_LOAN -> navigateViewCall(R.id.ApplyLoanFragment)
             SequenceEnumClass.ADHAR_CARD -> navigateViewCall(R.id.AadhaarFragment)
             SequenceEnumClass.CIBIL_SCORE -> navigateViewCall(R.id.CibilScoreFragment)
