@@ -86,15 +86,16 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         applyLoanViewModel.getPersonalInformation(
             SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
         )
-        //applyLoanViewModel.callState()
-        val action =
-            ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
-        findNavController().navigate(action)
 
         mBinding.btnNext.setOnClickListener(this)
 
         mBinding.cbAuthorize.setOnClickListener {
             if (mBinding.cbAuthorize.isChecked) {
+                //applyLoanViewModel.callState()
+                val action =
+                    ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
+                findNavController().navigate(action)
+
                 mBinding.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
                 val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
                 mBinding!!.btnNext.backgroundTintList = tintList

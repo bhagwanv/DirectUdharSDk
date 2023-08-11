@@ -37,11 +37,9 @@ class BusinessDetailsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (mBinding == null) {
-            mBinding = FragmentBusinessDetailsBinding.inflate(inflater, container, false)
-            initView()
-        }
-        return mBinding!!.root
+        mBinding = FragmentBusinessDetailsBinding.inflate(inflater, container, false)
+        initView()
+        return mBinding.root
     }
 
     private fun initView() {
