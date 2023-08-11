@@ -7,9 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.Fragment
@@ -30,6 +32,7 @@ import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
+import kotlinx.coroutines.NonDisposableHandle.parent
 import javax.inject.Inject
 
 
@@ -56,6 +59,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     private var cityIDValue: Int = 0
     private var stateIDValue: Int = 0
     private var vintageValue: String = ""
+    lateinit var model: PostCreditBeurauRequestModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -76,53 +80,115 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectApplyLoan(this)
-        applyLoanViewModel = ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
-        applyLoanViewModel.getPersonalInformation(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID))
+        applyLoanViewModel =
+            ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
+        applyLoanViewModel.getPersonalInformation(
+            SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
+        )
         //applyLoanViewModel.callState()
         mBinding.btnNext.setOnClickListener(this)
+
+        mBinding.cbAuthorize.setOnClickListener {
+            if (mBinding.cbAuthorize.isChecked) {
+                mBinding.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                mBinding!!.btnNext.backgroundTintList = tintList
+            } else {
+                mBinding.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
+                val tintList =
+                    ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                mBinding!!.btnNext.backgroundTintList = tintList
+            }
+
+        }
+
+        // setupStateAutoComplete()
         setObserber()
     }
 
-    private fun setObserber() {
 
+    private fun setObserber() {
         applyLoanViewModel.getPersonalInformationResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
-                    Log.e("TAG", "setObserber:111 ", )
                 }
 
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-                    Log.e("TAG", "setObserber:2 ", )
 
                 }
+
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    Log.e("TAG", "setObserber3: ", )
 
-                    if (it.data!=null) {
 
-                        Log.e("TAG", "setObserber:4 ", )
-                       mBinding.etFirstName.setText(it.data.FirstName)
-                       mBinding.etLastName.setText(it.data.LastName)
-                       mBinding.etLastName.setText(it.data.MobileNo)
-                       mBinding.etEmailId.setText(it.data.EmailId)
-                       mBinding.etPinCode.setText(it.data.PinCode)
+                    it.data.Data.let {
+                        mBinding.etFirstName.setText(it.FirstName)
+                        mBinding.etLastName.setText(it.LastName)
+                        mBinding.etAlternateNumber.setText(it.MobileNo)
+                        mBinding.etEmailId.setText(it.EmailId)
+                        mBinding.etPinCode.setText(it.PinCode)
+                        mBinding.etFlatNo.setText(it.FlatNo)
+                        mBinding.etState.setText(it.StateCode)
+                        mBinding.etCity.setText(it.City)
+                        //mBinding.etAddress.setText(it.Address)
+                        model = PostCreditBeurauRequestModel(
+                            it.MobileNo,
+                            it.City,
+                            it.EmailId,
+                            it.FirstName,
+                            "",
+                            it.Gender,
+                            it.LastName,
+                            it.LeadMasterId,
+                            it.MobileNo,
+                            it.PanNumber,
+                            it.PinCode,
+                            it.StateCode,
+                            it.dateOfBirth
+                        )
 
                     }
                 }
             }
         }
 
+        applyLoanViewModel.postCreditBeurauResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
 
 
-
+                    it.data.Data.let {
+                        activitySDk.toast("SuccessFully ${it.stgOneHitId}")
+                    }
+                }
+            }
+        }
 
         applyLoanViewModel.getLogInResult().observe(activitySDk, Observer { result ->
             if (!result.equals(SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
+                applyLoanViewModel.postCreditBeurau(model)
+            } else {
+                if (mBinding.cbAuthorize.isChecked) {
+                    applyLoanViewModel.postCreditBeurau(model)
+                } else {
+                    activitySDk.toast("By Proceeding, you agree Terms & Conditions. ")
+                }
+
             }
         })
 
@@ -137,12 +203,13 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
 
                 }
+
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     if (it.data != null && it.data.size > 0) {
                         stateList = it.data
                         cityList.clear()
-                        mBinding.SpCity.setText(" ")
+                        // mBinding.SpCity.setText(" ")
                         setupStateAutoComplete()
                     } else {
                         activitySDk.toast("City not available")
@@ -156,21 +223,28 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
+
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
                 }
+
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    if (it.data.Result){
-                        SharePrefs.getInstance(activitySDk)?.putInt(SharePrefs.LEAD_MASTERID, it.data.Data.LeadMasterId)
-                        dialog.accountCreatedDialog(activitySDk,"Congratulations your Account has been created","OK")
+                    if (it.data.Result) {
+                        SharePrefs.getInstance(activitySDk)
+                            ?.putInt(SharePrefs.LEAD_MASTERID, it.data.Data.LeadMasterId)
+                        dialog.accountCreatedDialog(
+                            activitySDk,
+                            "Congratulations your Account has been created",
+                            "OK"
+                        )
                         dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
                             override fun onContinueClicked() {
                                 activitySDk.checkSequenceNo(it.data.Data.SequenceNo)
                             }
                         })
-                    }else{
+                    } else {
                         activitySDk.toast(it.data.Msg)
                     }
                 }
@@ -179,14 +253,32 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     }
 
 
-
     private fun setupStateAutoComplete() {
         val stateNameList: List<String> = stateList.map { it.StateName }
         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, stateNameList)
         mBinding.spState.setAdapter(adapter)
-        mBinding.spState.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+        /*mBinding.spState.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             stateIDValue = stateList[position].Id
             applyLoanViewModel.callCity(stateIDValue)
+        }*/
+
+        mBinding.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(
+                    activitySDk,
+                    "getString(R.string.selected_item)" + " " + stateList[position],
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
         }
         applyLoanViewModel.cityResponse.observe(viewLifecycleOwner) {
             when (it) {
@@ -214,34 +306,54 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         val cityNameList: List<String> = cityList.map { it.CityName }
         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, cityNameList)
         mBinding.SpCity.setAdapter(adapter)
-        mBinding.SpCity.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+        /*mBinding.SpCity.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             cityIDValue = cityList[position].Id
             applyLoanViewModel.callCity(cityIDValue)
+        }*/
+
+        mBinding.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+            override fun onItemSelected(
+                parent: AdapterView<*>,
+                view: View,
+                position: Int,
+                id: Long
+            ) {
+                Toast.makeText(
+                    activitySDk,
+                    "getString(R.string.selected_item)" + " " + stateList[position],
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+
+            override fun onNothingSelected(parent: AdapterView<*>) {
+                // Code to perform some action when nothing is selected
+            }
         }
     }
 
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnNext -> {
-                /*applyLoanViewModel.performValidation(
-                    ApplyLoanRequestModel(
-                        mBinding.etFirstName.text.toString().trim(),
-                        mBinding.etLastName.text.toString().trim(),
-                        mBinding.etAlternateNumber.text.toString().trim(),
-                        mBinding.etEmailId.text.toString().trim(),
-                        mBinding.etPinCode.text.toString().trim(),
-                        cityIDValue,
-                        stateIDValue,
-                        vintageValue,
-                        mBinding.cbIsMandate.isChecked
-                    )
-                )*/
+                applyLoanViewModel.performValidation(
+                    /* ApplyLoanRequestModel(
+                         mBinding.etFirstName.text.toString().trim(),
+                         mBinding.etLastName.text.toString().trim(),
+                         mBinding.etAlternateNumber.text.toString().trim(),
+                         mBinding.etEmailId.text.toString().trim(),
+                         mBinding.etPinCode.text.toString().trim(),
+                         cityIDValue,
+                         stateIDValue,
+                         vintageValue,
+                         mBinding.cbIsMandate.isChecked
+                     )*/
+                )
 
-              /*  val action = ApplyLoanFragmentDirections.(
-                        )
-                findNavController().navigate(action)*/
+                /*  val action = ApplyLoanFragmentDirections.(
+                          )
+                  findNavController().navigate(action)*/
 
             }
         }
     }
+
 }

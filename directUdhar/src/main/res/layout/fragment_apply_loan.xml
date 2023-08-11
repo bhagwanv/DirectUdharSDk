@@ -64,7 +64,7 @@
 
 
             <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etAddress"
+                android:id="@+id/etFlatNo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
@@ -74,39 +74,6 @@
                 android:maxLines="1"
                 android:padding="16dp"
                 android:textSize="12sp" />
-
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Select State">
-
-                <AutoCompleteTextView
-                    android:id="@+id/spState"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:hint="Select City">
-
-                <AutoCompleteTextView
-                    android:id="@+id/SpCity"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="16dp"
-                    android:inputType="none" />
-
-            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etPinCode"
@@ -120,8 +87,114 @@
                 android:padding="16dp"
                 android:textSize="12sp" />
 
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/background_edittext"
+                android:visibility="gone">
 
-            <LinearLayout
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/spState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Bank"
+                    android:inputType="none"
+                    android:spinnerMode="dropdown"
+                    android:textAllCaps="true" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/arrow_up" />
+            </RelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etState"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_edittext"
+                android:fontFamily="@font/urbanist_medium"
+                android:hint="State*"
+                android:maxLines="1"
+                android:padding="16dp"
+                android:textSize="12sp" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/etCity"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_edittext"
+                android:fontFamily="@font/urbanist_medium"
+                android:hint="City*"
+                android:maxLines="1"
+                android:padding="16dp"
+                android:textSize="12sp" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="10dp"
+                android:background="@drawable/background_edittext"
+                android:visibility="gone">
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/SpCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:background="@android:color/transparent"
+                    android:hint="Bank"
+                    android:inputType="none"
+                    android:spinnerMode="dropdown"
+                    android:textAllCaps="true" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/arrow_up" />
+            </RelativeLayout>
+
+
+            <!--     <RelativeLayout
+                 android:layout_width="match_parent"
+                 android:layout_height="wrap_content"
+                 android:background="@drawable/background_edittext"
+                 android:layout_marginVertical="10dp">
+
+                 <androidx.appcompat.widget.AppCompatSpinner
+                     android:id="@+id/Spinner"
+                     android:layout_width="match_parent"
+                     android:layout_height="wrap_content"
+                     android:layout_marginStart="20dp"
+                     android:hint="Bank"
+                     android:inputType="none"
+                     android:textAllCaps="true"
+                     android:spinnerMode="dropdown"
+                     android:background="@android:color/transparent" />
+
+                 <ImageView
+                     android:id="@+id/ivArrowBank"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:background="@drawable/arrow_up"
+                     android:layout_alignParentRight="true"
+                     android:layout_centerVertical="true"
+                     android:layout_marginEnd="20dp" />
+             </RelativeLayout>-->
+
+
+            <!--<LinearLayout
                 android:id="@+id/rl_cb_terms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -142,14 +215,43 @@
                     android:fontFamily="@font/urbanist_regular"
                     android:text="By Proceeding, you agree Terms &amp; Conditions."
                     android:textColor="@color/holo_gray_dark" />
+            </LinearLayout>-->
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:id="@+id/cbCheck"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:background="@drawable/checkbox_background">
+
+                    <CheckBox
+                        android:id="@+id/cbAuthorize"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_centerVertical="true"
+                        android:layout_gravity="center"
+                        android:button="@null" />
+                </RelativeLayout>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="10dp"
+                    android:layout_toRightOf="@+id/cbCheck"
+                    android:text="By Proceeding, you agree Terms &amp;  Conditions. " />
             </LinearLayout>
-
-
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnNext"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
+                android:layout_marginTop="30dp"
                 android:layout_marginBottom="16dp"
                 android:background="@drawable/bg_squre_btn_corner"
                 android:backgroundTint="@color/bg_color_gray_variant1"
@@ -161,10 +263,6 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
-
-
         </LinearLayout>
     </ScrollView>
-
-
 </layout>
