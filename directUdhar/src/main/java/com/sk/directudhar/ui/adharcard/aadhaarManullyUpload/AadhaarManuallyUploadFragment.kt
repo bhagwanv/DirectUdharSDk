@@ -1,9 +1,11 @@
 package com.sk.directudhar.ui.adharcard.aadhaarManullyUpload
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.os.AsyncTask
+import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -31,8 +33,11 @@ import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
+import com.sk.directudhar.utils.permission.PermissionHandler
+import com.sk.directudhar.utils.permission.Permissions
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
+import java.util.ArrayList
 import javax.inject.Inject
 
 class AadhaarManuallyUploadFragment : Fragment() {
@@ -72,12 +77,7 @@ class AadhaarManuallyUploadFragment : Fragment() {
             findNavController().navigate(action)
         }
         mBinding!!.linearLayout.setOnClickListener {
-            val tsLong = System.currentTimeMillis() / 1000
-            var fileName = "skCustShopUpdateImage_" + tsLong + ".png"
-            val intent = Intent(activitySDk, ImageCaptureActivity::class.java)
-            intent.putExtra(Utils.FILE_NAME, fileName)
-            intent.putExtra(Utils.IS_GALLERY_OPTION, false)
-            resultLauncher?.launch(intent)
+            askPermission()
         }
 
     }
@@ -139,5 +139,39 @@ class AadhaarManuallyUploadFragment : Fragment() {
                 }
             }
         }
+    }
+
+    private fun askPermission() {
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_MEDIA_IMAGES)
+        } else {
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+        }
+        val rationale = "Please provide all permission so that you can access the app."
+        val options: Permissions.Companion.Options = Permissions.Companion.Options()
+            .setRationaleDialogTitle("Allow Permission")
+            .setSettingsDialogTitle("Warning")
+        Permissions.checkPermissionNew(
+            activitySDk,
+            permissions,
+            rationale,
+            options,
+            object : PermissionHandler() {
+                override fun onGranted() {
+                    val tsLong = System.currentTimeMillis() / 1000
+                    var fileName = "aadhaarImage_" + tsLong + ".png"
+                    val intent = Intent(activitySDk, ImageCaptureActivity::class.java)
+                    intent.putExtra(Utils.FILE_NAME, fileName)
+                    intent.putExtra(Utils.IS_GALLERY_OPTION, false)
+                    resultLauncher?.launch(intent)
+                }
+                override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>) {
+                    askPermission()
+                }
+            })
     }
 }

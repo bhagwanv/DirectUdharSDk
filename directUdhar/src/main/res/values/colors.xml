@@ -5,6 +5,8 @@
     <color name="colorAccent">#2E58FF</color>
     <color name="target_green">#99ffcc</color>
     <color name="target_pink">#ffcccc</color>
+    <color name="transparent_back">#85000000</color>
+
     <!--dark theme-->
     <color name="colorPrimary1">#242D34</color>
     <color name="colorPrimaryDark1">#0D1F23</color>
