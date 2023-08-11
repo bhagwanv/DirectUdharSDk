@@ -24,6 +24,7 @@ import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.DialogPocessBinding
 import com.sk.directudhar.databinding.FragmentApplyLoanBinding
 import com.sk.directudhar.ui.adharcard.AadhaarCardFragmentDirections
+import com.sk.directudhar.ui.adharcard.AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharManuallyUploadFragment
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
@@ -86,6 +87,10 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
             SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
         )
         //applyLoanViewModel.callState()
+        val action =
+            ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
+        findNavController().navigate(action)
+
         mBinding.btnNext.setOnClickListener(this)
 
         mBinding.cbAuthorize.setOnClickListener {
