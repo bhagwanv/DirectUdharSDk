@@ -19,6 +19,9 @@ class Utils(private var context: Context) {
         var AADHAAR_OTP_VALIDATE_SUCCESSFULLY = "AADHAAR_OTP_VALIDATE_SUCCESSFULLY"
         var cameraRequest = 1888
         var WRITE_PERMISSION = 0x01
+        var FILE_NAME = "fileName"
+        var IS_GALLERY_OPTION = "isGalleryOption"
+        var FILE_PATH = "filePath"
         var SuccessType = "success_type_al"
         val vintageList =
             arrayOf<String>("Select Business Vintage", "Less than 2 years", "Greater Than 2 Years")

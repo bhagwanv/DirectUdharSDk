@@ -41,8 +41,10 @@ class KycSuccessFragment : Fragment() {
         component.injectKycSuccess(this)
         aadhaarOtpViewModel =
             ViewModelProvider(this, aadhaarOtpFactory)[AadhaarOtpViewModel::class.java]
-
         setToolBar()
+        mBinding!!.btnNext.setOnClickListener {
+            activitySDk.checkSequenceNo(2)
+        }
     }
 
     private fun setToolBar() {

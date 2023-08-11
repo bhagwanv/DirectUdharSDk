@@ -64,11 +64,6 @@ class AadhaarCardFragment : Fragment() {
                 mBinding!!.etAadhaarNumber.text.toString(),
                 mBinding!!.cbTermsOfUse.isChecked
             )
-            /*val action = AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
-                aadharNo,
-                "21212121"
-            )
-            findNavController().navigate(action)*/
         }
 
         mBinding!!.tvManuallyUploadAadhaar.setOnClickListener {

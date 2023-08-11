@@ -32,6 +32,7 @@ import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
 import com.sk.directudhar.ui.phoneVerification.OtpVerifyResponseModel
 import com.sk.directudhar.ui.phoneVerification.PhoneVerifyResponseModel
 import com.sk.directudhar.ui.success.SuccessDisplayDisbursalAmountResponse
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -151,5 +152,9 @@ interface APIServices {
 
     @GET("api/Borrower/ValidateOtp")
     suspend fun getOtpVerify(@Query("MobileNo") mobile: String,@Query("Otp") Otp: String,@Query("TxnNo") txnNo: String): OtpVerifyResponseModel
+
+    @Multipart
+    @POST("api/Test/UploadCustomerShopImage")
+    suspend fun uploadAadhaarImage(@Part body: MultipartBody.Part): JsonObject
 
 }
