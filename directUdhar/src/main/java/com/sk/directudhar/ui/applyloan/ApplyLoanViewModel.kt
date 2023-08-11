@@ -31,6 +31,9 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
     private var _postDataResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
     val postResponse: LiveData<NetworkResult<InitiateAccountModel>> = _postDataResponse
 
+    private var _getPersonalInformationResponse = MutableLiveData<NetworkResult<GetPersonalInformationResponseModel>>()
+    val getPersonalInformationResponse: LiveData<NetworkResult<GetPersonalInformationResponseModel>> = _getPersonalInformationResponse
+
     fun getLogInResult(): LiveData<String> = logInResult
 
     fun performValidation(applyLoanRequestModel: ApplyLoanRequestModel) {
@@ -85,6 +88,19 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             viewModelScope.launch {
                 repository.getCity(stateId).collect() {
                     _cityResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+
+    }
+
+    fun getPersonalInformation(leadMasterId: Int) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.getPersonalInformation(leadMasterId).collect() {
+                    _getPersonalInformationResponse.postValue(it)
                 }
             }
         } else {

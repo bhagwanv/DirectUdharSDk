@@ -2,6 +2,7 @@ package com.sk.directudhar.ui.applyloan
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -10,6 +11,7 @@ import android.widget.AdapterView.OnItemClickListener
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -75,12 +77,49 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         val component = DaggerApplicationComponent.builder().build()
         component.injectApplyLoan(this)
         applyLoanViewModel = ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
-        applyLoanViewModel.callState()
+        applyLoanViewModel.getPersonalInformation(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID))
+        //applyLoanViewModel.callState()
         mBinding.btnNext.setOnClickListener(this)
         setObserber()
     }
 
     private fun setObserber() {
+
+        applyLoanViewModel.getPersonalInformationResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                    Log.e("TAG", "setObserber:111 ", )
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                    Log.e("TAG", "setObserber:2 ", )
+
+                }
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Log.e("TAG", "setObserber3: ", )
+
+                    if (it.data!=null) {
+
+                        Log.e("TAG", "setObserber:4 ", )
+                       mBinding.etFirstName.setText(it.data.FirstName)
+                       mBinding.etLastName.setText(it.data.LastName)
+                       mBinding.etLastName.setText(it.data.MobileNo)
+                       mBinding.etEmailId.setText(it.data.EmailId)
+                       mBinding.etPinCode.setText(it.data.PinCode)
+
+                    }
+                }
+            }
+        }
+
+
+
+
+
         applyLoanViewModel.getLogInResult().observe(activitySDk, Observer { result ->
             if (!result.equals(SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()

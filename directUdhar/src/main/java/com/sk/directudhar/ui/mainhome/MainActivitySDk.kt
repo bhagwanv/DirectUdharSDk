@@ -1,6 +1,7 @@
 package com.sk.directudhar.ui.mainhome
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.Toast
@@ -67,7 +68,6 @@ class MainActivitySDk : AppCompatActivity() {
         this.onBackPressedDispatcher.addCallback(this, callback)
         mainViewModel.callToken(Utils.CLIENT_CREDENTIALS, Utils.SECRETKEY, Utils.APIKYYE)
         setObserber()
-        checkSequenceNo(9)
     }
 
     private fun setObserber() {
@@ -117,7 +117,8 @@ class MainActivitySDk : AppCompatActivity() {
                             initiateAccountModel.Data.LeadMasterId
                         )
                         //  checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                        checkSequenceNo(5)
+                        Log.e("TAG", "setObserber1111: ", )
+                        checkSequenceNo(2)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }

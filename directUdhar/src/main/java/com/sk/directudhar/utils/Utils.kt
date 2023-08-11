@@ -1,4 +1,4 @@
-package com.sk.directudhar.utils
+﻿package com.sk.directudhar.utils
 
 import android.content.Context
 import android.database.Cursor
@@ -13,8 +13,8 @@ class Utils(private var context: Context) {
     companion object {
         val BASE_URL = "https://udhaarservice.shopkirana.in/"
         var CLIENT_CREDENTIALS = "client_credentials"
-        var SECRETKEY = "b02013e9-b92b-4563-a330-aec123bf13d7"
-        var APIKYYE = "e57f97e0-46ea-4be0-9fdf-c92b410cf022"
+        var SECRETKEY = "95f883fa-b4df-0cff-ce1b-f7608f88f075"
+        var APIKYYE = "88662f90-43c2-5fc5-6d77-9b80f1bf3337"
         var AADHAAR_VALIDATE_SUCCESSFULLY = "AADHAAR_VALIDATE_SUCCESSFULLY"
         var AADHAAR_OTP_VALIDATE_SUCCESSFULLY = "AADHAAR_OTP_VALIDATE_SUCCESSFULLY"
         var cameraRequest = 1888

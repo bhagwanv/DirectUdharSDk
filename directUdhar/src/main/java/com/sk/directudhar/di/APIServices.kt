@@ -10,6 +10,7 @@ import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
+import com.sk.directudhar.ui.applyloan.GetPersonalInformationResponseModel
 import com.sk.directudhar.ui.applyloan.StateModel
 import com.sk.directudhar.ui.cibilscore.CibilRequestModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
@@ -137,4 +138,10 @@ interface APIServices {
 
     @GET("api/AccountTransaction/GetPaidTransactionHistory")
     suspend fun getPaidTransactionHistory(@Query("TransactionId") transactionId: String): ArrayList<HistoryResponseModel>
+
+    //figma
+
+    @GET("/api/Borrower/GetPersonalInformation")
+    suspend fun getPersonalInformation(@Query("LeadMasterId") leadMasterId: Int): GetPersonalInformationResponseModel
+
 }
