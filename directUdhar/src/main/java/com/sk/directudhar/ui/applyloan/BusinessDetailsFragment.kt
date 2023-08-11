@@ -250,7 +250,7 @@ class BusinessDetailsFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
 
                     it.data.Data.let {
-                        Log.e("TAG", "setObserber: ${it.Name}", )
+//                        Log.e("TAG", "setObserber: ${it.Name}", )
                     }
 
                 }
