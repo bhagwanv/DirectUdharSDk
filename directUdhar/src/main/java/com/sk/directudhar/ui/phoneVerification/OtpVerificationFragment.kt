@@ -26,6 +26,7 @@ import javax.inject.Inject
 class OtpVerificationFragment : Fragment() {
     @Inject
     lateinit var phoneVerificationFactory: PhoneVerificationFactory
+
     @Inject
     lateinit var dialog: AppDialogClass
 
@@ -34,7 +35,7 @@ class OtpVerificationFragment : Fragment() {
     private val args: OtpVerificationFragmentArgs by navArgs()
 
     private lateinit var phoneVerificationViewModel: PhoneVerificationViewModel
-    private var mobileNumber =""
+    private var mobileNumber = ""
     private var accountId: Long = 0
     private var flag: Int = 0
 
@@ -56,18 +57,22 @@ class OtpVerificationFragment : Fragment() {
     }
 
     private fun initView() {
+        mBinding!!.tvMsg.text = "Enter the verification code we just sent to ${args.mobileNumber}"
         val component = DaggerApplicationComponent.builder().build()
         component.injectOtpVerify(this)
-        phoneVerificationViewModel = ViewModelProvider(this, phoneVerificationFactory)[PhoneVerificationViewModel::class.java]
+        phoneVerificationViewModel = ViewModelProvider(
+            this,
+            phoneVerificationFactory
+        )[PhoneVerificationViewModel::class.java]
         setToolBar()
         setObserver()
 
         mBinding!!.btnVerifyOtp.setOnClickListener {
             val otp = mBinding!!.customOTPView.getOTP()
-            if (otp.isNullOrEmpty()){
+            if (otp.isNullOrEmpty()) {
                 activitySDk.toast("Please enter otp")
-            }else{
-                phoneVerificationViewModel.callOtpVerify(mobileNumber,otp)
+            } else {
+                phoneVerificationViewModel.callOtpVerify(args.mobileNumber, otp, args.txnNo)
             }
         }
     }
@@ -86,11 +91,18 @@ class OtpVerificationFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                   /* val action =
-                        PhoneVerificationFragmentDirections.actionPhoneVerificationFragment(
-                            mobileNumber
-                        )
-                    findNavController().navigate(action)*/
+                    it.data.let {
+                        if (it.Result) {
+                            SharePrefs.getInstance(activitySDk)?.putInt(
+                                SharePrefs.LEAD_MASTERID,
+                                it.Data.LeadMasterId
+                            )
+                            activitySDk.toast(it.Msg)
+                            activitySDk.checkSequenceNo(it.Data.SequenceNo)
+                        } else {
+                            activitySDk.toast(it.Msg)
+                        }
+                    }
                 }
             }
         }

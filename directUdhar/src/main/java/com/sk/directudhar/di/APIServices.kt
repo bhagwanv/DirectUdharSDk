@@ -31,7 +31,8 @@ import com.sk.directudhar.ui.myaccount.udharStatement.HistoryResponseModel
 import com.sk.directudhar.ui.myaccount.udharStatement.LedgerReportResponseModel
 import com.sk.directudhar.ui.myaccount.udharStatement.TransactionDetailResponseModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
-import com.sk.directudhar.ui.phoneVerification.GenOtpResponseModel
+import com.sk.directudhar.ui.phoneVerification.OtpVerifyResponseModel
+import com.sk.directudhar.ui.phoneVerification.PhoneVerifyResponseModel
 import com.sk.directudhar.ui.success.SuccessDisplayDisbursalAmountResponse
 import retrofit2.http.Body
 import retrofit2.http.Field
@@ -148,10 +149,10 @@ interface APIServices {
     suspend fun getPersonalInformation(@Query("LeadMasterId") leadMasterId: Int): GetPersonalInformationResponseModel
 
     @GET("api/Borrower/SendOtp")
-    suspend fun getOtp(@Query("MobileNo") mobile: String): GenOtpResponseModel
+    suspend fun getOtp(@Query("MobileNo") mobile: String): PhoneVerifyResponseModel
 
     @GET("api/Borrower/ValidateOtp")
-    suspend fun getOtpVerify(@Query("MobileNo") mobile: String,@Query("Otp") Otp: String): GenOtpResponseModel
+    suspend fun getOtpVerify(@Query("MobileNo") mobile: String,@Query("Otp") Otp: String,@Query("TxnNo") txnNo: String): OtpVerifyResponseModel
 
     @POST("api/Borrower/PostCreditBeurau")
     suspend fun postCreditBeurau(@Body postCreditBeurauRequestModel: PostCreditBeurauRequestModel): PostCreditBeurauResponseModel

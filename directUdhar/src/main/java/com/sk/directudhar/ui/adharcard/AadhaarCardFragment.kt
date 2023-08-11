@@ -60,15 +60,15 @@ class AadhaarCardFragment : Fragment() {
         setObserver()
 
         mBinding!!.btnVerifyAadhaar.setOnClickListener {
-            /*aadhaarCardViewModel.validateAadhaar(
+            aadhaarCardViewModel.validateAadhaar(
                 mBinding!!.etAadhaarNumber.text.toString(),
                 mBinding!!.cbTermsOfUse.isChecked
-            )*/
-            val action = AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
+            )
+            /*val action = AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
                 aadharNo,
                 "21212121"
             )
-            findNavController().navigate(action)
+            findNavController().navigate(action)*/
         }
 
         mBinding!!.tvManuallyUploadAadhaar.setOnClickListener {
@@ -110,9 +110,7 @@ class AadhaarCardFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
                     it.data.Msg?.let { it1 -> activitySDk.toast(it1) }
                     if (it.data.Result!!) {
-
-                        val action =
-                            it.data.DynamicData!!.requestId?.let { it1 ->
+                        val action = it.data.DynamicData!!.requestId?.let { it1 ->
                                 AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
                                     aadharNo,
                                     it1

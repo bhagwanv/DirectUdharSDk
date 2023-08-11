@@ -15,9 +15,9 @@ class PhoneVerificationRepository @Inject constructor(private val apiServices: A
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun getOtpVerify(mobile: String,otp: String) = flow {
+    suspend fun getOtpVerify(mobile: String,otp: String,txnNo: String) = flow {
         emit(NetworkResult.Loading(true))
-        val response = apiServices.getOtpVerify(mobile,otp)
+        val response = apiServices.getOtpVerify(mobile,otp,txnNo)
         emit(NetworkResult.Success(response))
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
