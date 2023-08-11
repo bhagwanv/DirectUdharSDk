@@ -4,6 +4,7 @@ import android.R
 import android.app.DatePickerDialog
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +14,7 @@ import android.widget.ArrayAdapter
 import android.widget.DatePicker
 import android.widget.EditText
 import android.widget.Toast
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadhaarCardBinding
@@ -22,6 +24,7 @@ import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanFactory
 import com.sk.directudhar.ui.applyloan.ApplyLoanViewModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
@@ -55,6 +58,13 @@ class BusinessDetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         mBinding = FragmentBusinessDetailsBinding.inflate(inflater, container, false)
+        val component = DaggerApplicationComponent.builder().build()
+        component.injectBusinessDetails(this)
+        applyLoanViewModel =
+            ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
+        applyLoanViewModel.getPersonalInformation(
+            SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
+        )
         initView()
         spinnerView()
         setObserber()
@@ -66,12 +76,16 @@ class BusinessDetailsFragment : Fragment() {
         mBinding.etusinessIncorporationDate.setOnClickListener {
             showDatePicker(mBinding.etusinessIncorporationDate)
         }
+
         mBinding.btnNext.setOnClickListener {
             applyLoanViewModel.validateBusinessDetails(
                 isGSTVerify,
                 false
             )
         }
+        applyLoanViewModel.getGSTDetails(mBinding.etGstNumber.text.toString().trim())
+        applyLoanViewModel.getBusinessTypeList()
+
     }
 
     fun spinnerView() {
@@ -220,6 +234,28 @@ class BusinessDetailsFragment : Fragment() {
     }
 
     fun setObserber() {
+        applyLoanViewModel.getGSTDetailsResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+
+                    it.data.Data.let {
+                        Log.e("TAG", "setObserber: ${it.Name}", )
+                    }
+
+                }
+            }
+        }
         applyLoanViewModel.getBusinessValidResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
                 /* var model = BusinessDetailsRequestModel()

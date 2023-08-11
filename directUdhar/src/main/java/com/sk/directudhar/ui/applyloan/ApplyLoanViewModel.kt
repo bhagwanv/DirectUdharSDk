@@ -39,11 +39,19 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
     private var _postCreditBeurauResponse = MutableLiveData<NetworkResult<PostCreditBeurauResponseModel>>()
     val postCreditBeurauResponse: LiveData<NetworkResult<PostCreditBeurauResponseModel>> = _postCreditBeurauResponse
 
+
     private var putBusinessDetailsResponse= MutableLiveData<NetworkResult<BusinessDetailsResponseModel>>()
     val getBusinessDetailsResponse: LiveData<NetworkResult<BusinessDetailsResponseModel>> = putBusinessDetailsResponse
 
     private val businessValidResult = MutableLiveData<String>()
     fun getBusinessValidResult(): LiveData<String> = businessValidResult
+
+    private var _getGSTDetailsResponse = MutableLiveData<NetworkResult<GSTDetailsResponse>>()
+    val getGSTDetailsResponse: LiveData<NetworkResult<GSTDetailsResponse>> = _getGSTDetailsResponse
+
+    private var _getBusinessTypeListResponse = MutableLiveData<NetworkResult<BusinessTypeListResponse>>()
+    val getBusinessTypeListResponse: LiveData<NetworkResult<BusinessTypeListResponse>> = _getBusinessTypeListResponse
+
 
     fun performValidation() {
         /*if (postCreditBeurauRequestModel.FirstName.isNullOrEmpty()) {
@@ -144,12 +152,36 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             (MyApplication.context)!!.toast("No internet connectivity")
         }
     }
+    fun getGSTDetails(GSTNo: String) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.getGSTDetails(GSTNo).collect() {
+                    _getGSTDetailsResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
 
     fun validateBusinessDetails(isGSTVerify: Boolean, tnCchecked: Boolean) {
         if (isGSTVerify) {
             businessValidResult.value = "Please verify GST Number"
         } else {
             businessValidResult.value = Utils.AADHAAR_VALIDATE_SUCCESSFULLY
+        }
+
+    }
+
+    fun getBusinessTypeList() {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.getBusinessTypeList().collect() {
+                    _getBusinessTypeListResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
         }
     }
 }

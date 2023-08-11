@@ -7,6 +7,7 @@ import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment
 import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadFragment
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment
 import com.sk.directudhar.ui.applyloan.ApplyLoanFragment
+import com.sk.directudhar.ui.applyloan.BusinessDetailsFragment
 import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment
 import com.sk.directudhar.ui.approvalpending.ApprovalPendingFragment
@@ -35,6 +36,7 @@ interface ApplicationComponent {
     fun injectApplyLoan(fragment: ApplyLoanFragment)
     fun injectPanCard(fragment: PanCardFragment)
     fun injectAadhaarCard(fragment: AadhaarCardFragment)
+    fun injectBusinessDetails(fragment: BusinessDetailsFragment)
     fun injectAadhaarOtp(fragment: AadhaarOtpFragment)
     fun injectEMandate(fragment: EMandateFragment)
     fun injectCiBil(fragment: CibilScoreFragment)

@@ -198,7 +198,8 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
             }
         })
 
-        applyLoanViewModel.stateResponse.observe(viewLifecycleOwner) {
+
+        applyLoanViewModel.postCreditBeurauResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -212,13 +213,10 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    if (it.data != null && it.data.size > 0) {
-                        stateList = it.data
-                        cityList.clear()
-                        // mBinding.SpCity.setText(" ")
-                        setupStateAutoComplete()
-                    } else {
-                        activitySDk.toast("City not available")
+
+
+                    it.data.Data.let {
+                        activitySDk.toast("SuccessFully ${it.stgOneHitId}")
                     }
                 }
             }

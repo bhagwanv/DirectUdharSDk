@@ -9,7 +9,7 @@ import javax.inject.Inject
 
 class ApplayLoanRepository @Inject constructor(private val apiServices: APIServices) {
 
-    suspend fun getState()  = flow {
+    suspend fun getState() = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.stateMaster()
         emit(NetworkResult.Success(response))
@@ -17,7 +17,7 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun getCity(statId: Int)  = flow {
+    suspend fun getCity(statId: Int) = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.stateMaster(statId)
         emit(NetworkResult.Success(response))
@@ -25,7 +25,7 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun postData(applyLoanRequestModel: ApplyLoanRequestModel)  = flow {
+    suspend fun postData(applyLoanRequestModel: ApplyLoanRequestModel) = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.postData(applyLoanRequestModel)
         emit(NetworkResult.Success(response))
@@ -33,7 +33,7 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun getPersonalInformation(leadMasterId: Int)  = flow {
+    suspend fun getPersonalInformation(leadMasterId: Int) = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.getPersonalInformation(leadMasterId)
         emit(NetworkResult.Success(response))
@@ -41,17 +41,35 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun postCreditBeurau( postCreditBeurauRequestModel: PostCreditBeurauRequestModel)  = flow {
+    suspend fun postCreditBeurau(postCreditBeurauRequestModel: PostCreditBeurauRequestModel) =
+        flow {
+            emit(NetworkResult.Loading(true))
+            val response = apiServices.postCreditBeurau(postCreditBeurauRequestModel)
+            emit(NetworkResult.Success(response))
+        }.catch { e ->
+            emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+        }
+
+
+    suspend fun addBusinessDetail(businessDetailsRequestModel: BusinessDetailsRequestModel) = flow {
         emit(NetworkResult.Loading(true))
-        val response = apiServices.postCreditBeurau(postCreditBeurauRequestModel)
+        val response = apiServices.addBusinessDetail(businessDetailsRequestModel)
         emit(NetworkResult.Success(response))
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun addBusinessDetail( businessDetailsRequestModel: BusinessDetailsRequestModel)  = flow {
+    suspend fun getGSTDetails(GSTNo: String) = flow {
         emit(NetworkResult.Loading(true))
-        val response = apiServices.addBusinessDetail(businessDetailsRequestModel)
+        val response = apiServices.getGSTDetails(GSTNo)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
+    suspend fun getBusinessTypeList() = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.getBusinessTypeList()
         emit(NetworkResult.Success(response))
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
