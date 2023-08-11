@@ -1,13 +1,13 @@
 package com.sk.directudhar.ui.applyloan
 
 data class PostCreditBeurauResponseModel(
-    val Data: Data1,
-    val DynamicData: Any,
+    val Data: PostCredit,
+    val DynamicData: String,
     val Msg: String,
     val Result: Boolean
 )
-data class Data1(
-    val errorString: Any,
+data class PostCredit(
+    val errorString: String,
     val stgOneHitId: String,
     val stgTwoHitId: String
 )

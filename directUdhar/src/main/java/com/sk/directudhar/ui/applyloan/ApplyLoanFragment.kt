@@ -155,6 +155,29 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
             }
         }
 
+        applyLoanViewModel.postCreditBeurauResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+
+
+                    it.data.Data.let {
+                        activitySDk.toast("SuccessFully ${it.stgOneHitId}")
+                    }
+                }
+            }
+        }
+
         applyLoanViewModel.getLogInResult().observe(activitySDk, Observer { result ->
             if (!result.equals(SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
