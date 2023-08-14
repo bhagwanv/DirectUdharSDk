@@ -62,7 +62,7 @@ class BusinessDetailsFragment : Fragment() {
 
     @Inject
     lateinit var applyLoanFactory: ApplyLoanFactory
-    private var leadMasterId =0
+    private var leadMasterId = 0
     private var isGSTVerify = false
 
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
@@ -70,7 +70,10 @@ class BusinessDetailsFragment : Fragment() {
     private var mBusinessType: ArrayList<String> = ArrayList()
     var mProprietorNameList = ArrayList<AppCompatEditText>()
     var mProprietorNumberList = ArrayList<AppCompatEditText>()
-    lateinit var mBusinessDetailsRequestModel:BusinessDetailsRequestModel
+    lateinit var mBusinessDetailsRequestModel: BusinessDetailsRequestModel
+    var mBusinessIncorporationDate: String? = null
+    var mIncomeSlab: String? = null
+    var mOwnershipType: String? = null
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -96,7 +99,7 @@ class BusinessDetailsFragment : Fragment() {
     }
 
     private fun initView() {
-        leadMasterId =SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
+        leadMasterId = SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
         mBinding.etGstNumber.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
@@ -118,32 +121,34 @@ class BusinessDetailsFragment : Fragment() {
         mBinding.btnNext.setOnClickListener {
             val mBusinessType: ArrayList<BusinessType> = ArrayList()
             mBusinessType.clear()
-
             mProprietorNameList.forEach {
-                val model =BusinessType()
-                println("Name::::" + it.text.toString())
-                model.PartnerName = it.text.toString()
-                mBusinessType.add(model)
+                mBusinessType.add(BusinessType(it.text.toString()))
             }
             for (i in mProprietorNumberList.indices) {
-                val model =BusinessType()
-                model.PartnerNumber = mProprietorNumberList[i].text.toString()
-                mBusinessType.set(i,model)
+                println(i)
+                mBusinessType.set(i, BusinessType(mProprietorNumberList[i].text.toString().toInt()))
             }
-
             mBusinessType.forEach {
-                println(it.PartnerName+"    "+it.PartnerNumber)
+                println(it.PartnerName + "    " + it.PartnerNumber)
             }
-
-            /* var gstNumber = mBinding.etGstNumber.text.toString()
-             var businessName = mBinding.etBusinessName.text.toString()
-             mBusinessDetailsRequestModel = BusinessDetailsRequestModel(leadMasterId,gstNumber,businessName)
-              applyLoanViewModel.validateBusinessDetails(
-                  mBusinessDetailsRequestModel,
-                  isGSTVerify,
-                  false
-              )*/
-
+            var gstNumber = mBinding.etGstNumber.text.toString()
+            var businessName = mBinding.etBusinessName.text.toString()
+            var businessTurnover = mBinding.etBusinessTurnover.text.toString()
+            mBusinessDetailsRequestModel = BusinessDetailsRequestModel(
+                leadMasterId,
+                gstNumber,
+                businessName,
+                mBusinessType,
+                businessTurnover.toInt(),
+                mBusinessIncorporationDate!!,
+                mIncomeSlab!!,
+                mOwnershipType!!
+            )
+            applyLoanViewModel.validateBusinessDetails(
+                mBusinessDetailsRequestModel,
+                isGSTVerify,
+                false
+            )
         }
 
 
@@ -151,7 +156,7 @@ class BusinessDetailsFragment : Fragment() {
 
         mBinding.llCustomerNumber.visibility = View.VISIBLE
 
-        mBinding!!.etCustomerNumber.addTextChangedListener(aadhaarTextWatcher)
+        mBinding.etCustomerNumber.addTextChangedListener(aadhaarTextWatcher)
 
         mBinding.llBillUplod.setOnClickListener {
             askPermission()
@@ -184,9 +189,10 @@ class BusinessDetailsFragment : Fragment() {
             "Upload Bill Manual",
             "Customer Number"
         )
-      //  val planetsArray = resources.getStringArray(R)
+        //  val planetsArray = resources.getStringArray(R)
 
-        val businessAdapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, mBusinessType)
+        val businessAdapter =
+            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, mBusinessType)
         mBinding.spBusinessType.adapter = businessAdapter
         mBinding.spBusinessType.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -219,11 +225,7 @@ class BusinessDetailsFragment : Fragment() {
                 position: Int,
                 id: Long
             ) {
-                /* Toast.makeText(
-                     activitySDk,
-                     "Type" + " " + incomeSlabArray[position],
-                     Toast.LENGTH_SHORT
-                 ).show()*/
+                mIncomeSlab = incomeSlabArray[position]
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -242,11 +244,7 @@ class BusinessDetailsFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    /*  Toast.makeText(
-                          activitySDk,
-                          "Type" + " " + ownerShipArray[position],
-                          Toast.LENGTH_SHORT
-                      ).show()*/
+                    mOwnershipType = ownerShipArray[position]
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -254,7 +252,8 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
 
-        val manualBillUploadArrayAdapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, manualBillUploadArray)
+        val manualBillUploadArrayAdapter =
+            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, manualBillUploadArray)
         mBinding.spManualBillUploadType.adapter = manualBillUploadArrayAdapter
         mBinding.spManualBillUploadType.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -276,28 +275,28 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
 
-       /* val serviceProviderArrayAdapter =
-            ArrayAdapter(activitySDk, R.layout.simple_list_item_1, planetsArray)
-        mBinding.spManualBillUploadType.adapter = serviceProviderArrayAdapter
-        mBinding.spManualBillUploadType.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
-                    Toast.makeText(
-                        activitySDk,
-                        "Type" + " " + ownerShipArray[position],
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
+        /* val serviceProviderArrayAdapter =
+             ArrayAdapter(activitySDk, R.layout.simple_list_item_1, planetsArray)
+         mBinding.spManualBillUploadType.adapter = serviceProviderArrayAdapter
+         mBinding.spManualBillUploadType.onItemSelectedListener =
+             object : AdapterView.OnItemSelectedListener {
+                 override fun onItemSelected(
+                     parent: AdapterView<*>,
+                     view: View,
+                     position: Int,
+                     id: Long
+                 ) {
+                     Toast.makeText(
+                         activitySDk,
+                         "Type" + " " + ownerShipArray[position],
+                         Toast.LENGTH_SHORT
+                     ).show()
+                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Code to perform some action when nothing is selected
-                }
-            }*/
+                 override fun onNothingSelected(parent: AdapterView<*>) {
+                     // Code to perform some action when nothing is selected
+                 }
+             }*/
 
     }
 
@@ -342,7 +341,7 @@ class BusinessDetailsFragment : Fragment() {
         val datePickerDialog = DatePickerDialog(
             requireActivity(),
             { _, year, monthOfYear, dayOfMonth ->
-                val selectedDate = formatDate(year, monthOfYear, dayOfMonth)
+                mBusinessIncorporationDate = formatDate(year, monthOfYear, dayOfMonth)
                 //    etDate.setText(selectedDate)
                 etDate.setText(
                     StringBuilder() // Month is 0 based so add 1
@@ -362,7 +361,7 @@ class BusinessDetailsFragment : Fragment() {
     private fun formatDate(year: Int, month: Int, day: Int): String {
         val calendar = Calendar.getInstance()
         calendar.set(year, month, day)
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss", Locale.getDefault())
         return dateFormat.format(calendar.time)
     }
 
@@ -395,8 +394,7 @@ class BusinessDetailsFragment : Fragment() {
         }
         applyLoanViewModel.getBusinessValidResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
-                /* var model = BusinessDetailsRequestModel()
-           applyLoanViewModel.addBusinessDetail(model)*/
+                applyLoanViewModel.addBusinessDetail(mBusinessDetailsRequestModel)
             } else {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             }
@@ -406,12 +404,10 @@ class BusinessDetailsFragment : Fragment() {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
-
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
                 }
-
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
@@ -427,12 +423,10 @@ class BusinessDetailsFragment : Fragment() {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
-
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
                 }
-
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
@@ -460,7 +454,11 @@ class BusinessDetailsFragment : Fragment() {
                     val filePath = data?.getStringExtra(Utils.FILE_PATH).toString()
                     lifecycleScope.launch {
                         val body = ImageProcessing.uploadMultipart(filePath, activitySDk)
-                         applyLoanViewModel.electricityDocumentUpload(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),body)
+                        applyLoanViewModel.electricityDocumentUpload(
+                            SharePrefs.getInstance(
+                                activitySDk
+                            )!!.getInt(SharePrefs.LEAD_MASTERID), body
+                        )
 
                     }
                 } else if (result.resultCode == AppCompatActivity.RESULT_CANCELED) {
@@ -527,15 +525,14 @@ class BusinessDetailsFragment : Fragment() {
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                            activitySDk.toast("SuccessFully ${it.Msg}")
-                        }
+                        activitySDk.toast("SuccessFully ${it.Msg}")
                     }
                 }
             }
-
-
         }
 
+
+    }
 
 
     private fun askPermission() {
