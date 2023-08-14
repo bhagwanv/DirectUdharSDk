@@ -168,9 +168,6 @@ class BusinessDetailsFragment : Fragment() {
             askPermission()
         }
         applyLoanViewModel.getGSTDetails(mBinding.etGstNumber.text.toString().trim())
-
-
-
         applyLoanViewModel.getBusinessTypeList()
         mBinding.tvAddMoreView.setOnClickListener {
             addMoreView(false)

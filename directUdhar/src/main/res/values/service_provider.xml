@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string-array name="service_provider">
-        <item>None </item>
+        <item>None</item>
         <item>Ajmer Vidhyut Vitran Nigam Ltd (AJMER)</item>
         <item>Assam Power Distribution Company Limited (APDCL)</item>
         <item>BSES Yamuna Power Ltd / BSES Rajdhani Power Ltd (BSES_DL)</item>
