@@ -1,21 +1,16 @@
 package com.sk.directudhar.ui.cibilscore
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
-import com.google.gson.JsonObject
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
-import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.StateModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOTPResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
-import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
 import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
@@ -35,8 +30,8 @@ class CibilViewModel @Inject constructor(private val repository: CibilRepository
     private var _cityResponse = MutableLiveData<NetworkResult<ArrayList<CityModel>>>()
     val cityResponse: LiveData<NetworkResult<ArrayList<CityModel>>> = _cityResponse
 
-    private var _UserInfoResponse = MutableLiveData<NetworkResult<CibilRequestModel>>()
-    val userResponse: LiveData<NetworkResult<CibilRequestModel>> = _UserInfoResponse
+    private var putCibilResponse = MutableLiveData<NetworkResult<CibilResponseModel>>()
+    val getCibilResponse: LiveData<NetworkResult<CibilResponseModel>> = putCibilResponse
 
     private var _postDataResponse = MutableLiveData<NetworkResult<CiBilResponceModel>>()
     val postResponse: LiveData<NetworkResult<CiBilResponceModel>> = _postDataResponse
@@ -47,7 +42,7 @@ class CibilViewModel @Inject constructor(private val repository: CibilRepository
     fun getCiBilResult(): LiveData<String> = cibilResult
 
 
-    fun performValidation(cibilRequestModel: CibilRequestModel) {
+  /*  fun performValidation(cibilRequestModel: CibilResponseModel) {
         if (cibilRequestModel.FirstName.isNullOrEmpty()) {
             cibilResult.value = "Please Enter Name"
         } else if (cibilRequestModel.LastName.isNullOrEmpty()) {
@@ -67,7 +62,7 @@ class CibilViewModel @Inject constructor(private val repository: CibilRepository
         } else {
             cibilResult.value =SuccessType
         }
-    }
+    }*/
 
 
     fun postFromData(genrateOtpModel: GenrateOtpModel) {
@@ -82,7 +77,7 @@ class CibilViewModel @Inject constructor(private val repository: CibilRepository
         }
     }
 
-    fun postFromData(cibilRequestModel: CibilRequestModel) {
+    fun postFromData(cibilRequestModel: CibilResponseModel) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
                 repository.postData(cibilRequestModel).collect() {
@@ -120,11 +115,11 @@ class CibilViewModel @Inject constructor(private val repository: CibilRepository
 
     }
 
-    fun callUserInfo(leadMasterID:Int) {
+    fun callUserCreditInfo(leadMasterID:Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                repository.getUserInfo(leadMasterID).collect() {
-                    _UserInfoResponse.postValue(it)
+                repository.getUserCreditInfo(leadMasterID).collect() {
+                    putCibilResponse.postValue(it)
                 }
             }
         } else {

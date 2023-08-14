@@ -20,7 +20,7 @@ import com.sk.directudhar.ui.applyloan.PostCreditBeurauRequestModel
 import com.sk.directudhar.ui.applyloan.PostCreditBeurauResponseModel
 import com.sk.directudhar.ui.applyloan.StateModel
 import com.sk.directudhar.ui.applyloan.BusinessDetailsVerifyElectricityBillResponseModel
-import com.sk.directudhar.ui.cibilscore.CibilRequestModel
+import com.sk.directudhar.ui.cibilscore.CibilResponseModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
 import com.sk.directudhar.ui.approvalpending.DisplayDisbursalAmountResponse
@@ -95,10 +95,7 @@ interface APIServices {
     suspend fun aadharVerification(@Body aadharVerificationRequestModel: AadharVerificationRequestModel): InitiateAccountModel
 
     @POST("api/Borrower/PostCreditBeurau")
-    suspend fun PostCreditScore(@Body cibilRequestModel: CibilRequestModel): CiBilResponceModel
-
-    @GET("api/Borrower/GetCreditBeurau")
-    suspend fun getUserCreditInfo(@Query("LeadMasterId") LeadMasterId: Int): CibilRequestModel
+    suspend fun PostCreditScore(@Body cibilRequestModel: CibilResponseModel): CiBilResponceModel
 
     @POST("api/Borrower/OTPGeneratRequest")
     suspend fun OTPGeneratRequest(@Body genrateOtpModel: GenrateOtpModel): CiBilOTPResponceModel
@@ -186,4 +183,8 @@ interface APIServices {
 
     @POST("api/Borrower/VerifyElectricityBill")
     suspend fun verifyElectricityBill(@Body businessDetailsVerifyElectricityBillRequestModel: BusinessDetailsVerifyElectricityBillRequestModel): BusinessDetailsVerifyElectricityBillResponseModel
+
+    @GET("api/Borrower/GetCiBilInformation")
+    suspend fun getUserCreditInfo(@Query("LeadMasterId") LeadMasterId: Int): CibilResponseModel
+
 }

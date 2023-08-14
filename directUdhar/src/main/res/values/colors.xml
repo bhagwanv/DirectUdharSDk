@@ -21,6 +21,7 @@
     <color name="topBarColor">#ffffff</color>
     <color name="black_transparent">#40000000</color>
     <color name="green_50">#4F971C</color>
+    <color name="green_60">#0AAB41</color>
     <color name="green_dark">#00A704</color>
     <color name="green_whats_app">#689f39</color>
     <color name="grey">#BFBFBF</color>

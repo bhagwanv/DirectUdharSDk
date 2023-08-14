@@ -1,9 +1,7 @@
 package com.sk.directudhar.ui.cibilscore
 
-import androidx.lifecycle.ViewModelProvider
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.di.APIServices
-import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -27,7 +25,7 @@ class CibilRepository @Inject constructor(private val apiServices: APIServices) 
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun getUserInfo(leadMasterID: Int)  = flow {
+    suspend fun getUserCreditInfo(leadMasterID: Int)  = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.getUserCreditInfo(leadMasterID)
         emit(NetworkResult.Success(response))
@@ -35,7 +33,7 @@ class CibilRepository @Inject constructor(private val apiServices: APIServices) 
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun postData(cibilRequestModel: CibilRequestModel)  = flow {
+    suspend fun postData(cibilRequestModel: CibilResponseModel)  = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.PostCreditScore(cibilRequestModel)
         emit(NetworkResult.Success(response))
