@@ -192,7 +192,7 @@ class BusinessDetailsFragment : Fragment() {
             "Upload Bill Manual",
             "Customer Number"
         )
-        //  val planetsArray = resources.getStringArray(R)
+        val service_provider = resources.getStringArray(R.array.service_provider)
 
         val businessAdapter =
             ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, mBusinessType)
@@ -266,11 +266,21 @@ class BusinessDetailsFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    /* Toast.makeText(
+                     Toast.makeText(
                          activitySDk,
                          "Type" + " " + ownerShipArray[position],
                          Toast.LENGTH_SHORT
-                     ).show()*/
+                     ).show()
+
+                   /* if(ownerShipArray[position]=="2"){
+                        mBinding.llCustomerNumber.visibility=View.VISIBLE
+                        mBinding.rlServiceProviders.visibility=View.VISIBLE
+                    }else {
+                        mBinding.llCustomerNumber.visibility=View.GONE
+                        mBinding.rlServiceProviders.visibility=View.GONE
+                    }*/
+
+
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -278,33 +288,10 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
 
-        val planetsArray = resources.getStringArray(R.array.service_provider)
-        val serviceProviderArrayAdapter =
-            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, planetsArray)
-        mBinding.spManualBillUploadType.adapter = serviceProviderArrayAdapter
-        mBinding.spManualBillUploadType.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
-                    position: Int,
-                    id: Long
-                ) {
-                    Toast.makeText(
-                        activitySDk,
-                        "Type" + " " + ownerShipArray[position],
-                        Toast.LENGTH_SHORT
-                    ).show()
-                }
-
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Code to perform some action when nothing is selected
-                }
-            }
-        /* val serviceProviderArrayAdapter =
-             ArrayAdapter(activitySDk, R.layout.simple_list_item_1, planetsArray)
-         mBinding.spManualBillUploadType.adapter = serviceProviderArrayAdapter
-         mBinding.spManualBillUploadType.onItemSelectedListener =
+         val serviceProviderArrayAdapter =
+             ArrayAdapter(activitySDk,android.R.layout.simple_list_item_1, service_provider)
+         mBinding.spServiceProvider.adapter = serviceProviderArrayAdapter
+         mBinding.spServiceProvider.onItemSelectedListener =
              object : AdapterView.OnItemSelectedListener {
                  override fun onItemSelected(
                      parent: AdapterView<*>,
@@ -314,7 +301,7 @@ class BusinessDetailsFragment : Fragment() {
                  ) {
                      Toast.makeText(
                          activitySDk,
-                         "Type" + " " + ownerShipArray[position],
+                         "Type" + " " + service_provider[position],
                          Toast.LENGTH_SHORT
                      ).show()
                  }
@@ -322,7 +309,7 @@ class BusinessDetailsFragment : Fragment() {
                  override fun onNothingSelected(parent: AdapterView<*>) {
                      // Code to perform some action when nothing is selected
                  }
-             }*/
+             }
 
     }
 
