@@ -83,9 +83,9 @@
         android:name="com.sk.directudhar.ui.cibilscore.CibilScoreFragment"
         android:label="Cibil Score"
         tools:layout="@layout/fragment_cibil_score">
-        <action
+        <!--<action
             android:id="@+id/actionCibilScoreFragmentToCiBilOtpFragment"
-            app:destination="@id/CiBilOtpFragment" />
+            app:destination="@id/CiBilOtpFragment" />-->
     </fragment>
 
     <fragment

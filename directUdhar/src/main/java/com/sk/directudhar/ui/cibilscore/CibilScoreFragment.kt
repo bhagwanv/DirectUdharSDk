@@ -11,8 +11,6 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
-import com.google.gson.JsonObject
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentCibilScoreBinding
@@ -35,7 +33,6 @@ class CibilScoreFragment : Fragment(),OnClickListener {
     lateinit var cibilViewModel: CibilViewModel
     @Inject
     lateinit var cibilViewFactory: CibilViewFactory
-    lateinit var userInfoModel: CibilRequestModel
 
     var stateList = mutableListOf<StateModel>()
     var cityList = mutableListOf<CityModel>()
@@ -63,41 +60,16 @@ class CibilScoreFragment : Fragment(),OnClickListener {
         val component = DaggerApplicationComponent.builder().build()
         component.injectCiBil(this)
         cibilViewModel = ViewModelProvider(this, cibilViewFactory)[CibilViewModel::class.java]
-        cibilViewModel.callUserInfo(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID))
-        cibilViewModel.callState()
-        cibilViewModel.stateResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
-
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-
-                }
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-                    if (it.data != null && it.data.size > 0) {
-                        stateList = it.data
-                        cityList.clear()
-                        mBinding.SpCity.setText(" ")
-                        setupStateAutoComplete()
-                    } else {
-                        activitySDk.toast("City not available")
-                    }
-                }
-            }
-        }
-        mBinding.btProcess.setOnClickListener(this)
-        cibilViewModel.getCiBilResult().observe(activitySDk) { result ->
+        cibilViewModel.callUserCreditInfo(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID))
+        mBinding.btEmandate.setOnClickListener(this)
+       /* cibilViewModel.getCiBilResult().observe(activitySDk) { result ->
             if (!result.equals(Utils.SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             } else {
                 processCibil()
             }
-        }
-        cibilViewModel.postResponse.observe(viewLifecycleOwner) {
+        }*/
+       /* cibilViewModel.postResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -114,8 +86,8 @@ class CibilScoreFragment : Fragment(),OnClickListener {
                     cibilViewModel.postFromData(GenrateOtpModel(userInfoModel.MobileNo,it.data.stgOneHitId,it.data.stgTwoHitId))
                 }
             }
-        }
-        cibilViewModel.genrateOtpResponse.observe(viewLifecycleOwner) {
+        }*/
+       /* cibilViewModel.genrateOtpResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -133,50 +105,43 @@ class CibilScoreFragment : Fragment(),OnClickListener {
                     findNavController().navigate(action)
                 }
             }
-        }
-        cibilViewModel.userResponse.observe(viewLifecycleOwner) {
+        }*/
+        cibilViewModel.getCibilResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
-
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-
                 }
-
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    userInfoModel= it.data
-                    userInfoData(userInfoModel)
-
-
+                    it.data.let {
+                        if (it.Result){
+                            mBinding.name.text= "Hey "+it.Data.FirstName+"!"
+                            mBinding.tvCreditLimit.text= "₹"+it.Data.CreditLimit
+                            mBinding.tvCreditScore.text= it.Data.CreditScore.toString()
+                            mBinding.tvResult.text= "Good"
+                            mBinding.smc.setPercentWithAnimation(it.Data.CreditScore)
+                        }
+                    }
                 }
             }
         }
-
     }
 
-    private fun userInfoData(data: CibilRequestModel) {
-        mBinding.EtFullName.setText(data.FirstName)
-        mBinding.etLastName.setText(data.LastName)
-        mBinding.etAddress.setText(data.FlatNo)
-        mBinding.etPanNumber.setText(data.PanNumber)
-        mBinding.EtPincode.setText(data.PinCode)
-    }
-
-    private fun processCibil() {
+ /*   private fun processCibil() {
      cibilViewModel.postFromData(
-         CibilRequestModel(mBinding.EtFullName.text.toString().trim(),
+         CibilResponseModel(mBinding.EtFullName.text.toString().trim(),
              mBinding.etLastName.text.toString().trim(),
              mBinding.etAddress.text.toString().trim(),
              mBinding.etPanNumber.text.toString().trim(),
              mBinding.EtPincode.text.toString().trim(),stateIDValue,cityName,userInfoModel.dateOfBirth,userInfoModel.Gender,userInfoModel.EmailId,userInfoModel.MobileNo,mBinding.cbIsMandate.isChecked,
              SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)))
     }
-
-    private fun setupStateAutoComplete() {
+*/
+   /* private fun setupStateAutoComplete() {
         val stateNameList: List<String> = stateList.map { it.StateName }
         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, stateNameList)
         mBinding.spState.setAdapter(adapter)
@@ -207,9 +172,9 @@ class CibilScoreFragment : Fragment(),OnClickListener {
         }
 
 
-    }
+    }*/
 
-    private fun setupCityAutoComplete() {
+    /*private fun setupCityAutoComplete() {
         val cityNameList: List<String> = cityList.map { it.CityName }
         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, cityNameList)
         mBinding.SpCity.setAdapter(adapter)
@@ -219,17 +184,17 @@ class CibilScoreFragment : Fragment(),OnClickListener {
                 cityName = cityList[position].CityName
                 cibilViewModel.callCity(cityIDValue)
             }
-    }
+    }*/
 
     override fun onClick(v: View) {
         when (v.id) {
-           R.id.btProcess -> {
-                cibilViewModel.performValidation(CibilRequestModel(mBinding.EtFullName.text.toString().trim(),
+           R.id.btEmandate -> {
+                /*cibilViewModel.performValidation(CibilResponseModel(mBinding.EtFullName.text.toString().trim(),
                     mBinding.etLastName.text.toString().trim(),
                     mBinding.etAddress.text.toString().trim(),
                     mBinding.etPanNumber.text.toString().trim(),
                     mBinding.EtPincode.text.toString().trim(),stateIDValue,cityName,userInfoModel.dateOfBirth,userInfoModel.Gender,userInfoModel.EmailId,userInfoModel.MobileNo,mBinding.cbIsMandate.isChecked,
-                    SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)))
+                    SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)))*/
 
             }
         }
