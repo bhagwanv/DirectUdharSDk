@@ -1,11 +1,10 @@
 package com.sk.directudhar.ui.applyloan
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
+import com.google.gson.JsonObject
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
@@ -15,6 +14,7 @@ import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,6 +51,12 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
 
     private var _getBusinessTypeListResponse = MutableLiveData<NetworkResult<BusinessTypeListResponse>>()
     val getBusinessTypeListResponse: LiveData<NetworkResult<BusinessTypeListResponse>> = _getBusinessTypeListResponse
+
+    private var _electricityDocumentUploadResponse = MutableLiveData<NetworkResult<JsonObject>>()
+    val electricityDocumentUploadResponse: LiveData<NetworkResult<JsonObject>> = _electricityDocumentUploadResponse
+
+    private var _verifyElectricityBillResponse = MutableLiveData<NetworkResult<BusinessDetailsVerifyElectricityBillResponseModel>>()
+    val verifyElectricityBillResponse: LiveData<NetworkResult<BusinessDetailsVerifyElectricityBillResponseModel>> = _verifyElectricityBillResponse
 
 
     fun performValidation() {
@@ -164,10 +170,13 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
         }
     }
 
-    fun validateBusinessDetails(isGSTVerify: Boolean, tnCchecked: Boolean) {
+    fun validateBusinessDetails(isGSTVerify: Boolean, tnCchecked: Boolean, etCustomerNumber: String) {
         if (isGSTVerify) {
             businessValidResult.value = "Please verify GST Number"
-        } else {
+        }else if(etCustomerNumber.isEmpty()){
+            businessValidResult.value = "Please Customer Number"
+        }
+        else {
             businessValidResult.value = Utils.AADHAAR_VALIDATE_SUCCESSFULLY
         }
 
@@ -178,6 +187,30 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             viewModelScope.launch {
                 repository.getBusinessTypeList().collect() {
                     _getBusinessTypeListResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun electricityDocumentUpload(LeadMasterId: Int,body: MultipartBody.Part) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.electricityDocumentUpload(LeadMasterId,body).collect() {
+                    _electricityDocumentUploadResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun verifyElectricityBill(model: BusinessDetailsVerifyElectricityBillRequestModel) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.verifyElectricityBill(model).collect() {
+                    _verifyElectricityBillResponse.postValue(it)
                 }
             }
         } else {

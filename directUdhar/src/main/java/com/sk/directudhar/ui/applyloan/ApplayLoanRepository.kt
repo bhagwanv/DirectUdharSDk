@@ -5,6 +5,7 @@ import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.di.APIServices
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
+import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class ApplayLoanRepository @Inject constructor(private val apiServices: APIServices) {
@@ -70,6 +71,22 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
     suspend fun getBusinessTypeList() = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.getBusinessTypeList()
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
+    suspend fun electricityDocumentUpload(LeadMasterId: Int,body: MultipartBody.Part) = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.electricityDocumentUpload(LeadMasterId,body)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
+    suspend fun verifyElectricityBill(model: BusinessDetailsVerifyElectricityBillRequestModel) = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.verifyElectricityBill(model)
         emit(NetworkResult.Success(response))
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))

@@ -79,8 +79,7 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/background_edittext">
+                        android:layout_marginTop="10dp">
                         <androidx.appcompat.widget.AppCompatEditText
                             android:id="@+id/etPanNumber"
                             android:layout_width="match_parent"
@@ -88,7 +87,8 @@
                             android:hint="JKMPS4653E"
                             android:inputType="textCapCharacters"
                             android:textAllCaps="true"
-                            android:maxLength="10" />
+                            android:maxLength="10"
+                            android:background="@drawable/background_edittext"/>
 
                         <ImageView
                             android:id="@+id/ivRight"

@@ -10,6 +10,7 @@ import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import com.sk.directudhar.ui.applyloan.BusinessDetailsRequestModel
 import com.sk.directudhar.ui.applyloan.BusinessDetailsResponseModel
+import com.sk.directudhar.ui.applyloan.BusinessDetailsVerifyElectricityBillRequestModel
 import com.sk.directudhar.ui.applyloan.BusinessTypeListResponse
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
@@ -18,6 +19,7 @@ import com.sk.directudhar.ui.applyloan.GetPersonalInformationResponseModel
 import com.sk.directudhar.ui.applyloan.PostCreditBeurauRequestModel
 import com.sk.directudhar.ui.applyloan.PostCreditBeurauResponseModel
 import com.sk.directudhar.ui.applyloan.StateModel
+import com.sk.directudhar.ui.applyloan.BusinessDetailsVerifyElectricityBillResponseModel
 import com.sk.directudhar.ui.cibilscore.CibilRequestModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
@@ -38,7 +40,6 @@ import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
 import com.sk.directudhar.ui.phoneVerification.OtpVerifyResponseModel
 import com.sk.directudhar.ui.phoneVerification.PhoneVerifyResponseModel
 import com.sk.directudhar.ui.success.SuccessDisplayDisbursalAmountResponse
-import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.Field
 import retrofit2.http.FormUrlEncoded
@@ -175,4 +176,14 @@ interface APIServices {
     @GET("api/Anchor/GetBusinessTypeList")
     suspend fun getBusinessTypeList() : BusinessTypeListResponse
 
+    @Multipart
+    @POST("api/Borrower/ElectricityDocumentUpload")
+    suspend fun electricityDocumentUpload(
+        @Query("LeadMasterId") LeadMasterId: Int,
+        @Part body: MultipartBody.Part
+    ): JsonObject
+
+
+    @POST("api/Borrower/VerifyElectricityBill")
+    suspend fun verifyElectricityBill(@Body businessDetailsVerifyElectricityBillRequestModel: BusinessDetailsVerifyElectricityBillRequestModel): BusinessDetailsVerifyElectricityBillResponseModel
 }

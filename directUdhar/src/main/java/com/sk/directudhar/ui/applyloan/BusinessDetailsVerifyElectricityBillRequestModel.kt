@@ -1,5 +1,5 @@
 package com.sk.directudhar.ui.applyloan
 
-data class BusinessDetailsVerifyElectricityBill(  val LeadMasterId: Int,
-                                                  val CustomerId: String,
-                                                  val ServiceProvider: String)
+data class BusinessDetailsVerifyElectricityBillRequestModel(val LeadMasterId: Int,
+                                                            val CustomerId: String,
+                                                            val ServiceProvider: String)
