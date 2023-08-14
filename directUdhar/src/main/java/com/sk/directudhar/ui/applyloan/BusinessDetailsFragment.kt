@@ -276,8 +276,9 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
 
-       /* val serviceProviderArrayAdapter =
-            ArrayAdapter(activitySDk, R.layout.simple_list_item_1, planetsArray)
+        val planetsArray = resources.getStringArray(R.array.service_provider)
+        val serviceProviderArrayAdapter =
+            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, planetsArray)
         mBinding.spManualBillUploadType.adapter = serviceProviderArrayAdapter
         mBinding.spManualBillUploadType.onItemSelectedListener =
             object : AdapterView.OnItemSelectedListener {
@@ -297,7 +298,7 @@ class BusinessDetailsFragment : Fragment() {
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // Code to perform some action when nothing is selected
                 }
-            }*/
+            }
 
     }
 
