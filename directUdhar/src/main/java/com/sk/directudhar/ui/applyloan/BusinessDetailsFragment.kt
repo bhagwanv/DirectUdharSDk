@@ -68,6 +68,8 @@ class BusinessDetailsFragment : Fragment() {
 
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
     private var mBusinessTypeList: ArrayList<BusinessTypeList> = ArrayList()
+    private var mServiceProvider: ArrayList<ServiceProvider> = ArrayList()
+    private var mSpiServiceProvider: ArrayList<String> = ArrayList()
     private var mBusinessType: ArrayList<String> = ArrayList()
     var mProprietorNameList = ArrayList<AppCompatEditText>()
     var mProprietorNumberList = ArrayList<AppCompatEditText>()
@@ -192,8 +194,10 @@ class BusinessDetailsFragment : Fragment() {
             "Upload Bill Manual",
             "Customer Number"
         )
-        val service_provider = resources.getStringArray(R.array.service_provider)
-
+        mServiceProvider = ServiceProvide.getServiceProvider()
+        mServiceProvider.forEach {
+            mSpiServiceProvider.add(it.Name)
+        }
         val businessAdapter =
             ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, mBusinessType)
         mBinding.spBusinessType.adapter = businessAdapter
@@ -266,19 +270,19 @@ class BusinessDetailsFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                     Toast.makeText(
-                         activitySDk,
-                         "Type" + " " + ownerShipArray[position],
-                         Toast.LENGTH_SHORT
-                     ).show()
+                    Toast.makeText(
+                        activitySDk,
+                        "Type" + " " + ownerShipArray[position],
+                        Toast.LENGTH_SHORT
+                    ).show()
 
-                   /* if(ownerShipArray[position]=="2"){
-                        mBinding.llCustomerNumber.visibility=View.VISIBLE
-                        mBinding.rlServiceProviders.visibility=View.VISIBLE
-                    }else {
-                        mBinding.llCustomerNumber.visibility=View.GONE
-                        mBinding.rlServiceProviders.visibility=View.GONE
-                    }*/
+                    /* if(ownerShipArray[position]=="2"){
+                         mBinding.llCustomerNumber.visibility=View.VISIBLE
+                         mBinding.rlServiceProviders.visibility=View.VISIBLE
+                     }else {
+                         mBinding.llCustomerNumber.visibility=View.GONE
+                         mBinding.rlServiceProviders.visibility=View.GONE
+                     }*/
 
 
                 }
@@ -288,28 +292,28 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
 
-         val serviceProviderArrayAdapter =
-             ArrayAdapter(activitySDk,android.R.layout.simple_list_item_1, service_provider)
-         mBinding.spServiceProvider.adapter = serviceProviderArrayAdapter
-         mBinding.spServiceProvider.onItemSelectedListener =
-             object : AdapterView.OnItemSelectedListener {
-                 override fun onItemSelected(
-                     parent: AdapterView<*>,
-                     view: View,
-                     position: Int,
-                     id: Long
-                 ) {
-                     Toast.makeText(
-                         activitySDk,
-                         "Type" + " " + service_provider[position],
-                         Toast.LENGTH_SHORT
-                     ).show()
-                 }
+        val serviceProviderArrayAdapter =
+            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, mSpiServiceProvider)
+        mBinding.spServiceProvider.adapter = serviceProviderArrayAdapter
+        mBinding.spServiceProvider.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    Toast.makeText(
+                        activitySDk,
+                        "Type" + " " + mServiceProvider[position].sortName,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
 
-                 override fun onNothingSelected(parent: AdapterView<*>) {
-                     // Code to perform some action when nothing is selected
-                 }
-             }
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Code to perform some action when nothing is selected
+                }
+            }
 
     }
 
