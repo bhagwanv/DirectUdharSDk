@@ -14,8 +14,14 @@ data class BusinessDetailsRequestModel(
 )
 class BusinessType{
     @SerializedName("PartnerName")
-    var PartnerName: String?=null
+    var PartnerName=""
     @SerializedName("PartnerNumber")
-    var PartnerNumber: String?=null
+    var PartnerNumber = 0
+    constructor(PartnerName:String){
+        this.PartnerName = PartnerName
+    }
+    constructor(PartnerNumber:Int){
+        this.PartnerNumber = PartnerNumber
+    }
 }
 

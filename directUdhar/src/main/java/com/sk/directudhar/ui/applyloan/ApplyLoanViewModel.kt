@@ -177,6 +177,12 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             businessValidResult.value = "Please enter GST Number"
         }else if(!isGSTVerify){
             businessValidResult.value = "Please verify GST Number"
+        }else if(model.BusinessTurnOver==0){
+            businessValidResult.value = "Please enter business turn over"
+        }else if(model.BusinessIncorporationDate.isNullOrEmpty()){
+            businessValidResult.value = "Please enter business incorporation date"
+        }else if(model.IncomSlab.isNullOrEmpty()){
+            businessValidResult.value = "Please enter income slab"
         }/*else if(etCustomerNumber.isEmpty()){
             businessValidResult.value = "Please Customer Number"
         }*/else{
