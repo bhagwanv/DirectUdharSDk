@@ -398,7 +398,7 @@
                 android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginBottom="40dp"
                 android:background="@drawable/bg_squre_btn_corner"
                 android:backgroundTint="@color/bg_color_gray_variant1"
                 android:fontFamily="@font/urbanist_bold"
@@ -409,7 +409,6 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
-
 
         </LinearLayout>
     </ScrollView>
