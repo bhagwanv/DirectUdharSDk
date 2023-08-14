@@ -172,20 +172,25 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
 
 
 
-    fun validateBusinessDetails(model:BusinessDetailsRequestModel,isGSTVerify: Boolean, tnCchecked: Boolean) {
+    fun validateBusinessDetails(
+        model: BusinessDetailsRequestModel,
+        isGSTVerify: Boolean,
+        tnCchecked: Boolean,
+        etCustomerNumber: String
+    ) {
         if (model.GSTNo.isNullOrEmpty()){
             businessValidResult.value = "Please enter GST Number"
         }else if(!isGSTVerify){
             businessValidResult.value = "Please verify GST Number"
-        }else if(model.BusinessTurnOver==0){
+        }else if(model.BusinessTurnOver.isNullOrEmpty()){
             businessValidResult.value = "Please enter business turn over"
         }else if(model.BusinessIncorporationDate.isNullOrEmpty()){
             businessValidResult.value = "Please enter business incorporation date"
         }else if(model.IncomSlab.isNullOrEmpty()){
             businessValidResult.value = "Please enter income slab"
-        }/*else if(etCustomerNumber.isEmpty()){
+        }else if(etCustomerNumber.isNullOrEmpty()){
             businessValidResult.value = "Please Customer Number"
-        }*/else{
+        }else{
             businessValidResult.value = Utils.BUSINESS_VALIDATE_SUCCESSFULLY
         }
     }
