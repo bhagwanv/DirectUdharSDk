@@ -91,7 +91,8 @@ class MainActivitySDk : AppCompatActivity() {
                     ProgressDialog.instance!!.dismiss()
                     SharePrefs.getInstance(this)
                         ?.putString(SharePrefs.TOKEN, it.data.access_token)
-                    mainViewModel.getAccountInitiateResponse(mobilNumber)
+                  //  mainViewModel.getAccountInitiateResponse(mobilNumber)
+                    checkSequenceNo(19)
                 }
             }
         }
