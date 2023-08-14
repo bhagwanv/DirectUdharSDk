@@ -44,6 +44,7 @@ import com.sk.directudhar.utils.permission.PermissionHandler
 import com.sk.directudhar.utils.permission.Permissions
 import com.squareup.picasso.Picasso
 import kotlinx.coroutines.launch
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.ArrayList
 import java.util.Calendar
@@ -119,36 +120,41 @@ class BusinessDetailsFragment : Fragment() {
         }
 
         mBinding.btnNext.setOnClickListener {
-            val mBusinessType: ArrayList<BusinessType> = ArrayList()
-            mBusinessType.clear()
-            mProprietorNameList.forEach {
-                mBusinessType.add(BusinessType(it.text.toString()))
+            try {
+                val mBusinessType: ArrayList<BusinessType> = ArrayList()
+                mBusinessType.clear()
+                for (i in mProprietorNameList.indices) {
+                    mBusinessType.add(
+                        BusinessType(
+                            mProprietorNameList[i].text.toString(),
+                            mProprietorNumberList[i].text.toString()
+                        )
+                    )
+                }
+                mBusinessType.forEach {
+                    println(it.PartnerName + "    " + it.PartnerNumber)
+                }
+                var gstNumber = mBinding.etGstNumber.text.toString()
+                var businessName = mBinding.etBusinessName.text.toString()
+                var businessTurnover = mBinding.etBusinessTurnover.text.toString()
+                mBusinessDetailsRequestModel = BusinessDetailsRequestModel(
+                    leadMasterId,
+                    gstNumber,
+                    businessName,
+                    mBusinessType,
+                    businessTurnover.toInt(),
+                    mBusinessIncorporationDate!!,
+                    mIncomeSlab!!,
+                    mOwnershipType!!
+                )
+                applyLoanViewModel.validateBusinessDetails(
+                    mBusinessDetailsRequestModel,
+                    isGSTVerify,
+                    false
+                )
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
-            for (i in mProprietorNumberList.indices) {
-                println(i)
-                mBusinessType.set(i, BusinessType(mProprietorNumberList[i].text.toString().toInt()))
-            }
-            mBusinessType.forEach {
-                println(it.PartnerName + "    " + it.PartnerNumber)
-            }
-            var gstNumber = mBinding.etGstNumber.text.toString()
-            var businessName = mBinding.etBusinessName.text.toString()
-            var businessTurnover = mBinding.etBusinessTurnover.text.toString()
-            mBusinessDetailsRequestModel = BusinessDetailsRequestModel(
-                leadMasterId,
-                gstNumber,
-                businessName,
-                mBusinessType,
-                businessTurnover.toInt(),
-                mBusinessIncorporationDate!!,
-                mIncomeSlab!!,
-                mOwnershipType!!
-            )
-            applyLoanViewModel.validateBusinessDetails(
-                mBusinessDetailsRequestModel,
-                isGSTVerify,
-                false
-            )
         }
 
 
@@ -414,10 +420,12 @@ class BusinessDetailsFragment : Fragment() {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
+
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
                 }
+
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
@@ -433,10 +441,12 @@ class BusinessDetailsFragment : Fragment() {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
+
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
                 }
+
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {

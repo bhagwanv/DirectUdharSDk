@@ -12,7 +12,9 @@ data class BusinessDetailsRequestModel(
     val IncomSlab: String,
     val ownershipType: String,
 )
-class BusinessType{
+data class BusinessType(val PartnerName:String,val PartnerNumber:String)
+
+/*class BusinessType{
     @SerializedName("PartnerName")
     var PartnerName=""
     @SerializedName("PartnerNumber")
@@ -23,5 +25,9 @@ class BusinessType{
     constructor(PartnerNumber:Int){
         this.PartnerNumber = PartnerNumber
     }
-}
 
+    constructor(toString: String, toInt: Int){
+        this.PartnerName = toString
+        this.PartnerNumber = toInt
+    }
+}*/
