@@ -281,6 +281,29 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
 
+        val planetsArray = resources.getStringArray(R.array.service_provider)
+        val serviceProviderArrayAdapter =
+            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, planetsArray)
+        mBinding.spManualBillUploadType.adapter = serviceProviderArrayAdapter
+        mBinding.spManualBillUploadType.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    Toast.makeText(
+                        activitySDk,
+                        "Type" + " " + ownerShipArray[position],
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Code to perform some action when nothing is selected
+                }
+            }
         /* val serviceProviderArrayAdapter =
              ArrayAdapter(activitySDk, R.layout.simple_list_item_1, planetsArray)
          mBinding.spManualBillUploadType.adapter = serviceProviderArrayAdapter

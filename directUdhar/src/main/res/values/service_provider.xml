@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="service_provider">
+        <item>None </item>
+        <item>Ajmer Vidhyut Vitran Nigam Ltd (AJMER)</item>
+        <item>Assam Power Distribution Company Limited (APDCL)</item>
+        <item>BSES Yamuna Power Ltd / BSES Rajdhani Power Ltd (BSES_DL)</item>
+        <item>Bangalore Electricity Supply Company Ltd (BESCOM)</item>
+        <item> Brihanmumbai Electric Supply &amp; Transport Undertaking for Greater Mumbai (BEST_MH)</item>
+        <item>Calcutta Electric Supply Corporation Limited (CESC)</item>
+        <item>Chamundeshwari Electricity Supply Company Limited Mysore</item>
+        <item>Chandigarh Electricity Department (CH_ELEC)</item>
+        <item>Chhattisgarh State Power Distribution Company Limited (CSPDCL)</item>
+        <item>Dakshin Gujarat VIJ Company Limited (DGVCL)</item>
+        <item>Dakshin Haryana Bijli Vitran Nigam (DHBVN)</item>
+        <item>Daman and Diu Electricity Department (DAMAN_DIU)</item>
+        <item>Eastern Power Distribution Company of Andhra Pradesh Limited (APEPDCL)</item>
+        <item>Goa Electricity- for Tisvadi, Ponda &amp; Verna (GOA_ELEC) </item>
+        <item>Goa Electricity- for others (UPAY_GOA)</item>
+        <item>Gulbarga Electricity Supply Company Limited</item>
+        <item>Himachal Pradesh State Electricity Board Ltd (HPSEB)</item>
+        <item>Hubli Electricity Supply Company Limited (HESCOM)</item>
+        <item>Jaipur Vidhyut Vitran Nigam Ltd (JAIPUR)</item>
+        <item>Jodhpur Vidhyut Vitran Nigam Ltd (JODHPUR)</item>
+        <item>Kanpur Electricity Supply Company (KESCO)</item>
+        <item>Kerala State Electricity Board (KERALA)</item>
+        <item>MAHAVITARAN-Maharashtra State Electricity Distribution Co. Ltd (MSEDCL)</item>
+        <item>Madhya Gujarat VIJ Company Limited (MGVCL)</item>
+        <item>Madhya Pradesh Madhya Kshetra Vidyut Vitran Company Limited (MPCZ)</item>
+        <item>Madhya Pradesh Paschim Kshetra Vidyut Vitran Company Limited (MPWZ)</item>
+        <item>Madhya Pradesh Poorv Kshetra Vidyut Vitran Company Limited (MPEZ)</item>
+        <item>Mangalore Electricity Supply Company Limited (MESCOM)</item>
+        <item>Meghalaya Energy Corporation Limited (MeECL)</item>
+        <item>North Bihar Power Distribution Company Limited (NBPDCL)</item>
+        <item>Pashchim Gujarat VIJ Company Ltd. (PGVCL)</item>
+        <item>Punjab State Power Corporation Limited (PSPCL)</item>
+        <item>South Bihar Power Distribution Company Limited (SBPDCL)</item>
+        <item>Southern Power Distribution Company of Andhra Pradesh Limited (APSPDCL)</item>
+        <item>Supply Company of Orissa Limited (North, South, West, Central) (ORISSA)</item>
+        <item>TATA-Power - Mumbai (TATA_MUMBAI)</item>
+        <item>Tamil Nadu Generation and Distribution Corporation Limited - Chennai_North</item>
+        <item>Tamil Nadu Generation and Distribution Corporation Limited - Chennai_South</item>
+        <item>Tamil Nadu Generation and Distribution Corporation Limited - Coimbatore</item>
+        <item>Tamil Nadu Generation and Distribution Corporation Limited - Erode</item>
+        <item>Tamil Nadu Generation and Distribution Corporation Limited - Madurai</item>
+        <item>Tamil Nadu Generation and Distribution Corporation Limited - Tirunelvel</item>
+        <item>Tamil Nadu Generation and Distribution Corporation Limited - Trichy</item>
+        <item>Tamil Nadu Generation and Distribution Corporation Limited - Vellore</item>
+        <item>Tamil Nadu Generation and Distribution Corporation Limited - Villupuram</item>
+        <item>Tata Power Delhi Distribution (TATA_DL)</item>
+        <item>The Southern Power Distribution Company of Telangana Limited (TSSPCL)</item>
+        <item>Torrent Power Limited - Agra (TORRENT_AGRA)</item>
+        <item>Torrent Power Limited - Ahmedabad (TORRENT_AHD)</item>
+        <item>Torrent Power Limited - Bhiwandi (TORRENT_BHIWANDI) </item>
+        <item>Torrent Power Limited - Dahej (TORRENT_DAHEJ)</item>
+        <item>Torrent Power Limited - Surat (TORRENT_SURAT)</item>
+        <item>Tripura State Electricity Corporation Limited (TRIPURA)</item>
+        <item>UP Vidyut Vitran Nigam Limited (All Zones) (UPPCL)</item>
+        <!-- Add more items as needed -->
+    </string-array>
+</resources>
