@@ -1,5 +1,7 @@
 package com.sk.directudhar.ui.applyloan
 
+import com.google.gson.annotations.SerializedName
+
 data class BusinessDetailsRequestModel(
     val LeadId: Int,
     val GSTNo: String,
@@ -10,7 +12,10 @@ data class BusinessDetailsRequestModel(
     val IncomSlab: String,
     val ownershipType: String,
 )
-class BusinessType(
-    val PartnerName: String,
-    val PartnerNumber: Int
-)
+class BusinessType{
+    @SerializedName("PartnerName")
+    var PartnerName: String?=null
+    @SerializedName("PartnerNumber")
+    var PartnerNumber: String?=null
+}
+

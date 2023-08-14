@@ -16,16 +16,34 @@
             android:layout_marginBottom="60dp"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etGstNumber"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="GST Number"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:background="@drawable/background_linearlayout"
+                android:orientation="horizontal">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etGstNumber"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="0.4"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:background="@drawable/background_linearlayout"
+                    android:hint="GST Number"
+                    android:maxLines="1"
+                    android:maxLength="15"
+                    android:padding="16dp"
+                    android:textSize="12sp" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/ivRightGST"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginEnd="5dp"
+                    android:background="@drawable/pancard_verify_right"
+                    android:visibility="gone" />
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etBusinessName"
@@ -63,9 +81,31 @@
                     android:layout_centerVertical="true"
                     android:layout_marginEnd="20dp"
                     android:background="@drawable/arrow_up" />
+
             </RelativeLayout>
 
+            <LinearLayout
+                android:id="@+id/llBusinessType"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/tvAddMoreView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                android:layout_marginBottom="5dp"
+                android:fontFamily="@font/urbanist_medium"
+                android:gravity="end"
+                android:hint="Add More"
+                android:maxLines="1"
+                android:padding="5dp"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12sp"
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etBusinessTurnover"

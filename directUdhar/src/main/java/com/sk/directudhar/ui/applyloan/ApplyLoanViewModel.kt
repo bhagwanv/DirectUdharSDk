@@ -164,13 +164,14 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
         }
     }
 
-    fun validateBusinessDetails(isGSTVerify: Boolean, tnCchecked: Boolean) {
-        if (isGSTVerify) {
+    fun validateBusinessDetails(model:BusinessDetailsRequestModel,isGSTVerify: Boolean, tnCchecked: Boolean) {
+        if (model.GSTNo.isNullOrEmpty()){
+            businessValidResult.value = "Please enter GST Number"
+        }else if(!isGSTVerify){
             businessValidResult.value = "Please verify GST Number"
-        } else {
-            businessValidResult.value = Utils.AADHAAR_VALIDATE_SUCCESSFULLY
+        }else{
+            businessValidResult.value = Utils.BUSINESS_VALIDATE_SUCCESSFULLY
         }
-
     }
 
     fun getBusinessTypeList() {
