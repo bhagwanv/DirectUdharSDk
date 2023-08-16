@@ -86,7 +86,7 @@ interface APIServices {
     @GET("api/eMandate/BankList")
     suspend fun bankList(): BankListResponse
 
-    @POST("api/eMandate/Add")
+    @POST("api/ICICIeMandate/EMandateRegistration")
     suspend fun setUpEMandateAdd(@Body eMandateAddRequestModel: EMandateAddRequestModel): EMandateAddResponseModel
 
     @POST("api/Borrower/UpdateAdhaarInfo")

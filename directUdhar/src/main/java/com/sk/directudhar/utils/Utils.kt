@@ -24,8 +24,7 @@ class Utils(private var context: Context) {
         var IS_GALLERY_OPTION = "isGalleryOption"
         var FILE_PATH = "filePath"
         var SuccessType = "success_type_al"
-        val vintageList =
-            arrayOf<String>("Select Business Vintage", "Less than 2 years", "Greater Than 2 Years")
+        val vintageList = arrayOf<String>("Select Business Vintage", "Less than 2 years", "Greater Than 2 Years")
         val accountTypeList = arrayOf<String>(" Select Account Type", "Saving", "Current")
         val channelList = arrayOf<String>("Select Channel Type", "Net", "Debit")
 
