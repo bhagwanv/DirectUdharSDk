@@ -88,7 +88,7 @@ class AadhaarOtpFragment : Fragment() {
                         if (it.Result) {
                             activitySDk.toast(it.Msg)
                             // activitySDk.checkSequenceNo(it.Data.SequenceNo)
-                            val action = AadhaarOtpFragmentDirections.actionAadhaarOtpFragmentToKycSuccessFragment()
+                            val action = AadhaarOtpFragmentDirections.actionAadhaarOtpFragmentToKycSuccessFragment("ByOtp")
                             findNavController().navigate(action)
                         } else {
                            // activitySDk.toast(it.Msg)

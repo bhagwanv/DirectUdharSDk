@@ -222,21 +222,13 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp">
 
-                <RelativeLayout
-                    android:id="@+id/cbCheck"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:background="@drawable/checkbox_background">
-
-                    <CheckBox
-                        android:id="@+id/cbAuthorize"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:layout_gravity="center"
-                        android:button="@null" />
-                </RelativeLayout>
+                <CheckBox
+                    android:id="@+id/cbTermsOfUse"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="3dp"
+                    android:backgroundTint="@color/holo_gray_dark"
+                    android:checked="false" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -257,6 +249,8 @@
                 android:backgroundTint="@color/bg_color_gray_variant1"
                 android:fontFamily="@font/urbanist_bold"
                 android:gravity="center"
+                android:clickable="false"
+                android:enabled="false"
                 android:maxLines="1"
                 android:paddingHorizontal="16dp"
                 android:text="Next"

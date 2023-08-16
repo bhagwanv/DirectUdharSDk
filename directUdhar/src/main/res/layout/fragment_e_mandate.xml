@@ -1,194 +1,106 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="32dp">
 
-        <LinearLayout
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etBankName"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:padding="32dp">
+            android:layout_height="wrap_content"
+            android:background="@drawable/background_edittext"
+            android:fontFamily="@font/urbanist_medium"
+            android:hint="Bank name"
+            android:maxLines="1"
+            android:padding="16dp"
+            android:textSize="12sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/etIfscCode"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_edittext"
+            android:fontFamily="@font/urbanist_medium"
+            android:hint="IFSC Code"
+            android:maxLines="1"
+            android:padding="16dp"
+            android:textSize="12sp" />
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/background_edittext">
 
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="32dp"
-                    android:hint="Bank">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/spBank"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="32dp"
-                    android:hint="Account Number">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etAccountNumber"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionNext"
-                        android:inputType="number"
-                        android:minLines="1" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="32dp"
-                    android:hint="IFSC Code">
-
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/etIfscCode"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:imeOptions="actionNext"
-                        android:inputType="textCapCharacters"
-                        android:minLines="1" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="32dp"
-                    android:hint="Account Type">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/spAccountType"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-                <com.google.android.material.textfield.TextInputLayout
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="10dp"
-                    android:layout_marginEnd="32dp"
-                    android:hint="Channel">
-
-                    <AutoCompleteTextView
-                        android:id="@+id/spChannel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="none" />
-
-                </com.google.android.material.textfield.TextInputLayout>
-
-
-                <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btnNext"
-                    android:layout_width="match_parent"
-                    android:layout_height="48dp"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/bg_squre_btn_corner"
-                    android:backgroundTint="@color/bg_color_gray_variant1"
-                    android:gravity="center"
-                    android:maxLines="1"
-                    android:paddingHorizontal="16dp"
-                    android:text="Next"
-                    android:textAllCaps="false"
-                    android:textColor="@color/white"
-                    android:textSize="16sp"
-                    android:layout_marginTop="10dp"/>
-
-            </LinearLayout>
-
-
-
-
-
-         <!--   <RelativeLayout
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spAccountType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_edittext"
-                android:layout_marginVertical="10dp">
+                android:layout_marginStart="20dp"
+                android:background="@android:color/transparent"
+                android:hint="Account type"
+                android:inputType="none"
+                android:spinnerMode="dropdown"
+                android:textAllCaps="true" />
 
-                <androidx.appcompat.widget.AppCompatAutoCompleteTextView
-                    android:id="@+id/spBank"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:hint="Bank"
-                    android:inputType="none"
-                    android:textAllCaps="true"
-                    />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/arrow_up" />
 
-                <ImageView
-                    android:id="@+id/ivArrowBank"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/arrow_up"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp" />
-            </RelativeLayout>
--->
+        </RelativeLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_marginVertical="10dp"
+            android:background="@drawable/background_edittext">
 
-           <!-- <RelativeLayout
+            <androidx.appcompat.widget.AppCompatSpinner
+                android:id="@+id/spChannelType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/background_edittext"
-                android:layout_marginVertical="10dp">
+                android:layout_marginStart="20dp"
+                android:background="@android:color/transparent"
+                android:hint="Channel type"
+                android:inputType="none"
+                android:spinnerMode="dropdown"
+                android:textAllCaps="true" />
 
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etAccountNumber"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:hint="IFCS Code"
-                    android:inputType="textCapCharacters"
-                    android:textAllCaps="true"
-                    android:maxLength="10" />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="20dp"
+                android:background="@drawable/arrow_up" />
 
-                <ImageView
-                    android:id="@+id/ivarrow_up"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="@drawable/arrow_up"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp" />
-            </RelativeLayout>-->
+        </RelativeLayout>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnNext"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_squre_btn_corner"
+            android:gravity="center"
+            android:maxLines="1"
+            android:paddingHorizontal="16dp"
+            android:text="Next"
+            android:textAllCaps="false"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
 
 
-        </LinearLayout>
-    </ScrollView>
+    </LinearLayout>
 
 
 </layout>

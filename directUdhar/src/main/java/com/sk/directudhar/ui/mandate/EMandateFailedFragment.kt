@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.kyc
+package com.sk.directudhar.ui.mandate
 
 import android.content.Context
 import android.os.Bundle
@@ -7,55 +7,43 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import com.sk.directudhar.databinding.FragmentEmandateFailedBinding
+import com.sk.directudhar.databinding.FragmentKycFailedBinding
 import com.sk.directudhar.databinding.FragmentKycSuccessBinding
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFactory
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpViewModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
-import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
-import com.sk.directudhar.ui.applyloan.ApplyLoanFragmentArgs
-
 import javax.inject.Inject
 
-class KycSuccessFragment : Fragment() {
-    @Inject
-    lateinit var aadhaarOtpFactory: AadhaarOtpFactory
+class EMandateFailedFragment : Fragment() {
     private lateinit var activitySDk: MainActivitySDk
-    private var mBinding: FragmentKycSuccessBinding? = null
-    private lateinit var aadhaarOtpViewModel: AadhaarOtpViewModel
-    private val args: KycSuccessFragmentArgs by navArgs()
+    private var mBinding: FragmentEmandateFailedBinding? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         if (mBinding == null) {
-            mBinding = FragmentKycSuccessBinding.inflate(inflater, container, false)
+            mBinding = FragmentEmandateFailedBinding.inflate(inflater, container, false)
             initView()
-            println("NavType>>${args.navType}")
         }
         return mBinding!!.root
     }
 
     private fun initView() {
-        val component = DaggerApplicationComponent.builder().build()
-        component.injectKycSuccess(this)
-        aadhaarOtpViewModel =
-            ViewModelProvider(this, aadhaarOtpFactory)[AadhaarOtpViewModel::class.java]
         setToolBar()
-        mBinding!!.btnNext.setOnClickListener {
-             val action = KycSuccessFragmentDirections.actionKycSuccessFragmentToApplyLoanFragment(args.navType)
-                findNavController().navigate(action)
+        mBinding!!.tvResendBtn.setOnClickListener {
+          //  activitySDk.checkSequenceNo(5)
         }
     }
 
     private fun setToolBar() {
         activitySDk.toolbar.visibility = View.GONE
     }
-
 }
