@@ -118,7 +118,8 @@
                 android:hint="Business Turnover"
                 android:maxLines="1"
                 android:padding="16dp"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:inputType="number"/>
 
             <androidx.appcompat.widget.AppCompatEditText
                 android:id="@+id/etusinessIncorporationDate"
@@ -275,7 +276,7 @@
                 android:layout_marginVertical="10dp"
                 app:cardCornerRadius="10dp"
                 app:cardElevation="2dp"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -323,7 +324,7 @@
                 android:layout_height="45dp"
                 android:layout_marginVertical="10dp"
                 android:background="@drawable/background_edittext"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spServiceProvider"

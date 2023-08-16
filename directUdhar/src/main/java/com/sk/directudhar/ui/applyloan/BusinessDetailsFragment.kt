@@ -74,9 +74,9 @@ class BusinessDetailsFragment : Fragment() {
     var mProprietorNameList = ArrayList<AppCompatEditText>()
     var mProprietorNumberList = ArrayList<AppCompatEditText>()
     lateinit var mBusinessDetailsRequestModel: BusinessDetailsRequestModel
-    var mBusinessIncorporationDate: String? = null
-    var mIncomeSlab: String? = null
-    var mOwnershipType: String? = null
+    var mBusinessIncorporationDate=""
+    var mIncomeSlab = ""
+    var mOwnershipType=""
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -144,15 +144,16 @@ class BusinessDetailsFragment : Fragment() {
                     gstNumber,
                     businessName,
                     mBusinessType,
-                    businessTurnover.toInt(),
-                    mBusinessIncorporationDate!!,
+                    businessTurnover,
+                    mBusinessIncorporationDate,
                     mIncomeSlab!!,
                     mOwnershipType!!
                 )
                 applyLoanViewModel.validateBusinessDetails(
                     mBusinessDetailsRequestModel,
                     isGSTVerify,
-                    false
+                    false,
+                    mBinding.etCustomerNumber.text.toString()
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -410,7 +411,7 @@ class BusinessDetailsFragment : Fragment() {
             }
         }
         applyLoanViewModel.getBusinessValidResult().observe(activitySDk) { result ->
-            if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
+            if (result.equals(Utils.BUSINESS_VALIDATE_SUCCESSFULLY)) {
                 applyLoanViewModel.addBusinessDetail(mBusinessDetailsRequestModel)
             } else {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
@@ -431,6 +432,7 @@ class BusinessDetailsFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
+                            activitySDk.checkSequenceNo(it.DynamicData.SequenceNo)
                             activitySDk.toast("SuccessFully ${it.Msg}")
                         }
                     }

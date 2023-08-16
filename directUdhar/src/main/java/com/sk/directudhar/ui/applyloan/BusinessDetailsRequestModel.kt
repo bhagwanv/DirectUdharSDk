@@ -7,7 +7,7 @@ data class BusinessDetailsRequestModel(
     val GSTNo: String,
     val BusinessName: String,
     val BusinessType: ArrayList<BusinessType>,
-    val BusinessTurnOver: Int,
+    val BusinessTurnOver: String,
     val BusinessIncorporationDate: String,
     val IncomSlab: String,
     val ownershipType: String,
