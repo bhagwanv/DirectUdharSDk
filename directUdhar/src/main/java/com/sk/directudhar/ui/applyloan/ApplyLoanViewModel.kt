@@ -21,8 +21,8 @@ import javax.inject.Inject
 class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanRepository) :
     ViewModel() {
 
-    private val logInResult = MutableLiveData<String>()
-    fun getLogInResult(): LiveData<String> = logInResult
+    private val putValidResult = MutableLiveData<String>()
+    fun getValidResult(): LiveData<String> = putValidResult
 
     private var _stateResponse = MutableLiveData<NetworkResult<ArrayList<StateModel>>>()
     val stateResponse: LiveData<NetworkResult<ArrayList<StateModel>>> = _stateResponse
@@ -60,7 +60,7 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
 
 
     fun performValidation() {
-        /*if (postCreditBeurauRequestModel.FirstName.isNullOrEmpty()) {
+       /* if (postCreditBeurauRequestModel.FirstName.isNullOrEmpty()) {
             logInResult.value = "Please Enter Name"
         } else if (applyLoanRequestModel.FirmName.isNullOrEmpty()) {
             logInResult.value = "Please Business Name "
@@ -80,7 +80,7 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
             logInResult.value =SuccessType
         }*/
 
-        logInResult.value =SuccessType
+        putValidResult.value =SuccessType
     }
 
     fun postFromData(applyLoanRequestModel: ApplyLoanRequestModel) {

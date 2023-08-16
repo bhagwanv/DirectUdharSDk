@@ -8,6 +8,7 @@ import com.google.gson.JsonObject
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.ui.adharcard.AadhaarUpdateResponseModel
+import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadResponseModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
 import com.sk.directudhar.utils.Utils.Companion.AADHAAR_OTP_VALIDATE_SUCCESSFULLY
@@ -27,8 +28,8 @@ class AadhaarOtpViewModel @Inject constructor(private val repository: AadhaarOtp
     private var _postDataResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
     val postResponse: LiveData<NetworkResult<InitiateAccountModel>> = _postDataResponse
 
-    private var putUploadImageResponse = MutableLiveData<NetworkResult<JsonObject>>()
-    val getUploadImageResponse: LiveData<NetworkResult<JsonObject>> = putUploadImageResponse
+    private var putUploadImageResponse = MutableLiveData<NetworkResult<AadhaarManuallyUploadResponseModel>>()
+    val getUploadImageResponse: LiveData<NetworkResult<AadhaarManuallyUploadResponseModel>> = putUploadImageResponse
 
     fun validateOtp(otp: String) {
         if (otp.isNullOrEmpty()) {
@@ -52,10 +53,10 @@ class AadhaarOtpViewModel @Inject constructor(private val repository: AadhaarOtp
         }
     }
 
-    fun uploadAadhaarImage(body: MultipartBody.Part) {
+    fun uploadAadhaarImage(body: MultipartBody.Part,leadMasterId:Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                repository.uploadAadhaarImage(body).collect() {
+                repository.uploadAadhaarImage(body,leadMasterId).collect() {
                     putUploadImageResponse.postValue(it)
                 }
             }

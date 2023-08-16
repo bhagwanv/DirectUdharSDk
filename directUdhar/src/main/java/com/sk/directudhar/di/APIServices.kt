@@ -5,6 +5,7 @@ import com.sk.directudhar.data.TokenResponse
 import com.sk.directudhar.ui.adharcard.AadhaarUpdateResponseModel
 import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadharVerificationRequestModel
+import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadResponseModel
 import com.sk.directudhar.ui.agreement.AgreementResponseModel
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
@@ -158,8 +159,8 @@ interface APIServices {
     suspend fun getOtpVerify(@Query("MobileNo") mobile: String,@Query("Otp") Otp: String,@Query("TxnNo") txnNo: String): OtpVerifyResponseModel
 
     @Multipart
-    @POST("api/Test/UploadCustomerShopImage")
-    suspend fun uploadAadhaarImage(@Part body: MultipartBody.Part): JsonObject
+    @POST("api/Borrower/ManuallyUploadAadharCard")
+    suspend fun uploadAadhaarImage(@Part body: MultipartBody.Part,@Query("LeadMasterId") leadMasterId:Int): AadhaarManuallyUploadResponseModel
 
     @POST("api/Borrower/PostCreditBeurau")
     suspend fun postCreditBeurau(@Body postCreditBeurauRequestModel: PostCreditBeurauRequestModel): PostCreditBeurauResponseModel

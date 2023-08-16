@@ -72,6 +72,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:visibility="gone"
+                android:scaleType="fitXY"
                 android:adjustViewBounds="true" />
             <LinearLayout
                 android:id="@+id/llDefaultImage"
@@ -136,6 +137,8 @@
             android:background="@drawable/bg_squre_btn_corner"
             android:backgroundTint="@color/bg_color_gray_variant1"
             android:fontFamily="@font/urbanist_bold"
+            android:clickable="false"
+            android:enabled="false"
             android:gravity="center"
             android:maxLines="1"
             android:paddingHorizontal="16dp"

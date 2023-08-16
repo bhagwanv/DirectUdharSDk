@@ -16,6 +16,7 @@ import com.sk.directudhar.ui.kyc.KycSuccessFragment
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.ui.mandate.bank.BankMandateFragment
 import com.sk.directudhar.ui.mandate.EMandateFragment
+import com.sk.directudhar.ui.mandate.EMandateSuccessFragment
 import com.sk.directudhar.ui.myaccount.MyAccountFragment
 import com.sk.directudhar.ui.myaccount.udharStatement.UdharStatementFragment
 import com.sk.directudhar.ui.pancard.PanCardFragment
@@ -50,5 +51,6 @@ interface ApplicationComponent {
     fun injectAadhaarManuallyUpload(fragment: AadhaarManuallyUploadFragment)
     fun injectKycFailed(fragment: KycFailedFragment)
     fun injectKycSuccess(fragment: KycSuccessFragment)
+    fun injectEMandateSuccess(fragment: EMandateSuccessFragment)
 
 }

@@ -58,7 +58,26 @@ class AadhaarCardFragment : Fragment() {
 
         setToolBar()
         setObserver()
-
+        mBinding!!.cbTermsOfUse.setOnClickListener {
+            if (!aadharNo.isNullOrEmpty()) {
+                if (mBinding!!.cbTermsOfUse.isChecked) {
+                    mBinding!!.btnVerifyAadhaar.isClickable = true
+                    mBinding!!.btnVerifyAadhaar.isEnabled = true
+                    val tintList =
+                        ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                    mBinding!!.btnVerifyAadhaar.backgroundTintList = tintList
+                } else {
+                    mBinding!!.btnVerifyAadhaar.isClickable = false
+                    mBinding!!.btnVerifyAadhaar.isEnabled = false
+                    val tintList =
+                        ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                    mBinding!!.btnVerifyAadhaar.backgroundTintList = tintList
+                }
+            } else {
+                mBinding!!.cbTermsOfUse.isChecked = false
+                activitySDk.toast("Please enter aadhaar number")
+            }
+        }
         mBinding!!.btnVerifyAadhaar.setOnClickListener {
             aadhaarCardViewModel.validateAadhaar(
                 mBinding!!.etAadhaarNumber.text.toString(),
@@ -106,11 +125,11 @@ class AadhaarCardFragment : Fragment() {
                     it.data.Msg?.let { it1 -> activitySDk.toast(it1) }
                     if (it.data.Result!!) {
                         val action = it.data.DynamicData!!.requestId?.let { it1 ->
-                                AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
-                                    aadharNo,
-                                    it1
-                                )
-                            }
+                            AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
+                                aadharNo,
+                                it1
+                            )
+                        }
                         findNavController().navigate(action!!)
                     }
                 }
@@ -134,13 +153,19 @@ class AadhaarCardFragment : Fragment() {
         override fun afterTextChanged(s: Editable?) {
             val aadhaarNumber = s.toString().trim()
             if (aadhaarNumber.length < 12) {
-                val tintList =
-                    ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
-                mBinding!!.btnVerifyAadhaar.backgroundTintList = tintList
+                aadharNo = ""
+                /* val tintList =
+                     ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                 mBinding!!.btnVerifyAadhaar.backgroundTintList = tintList
+                 mBinding!!.btnVerifyAadhaar.isClickable = true
+                 mBinding!!.btnVerifyAadhaar.isEnabled = true*/
             } else {
-                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                aadharNo = aadhaarNumber
+                /*val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
                 mBinding!!.btnVerifyAadhaar.backgroundTintList = tintList
                 aadharNo = aadhaarNumber
+                mBinding!!.btnVerifyAadhaar.isClickable = false
+                mBinding!!.btnVerifyAadhaar.isEnabled = false*/
             }
         }
     }
