@@ -29,6 +29,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.gson.Gson
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentBusinessDetailsBinding
@@ -40,6 +41,7 @@ import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import com.sk.directudhar.utils.permission.PermissionHandler
 import com.sk.directudhar.utils.permission.Permissions
+import com.squareup.picasso.Picasso
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -560,29 +562,23 @@ class BusinessDetailsFragment : Fragment() {
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                       /* if (it != null) {
+                        if (it != null) {
                             val model =
                                 Gson().fromJson(
                                     it,
-                                    ElectricityDocumentUploadResponseModel::class.java
+                                    BankStateMentUploadResponseModel::class.java
                                 )
                             if (model.Result) {
-                                mBinding!!.imBillImage.visibility = View.VISIBLE
-                                mBinding!!.llDefaultImage.visibility = View.GONE
-                                val imageUrl = model.Data
-                                Picasso.get().load(imageUrl)
-                                    .into(mBinding!!.imBillImage)
+
+                                Log.e("TAG", "setObserber: 111", )
+
                             } else {
-                                mBinding!!.imBillImage.visibility = View.GONE
-                                mBinding!!.llDefaultImage.visibility = View.VISIBLE
                                 activitySDk.toast(model.Msg)
                             }
                         } else {
-                            mBinding!!.imBillImage.visibility = View.GONE
-                            mBinding!!.llDefaultImage.visibility = View.VISIBLE
                             activitySDk.toast("Image upload failed")
 
-                        }*/
+                        }
                     }
                 }
 
