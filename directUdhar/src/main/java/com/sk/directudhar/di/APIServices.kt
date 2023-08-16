@@ -6,6 +6,7 @@ import com.sk.directudhar.ui.adharcard.AadhaarUpdateResponseModel
 import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadharVerificationRequestModel
 import com.sk.directudhar.ui.agreement.AgreementResponseModel
+import com.sk.directudhar.ui.agreement.SendOtpResponseModel
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import com.sk.directudhar.ui.applyloan.BusinessDetailsRequestModel
@@ -124,11 +125,11 @@ interface APIServices {
     @POST("api/Borrower/OTPValidationRequest")
     suspend fun OTPPostOTPRequest(@Body postOTPRequestModel: PostOTPRequestModel): InitiateAccountModel
 
-    @GET("api/borrower/Agreement")
+    @GET("api/borrower/GetAgreement")
     suspend fun getAgreement(@Query("LeadMasterId") leadMasterId: Int): AgreementResponseModel
 
     @GET("api/borrower/SendOtp")
-    suspend fun sendOtp(@Query("MobileNo") mobileNo: String): AgreementResponseModel
+    suspend fun sendOtp(@Query("MobileNo") mobileNo: String): SendOtpResponseModel
 
     @POST("api/borrower/eAgreement")
     suspend fun eAgreementOtpVerification(@Body eAgreementOtpResquestModel: EAgreementOtpResquestModel): AgreementResponseModel

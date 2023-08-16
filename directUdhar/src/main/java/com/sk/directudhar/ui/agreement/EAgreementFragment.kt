@@ -1,13 +1,15 @@
 package com.sk.directudhar.ui.agreement
 
 import android.content.Context
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.text.Html
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebViewClient
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -24,14 +26,12 @@ import javax.inject.Inject
 class EAgreementFragment : Fragment() {
     lateinit var activitySDk: MainActivitySDk
 
-    private lateinit var mBinding: FragmentEAgreementBinding
+    private var mBinding: FragmentEAgreementBinding? = null
 
-    lateinit var eAgreementViewModel: EAgreementViewModel
+    private lateinit var eAgreementViewModel: EAgreementViewModel
 
     @Inject
     lateinit var eAgreementFactory: EAgreementFactory
-
-    var mobileNo=""
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -44,9 +44,11 @@ class EAgreementFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentEAgreementBinding.inflate(inflater, container, false)
-        initView()
-        return mBinding.root
+        if (mBinding == null) {
+            mBinding = FragmentEAgreementBinding.inflate(inflater, container, false)
+            initView()
+        }
+        return mBinding!!.root
     }
 
     private fun initView() {
@@ -55,12 +57,42 @@ class EAgreementFragment : Fragment() {
         eAgreementViewModel =
             ViewModelProvider(this, eAgreementFactory)[EAgreementViewModel::class.java]
 
+        setObserber()
+
         eAgreementViewModel.getAgreement(
             SharePrefs.getInstance(activitySDk)!!.getInt(
                 SharePrefs.LEAD_MASTERID
             )
         )
 
+        mBinding!!.cbAuthorize.setOnClickListener {
+            if (mBinding!!.cbAuthorize.isChecked) {
+                mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                mBinding!!.btnIAgree.backgroundTintList = tintList
+            } else {
+                mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
+                val tintList =
+                    ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                mBinding!!.btnIAgree.backgroundTintList = tintList
+            }
+
+        }
+
+        mBinding!!.btnIAgree.setOnClickListener {
+            if (mBinding!!.cbAuthorize.isChecked) {
+                val action =
+                    EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOptionsFragment()
+                findNavController().navigate(action)
+            } else {
+                activitySDk.toast("Please click checkbox to Agree term & Conditions")
+            }
+
+        }
+
+    }
+
+    private fun setObserber() {
         eAgreementViewModel.agreementResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -77,81 +109,27 @@ class EAgreementFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
 
                     if (it.data != null) {
-                        mBinding.tvTermCondition.settings.javaScriptEnabled = true
-                        mBinding.tvTermCondition.webViewClient = WebViewClient()
-                        mBinding.tvTermCondition.loadDataWithBaseURL(
+                        mBinding!!.tvTermCondition.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                            Html.fromHtml(it.data.Data!!.Agreementhtml, Html.FROM_HTML_MODE_COMPACT)
+                        } else {
+                            Html.fromHtml(it.data.Data!!.Agreementhtml)
+                        }
+                       /* mBinding!!.tvTermCondition.webViewClient = WebViewClient()
+                        mBinding!!.tvTermCondition.loadDataWithBaseURL(
                             null,
                             it.data.Data,
                             "text/html",
                             "UTF-8",
                             null
-                        )
+                        )*/
                     }
                 }
             }
         }
+    }
 
-        mBinding.cbAuthorize.setOnClickListener {
-            if(mBinding.cbAuthorize.isChecked){
-                mBinding.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
-            }else{
-                mBinding.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
-            }
-
-        }
-
-        mBinding.btIAgree.setOnClickListener {
-            if (mBinding.cbAuthorize.isChecked){
-
-               /* if (mobileNo.isEmpty()) {
-                    activitySDk.toast("Please Enter Mobile Number")
-                } else {
-                    eAgreementViewModel.sendOtp(mobileNo)
-                }*/
-
-
-
-               var action= EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOtpFragment(
-                    "",
-                    mobileNo
-                )
-                findNavController().navigate(action)
-                Log.e("TAG", "initView11: ", )
-            }else{
-                activitySDk.toast("Please click checkbox to Agree term & Conditions")
-            }
-
-        }
-
-        eAgreementViewModel.sendOtpResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
-
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-                }
-
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-                    if (it.data.Result!!) {
-                        if (it.data.Data!=null){
-                            val action =
-                                it.data.Data.let { it1 ->
-                                    EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOtpFragment(
-                                        it1,
-                                        mobileNo
-                                    )
-                                }
-                            findNavController().navigate(action!!)
-                        }
-
-                    }
-                }
-            }
-        }
-
+    override fun onDestroy() {
+        super.onDestroy()
+        mBinding!!.unbind()
     }
 }

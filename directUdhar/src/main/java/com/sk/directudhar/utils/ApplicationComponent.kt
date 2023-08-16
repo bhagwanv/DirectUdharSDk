@@ -5,6 +5,7 @@ import com.sk.directudhar.di.NetworkModule
 import com.sk.directudhar.ui.adharcard.AadhaarCardFragment
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment
 import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadFragment
+import com.sk.directudhar.ui.agreement.EAgreementOptionsFragment
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment
 import com.sk.directudhar.ui.applyloan.ApplyLoanFragment
 import com.sk.directudhar.ui.applyloan.BusinessDetailsFragment
@@ -50,5 +51,6 @@ interface ApplicationComponent {
     fun injectAadhaarManuallyUpload(fragment: AadhaarManuallyUploadFragment)
     fun injectKycFailed(fragment: KycFailedFragment)
     fun injectKycSuccess(fragment: KycSuccessFragment)
+    fun injectEAgreementOptions(fragment: EAgreementOptionsFragment)
 
 }

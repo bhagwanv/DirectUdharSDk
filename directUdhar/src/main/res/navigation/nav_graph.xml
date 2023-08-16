@@ -103,8 +103,8 @@
         tools:layout="@layout/fragment_e_agreement">
 
         <action
-            android:id="@+id/action_EAgreementFragment_to_EAgreementOtpFragment"
-            app:destination="@id/EAgreementOtpFragment" />
+            android:id="@+id/action_EAgreementFragment_to_EAgreementOptionsFragment"
+            app:destination="@id/EAgreementOptionsFragment" />
     </fragment>
 
     <fragment
@@ -261,5 +261,15 @@
         android:name="com.sk.directudhar.ui.applyloan.BusinessDetailsFragment"
         android:label="Business Details"
         tools:layout="@layout/fragment_business_details" />
+    <fragment
+        android:id="@+id/EAgreementOptionsFragment"
+        android:name="com.sk.directudhar.ui.agreement.EAgreementOptionsFragment"
+        android:label="Agreement"
+        tools:layout="@layout/fragment_e_agreement_options">
+
+        <action
+            android:id="@+id/action_EAgreementOptionsFragment_to_EAgreementOtpFragment"
+            app:destination="@id/EAgreementOtpFragment" />
+    </fragment>
 
 </navigation>

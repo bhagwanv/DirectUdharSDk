@@ -8,6 +8,7 @@ import com.google.gson.JsonObject
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.ui.agreement.AgreementResponseModel
+import com.sk.directudhar.ui.agreement.SendOtpResponseModel
 import com.sk.directudhar.utils.Network
 import com.sk.directudhar.utils.Utils.Companion.AADHAAR_OTP_VALIDATE_SUCCESSFULLY
 import com.sk.directudhar.utils.Utils.Companion.EAGREEMENT_OTP_VALIDATE_SUCCESSFULLY
@@ -26,8 +27,8 @@ class EAgreementOtpViewModel @Inject constructor(private val repository: EAgreem
     private var _eAgreementOtpVerificationResponse = MutableLiveData<NetworkResult<AgreementResponseModel>>()
     val eAgreementOtpVerificationResponse: LiveData<NetworkResult<AgreementResponseModel>> = _eAgreementOtpVerificationResponse
 
-    private var _sendOtpResponse = MutableLiveData<NetworkResult<AgreementResponseModel>>()
-    val sendOtpResponse: LiveData<NetworkResult<AgreementResponseModel>> = _sendOtpResponse
+    private var _sendOtpResponse = MutableLiveData<NetworkResult<SendOtpResponseModel>>()
+    val sendOtpResponse: LiveData<NetworkResult<SendOtpResponseModel>> = _sendOtpResponse
 
     fun validateOtp(otp: String) {
         if (otp.isNullOrEmpty()) {
