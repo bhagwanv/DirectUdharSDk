@@ -1,39 +1,38 @@
-package com.sk.directudhar.ui.applyloan
+package com.sk.directudhar.ui.businessDetails
 
 import android.Manifest
+import android.R.attr
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.Editable
-import android.text.TextWatcher
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.gson.Gson
+import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentBusinessDetailsBinding
-import com.sk.directudhar.image.ImageCaptureActivity
-import com.sk.directudhar.image.ImageProcessing
-import com.sk.directudhar.R
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
@@ -43,10 +42,11 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import com.sk.directudhar.utils.permission.PermissionHandler
 import com.sk.directudhar.utils.permission.Permissions
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.launch
-import java.lang.Exception
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import java.io.File
 import java.text.SimpleDateFormat
-import java.util.ArrayList
 import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
@@ -57,14 +57,15 @@ class BusinessDetailsFragment : Fragment() {
 
     private lateinit var mBinding: FragmentBusinessDetailsBinding
 
-    lateinit var applyLoanViewModel: ApplyLoanViewModel
+    lateinit var businessDetailsViewModel: BusinessDetailsViewModel
 
     lateinit var proceedBottomDialog: BottomSheetDialog
 
     @Inject
-    lateinit var applyLoanFactory: ApplyLoanFactory
+    lateinit var businessDetailsFactory: BusinessDetailsFactory
     private var leadMasterId = 0
     private var isGSTVerify = false
+    private var isVerifyElectricityBill = false
 
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
     private var mBusinessTypeList: ArrayList<BusinessTypeList> = ArrayList()
@@ -77,6 +78,9 @@ class BusinessDetailsFragment : Fragment() {
     var mBusinessIncorporationDate=""
     var mIncomeSlab = ""
     var mOwnershipType=""
+    var customerNumber=""
+
+    private val BUFFER_SIZE = 1024 * 2
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -90,11 +94,9 @@ class BusinessDetailsFragment : Fragment() {
         mBinding = FragmentBusinessDetailsBinding.inflate(inflater, container, false)
         val component = DaggerApplicationComponent.builder().build()
         component.injectBusinessDetails(this)
-        applyLoanViewModel =
-            ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
-        applyLoanViewModel.getPersonalInformation(
-            SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
-        )
+        businessDetailsViewModel =
+            ViewModelProvider(this, businessDetailsFactory)[BusinessDetailsViewModel::class.java]
+
         initView()
         spinnerView()
         setObserber()
@@ -107,7 +109,7 @@ class BusinessDetailsFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.length == 15) {
-                    applyLoanViewModel.getGSTDetails(s.toString())
+                    businessDetailsViewModel.getGSTDetails(s.toString())
                 } else {
                     isGSTVerify = false
                     mBinding.ivRightGST.visibility = View.GONE
@@ -117,8 +119,32 @@ class BusinessDetailsFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {
             }
         })
-        mBinding.etusinessIncorporationDate.setOnClickListener {
-            showDatePicker(mBinding.etusinessIncorporationDate)
+
+        mBinding.etCustomerNumber.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                if (s.isNullOrEmpty()) {
+                   activitySDk.toast("Please Enter Customer Number")
+                }else if (s.length == 10) {
+                    isVerifyElectricityBill = false
+                    customerNumber=s.toString()
+                    mBinding.rlServiceProviders.visibility=View.VISIBLE
+
+                } else {
+                    isVerifyElectricityBill = false
+                    mBinding.ivRightElectrycityBill.visibility = View.GONE
+                    mBinding.rlServiceProviders.visibility=View.GONE
+                }
+
+            }
+
+            override fun afterTextChanged(s: Editable) {
+            }
+        })
+
+
+        mBinding.tvBusinessIncorporationDate.setOnClickListener {
+            showDatePicker(mBinding.tvBusinessIncorporationDate)
         }
 
         mBinding.btnNext.setOnClickListener {
@@ -149,11 +175,12 @@ class BusinessDetailsFragment : Fragment() {
                     mIncomeSlab!!,
                     mOwnershipType!!
                 )
-                applyLoanViewModel.validateBusinessDetails(
+                businessDetailsViewModel.validateBusinessDetails(
                     mBusinessDetailsRequestModel,
                     isGSTVerify,
                     false,
-                    mBinding.etCustomerNumber.text.toString()
+                    customerNumber,
+                    isVerifyElectricityBill,
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -165,17 +192,24 @@ class BusinessDetailsFragment : Fragment() {
 
         mBinding.llCustomerNumber.visibility = View.VISIBLE
 
-        mBinding.etCustomerNumber.addTextChangedListener(aadhaarTextWatcher)
+       // mBinding.etCustomerNumber.addTextChangedListener(aadhaarTextWatcher)
 
         mBinding.llBillUplod.setOnClickListener {
-            askPermission()
+            //askPermission()
         }
-        applyLoanViewModel.getGSTDetails(mBinding.etGstNumber.text.toString().trim())
-        applyLoanViewModel.getBusinessTypeList()
+
+        businessDetailsViewModel.getGSTDetails(mBinding.etGstNumber.text.toString().trim())
+        businessDetailsViewModel.getBusinessTypeList()
         mBinding.tvAddMoreView.setOnClickListener {
             addMoreView(false)
         }
+
+
+        mBinding.tvUploadStatement.setOnClickListener {
+            askPermission1()
+        }
     }
+
 
 
     fun spinnerView() {
@@ -253,6 +287,13 @@ class BusinessDetailsFragment : Fragment() {
                     id: Long
                 ) {
                     mOwnershipType = ownerShipArray[position]
+
+                    if (ownerShipArray[position]=="Owned"){
+                        mBinding.rlSpManualBillUploadType.visibility=View.VISIBLE
+                    }else{
+                        mBinding.rlSpManualBillUploadType.visibility=View.GONE
+                        mBinding.llCustomerNumber.visibility=View.GONE
+                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -273,18 +314,16 @@ class BusinessDetailsFragment : Fragment() {
                 ) {
                     Toast.makeText(
                         activitySDk,
-                        "Type" + " " + ownerShipArray[position],
+                        "Type" + " " + manualBillUploadArray[position],
                         Toast.LENGTH_SHORT
                     ).show()
 
-                    /* if(ownerShipArray[position]=="2"){
-                         mBinding.llCustomerNumber.visibility=View.VISIBLE
-                         mBinding.rlServiceProviders.visibility=View.VISIBLE
-                     }else {
-                         mBinding.llCustomerNumber.visibility=View.GONE
-                         mBinding.rlServiceProviders.visibility=View.GONE
-                     }*/
 
+                    if (manualBillUploadArray[position]=="Customer Number"){
+                        mBinding.llCustomerNumber.visibility=View.VISIBLE
+                    }else{
+                        mBinding.llCustomerNumber.visibility=View.GONE
+                    }
 
                 }
 
@@ -309,6 +348,11 @@ class BusinessDetailsFragment : Fragment() {
                         "Type" + " " + mServiceProvider[position].sortName,
                         Toast.LENGTH_SHORT
                     ).show()
+                    Log.e("TAG", "onItemSelected: ")
+                    var model=BusinessDetailsVerifyElectricityBillRequestModel(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),customerNumber,mServiceProvider[position].sortName)
+                    businessDetailsViewModel.verifyElectricityBill(model)
+
+
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -350,7 +394,7 @@ class BusinessDetailsFragment : Fragment() {
         mBinding.llBusinessType.addView(etNumber)
     }
 
-    private fun showDatePicker(etDate: EditText) {
+    private fun showDatePicker(tvDate: TextView) {
         val c = Calendar.getInstance()
         val currentYear = c[Calendar.YEAR]
         val currentMonth = c[Calendar.MONTH]
@@ -361,11 +405,11 @@ class BusinessDetailsFragment : Fragment() {
             { _, year, monthOfYear, dayOfMonth ->
                 mBusinessIncorporationDate = formatDate(year, monthOfYear, dayOfMonth)
                 //    etDate.setText(selectedDate)
-                etDate.setText(
+                tvDate.text=
                     StringBuilder() // Month is 0 based so add 1
                         .append(dayOfMonth).append("/").append(monthOfYear + 1).append("/")
                         .append(year).append(" ")
-                )
+
 
             },
             currentYear,
@@ -384,7 +428,7 @@ class BusinessDetailsFragment : Fragment() {
     }
 
     fun setObserber() {
-        applyLoanViewModel.getGSTDetailsResponse.observe(viewLifecycleOwner) {
+        businessDetailsViewModel.getGSTDetailsResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -410,14 +454,14 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
         }
-        applyLoanViewModel.getBusinessValidResult().observe(activitySDk) { result ->
+        businessDetailsViewModel.getBusinessValidResult().observe(activitySDk) { result ->
             if (result.equals(Utils.BUSINESS_VALIDATE_SUCCESSFULLY)) {
-                applyLoanViewModel.addBusinessDetail(mBusinessDetailsRequestModel)
+                businessDetailsViewModel.addBusinessDetail(mBusinessDetailsRequestModel)
             } else {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             }
         }
-        applyLoanViewModel.getBusinessDetailsResponse.observe(viewLifecycleOwner) {
+        businessDetailsViewModel.getBusinessDetailsResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -439,7 +483,7 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
         }
-        applyLoanViewModel.getBusinessTypeListResponse.observe(viewLifecycleOwner) {
+        businessDetailsViewModel.getBusinessTypeListResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -472,25 +516,39 @@ class BusinessDetailsFragment : Fragment() {
         }
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-                if (result.resultCode == AppCompatActivity.RESULT_OK) {
+
+                if (result.resultCode == AppCompatActivity.RESULT_OK){
                     val data: Intent? = result.data
-                    val filePath = data?.getStringExtra(Utils.FILE_PATH).toString()
-                    lifecycleScope.launch {
-                        val body = ImageProcessing.uploadMultipart(filePath, activitySDk)
-                        applyLoanViewModel.electricityDocumentUpload(
+                    // check condition
+                    if (data != null) {
+                        var sUri = data.getData ()
+                        Log.e("TAG", "sUri$sUri: ")
+                      // var sPath= getFilePathFromURI(activitySDk,sUri)
+                        // Get PDF path
+                       // var sPath = sUri?.getPath ();
+                       // Log.e("TAG", "sPath$sPath: ")
+
+                        val fl: File = File(sUri.toString())
+                        var path = fl.absolutePath
+                        val file: File = File(path)
+                        // Parsing any Media type file
+                        // Parsing any Media type file
+                        val requestBody: RequestBody = RequestBody.create("*/*".toMediaTypeOrNull(), file)
+                        val fileToUpload: MultipartBody.Part = MultipartBody.Part.createFormData("filename", file.name, requestBody)
+                        Log.e("TAG", "sPath$path: ")
+
+                        businessDetailsViewModel.bankPassBookUpload(
                             SharePrefs.getInstance(
                                 activitySDk
-                            )!!.getInt(SharePrefs.LEAD_MASTERID), body
+                            )!!.getInt(SharePrefs.LEAD_MASTERID), fileToUpload
                         )
-
                     }
-                } else if (result.resultCode == AppCompatActivity.RESULT_CANCELED) {
-                    Log.d("Result:", "Cancel")
+
                 }
             }
 
 
-        applyLoanViewModel.electricityDocumentUploadResponse.observe(viewLifecycleOwner) {
+        businessDetailsViewModel.bankPassBookUploadResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -508,22 +566,16 @@ class BusinessDetailsFragment : Fragment() {
                             val model =
                                 Gson().fromJson(
                                     it,
-                                    ElectricityDocumentUploadResponseModel::class.java
+                                    BankStateMentUploadResponseModel::class.java
                                 )
                             if (model.Result) {
-                                mBinding!!.imBillImage.visibility = View.VISIBLE
-                                mBinding!!.llDefaultImage.visibility = View.GONE
-                                val imageUrl = model.Data
-                                Picasso.get().load(imageUrl)
-                                    .into(mBinding!!.imBillImage)
+
+                                Log.e("TAG", "setObserber: 111", )
+
                             } else {
-                                mBinding!!.imBillImage.visibility = View.GONE
-                                mBinding!!.llDefaultImage.visibility = View.VISIBLE
                                 activitySDk.toast(model.Msg)
                             }
                         } else {
-                            mBinding!!.imBillImage.visibility = View.GONE
-                            mBinding!!.llDefaultImage.visibility = View.VISIBLE
                             activitySDk.toast("Image upload failed")
 
                         }
@@ -533,7 +585,7 @@ class BusinessDetailsFragment : Fragment() {
             }
         }
 
-        applyLoanViewModel.verifyElectricityBillResponse.observe(viewLifecycleOwner) {
+        businessDetailsViewModel.verifyElectricityBillResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -548,8 +600,14 @@ class BusinessDetailsFragment : Fragment() {
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                        activitySDk.toast("SuccessFully ${it.Msg}")
+                        if (it.Result) {
+                            isVerifyElectricityBill = true
+                            mBinding.ivRightElectrycityBill.visibility = View.VISIBLE
+                        } else {
+                            mBinding.ivRightElectrycityBill.visibility = View.GONE
+                        }
                     }
+
                 }
             }
         }
@@ -558,7 +616,19 @@ class BusinessDetailsFragment : Fragment() {
     }
 
 
-    private fun askPermission() {
+    private fun selectPDF() {
+        // Initialize intent
+        Log.e("TAG", "initView4: ")
+        val intent = Intent(Intent.ACTION_GET_CONTENT)
+        // Set type
+
+        intent.type = "application/pdf"
+        // Launch intent
+        resultLauncher!!.launch(intent)
+
+    }
+
+    private fun askPermission1() {
         val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(
                 Manifest.permission.CAMERA,
@@ -583,37 +653,50 @@ class BusinessDetailsFragment : Fragment() {
                 override fun onGranted() {
                     val tsLong = System.currentTimeMillis() / 1000
                     var fileName = "aadhaarImage_" + tsLong + ".png"
-                    val intent = Intent(activitySDk, ImageCaptureActivity::class.java)
-                    intent.putExtra(Utils.FILE_NAME, fileName)
-                    intent.putExtra(Utils.IS_GALLERY_OPTION, false)
-                    resultLauncher?.launch(intent)
+
+                        selectPDF()
+
                 }
 
                 override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>) {
-                    askPermission()
+                    askPermission1()
                 }
             })
 
     }
 
-    private val aadhaarTextWatcher = object : TextWatcher {
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-            // Not used
+    fun getFilePathFromURI(context: Context, contentUri: Uri?): String? {
+        //copy file and send new file path
+        val fileName = getFileName(contentUri)
+        val folderPath = activitySDk.getExternalFilesDir(null)!!.absolutePath + "/SkStatement"
+        val file = File(folderPath)
+        if (!file.exists()) {
+            file.mkdirs()
         }
-
-        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-            // Not used
-        }
-
-        override fun afterTextChanged(s: Editable?) {
-            val customerNumber = s.toString().trim()
-            if (customerNumber.length < 10) {
-                mBinding.imRightIcon.visibility = View.GONE
-
-            } else {
-                mBinding.imRightIcon.visibility = View.VISIBLE
-            }
-        }
+        return fileName
     }
+
+    fun getFileName(uri: Uri?): String? {
+        if (uri == null) return null
+        var fileName: String? = null
+        val path = uri.path
+        val cut = path!!.lastIndexOf('/')
+        if (cut != -1) {
+            fileName = path.substring(cut + 1)
+        }
+        return fileName
+    }
+/*
+    fun getPDFPath(uri: Uri?): String? {
+        val id = DocumentsContract.getDocumentId(uri)
+        val contentUri = ContentUris.withAppendedId(
+            Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id)
+        )
+        val projection = arrayOf(MediaStore.Images.Media.DATA)
+        val cursor: Cursor = getContentResolver().query(contentUri, projection, null, null, null)
+        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
+        cursor.moveToFirst()
+        return cursor.getString(column_index)
+    }*/
 
 }

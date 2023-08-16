@@ -16,9 +16,9 @@ class AadhaarOtpRepository @Inject constructor(private val apiServices: APIServi
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
-    suspend fun uploadAadhaarImage(body: MultipartBody.Part)  = flow {
+    suspend fun uploadAadhaarImage(body: MultipartBody.Part,leadMasterId: Int)  = flow {
         emit(NetworkResult.Loading(true))
-        val response = apiServices.uploadAadhaarImage(body)
+        val response = apiServices.uploadAadhaarImage(body,leadMasterId)
         emit(NetworkResult.Success(response))
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))

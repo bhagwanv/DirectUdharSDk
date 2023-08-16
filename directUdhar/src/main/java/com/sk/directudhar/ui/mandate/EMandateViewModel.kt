@@ -30,25 +30,24 @@ class EMandateViewModel @Inject constructor(private val repository: EMandateRepo
     val bankListResponse: LiveData<NetworkResult<BankListResponse>> = _bankListResponse
 
     private var _eMandateAddResponse = MutableLiveData<NetworkResult<EMandateAddResponseModel>>()
-    val eMandateAddResponse: LiveData<NetworkResult<EMandateAddResponseModel>> = _eMandateAddResponse
+    val eMandateAddResponse: LiveData<NetworkResult<EMandateAddResponseModel>> =
+        _eMandateAddResponse
 
 
     fun getEMandateResult(): LiveData<String> = eMandateResult
 
     fun performValidation(eMandateAddRequestModel: EMandateAddRequestModel) {
 
-       if (eMandateAddRequestModel.BankName.isNullOrEmpty()) {
-            eMandateResult.value = "Please select Bank"
-        } else if (eMandateAddRequestModel.AccountNo.isNullOrEmpty()) {
-            eMandateResult.value = "Please Enter Account Number"
+        if (eMandateAddRequestModel.BankName.isNullOrEmpty()) {
+            eMandateResult.value = "Please enter Bank name"
         } else if (eMandateAddRequestModel.IfscCode.isNullOrEmpty()) {
             eMandateResult.value = "Please Enter Ifsc Code"
         } else if (eMandateAddRequestModel.AccountType.isNullOrEmpty()) {
             eMandateResult.value = "Please select Account Type"
-        } else if (eMandateAddRequestModel.Channel.isNullOrEmpty()) {
+        } else if (eMandateAddRequestModel.ChannelType.isNullOrEmpty()) {
             eMandateResult.value = "Please select Channel "
-        }else {
-            eMandateResult.value =SuccessType
+        } else {
+            eMandateResult.value = SuccessType
         }
     }
 
@@ -62,7 +61,6 @@ class EMandateViewModel @Inject constructor(private val repository: EMandateRepo
         } else {
             (MyApplication.context)!!.toast("No internet connectivity")
         }
-
     }
 
     fun callEmandateAdd(model: EMandateAddRequestModel) {

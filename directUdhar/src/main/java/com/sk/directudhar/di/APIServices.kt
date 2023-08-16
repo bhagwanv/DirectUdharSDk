@@ -5,26 +5,27 @@ import com.sk.directudhar.data.TokenResponse
 import com.sk.directudhar.ui.adharcard.AadhaarUpdateResponseModel
 import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadharVerificationRequestModel
+import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadResponseModel
 import com.sk.directudhar.ui.agreement.AgreementResponseModel
 import com.sk.directudhar.ui.agreement.SendOtpResponseModel
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
-import com.sk.directudhar.ui.applyloan.BusinessDetailsRequestModel
-import com.sk.directudhar.ui.applyloan.BusinessDetailsResponseModel
-import com.sk.directudhar.ui.applyloan.BusinessDetailsVerifyElectricityBillRequestModel
-import com.sk.directudhar.ui.applyloan.BusinessTypeListResponse
+import com.sk.directudhar.ui.businessDetails.BusinessDetailsVerifyElectricityBillRequestModel
 import okhttp3.MultipartBody
 import com.sk.directudhar.ui.applyloan.CityModel
-import com.sk.directudhar.ui.applyloan.GSTDetailsResponse
 import com.sk.directudhar.ui.applyloan.GetPersonalInformationResponseModel
 import com.sk.directudhar.ui.applyloan.PostCreditBeurauRequestModel
 import com.sk.directudhar.ui.applyloan.PostCreditBeurauResponseModel
 import com.sk.directudhar.ui.applyloan.StateModel
-import com.sk.directudhar.ui.applyloan.BusinessDetailsVerifyElectricityBillResponseModel
+import com.sk.directudhar.ui.businessDetails.BusinessDetailsVerifyElectricityBillResponseModel
 import com.sk.directudhar.ui.cibilscore.CibilResponseModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
 import com.sk.directudhar.ui.approvalpending.DisplayDisbursalAmountResponse
+import com.sk.directudhar.ui.businessDetails.BusinessDetailsRequestModel
+import com.sk.directudhar.ui.businessDetails.BusinessDetailsResponseModel
+import com.sk.directudhar.ui.businessDetails.BusinessTypeListResponse
+import com.sk.directudhar.ui.businessDetails.GSTDetailsResponse
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOTPResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.PostOTPRequestModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
@@ -86,7 +87,7 @@ interface APIServices {
     @GET("api/eMandate/BankList")
     suspend fun bankList(): BankListResponse
 
-    @POST("api/eMandate/Add")
+    @POST("api/ICICIeMandate/EMandateRegistration")
     suspend fun setUpEMandateAdd(@Body eMandateAddRequestModel: EMandateAddRequestModel): EMandateAddResponseModel
 
     @POST("api/Borrower/UpdateAdhaarInfo")
@@ -159,8 +160,8 @@ interface APIServices {
     suspend fun getOtpVerify(@Query("MobileNo") mobile: String,@Query("Otp") Otp: String,@Query("TxnNo") txnNo: String): OtpVerifyResponseModel
 
     @Multipart
-    @POST("api/Test/UploadCustomerShopImage")
-    suspend fun uploadAadhaarImage(@Part body: MultipartBody.Part): JsonObject
+    @POST("api/Borrower/ManuallyUploadAadharCard")
+    suspend fun uploadAadhaarImage(@Part body: MultipartBody.Part,@Query("LeadMasterId") leadMasterId:Int): AadhaarManuallyUploadResponseModel
 
     @POST("api/Borrower/PostCreditBeurau")
     suspend fun postCreditBeurau(@Body postCreditBeurauRequestModel: PostCreditBeurauRequestModel): PostCreditBeurauResponseModel
@@ -175,8 +176,8 @@ interface APIServices {
     suspend fun getBusinessTypeList() : BusinessTypeListResponse
 
     @Multipart
-    @POST("api/Borrower/ElectricityDocumentUpload")
-    suspend fun electricityDocumentUpload(
+    @POST("api/Borrower/BankPassBookUpload")
+    suspend fun bankPassBookUpload(
         @Query("LeadMasterId") LeadMasterId: Int,
         @Part body: MultipartBody.Part
     ): JsonObject

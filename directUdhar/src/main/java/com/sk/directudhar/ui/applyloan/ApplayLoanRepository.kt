@@ -52,43 +52,5 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
         }
 
 
-    suspend fun addBusinessDetail(businessDetailsRequestModel: BusinessDetailsRequestModel) = flow {
-        emit(NetworkResult.Loading(true))
-        val response = apiServices.addBusinessDetail(businessDetailsRequestModel)
-        emit(NetworkResult.Success(response))
-    }.catch { e ->
-        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
-    }
 
-    suspend fun getGSTDetails(GSTNo: String) = flow {
-        emit(NetworkResult.Loading(true))
-        val response = apiServices.getGSTDetails(GSTNo)
-        emit(NetworkResult.Success(response))
-    }.catch { e ->
-        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
-    }
-
-    suspend fun getBusinessTypeList() = flow {
-        emit(NetworkResult.Loading(true))
-        val response = apiServices.getBusinessTypeList()
-        emit(NetworkResult.Success(response))
-    }.catch { e ->
-        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
-    }
-
-    suspend fun electricityDocumentUpload(LeadMasterId: Int,body: MultipartBody.Part) = flow {
-        emit(NetworkResult.Loading(true))
-        val response = apiServices.electricityDocumentUpload(LeadMasterId,body)
-        emit(NetworkResult.Success(response))
-    }.catch { e ->
-        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
-    }
-
-    suspend fun verifyElectricityBill(model: BusinessDetailsVerifyElectricityBillRequestModel) = flow {
-        emit(NetworkResult.Loading(true))
-        val response = apiServices.verifyElectricityBill(model)
-        emit(NetworkResult.Success(response))
-    }.catch { e ->
-        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
-    }
 }

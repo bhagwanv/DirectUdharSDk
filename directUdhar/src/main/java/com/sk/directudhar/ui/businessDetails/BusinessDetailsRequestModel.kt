@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.applyloan
+package com.sk.directudhar.ui.businessDetails
 
 import com.google.gson.annotations.SerializedName
 

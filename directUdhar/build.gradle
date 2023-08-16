@@ -100,6 +100,7 @@ dependencies {
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0"
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4"
     implementation 'id.zelory:compressor:3.0.1'
-
+    implementation files("libs/weipl_checkout.aar")
+    implementation "com.android.volley:volley:1.2.1"
 
 }

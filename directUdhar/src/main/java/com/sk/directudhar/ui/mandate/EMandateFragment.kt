@@ -1,39 +1,33 @@
 package com.sk.directudhar.ui.mandate
 
-
 import android.content.Context
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.sk.directudhar.data.NetworkResult
-import com.sk.directudhar.databinding.FragmentEMandateBinding
-import android.view.View.OnClickListener
-import androidx.core.content.ContextCompat
-import androidx.databinding.adapters.TextViewBindingAdapter.setText
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.sk.directudhar.R
-import com.sk.directudhar.ui.applyloan.StateModel
+import com.sk.directudhar.data.NetworkResult
+import com.sk.directudhar.databinding.FragmentEMandateBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
-import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
+import com.weipl.checkout.WLCheckoutActivity
+import org.json.JSONObject
 import javax.inject.Inject
-import kotlin.math.E
 
-class EMandateFragment : Fragment(), OnClickListener {
+class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.PaymentResponseListener {
 
     lateinit var activitySDk: MainActivitySDk
 
@@ -44,13 +38,15 @@ class EMandateFragment : Fragment(), OnClickListener {
     @Inject
     lateinit var eMandateFactory: EMandateFactory
 
-    var bankList = mutableListOf<LiveBank>()
+    // var bankList = mutableListOf<LiveBank>()
 
 
-    private var eMandateValue= ""
-    private var bankIDValue = ""
-    private var accountTypeIDValue = ""
-    private var channelIDValue= ""
+    private var eMandateValue = ""
+
+    // private var bankIDValue = ""
+    private var accountType = ""
+    private var channelType = ""
+    private var leadMasterId = 0
 
 
     override fun onAttach(context: Context) {
@@ -65,69 +61,60 @@ class EMandateFragment : Fragment(), OnClickListener {
         savedInstanceState: Bundle?
     ): View {
         mBinding = FragmentEMandateBinding.inflate(inflater, container, false)
+        WLCheckoutActivity.setPaymentResponseListener(this)
+        WLCheckoutActivity.preloadData(activitySDk)
         initView()
         return mBinding.root
     }
 
     private fun initView() {
-
+        leadMasterId = SharePrefs.getInstance(activitySDk)
+            ?.getInt(SharePrefs.LEAD_MASTERID)!!
         val component = DaggerApplicationComponent.builder().build()
         component.injectEMandate(this)
         eMandateViewModel =
             ViewModelProvider(this, eMandateFactory)[EMandateViewModel::class.java]
-
         mBinding.btnNext.setOnClickListener(this)
-
         eMandateViewModel.getEMandateResult().observe(activitySDk, Observer { result ->
             if (!result.equals(Utils.SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             } else {
                 eMandateViewModel.callEmandateAdd(
                     EMandateAddRequestModel(
-                        mBinding.etAccountNumber.text.toString().trim(),
-                        accountTypeIDValue,
-                        bankIDValue,
-                        channelIDValue,
+                        leadMasterId,
+                        mBinding.etBankName.text.toString().trim(),
                         mBinding.etIfscCode.text.toString().trim(),
-                        false,
-                        SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
-                        eMandateValue,
-                        "",
-                        ""
+                        accountType,
+                        channelType
                     )
                 )
             }
         })
 
-
-        eMandateViewModel.callBankList()
         callAccountType()
         callChannelList()
-        eMandateViewModel.bankListResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
 
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-
-                }
-
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-                    if (it.data != null) {
-                        bankList = it.data.liveBankList as MutableList<LiveBank>
-
-                      //  mBinding.spBank.setText(" ")
-                        setupBank()
-                    } else {
-                        activitySDk.toast("Bank not available")
-                    }
-                }
-            }
-        }
+        //eMandateViewModel.callBankList()
+        /* eMandateViewModel.bankListResponse.observe(viewLifecycleOwner) {
+             when (it) {
+                 is NetworkResult.Loading -> {
+                     ProgressDialog.instance!!.show(activitySDk)
+                 }
+                 is NetworkResult.Failure -> {
+                     ProgressDialog.instance!!.dismiss()
+                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                 }
+                 is NetworkResult.Success -> {
+                     ProgressDialog.instance!!.dismiss()
+                     if (it.data != null) {
+                         bankList = it.data.liveBankList as MutableList<LiveBank>
+                         setupBank()
+                     } else {
+                         activitySDk.toast("Bank not available")
+                     }
+                 }
+             }
+         }*/
 
         eMandateViewModel.eMandateAddResponse.observe(viewLifecycleOwner) {
             when (it) {
@@ -142,12 +129,13 @@ class EMandateFragment : Fragment(), OnClickListener {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    if (it.data.status){
-                        val action= EMandateFragmentDirections.actionEMandateFragmentToBankMandateFragment( it.data.url,it.data.request)
-                        findNavController().navigate(action)
-
-                    }else{
-                        activitySDk.toast(it.data.error!!)
+                    it.data.let {
+                        if (it.Result){
+                            val reqJson = JSONObject()
+                            //callEmadate(reqJson)
+                        }else{
+                            activitySDk.toast(it.Msg)
+                        }
                     }
                 }
             }
@@ -155,30 +143,32 @@ class EMandateFragment : Fragment(), OnClickListener {
 
     }
 
-    private fun setupBank() {
-        val bankNameList: List<String> = bankList.map { it.bankName }
-        val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, bankNameList)
-        mBinding.spBank.setAdapter(adapter)
-        mBinding.spBank.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                bankIDValue = bankList[position].bankName
-            }
-    }
+    /*  private fun setupBank() {
+          val bankNameList: List<String> = bankList.map { it.bankName }
+          val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, bankNameList)
+          mBinding.spAccountType.setAdapter(adapter)
+          mBinding.spAccountType.onItemClickListener =
+              AdapterView.OnItemClickListener { parent, view, position, id ->
+                  bankIDValue = bankList[position].bankName
+              }
+      }*/
     private fun callAccountType() {
-        val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, Utils.accountTypeList)
-        mBinding.spAccountType .setAdapter(adapter)
+        val adapter =
+            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, Utils.accountTypeList)
+        mBinding.spAccountType.setAdapter(adapter)
         mBinding.spAccountType.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
-                accountTypeIDValue = Utils.vintageList[position]
+                accountType = Utils.accountTypeList[position]
             }
     }
 
     private fun callChannelList() {
-        val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, Utils.channelList)
-        mBinding.spChannel.setAdapter(adapter)
-        mBinding.spChannel.onItemClickListener =
+        val adapter =
+            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, Utils.channelList)
+        mBinding.spChannelType.adapter = adapter
+        mBinding.spChannelType.onItemClickListener =
             AdapterView.OnItemClickListener { parent, view, position, id ->
-                channelIDValue = Utils.vintageList[position]
+                channelType = Utils.channelList[position]
             }
     }
 
@@ -188,16 +178,11 @@ class EMandateFragment : Fragment(), OnClickListener {
             R.id.btnNext -> {
                 eMandateViewModel.performValidation(
                     EMandateAddRequestModel(
-                        mBinding.etAccountNumber.text.toString().trim(),
-                        accountTypeIDValue,
-                        bankIDValue,
-                        channelIDValue,
+                        leadMasterId,
+                        mBinding.etBankName.text.toString().trim(),
                         mBinding.etIfscCode.text.toString().trim(),
-                        false,
-                        SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
-                        eMandateValue,
-                        "",
-                        ""
+                        accountType,
+                        channelType
                     )
                 )
 
@@ -205,6 +190,17 @@ class EMandateFragment : Fragment(), OnClickListener {
         }
     }
 
+    fun callEmadate(reqJson: JSONObject) {
+        WLCheckoutActivity.open(activitySDk, reqJson)
+    }
+
+    override fun wlCheckoutPaymentResponse(response: JSONObject) {
+        Log.d("In wlCheckoutPaymentResponse()", response.toString());
+    }
+
+    override fun wlCheckoutPaymentError(response: JSONObject) {
+        Log.d("In wlCheckoutPaymentError()", response.toString());
+    }
 }
 
 
