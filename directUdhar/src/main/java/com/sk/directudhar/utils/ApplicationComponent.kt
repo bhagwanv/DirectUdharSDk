@@ -7,7 +7,7 @@ import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment
 import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadFragment
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment
 import com.sk.directudhar.ui.applyloan.ApplyLoanFragment
-import com.sk.directudhar.ui.applyloan.BusinessDetailsFragment
+import com.sk.directudhar.ui.businessDetails.BusinessDetailsFragment
 import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment
 import com.sk.directudhar.ui.approvalpending.ApprovalPendingFragment

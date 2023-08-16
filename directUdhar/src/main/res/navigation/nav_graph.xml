@@ -258,7 +258,7 @@
         tools:layout="@layout/fragment_kyc_failed" />
     <fragment
         android:id="@+id/businessDetailsFragment"
-        android:name="com.sk.directudhar.ui.applyloan.BusinessDetailsFragment"
+        android:name="com.sk.directudhar.ui.businessDetails.BusinessDetailsFragment"
         android:label="Business Details"
         tools:layout="@layout/fragment_business_details" />
 
