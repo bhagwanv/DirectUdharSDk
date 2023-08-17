@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.applyloan
+package com.sk.directudhar.ui.businessDetails
 
 class ServiceProvide {
     companion object {
