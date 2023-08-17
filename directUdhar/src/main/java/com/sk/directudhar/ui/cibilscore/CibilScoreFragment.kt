@@ -189,6 +189,7 @@ class CibilScoreFragment : Fragment(),OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
            R.id.btEmandate -> {
+               activitySDk.checkSequenceNo(6)
                 /*cibilViewModel.performValidation(CibilResponseModel(mBinding.EtFullName.text.toString().trim(),
                     mBinding.etLastName.text.toString().trim(),
                     mBinding.etAddress.text.toString().trim(),
