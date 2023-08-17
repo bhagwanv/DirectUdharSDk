@@ -40,11 +40,11 @@ class EMandateViewModel @Inject constructor(private val repository: EMandateRepo
 
         if (eMandateAddRequestModel.BankName.isNullOrEmpty()) {
             eMandateResult.value = "Please enter Bank name"
-        } else if (eMandateAddRequestModel.IfscCode.isNullOrEmpty()) {
+        } else if (eMandateAddRequestModel.IFSCCode.isNullOrEmpty()) {
             eMandateResult.value = "Please Enter Ifsc Code"
         } else if (eMandateAddRequestModel.AccountType.isNullOrEmpty()) {
             eMandateResult.value = "Please select Account Type"
-        } else if (eMandateAddRequestModel.ChannelType.isNullOrEmpty()) {
+        } else if (eMandateAddRequestModel.Channel.isNullOrEmpty()) {
             eMandateResult.value = "Please select Channel "
         } else {
             eMandateResult.value = SuccessType

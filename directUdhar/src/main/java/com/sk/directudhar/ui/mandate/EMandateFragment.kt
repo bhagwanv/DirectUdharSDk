@@ -24,6 +24,7 @@ import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import com.weipl.checkout.WLCheckoutActivity
+import org.json.JSONArray
 import org.json.JSONObject
 import javax.inject.Inject
 
@@ -130,10 +131,68 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                        if (it.Result){
+                        if (it.Result) {
+                            println("JSON ::" + it.Data.consumerData)
+                            val json = JSONObject(it.Data.consumerData.toString());
                             val reqJson = JSONObject()
-                            //callEmadate(reqJson)
-                        }else{
+                            val jsonFeatures = JSONObject()
+                            jsonFeatures.put("enableAbortResponse", true)
+                            jsonFeatures.put("enableExpressPay", false)
+                            jsonFeatures.put("enableMerTxnDetails", true)
+                            jsonFeatures.put("siDetailsAtMerchantEnd", true)
+                            jsonFeatures.put("enableSI", true)
+                            reqJson.put("features", jsonFeatures)
+                            val jsonConsumerData = JSONObject()
+                            jsonConsumerData.put(
+                                "deviceId",
+                                "AndroidSH1"
+                            )
+                            jsonConsumerData.put(
+                                "token",
+                                "e1d45b684d49d9c6dfccbab8a6062e9ad6054ec0cc8cf7e1b29b640b7a45fa4c"
+                            )
+                            jsonConsumerData.put("paymentMode", "netBanking")
+                            jsonConsumerData.put(
+                                "merchantLogoUrl",
+                                "https://images.crunchbase.com/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/fejsnr7iw4upe286qgpq"
+                            )
+                            jsonConsumerData.put("merchantId", "T883945")
+                            jsonConsumerData.put("currency", "INR")
+                            jsonConsumerData.put("consumerId", "consumerId1231")
+                            jsonConsumerData.put("consumerMobileNo", "")
+                            jsonConsumerData.put("consumerEmailId", "")
+                            jsonConsumerData.put("txnId", "T0001")
+                            val jArrayItems = JSONArray()
+                            val jsonItem1 = JSONObject()
+                            jsonItem1.put("itemId", "first")
+                            jsonItem1.put("amount", "1")
+                            jsonItem1.put("comAmt", "1")
+                            jArrayItems.put(jsonItem1)
+                            jsonConsumerData.put("items", jArrayItems)
+                            val jsonCustomStyle = JSONObject()
+                            jsonCustomStyle.put("PRIMARY_COLOR_CODE", "#45beaa")
+                            jsonCustomStyle.put("SECONDARY_COLOR_CODE", "#ffffff")
+                            jsonCustomStyle.put("BUTTON_COLOR_CODE_1", "#2d8c8c")
+                            jsonCustomStyle.put("BUTTON_COLOR_CODE_2", "#ffffff")
+                            jsonConsumerData.put("customStyle", jsonCustomStyle)
+                            jsonConsumerData.put(
+                                "accountType",
+                                "Saving"
+                            ) //Required for eNACH registration this is mandatory field
+
+                            jsonConsumerData.put("debitStartDate", "11-08-2023")
+                            jsonConsumerData.put("debitEndDate", "09-10-2023")
+                            jsonConsumerData.put("maxAmount", "1000")
+                            jsonConsumerData.put("amountType", "M")
+                            jsonConsumerData.put(
+                                "frequency",
+                                "ADHO"
+                            ) //  Available options DAIL, WEEK, MNTH, QURT, MIAN, YEAR, BIMN and ADHO
+
+                            reqJson.put("consumerData", jsonConsumerData)
+                            Log.d("jsonConsumerData>>>>>", jsonConsumerData.toString());
+                            callEmadate(reqJson)
+                        } else {
                             activitySDk.toast(it.Msg)
                         }
                     }
@@ -153,23 +212,54 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
               }
       }*/
     private fun callAccountType() {
+        /*mBinding.spAccountType.setOnItemClickListener(this)*/
         val adapter =
             ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, Utils.accountTypeList)
         mBinding.spAccountType.setAdapter(adapter)
-        mBinding.spAccountType.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                accountType = Utils.accountTypeList[position]
+        mBinding.spAccountType.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    accountType = Utils.accountTypeList[position]
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Code to perform some action when nothing is selected
+                }
             }
+        /* mBinding.spAccountType.onItemClickListener =
+             AdapterView.OnItemClickListener { parent, view, position, id ->
+                 accountType = Utils.accountTypeList[position]
+             }*/
     }
 
     private fun callChannelList() {
         val adapter =
             ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, Utils.channelList)
         mBinding.spChannelType.adapter = adapter
-        mBinding.spChannelType.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                channelType = Utils.channelList[position]
+        mBinding.spChannelType.onItemSelectedListener =
+            object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    channelType = Utils.channelList[position]
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Code to perform some action when nothing is selected
+                }
             }
+        /* mBinding.spChannelType.onItemClickListener =
+             AdapterView.OnItemClickListener { parent, view, position, id ->
+                 channelType = Utils.channelList[position]
+             }*/
     }
 
 
