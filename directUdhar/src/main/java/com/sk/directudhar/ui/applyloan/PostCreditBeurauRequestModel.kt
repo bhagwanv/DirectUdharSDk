@@ -15,3 +15,4 @@ data class PostCreditBeurauRequestModel(
     val StateCode: String,
     val dateOfBirth: String
 )
+

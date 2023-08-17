@@ -27,6 +27,8 @@ import com.sk.directudhar.ui.businessDetails.BusinessDetailsResponseModel
 import com.sk.directudhar.ui.businessDetails.BusinessTypeListResponse
 import com.sk.directudhar.ui.businessDetails.GSTDetailsResponse
 import com.sk.directudhar.ui.businessDetails.StatementFileResponse
+import com.sk.directudhar.ui.cibilOtpValidate.CibilGetOTPRequestModel
+import com.sk.directudhar.ui.cibilOtpValidate.CibilOTPVerifyRequestModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOTPResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.PostOTPRequestModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
@@ -39,6 +41,7 @@ import com.sk.directudhar.ui.myaccount.udharStatement.DownloadLedgerReportResque
 import com.sk.directudhar.ui.myaccount.udharStatement.HistoryResponseModel
 import com.sk.directudhar.ui.myaccount.udharStatement.LedgerReportResponseModel
 import com.sk.directudhar.ui.myaccount.udharStatement.TransactionDetailResponseModel
+import com.sk.directudhar.ui.pancard.PanCardUplodResponseModel
 import com.sk.directudhar.ui.pancard.UpdatePanInfoRequestModel
 import com.sk.directudhar.ui.phoneVerification.OtpVerifyResponseModel
 import com.sk.directudhar.ui.phoneVerification.PhoneVerifyResponseModel
@@ -82,7 +85,7 @@ interface APIServices {
     suspend fun uploadPanCard(
         @Query("LeadMasterId") LeadMasterId: Int,
         @Part body: MultipartBody.Part
-    ): JsonObject
+    ): PanCardUplodResponseModel
 
     @POST("api/Borrower/UpdatePanInfo")
     suspend fun updatePanInfo(@Body updatePanInfoRequestModel: UpdatePanInfoRequestModel): InitiateAccountModel
@@ -160,8 +163,15 @@ interface APIServices {
     @GET("api/Borrower/SendOtp")
     suspend fun getOtp(@Query("MobileNo") mobile: String): PhoneVerifyResponseModel
 
+
     @GET("api/Borrower/ValidateOtp")
     suspend fun getOtpVerify(@Query("MobileNo") mobile: String,@Query("Otp") Otp: String,@Query("TxnNo") txnNo: String): OtpVerifyResponseModel
+
+    @POST("api/Borrower/OTPGeneratRequest")
+    suspend fun getCibilOtp(@Body cibilGetOTPRequestModel: CibilGetOTPRequestModel): PhoneVerifyResponseModel
+    @POST("api/Borrower/OTPValidationRequest")
+    suspend fun getCibilOtpVerify(@Body cibilOTPVerifyRequestModel : CibilOTPVerifyRequestModel): OtpVerifyResponseModel
+
 
     @Multipart
     @POST("api/Borrower/ManuallyUploadAadharCard")

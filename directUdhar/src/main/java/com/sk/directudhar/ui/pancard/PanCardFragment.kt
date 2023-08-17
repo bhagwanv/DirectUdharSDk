@@ -1,7 +1,10 @@
 package com.sk.directudhar.ui.pancard
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,20 +15,29 @@ import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentPanCardBinding
+import com.sk.directudhar.image.ImageCaptureActivity
+import com.sk.directudhar.image.ImageProcessing
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
+import com.sk.directudhar.utils.permission.PermissionHandler
+import com.sk.directudhar.utils.permission.Permissions
+import com.squareup.picasso.Picasso
+import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
 
@@ -45,6 +57,7 @@ class PanCardFragment : Fragment(), OnClickListener {
     private lateinit var imagePickerLauncher: ActivityResultLauncher<Intent>
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     lateinit var imageChooseBottomDialog: BottomSheetDialog
+    private var resultLauncher: ActivityResultLauncher<Intent>? = null
 
     var panNo: String = ""
 
@@ -69,7 +82,29 @@ class PanCardFragment : Fragment(), OnClickListener {
         panCardViewModel = ViewModelProvider(this, panCardFactory)[PanCardViewModel::class.java]
         mBinding.btnVerifyPanCard.setOnClickListener(this)
 
-        /*panCardViewModel.panCardResponse.observe(activitySDk) {
+
+        mBinding.linearLayout.setOnClickListener {
+            askPermission()
+        }
+        resultLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                    val data: Intent? = result.data
+                    val filePath = data!!.getStringExtra(Utils.FILE_PATH).toString()
+                    val myBitmap = BitmapFactory.decodeFile(filePath)
+                    mBinding.imPanImage.setImageBitmap(myBitmap)
+                    lifecycleScope.launch {
+                        val body = ImageProcessing.uploadMultipart(filePath, activitySDk)
+                        panCardViewModel.uploadPanCard(SharePrefs.getInstance(activitySDk)
+                            ?.getInt(SharePrefs.LEAD_MASTERID)!!,
+                            body,
+                        )
+                    }
+                } else if (result.resultCode == AppCompatActivity.RESULT_CANCELED) {
+                    Log.d("Result:", "Cancel")
+                }
+            }
+        panCardViewModel.panCardResponse.observe(activitySDk) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -82,18 +117,23 @@ class PanCardFragment : Fragment(), OnClickListener {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    val panCardUplodResponseModel =
-                        Gson().fromJson(it.data, PanCardUplodResponseModel::class.java)
-                    if (panCardUplodResponseModel.Result) {
-                        imageUrl = panCardUplodResponseModel.Data
-                        Picasso.get().load(panCardUplodResponseModel.Data)
-                            .into(mBinding.ivPanCardFrontImage)
-                    } else {
-                        activitySDk.toast(panCardUplodResponseModel.Msg)
+                    it.data.let {
+                        if(it.Result){
+                            imageUrl = it.Data.ImageUrl
+                            Picasso.get().load(imageUrl)
+                                .into(mBinding.imPanImage)
+                            activitySDk.toast("Done")
+                            mBinding.imPanImage.visibility = View.VISIBLE
+                            mBinding.llDefaultImage.visibility = View.GONE
+                        }else{
+                             activitySDk.toast(it.Msg)
+                            mBinding.imPanImage.visibility = View.VISIBLE
+                            mBinding.llDefaultImage.visibility = View.GONE
+                        }
                     }
                 }
             }
-        }*/
+        }
 
 
 
@@ -104,6 +144,7 @@ class PanCardFragment : Fragment(), OnClickListener {
                 var model = UpdatePanInfoRequestModel(
                     SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
                     mBinding.etPanNumber.text.toString().trim(),
+                    imageUrl,
                 )
                 panCardViewModel.updatePanInfo(model)
                 mBinding.ivRight.visibility=View.VISIBLE
@@ -135,7 +176,42 @@ class PanCardFragment : Fragment(), OnClickListener {
         }
         mBinding!!.etPanNumber.addTextChangedListener(aadhaarTextWatcher)
     }
+    private fun askPermission() {
+        val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_MEDIA_IMAGES
+            )
+        } else {
+            arrayOf(
+                Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+            )
+        }
+        val rationale = "Please provide all permission so that you can access the app."
+        val options: Permissions.Companion.Options = Permissions.Companion.Options()
+            .setRationaleDialogTitle("Allow Permission")
+            .setSettingsDialogTitle("Warning")
+        Permissions.checkPermissionNew(
+            activitySDk,
+            permissions,
+            rationale,
+            options,
+            object : PermissionHandler() {
+                override fun onGranted() {
+                    val tsLong = System.currentTimeMillis() / 1000
+                    var fileName = "panImage_" + tsLong + ".png"
+                    val intent = Intent(activitySDk, ImageCaptureActivity::class.java)
+                    intent.putExtra(Utils.FILE_NAME, fileName)
+                    intent.putExtra(Utils.IS_GALLERY_OPTION, true)
+                    resultLauncher?.launch(intent)
+                }
 
+                override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>) {
+                    askPermission()
+                }
+            })
+    }
 
     override fun onClick(v: View) {
         when (v.id) {

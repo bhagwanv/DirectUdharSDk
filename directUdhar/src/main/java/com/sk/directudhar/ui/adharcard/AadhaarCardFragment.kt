@@ -122,15 +122,17 @@ class AadhaarCardFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    it.data.Msg?.let { it1 -> activitySDk.toast(it1) }
-                    if (it.data.Result!!) {
-                        val action = it.data.DynamicData!!.requestId?.let { it1 ->
-                            AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
+                    it.data.let {
+                        if (it.Result!!){
+                            activitySDk.toast(it.Msg!!)
+                            val action =  AadhaarCardFragmentDirections.actionAadhaarFragmentToAadharOtpFragment(
                                 aadharNo,
-                                it1
+                                it.DynamicData?.request_id!!
                             )
+                            findNavController().navigate(action)
+                        }else{
+                            activitySDk.toast(it.Msg!!)
                         }
-                        findNavController().navigate(action!!)
                     }
                 }
             }

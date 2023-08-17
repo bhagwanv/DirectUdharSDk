@@ -88,6 +88,7 @@ class BusinessDetailsFragment : Fragment() {
     var mIncomeSlab = ""
     var mOwnershipType = ""
     var customerNumber = ""
+    var businessTypeId = 0
 
     private val BUFFER_SIZE = 1024 * 2
     override fun onAttach(context: Context) {
@@ -177,12 +178,13 @@ class BusinessDetailsFragment : Fragment() {
                 mBusinessDetailsRequestModel = BusinessDetailsRequestModel(
                     leadMasterId,
                     gstNumber,
+                    businessTypeId,
                     businessName,
                     mBusinessType,
                     businessTurnover,
                     mBusinessIncorporationDate,
-                    mIncomeSlab!!,
-                    mOwnershipType!!
+                    mIncomeSlab,
+                    mOwnershipType
                 )
                 businessDetailsViewModel.validateBusinessDetails(
                     mBusinessDetailsRequestModel,
@@ -252,6 +254,7 @@ class BusinessDetailsFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
+                    businessTypeId =  mBusinessTypeList[position].Id
                     if (mBusinessTypeList[position].Id == 1) {
                         mBinding.tvAddMoreView.visibility = View.GONE
                     } else {
@@ -458,6 +461,7 @@ class BusinessDetailsFragment : Fragment() {
                     it.data.let {
                         if (it.Result) {
                             isGSTVerify = true
+                            mBinding.etBusinessName.setText(it.Data.Name)
                             mBinding.ivRightGST.visibility = View.VISIBLE
                         } else {
                             mBinding.ivRightGST.visibility = View.GONE

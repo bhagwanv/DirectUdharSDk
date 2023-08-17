@@ -5,7 +5,5 @@ import org.json.JSONObject
 data class EMandateAddResponseModel(
     val Msg: String,
     val Result: Boolean,
-    val Data: Data
+    val Data: JsonObject
 )
-class Data(val consumerData: JsonObject) {
-}
