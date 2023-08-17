@@ -13,7 +13,6 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEMandateBinding
@@ -135,7 +134,7 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                             println("JSON ::" + it.Data.consumerData)
                             val json = JSONObject(it.Data.consumerData.toString());
                             val reqJson = JSONObject()
-                            val jsonFeatures = JSONObject()
+                            /*val jsonFeatures = JSONObject()
                             jsonFeatures.put("enableAbortResponse", true)
                             jsonFeatures.put("enableExpressPay", false)
                             jsonFeatures.put("enableMerTxnDetails", true)
@@ -191,7 +190,9 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
 
                             reqJson.put("consumerData", jsonConsumerData)
                             Log.d("jsonConsumerData>>>>>", jsonConsumerData.toString());
-                            callEmadate(reqJson)
+                            Log.d("reqJson >>>>>", reqJson.toString());*/
+                          //  reqJson.put("consumerData", json)
+                            callEmadate(json)
                         } else {
                             activitySDk.toast(it.Msg)
                         }

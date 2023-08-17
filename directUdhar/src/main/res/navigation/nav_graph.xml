@@ -124,7 +124,7 @@
         android:id="@+id/SuccessFragment"
         android:name="com.sk.directudhar.ui.success.SuccessFragment"
         android:label="Success"
-        tools:layout="@layout/fragment_success"></fragment>
+        tools:layout="@layout/fragment_success"/>
 
     <fragment
         android:id="@+id/PanCardFragment"

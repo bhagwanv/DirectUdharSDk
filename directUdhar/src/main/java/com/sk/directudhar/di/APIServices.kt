@@ -60,7 +60,10 @@ interface APIServices {
         @Field("client_secret") password: String?
     ): TokenResponse
 
-    @GET("api/Borrower/Initiate?")
+   /* @GET("api/Borrower/Initiate?")
+    suspend fun initiate(@Query("MobileNo") MobileNo: String): JsonObject*/
+
+    @GET("api/Borrower/GetLeadSequence")
     suspend fun initiate(@Query("MobileNo") MobileNo: String): JsonObject
 
     @GET("api/StateMaster")
