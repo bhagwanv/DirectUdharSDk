@@ -29,8 +29,8 @@ class BusinessDetailsViewModel @Inject constructor(private val repository: Busin
     private var _getBusinessTypeListResponse = MutableLiveData<NetworkResult<BusinessTypeListResponse>>()
     val getBusinessTypeListResponse: LiveData<NetworkResult<BusinessTypeListResponse>> = _getBusinessTypeListResponse
 
-    private var _bankPassBookUploadResponse = MutableLiveData<NetworkResult<JsonObject>>()
-    val bankPassBookUploadResponse: LiveData<NetworkResult<JsonObject>> = _bankPassBookUploadResponse
+    private var _bankPassBookUploadResponse = MutableLiveData<NetworkResult<StatementFileResponse>>()
+    val bankPassBookUploadResponse: LiveData<NetworkResult<StatementFileResponse>> = _bankPassBookUploadResponse
 
     private var _verifyElectricityBillResponse = MutableLiveData<NetworkResult<BusinessDetailsVerifyElectricityBillResponseModel>>()
     val verifyElectricityBillResponse: LiveData<NetworkResult<BusinessDetailsVerifyElectricityBillResponseModel>> = _verifyElectricityBillResponse

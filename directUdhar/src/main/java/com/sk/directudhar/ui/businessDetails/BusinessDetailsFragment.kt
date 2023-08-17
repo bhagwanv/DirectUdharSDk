@@ -1,7 +1,6 @@
 package com.sk.directudhar.ui.businessDetails
 
 import android.Manifest
-import android.R.attr
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
@@ -12,6 +11,7 @@ import android.text.Editable
 import android.text.InputFilter
 import android.text.InputFilter.LengthFilter
 import android.text.InputType
+import android.text.TextUtils
 import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,12 +24,13 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.gson.Gson
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentBusinessDetailsBinding
@@ -41,11 +42,19 @@ import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import com.sk.directudhar.utils.permission.PermissionHandler
 import com.sk.directudhar.utils.permission.Permissions
-import com.squareup.picasso.Picasso
+import id.zelory.compressor.Compressor
+import kotlinx.coroutines.launch
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import java.io.BufferedInputStream
+import java.io.BufferedOutputStream
 import java.io.File
+import java.io.FileOutputStream
+import java.io.IOException
+import java.io.InputStream
+import java.io.OutputStream
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -75,10 +84,10 @@ class BusinessDetailsFragment : Fragment() {
     var mProprietorNameList = ArrayList<AppCompatEditText>()
     var mProprietorNumberList = ArrayList<AppCompatEditText>()
     lateinit var mBusinessDetailsRequestModel: BusinessDetailsRequestModel
-    var mBusinessIncorporationDate=""
+    var mBusinessIncorporationDate = ""
     var mIncomeSlab = ""
-    var mOwnershipType=""
-    var customerNumber=""
+    var mOwnershipType = ""
+    var customerNumber = ""
 
     private val BUFFER_SIZE = 1024 * 2
     override fun onAttach(context: Context) {
@@ -124,16 +133,16 @@ class BusinessDetailsFragment : Fragment() {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
                 if (s.isNullOrEmpty()) {
-                   activitySDk.toast("Please Enter Customer Number")
-                }else if (s.length == 10) {
+                    activitySDk.toast("Please Enter Customer Number")
+                } else if (s.length == 10) {
                     isVerifyElectricityBill = false
-                    customerNumber=s.toString()
-                    mBinding.rlServiceProviders.visibility=View.VISIBLE
+                    customerNumber = s.toString()
+                    mBinding.rlServiceProviders.visibility = View.VISIBLE
 
                 } else {
                     isVerifyElectricityBill = false
                     mBinding.ivRightElectrycityBill.visibility = View.GONE
-                    mBinding.rlServiceProviders.visibility=View.GONE
+                    mBinding.rlServiceProviders.visibility = View.GONE
                 }
 
             }
@@ -192,7 +201,7 @@ class BusinessDetailsFragment : Fragment() {
 
         mBinding.llCustomerNumber.visibility = View.VISIBLE
 
-       // mBinding.etCustomerNumber.addTextChangedListener(aadhaarTextWatcher)
+        // mBinding.etCustomerNumber.addTextChangedListener(aadhaarTextWatcher)
 
         mBinding.llBillUplod.setOnClickListener {
             //askPermission()
@@ -209,7 +218,6 @@ class BusinessDetailsFragment : Fragment() {
             askPermission1()
         }
     }
-
 
 
     fun spinnerView() {
@@ -288,11 +296,11 @@ class BusinessDetailsFragment : Fragment() {
                 ) {
                     mOwnershipType = ownerShipArray[position]
 
-                    if (ownerShipArray[position]=="Owned"){
-                        mBinding.rlSpManualBillUploadType.visibility=View.VISIBLE
-                    }else{
-                        mBinding.rlSpManualBillUploadType.visibility=View.GONE
-                        mBinding.llCustomerNumber.visibility=View.GONE
+                    if (ownerShipArray[position] == "Owned") {
+                        mBinding.rlSpManualBillUploadType.visibility = View.VISIBLE
+                    } else {
+                        mBinding.rlSpManualBillUploadType.visibility = View.GONE
+                        mBinding.llCustomerNumber.visibility = View.GONE
                     }
                 }
 
@@ -319,10 +327,10 @@ class BusinessDetailsFragment : Fragment() {
                     ).show()
 
 
-                    if (manualBillUploadArray[position]=="Customer Number"){
-                        mBinding.llCustomerNumber.visibility=View.VISIBLE
-                    }else{
-                        mBinding.llCustomerNumber.visibility=View.GONE
+                    if (manualBillUploadArray[position] == "Customer Number") {
+                        mBinding.llCustomerNumber.visibility = View.VISIBLE
+                    } else {
+                        mBinding.llCustomerNumber.visibility = View.GONE
                     }
 
                 }
@@ -349,7 +357,11 @@ class BusinessDetailsFragment : Fragment() {
                         Toast.LENGTH_SHORT
                     ).show()
                     Log.e("TAG", "onItemSelected: ")
-                    var model=BusinessDetailsVerifyElectricityBillRequestModel(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),customerNumber,mServiceProvider[position].sortName)
+                    var model = BusinessDetailsVerifyElectricityBillRequestModel(
+                        SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
+                        customerNumber,
+                        mServiceProvider[position].sortName
+                    )
                     businessDetailsViewModel.verifyElectricityBill(model)
 
 
@@ -405,7 +417,7 @@ class BusinessDetailsFragment : Fragment() {
             { _, year, monthOfYear, dayOfMonth ->
                 mBusinessIncorporationDate = formatDate(year, monthOfYear, dayOfMonth)
                 //    etDate.setText(selectedDate)
-                tvDate.text=
+                tvDate.text =
                     StringBuilder() // Month is 0 based so add 1
                         .append(dayOfMonth).append("/").append(monthOfYear + 1).append("/")
                         .append(year).append(" ")
@@ -427,6 +439,7 @@ class BusinessDetailsFragment : Fragment() {
         return dateFormat.format(calendar.time)
     }
 
+    @RequiresApi(Build.VERSION_CODES.Q)
     fun setObserber() {
         businessDetailsViewModel.getGSTDetailsResponse.observe(viewLifecycleOwner) {
             when (it) {
@@ -516,34 +529,28 @@ class BusinessDetailsFragment : Fragment() {
         }
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-
-                if (result.resultCode == AppCompatActivity.RESULT_OK){
+                if (result.resultCode == AppCompatActivity.RESULT_OK) {
                     val data: Intent? = result.data
-                    // check condition
-                    if (data != null) {
-                        var sUri = data.getData ()
-                        Log.e("TAG", "sUri$sUri: ")
-                      // var sPath= getFilePathFromURI(activitySDk,sUri)
-                        // Get PDF path
-                       // var sPath = sUri?.getPath ();
-                       // Log.e("TAG", "sPath$sPath: ")
-
-                        val fl: File = File(sUri.toString())
-                        var path = fl.absolutePath
-                        val file: File = File(path)
-                        // Parsing any Media type file
-                        // Parsing any Media type file
-                        val requestBody: RequestBody = RequestBody.create("*/*".toMediaTypeOrNull(), file)
-                        val fileToUpload: MultipartBody.Part = MultipartBody.Part.createFormData("filename", file.name, requestBody)
-                        Log.e("TAG", "sPath$path: ")
-
-                        businessDetailsViewModel.bankPassBookUpload(
-                            SharePrefs.getInstance(
-                                activitySDk
-                            )!!.getInt(SharePrefs.LEAD_MASTERID), fileToUpload
-                        )
+                    data?.data.let {
+                        val path = getFilePathFromURI(it)
+                        lifecycleScope.launch {
+                            val compressedImageFile =
+                                Compressor.compress(activitySDk, File(path)) {}
+                            val requestFile: RequestBody =
+                                compressedImageFile.asRequestBody("*/*".toMediaTypeOrNull())
+                            val body: MultipartBody.Part =
+                                MultipartBody.Part.createFormData(
+                                    "file",
+                                    compressedImageFile.name,
+                                    requestFile
+                                )
+                            businessDetailsViewModel.bankPassBookUpload(
+                                SharePrefs.getInstance(
+                                    activitySDk
+                                )!!.getInt(SharePrefs.LEAD_MASTERID), body
+                            )
+                        }
                     }
-
                 }
             }
 
@@ -562,22 +569,14 @@ class BusinessDetailsFragment : Fragment() {
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                        if (it != null) {
-                            val model =
-                                Gson().fromJson(
-                                    it,
-                                    BankStateMentUploadResponseModel::class.java
-                                )
-                            if (model.Result) {
-
-                                Log.e("TAG", "setObserber: 111", )
-
-                            } else {
-                                activitySDk.toast(model.Msg)
-                            }
+                        if (it.Result) {
+                            mBinding.rlSuccessfullyUpload.visibility = View.VISIBLE
+                            mBinding.rlUploadStatement.visibility = View.GONE
+                            activitySDk.toast(it.Msg)
                         } else {
-                            activitySDk.toast("Image upload failed")
-
+                            mBinding.rlSuccessfullyUpload.visibility = View.GONE
+                            mBinding.rlUploadStatement.visibility = View.VISIBLE
+                            activitySDk.toast(it.Msg)
                         }
                     }
                 }
@@ -615,19 +614,6 @@ class BusinessDetailsFragment : Fragment() {
 
     }
 
-
-    private fun selectPDF() {
-        // Initialize intent
-        Log.e("TAG", "initView4: ")
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        // Set type
-
-        intent.type = "application/pdf"
-        // Launch intent
-        resultLauncher!!.launch(intent)
-
-    }
-
     private fun askPermission1() {
         val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(
@@ -651,11 +637,9 @@ class BusinessDetailsFragment : Fragment() {
             options,
             object : PermissionHandler() {
                 override fun onGranted() {
-                    val tsLong = System.currentTimeMillis() / 1000
-                    var fileName = "aadhaarImage_" + tsLong + ".png"
-
-                        selectPDF()
-
+                    val intent = Intent(Intent.ACTION_GET_CONTENT)
+                    intent.type = "application/pdf"
+                    resultLauncher!!.launch(intent)
                 }
 
                 override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>) {
@@ -665,38 +649,63 @@ class BusinessDetailsFragment : Fragment() {
 
     }
 
-    fun getFilePathFromURI(context: Context, contentUri: Uri?): String? {
-        //copy file and send new file path
-        val fileName = getFileName(contentUri)
-        val folderPath = activitySDk.getExternalFilesDir(null)!!.absolutePath + "/SkStatement"
+
+    fun getFilePathFromURI(contentUri: Uri?): String? {
+        val tsLong = System.currentTimeMillis() / 1000
+        val fileName = "bank_statement$tsLong.pdf"
+        val folderPath = activitySDk.getExternalFilesDir(null)!!.absolutePath + "/SkBankStatement"
         val file = File(folderPath)
         if (!file.exists()) {
             file.mkdirs()
         }
-        return fileName
-    }
-
-    fun getFileName(uri: Uri?): String? {
-        if (uri == null) return null
-        var fileName: String? = null
-        val path = uri.path
-        val cut = path!!.lastIndexOf('/')
-        if (cut != -1) {
-            fileName = path.substring(cut + 1)
+        if (!TextUtils.isEmpty(fileName)) {
+            val copyFile = File(file.toString() + File.separator + fileName)
+            // create folder if not exists
+            copy(activitySDk, contentUri, copyFile)
+            return copyFile.absolutePath
         }
-        return fileName
+        return null
     }
-/*
-    fun getPDFPath(uri: Uri?): String? {
-        val id = DocumentsContract.getDocumentId(uri)
-        val contentUri = ContentUris.withAppendedId(
-            Uri.parse("content://downloads/public_downloads"), java.lang.Long.valueOf(id)
-        )
-        val projection = arrayOf(MediaStore.Images.Media.DATA)
-        val cursor: Cursor = getContentResolver().query(contentUri, projection, null, null, null)
-        val column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA)
-        cursor.moveToFirst()
-        return cursor.getString(column_index)
-    }*/
 
+    fun copy(context: Context, srcUri: Uri?, dstFile: File?) {
+        try {
+            val inputStream = context.contentResolver.openInputStream(srcUri!!) ?: return
+            val outputStream: OutputStream = FileOutputStream(dstFile)
+            copystream(inputStream, outputStream)
+            inputStream.close()
+            outputStream.close()
+        } catch (e: IOException) {
+            e.printStackTrace()
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+        }
+    }
+
+    @Throws(java.lang.Exception::class, IOException::class)
+    fun copystream(input: InputStream?, output: OutputStream?): Int {
+        val buffer = ByteArray(BUFFER_SIZE)
+        val `in` = BufferedInputStream(input, BUFFER_SIZE)
+        val out = BufferedOutputStream(output, BUFFER_SIZE)
+        var count = 0
+        var n = 0
+        try {
+            while (`in`.read(buffer, 0, BUFFER_SIZE).also { n = it } != -1) {
+                out.write(buffer, 0, n)
+                count += n
+            }
+            out.flush()
+        } finally {
+            try {
+                out.close()
+            } catch (e: IOException) {
+                Log.e(e.message, e.toString())
+            }
+            try {
+                `in`.close()
+            } catch (e: IOException) {
+                Log.e(e.message, e.toString())
+            }
+        }
+        return count
+    }
 }

@@ -26,6 +26,7 @@ import com.sk.directudhar.ui.businessDetails.BusinessDetailsRequestModel
 import com.sk.directudhar.ui.businessDetails.BusinessDetailsResponseModel
 import com.sk.directudhar.ui.businessDetails.BusinessTypeListResponse
 import com.sk.directudhar.ui.businessDetails.GSTDetailsResponse
+import com.sk.directudhar.ui.businessDetails.StatementFileResponse
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOTPResponceModel
 import com.sk.directudhar.ui.cibilscore.cibiotp.PostOTPRequestModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
@@ -183,7 +184,7 @@ interface APIServices {
     suspend fun bankPassBookUpload(
         @Query("LeadMasterId") LeadMasterId: Int,
         @Part body: MultipartBody.Part
-    ): JsonObject
+    ): StatementFileResponse
 
 
     @POST("api/Borrower/VerifyElectricityBill")

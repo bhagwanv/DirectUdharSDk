@@ -120,8 +120,6 @@ class MainActivitySDk : AppCompatActivity() {
                             initiateAccountModel.Data.LeadMasterId
                         )
                          checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                       // checkSequenceNo(6)
-
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
@@ -145,7 +143,6 @@ class MainActivitySDk : AppCompatActivity() {
             SequenceEnumClass.MY_ACCOUNT -> navigateViewCall(R.id.myAccountFragment)
             else -> {
                 this.toast("Sequence Not Found")
-
             }
         }
     }
