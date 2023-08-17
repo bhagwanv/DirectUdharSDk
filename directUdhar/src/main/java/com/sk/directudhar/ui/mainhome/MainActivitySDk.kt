@@ -119,8 +119,7 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                        // checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                        checkSequenceNo(19)
+                         checkSequenceNo(initiateAccountModel.Data.SequenceNo)
 
                     } else {
                         this.toast(initiateAccountModel.Msg)
@@ -145,7 +144,6 @@ class MainActivitySDk : AppCompatActivity() {
             SequenceEnumClass.MY_ACCOUNT -> navigateViewCall(R.id.myAccountFragment)
             else -> {
                 this.toast("Sequence Not Found")
-
             }
         }
     }
