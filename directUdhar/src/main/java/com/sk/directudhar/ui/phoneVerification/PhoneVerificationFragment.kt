@@ -42,26 +42,22 @@ class PhoneVerificationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        if (mBinding == null) {
-            mBinding = FragmentPhoneVerificationBinding.inflate(inflater, container, false)
-            initView()
-        }
-        return mBinding!!.root
-    }
-
-    private fun initView() {
+        mBinding = FragmentPhoneVerificationBinding.inflate(inflater, container, false)
         val component = DaggerApplicationComponent.builder().build()
         component.injectPhoneVerification(this)
         phoneVerificationViewModel = ViewModelProvider(
             this,
             phoneVerificationFactory
         )[PhoneVerificationViewModel::class.java]
+        initView()
+        return mBinding!!.root
+    }
 
+    private fun initView() {
         mobileNumber = SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
         mBinding!!.etMobileNumber.text = mobileNumber
         setToolBar()
         setObserver()
-
         mBinding!!.btnGenOtp.setOnClickListener {
             var mobileNumber = mBinding!!.etMobileNumber.text.toString()
             if (mobileNumber.isNullOrEmpty()) {
