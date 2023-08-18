@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.utils.Network
+import com.sk.directudhar.utils.SingleLiveEvent
 import com.sk.directudhar.utils.Utils.Companion.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -21,6 +22,9 @@ class EAgreementViewModel @Inject constructor(private val repository: EAgreement
 
     private var _sendOtpResponse = MutableLiveData<NetworkResult<SendOtpResponseModel>>()
     val sendOtpResponse: LiveData<NetworkResult<SendOtpResponseModel>> = _sendOtpResponse
+
+    private var _signSessionResponse = SingleLiveEvent<NetworkResult<SignSessionResponseModel>>()
+    val signSessionResponse: SingleLiveEvent<NetworkResult<SignSessionResponseModel>> = _signSessionResponse
 
     fun getAgreement(leadMasterId:Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
@@ -46,4 +50,15 @@ class EAgreementViewModel @Inject constructor(private val repository: EAgreement
         }
     }
 
+    fun eSignSessionAsync(signSessionRequestModel: SignSessionRequestModel) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.eSignSessionAsync(signSessionRequestModel).collect() {
+                    _signSessionResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
 }

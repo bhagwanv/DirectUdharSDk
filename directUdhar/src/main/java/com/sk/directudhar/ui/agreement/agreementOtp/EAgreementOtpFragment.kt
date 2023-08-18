@@ -1,22 +1,17 @@
 package com.sk.directudhar.ui.agreement.agreementOtp
 
 import android.content.Context
-import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.AnimationUtils
 import android.widget.Button
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.google.android.material.tabs.TabLayout
-import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAgreementOtpBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
@@ -33,19 +28,18 @@ class EAgreementOtpFragment : Fragment() {
     private lateinit var activitySDk: MainActivitySDk
     private lateinit var mBinding: FragmentAgreementOtpBinding
     private lateinit var eAgreementOtpViewModel: EAgreementOtpViewModel
+
     @Inject
     lateinit var eAgreementOtpFactory: EAgreementOtpFactory
 
-    private val args:EAgreementOtpFragmentArgs by navArgs()
-
-
+    private val args: EAgreementOtpFragmentArgs by navArgs()
     private lateinit var countDownTimer: CountDownTimer
-     lateinit var reSendButton:Button
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,16 +55,21 @@ class EAgreementOtpFragment : Fragment() {
         eAgreementOtpViewModel =
             ViewModelProvider(this, eAgreementOtpFactory)[EAgreementOtpViewModel::class.java]
 
-       /* mBinding.tvMobileNo.setText(args.mobileNo)
-        reSendButton=mBinding.btnResendOtp
-*/
+        mBinding!!.tvMsg.text = "Enter the verification code we just sent to ${
+            SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
+        }"
         startCountdown()
 
         eAgreementOtpViewModel.getAgreementResult().observe(activitySDk) { result ->
             if (result.equals(Utils.EAGREEMENT_OTP_VALIDATE_SUCCESSFULLY)) {
-               /* eAgreementOtpViewModel.eAgreementVerification(
-                  //  EAgreementOtpResquestModel(true,SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),mBinding.customOTPView.getOTP().toInt(),args.otpTxnNo)
-                )*/
+                eAgreementOtpViewModel.eAgreementVerification(
+                    EAgreementOtpResquestModel(
+                        true,
+                        SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
+                        mBinding.customOTPView.getOTP().toInt(),
+                        args.otpTxnNo
+                    )
+                )
             } else {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             }
@@ -89,9 +88,17 @@ class EAgreementOtpFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    if (it.data.Result!=null){
-                        if (it.data.Msg!=null){
-                            activitySDk.toast(it.data.Msg.toString())
+                    it.data.let {
+                        if (it.Result!!) {
+                            activitySDk.toast(it.Msg.toString())
+                            val action =
+                                EAgreementOtpFragmentDirections.actionEAgreementOtpFragmentToSuccessFragment(
+                                    "Hello ",
+                                    it.Data!!.Data!!.SequenceNo.toString()
+                                )
+
+                            findNavController().navigate(action)
+
                         }
                     }
 
@@ -99,36 +106,28 @@ class EAgreementOtpFragment : Fragment() {
                 }
             }
         }
-       /* mBinding.btnResendOtp.setOnClickListener {
-            mBinding.btnResendOtp.visibility=View.GONE
-            eAgreementOtpViewModel.sendOtp(args.mobileNo)
-            startCountdown()
-        }*/
-
-
-
+        mBinding.tvResend.setOnClickListener {
+            findNavController().popBackStack()
+        }
+        mBinding.btnVerifyOtp.setOnClickListener {
+            val otp = mBinding!!.customOTPView.getOTP()
+            eAgreementOtpViewModel.validateOtp(otp)
+        }
     }
 
     private fun startCountdown() {
-
-
-        /* reSendButton.isEnabled = false
         countDownTimer = object : CountDownTimer(countdownDuration, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsRemaining = millisUntilFinished / 1000
-                mBinding.tvTimer.text = "$secondsRemaining seconds"
+                mBinding!!.tvTimer.text = "$secondsRemaining seconds"
             }
 
             override fun onFinish() {
-                reSendButton.isEnabled = true
-                reSendButton.text = "Resend OTP"
-                mBinding.btnResendOtp.visibility=View.VISIBLE
-
+                mBinding!!.tvResend.visibility = View.VISIBLE
+                mBinding!!.tvTimer.visibility = View.GONE
             }
         }
-*/
-        // Start the countdown
-        //  countDownTimer.start()
+        countDownTimer.start()
     }
 
 }

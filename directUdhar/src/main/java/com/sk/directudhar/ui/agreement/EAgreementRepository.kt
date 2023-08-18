@@ -24,4 +24,12 @@ class EAgreementRepository @Inject constructor(private val apiServices: APIServi
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
+
+    suspend fun eSignSessionAsync(signSessionRequestModel: SignSessionRequestModel)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.eSignSessionAsync(signSessionRequestModel)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 }

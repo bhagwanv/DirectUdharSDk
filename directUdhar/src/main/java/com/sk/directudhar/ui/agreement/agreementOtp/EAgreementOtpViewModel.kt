@@ -24,11 +24,8 @@ class EAgreementOtpViewModel @Inject constructor(private val repository: EAgreem
     private val eAgreementResult = MutableLiveData<String>()
     fun getAgreementResult(): LiveData<String> = eAgreementResult
 
-    private var _eAgreementOtpVerificationResponse = MutableLiveData<NetworkResult<AgreementResponseModel>>()
-    val eAgreementOtpVerificationResponse: LiveData<NetworkResult<AgreementResponseModel>> = _eAgreementOtpVerificationResponse
-
-    private var _sendOtpResponse = MutableLiveData<NetworkResult<SendOtpResponseModel>>()
-    val sendOtpResponse: LiveData<NetworkResult<SendOtpResponseModel>> = _sendOtpResponse
+    private var _eAgreementOtpVerificationResponse = MutableLiveData<NetworkResult<AgreementOtpResponseModel>>()
+    val eAgreementOtpVerificationResponse: LiveData<NetworkResult<AgreementOtpResponseModel>> = _eAgreementOtpVerificationResponse
 
     fun validateOtp(otp: String) {
         if (otp.isNullOrEmpty()) {
@@ -45,18 +42,6 @@ class EAgreementOtpViewModel @Inject constructor(private val repository: EAgreem
             viewModelScope.launch {
                 repository.eAgreementOtpVerification(model).collect() {
                     _eAgreementOtpVerificationResponse.postValue(it)
-                }
-            }
-        } else {
-            (MyApplication.context)!!.toast("No internet connectivity")
-        }
-    }
-
-    fun sendOtp(mobileNo: String) {
-        if (Network.checkConnectivity(MyApplication.context!!)) {
-            viewModelScope.launch {
-                repository.sendOtp(mobileNo).collect() {
-                    _sendOtpResponse.postValue(it)
                 }
             }
         } else {

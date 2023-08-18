@@ -220,13 +220,16 @@ class CibilScoreFragment : Fragment(), OnClickListener {
                 cibilViewModel.cibilActivityComplete(
                     SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
                 )
+
             }
 
             R.id.tvSkip -> {
                 isSkip = true
-                cibilViewModel.cibilActivityComplete(
+                val  action = CibilScoreFragmentDirections.actionCibilScoreFragmentToEAgreementFragment()
+                findNavController().navigate(action)
+                /*cibilViewModel.cibilActivityComplete(
                     SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
-                )
+                )*/
             }
         }
     }

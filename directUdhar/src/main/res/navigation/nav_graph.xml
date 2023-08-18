@@ -123,9 +123,9 @@
         android:name="com.sk.directudhar.ui.cibilscore.CibilScoreFragment"
         android:label="Cibil Score"
         tools:layout="@layout/fragment_cibil_score">
-        <!--<action
-            android:id="@+id/actionCibilScoreFragmentToCiBilOtpFragment"
-            app:destination="@id/CiBilOtpFragment" />-->
+        <action
+            android:id="@+id/actionCibilScoreFragmentToEAgreementFragment"
+            app:destination="@id/EAgreementFragment" />
     </fragment>
 
     <fragment
@@ -161,7 +161,17 @@
         android:id="@+id/SuccessFragment"
         android:name="com.sk.directudhar.ui.success.SuccessFragment"
         android:label="Success"
-        tools:layout="@layout/fragment_success"/>
+        tools:layout="@layout/fragment_success">
+
+        <argument
+            android:name="name"
+            app:argType="string" />
+
+        <argument
+            android:name="sequenceNo"
+            app:argType="string" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/PanCardFragment"
@@ -258,6 +268,10 @@
         <argument
             android:name="mobileNo"
             app:argType="string" />
+
+        <action
+            android:id="@+id/action_EAgreementOtpFragment_to_SuccessFragment"
+            app:destination="@+id/SuccessFragment" />
     </fragment>
     <fragment
         android:id="@+id/paymentOptionsFragment"
@@ -312,6 +326,11 @@
         android:name="com.sk.directudhar.ui.agreement.EAgreementOptionsFragment"
         android:label="Agreement"
         tools:layout="@layout/fragment_e_agreement_options">
+
+        <argument
+            android:name="Agreementhtml"
+            app:argType="string" />
+
 
         <action
             android:id="@+id/action_EAgreementOptionsFragment_to_EAgreementOtpFragment"

@@ -29,6 +29,7 @@ class EAgreementFragment : Fragment() {
     private var mBinding: FragmentEAgreementBinding? = null
 
     private lateinit var eAgreementViewModel: EAgreementViewModel
+    private var htmlDoc:String = ""
 
     @Inject
     lateinit var eAgreementFactory: EAgreementFactory
@@ -82,7 +83,7 @@ class EAgreementFragment : Fragment() {
         mBinding!!.btnIAgree.setOnClickListener {
             if (mBinding!!.cbAuthorize.isChecked) {
                 val action =
-                    EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOptionsFragment()
+                    EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOptionsFragment(htmlDoc)
                 findNavController().navigate(action)
             } else {
                 activitySDk.toast("Please click checkbox to Agree term & Conditions")
@@ -109,6 +110,7 @@ class EAgreementFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
 
                     if (it.data != null) {
+                        htmlDoc = it.data.Data!!.Agreementhtml!!
                         mBinding!!.tvTermCondition.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             Html.fromHtml(it.data.Data!!.Agreementhtml, Html.FROM_HTML_MODE_COMPACT)
                         } else {

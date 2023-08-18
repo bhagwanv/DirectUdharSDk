@@ -1,17 +1,21 @@
 package com.sk.directudhar.ui.agreement
 
+import android.content.ActivityNotFoundException
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CompoundButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.sk.directudhar.R
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
+import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEAgreementOptionsBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
@@ -21,12 +25,15 @@ import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
+
 class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeListener {
     lateinit var activitySDk: MainActivitySDk
 
     private var mBinding: FragmentEAgreementOptionsBinding? = null
 
     lateinit var eAgreementViewModel: EAgreementViewModel
+    private val args: EAgreementOptionsFragmentArgs by navArgs()
+
 
     @Inject
     lateinit var eAgreementFactory: EAgreementFactory
@@ -65,7 +72,14 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
             if (verificationType.isEmpty()) {
                 activitySDk.toast("Please Select Verification Mode")
             } else if (verificationType == "BY_AADHAAR_VERIFY") {
-                activitySDk.toast("call here Aadhaar web")
+
+                eAgreementViewModel.eSignSessionAsync(
+                    SignSessionRequestModel(
+                        SharePrefs.getInstance(
+                            activitySDk
+                        )?.getInt(SharePrefs.LEAD_MASTERID)!!, args.agreementhtml
+                    )
+                )
             } else if (verificationType == "BY_MOBILE_OTP") {
                 if (mobileNo.isEmpty()) {
                     activitySDk.toast("Mobile Number Not Found")
@@ -108,6 +122,42 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
                     }
                 }
             }
+        }
+
+        eAgreementViewModel.signSessionResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    if (it.data.Result!!) {
+                        if (it.data.Data != null) {
+                            callWeb(it.data.Data)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun callWeb(urlString: String) {
+        // val urlString = "http://mysuperwebsite"
+        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        intent.setPackage("com.android.chrome")
+        try {
+            activitySDk.startActivity(intent)
+        } catch (ex: ActivityNotFoundException) {
+            // Chrome browser presumably not installed and open Kindle Browser
+            intent.setPackage(null)
+            activitySDk.startActivity(intent)
         }
     }
 

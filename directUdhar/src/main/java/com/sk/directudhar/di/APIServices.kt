@@ -8,6 +8,9 @@ import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadharVerificationRequestM
 import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadResponseModel
 import com.sk.directudhar.ui.agreement.AgreementResponseModel
 import com.sk.directudhar.ui.agreement.SendOtpResponseModel
+import com.sk.directudhar.ui.agreement.SignSessionRequestModel
+import com.sk.directudhar.ui.agreement.SignSessionResponseModel
+import com.sk.directudhar.ui.agreement.agreementOtp.AgreementOtpResponseModel
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
 import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
 import com.sk.directudhar.ui.businessDetails.BusinessDetailsVerifyElectricityBillRequestModel
@@ -140,8 +143,8 @@ interface APIServices {
     @GET("api/borrower/SendOtp")
     suspend fun sendOtp(@Query("MobileNo") mobileNo: String): SendOtpResponseModel
 
-    @POST("api/borrower/eAgreement")
-    suspend fun eAgreementOtpVerification(@Body eAgreementOtpResquestModel: EAgreementOtpResquestModel): AgreementResponseModel
+    @POST("api/borrower/AgreementVerify")
+    suspend fun eAgreementOtpVerification(@Body eAgreementOtpResquestModel: EAgreementOtpResquestModel): AgreementOtpResponseModel
     @GET("api/Borrower/CreditLimitRequest")
     suspend fun creditLimitRequest(
         @Query("LeadMasterId") leadMasterId: Long,
@@ -206,5 +209,9 @@ interface APIServices {
 
     @GET("api/Borrower/CibilActivityComplete")
     suspend fun cibilActivityComplete(@Query("LeadMasterId") LeadMasterId: Int): CibilActivityCompleteResponseModel
+
+    @POST("api/eSign/eSignSessionAsync")
+    suspend fun eSignSessionAsync(@Body signSessionRequestModel: SignSessionRequestModel): SignSessionResponseModel
+
 
 }
