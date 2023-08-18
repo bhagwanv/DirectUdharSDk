@@ -23,7 +23,6 @@ import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
-
 class MainActivitySDk : AppCompatActivity() {
 
     private lateinit var navController: NavController
@@ -119,7 +118,8 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                         checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        // checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                         checkSequenceNo(3)
 
                     } else {
                         this.toast(initiateAccountModel.Msg)

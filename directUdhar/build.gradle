@@ -86,9 +86,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.1"
 
-    //coroutines
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4'
-
     //hilt
     implementation "com.google.dagger:hilt-android:2.38.1"
     kapt "com.google.dagger:hilt-compiler:2.42"
@@ -103,4 +100,5 @@ dependencies {
     implementation files("libs/weipl_checkout.aar")
     implementation "com.android.volley:volley:1.2.1"
 
+    implementation "com.github.yalantis:ucrop:2.2.6"
 }
