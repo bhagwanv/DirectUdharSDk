@@ -2,6 +2,7 @@ package com.sk.directudhar.ui.adharcard.aadhaarCardOtp
 
 import android.content.Context
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -57,7 +58,7 @@ class AadhaarOtpFragment : Fragment() {
 
         setToolBar()
         setObserver()
-
+        startCountdown()
         mBinding!!.tvResendAadhaarOtp.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -91,9 +92,12 @@ class AadhaarOtpFragment : Fragment() {
                             val action = AadhaarOtpFragmentDirections.actionAadhaarOtpFragmentToKycSuccessFragment("ByOtp")
                             findNavController().navigate(action)
                         } else {
-                           // activitySDk.toast(it.Msg)
-                            val action = AadhaarOtpFragmentDirections.actionAadhaarOtpFragmentToKycFailedFragment()
-                            findNavController().navigate(action)
+                            if (it.Msg=="otp not matched"){
+                                 activitySDk.toast(it.Msg)
+                            }else{
+                                val action = AadhaarOtpFragmentDirections.actionAadhaarOtpFragmentToKycFailedFragment()
+                                findNavController().navigate(action)
+                            }
                         }
                     }
                 }
@@ -155,5 +159,19 @@ class AadhaarOtpFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         mBinding!!.unbind()
+    }
+
+    private fun startCountdown() {
+       val countDownTimer = object : CountDownTimer(Utils.countdownDuration, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsRemaining = millisUntilFinished / 1000
+                mBinding!!.tvTimer.text = "$secondsRemaining seconds"
+            }
+            override fun onFinish() {
+                mBinding!!.tvResendAadhaarOtp.visibility = View.VISIBLE
+                mBinding!!.tvTimer.visibility = View.GONE
+            }
+        }
+        countDownTimer.start()
     }
 }

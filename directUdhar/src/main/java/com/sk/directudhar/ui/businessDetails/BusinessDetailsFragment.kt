@@ -88,6 +88,7 @@ class BusinessDetailsFragment : Fragment() {
     var mIncomeSlab = ""
     var mOwnershipType = ""
     var customerNumber = ""
+    var serviceProvideName = ""
     var businessTypeId = 0
 
     private val BUFFER_SIZE = 1024 * 2
@@ -130,27 +131,41 @@ class BusinessDetailsFragment : Fragment() {
             }
         })
 
-        mBinding.etCustomerNumber.addTextChangedListener(object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.isNullOrEmpty()) {
-                    activitySDk.toast("Please Enter Customer Number")
-                } else if (s.length == 10) {
-                    isVerifyElectricityBill = false
-                    customerNumber = s.toString()
-                    mBinding.rlServiceProviders.visibility = View.VISIBLE
-
-                } else {
-                    isVerifyElectricityBill = false
-                    mBinding.ivRightElectrycityBill.visibility = View.GONE
-                    mBinding.rlServiceProviders.visibility = View.GONE
-                }
-
+        mBinding.btnVerifyBill.setOnClickListener {
+            if (mBinding.etCustomerNumber.text.toString().isNullOrEmpty()) {
+                activitySDk.toast("Please Enter Customer Number")
+            } else if (serviceProvideName.isNullOrEmpty()||serviceProvideName=="None") {
+                activitySDk.toast("Please select Service Provide name")
+            } else {
+                val model = BusinessDetailsVerifyElectricityBillRequestModel(
+                    SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
+                    mBinding.etCustomerNumber.text.toString(),
+                    serviceProvideName
+                )
+                businessDetailsViewModel.verifyElectricityBill(model)
             }
+        }
 
-            override fun afterTextChanged(s: Editable) {
-            }
-        })
+        /*  mBinding.etCustomerNumber.addTextChangedListener(object : TextWatcher {
+              override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+              override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
+                  if (s.isNullOrEmpty()) {
+                      activitySDk.toast("Please Enter Customer Number")
+                  } else if (s.length == 10) {
+                      isVerifyElectricityBill = false
+                      customerNumber = s.toString()
+                      mBinding.rlServiceProviders.visibility = View.VISIBLE
+                  } else {
+                      isVerifyElectricityBill = false
+                      mBinding.ivRightElectrycityBill.visibility = View.GONE
+                      mBinding.rlServiceProviders.visibility = View.GONE
+                  }
+
+              }
+
+              override fun afterTextChanged(s: Editable) {
+              }
+          })*/
 
 
         mBinding.tvBusinessIncorporationDate.setOnClickListener {
@@ -208,8 +223,6 @@ class BusinessDetailsFragment : Fragment() {
         mBinding.llBillUplod.setOnClickListener {
             //askPermission()
         }
-
-        businessDetailsViewModel.getGSTDetails(mBinding.etGstNumber.text.toString().trim())
         businessDetailsViewModel.getBusinessTypeList()
         mBinding.tvAddMoreView.setOnClickListener {
             addMoreView(false)
@@ -233,12 +246,9 @@ class BusinessDetailsFragment : Fragment() {
             "Owned by parents",
             "Owned by Spouse"
         )
-
-        val manualBillUploadArray = listOf(
-            "Electricity bill upload",
-            "Upload Bill Manual",
-            "Customer Number"
-        )
+       /* "Electricity bill upload",
+        "Upload Bill Manual",*/
+        val manualBillUploadArray = listOf("Customer Number")
         mServiceProvider = ServiceProvide.getServiceProvider()
         mServiceProvider.forEach {
             mSpiServiceProvider.add(it.Name)
@@ -254,7 +264,7 @@ class BusinessDetailsFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    businessTypeId =  mBusinessTypeList[position].Id
+                    businessTypeId = mBusinessTypeList[position].Id
                     if (mBusinessTypeList[position].Id == 1) {
                         mBinding.tvAddMoreView.visibility = View.GONE
                     } else {
@@ -323,13 +333,6 @@ class BusinessDetailsFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    Toast.makeText(
-                        activitySDk,
-                        "Type" + " " + manualBillUploadArray[position],
-                        Toast.LENGTH_SHORT
-                    ).show()
-
-
                     if (manualBillUploadArray[position] == "Customer Number") {
                         mBinding.llCustomerNumber.visibility = View.VISIBLE
                     } else {
@@ -354,19 +357,8 @@ class BusinessDetailsFragment : Fragment() {
                     position: Int,
                     id: Long
                 ) {
-                    Toast.makeText(
-                        activitySDk,
-                        "Type" + " " + mServiceProvider[position].sortName,
-                        Toast.LENGTH_SHORT
-                    ).show()
                     Log.e("TAG", "onItemSelected: ")
-                    var model = BusinessDetailsVerifyElectricityBillRequestModel(
-                        SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
-                        customerNumber,
-                        mServiceProvider[position].sortName
-                    )
-                    businessDetailsViewModel.verifyElectricityBill(model)
-
+                    serviceProvideName = mServiceProvider[position].sortName
 
                 }
 
@@ -605,6 +597,10 @@ class BusinessDetailsFragment : Fragment() {
                     it.data.let {
                         if (it.Result) {
                             isVerifyElectricityBill = true
+                            if (!it.Data.consumer_name.isNullOrEmpty()){
+                                mBinding.tvCustomerName.visibility = View.VISIBLE
+                                mBinding.tvCustomerName.text = it.Data.consumer_name
+                            }
                             mBinding.ivRightElectrycityBill.visibility = View.VISIBLE
                         } else {
                             mBinding.ivRightElectrycityBill.visibility = View.GONE

@@ -6,23 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentCibilScoreBinding
 import com.sk.directudhar.ui.applyloan.CityModel
 import com.sk.directudhar.ui.applyloan.StateModel
-import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
-import com.sk.directudhar.utils.Utils
-import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 class CibilScoreFragment : Fragment(), OnClickListener {
@@ -40,7 +36,7 @@ class CibilScoreFragment : Fragment(), OnClickListener {
     private var cityIDValue: Int = 0
     private lateinit var cityName: String
     private var stateIDValue: Int = 0
-
+    private var isSkip = false
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -61,53 +57,55 @@ class CibilScoreFragment : Fragment(), OnClickListener {
         val component = DaggerApplicationComponent.builder().build()
         component.injectCiBil(this)
         cibilViewModel = ViewModelProvider(this, cibilViewFactory)[CibilViewModel::class.java]
-        cibilViewModel.callUserCreditInfo(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID))
+        cibilViewModel.callUserCreditInfo(
+            SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
+        )
         mBinding.btEmandate.setOnClickListener(this)
         mBinding.tvSkip.setOnClickListener(this)
-       /* cibilViewModel.getCiBilResult().observe(activitySDk) { result ->
-            if (!result.equals(Utils.SuccessType)) {
-                Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
-            } else {
-                processCibil()
-            }
-        }*/
-       /* cibilViewModel.postResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
+        /* cibilViewModel.getCiBilResult().observe(activitySDk) { result ->
+             if (!result.equals(Utils.SuccessType)) {
+                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
+             } else {
+                 processCibil()
+             }
+         }*/
+        /* cibilViewModel.postResponse.observe(viewLifecycleOwner) {
+             when (it) {
+                 is NetworkResult.Loading -> {
+                     ProgressDialog.instance!!.show(activitySDk)
+                 }
 
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                 is NetworkResult.Failure -> {
+                     ProgressDialog.instance!!.dismiss()
+                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
 
-                }
+                 }
 
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-                    cibilViewModel.postFromData(GenrateOtpModel(userInfoModel.MobileNo,it.data.stgOneHitId,it.data.stgTwoHitId))
-                }
-            }
-        }*/
-       /* cibilViewModel.genrateOtpResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
+                 is NetworkResult.Success -> {
+                     ProgressDialog.instance!!.dismiss()
+                     cibilViewModel.postFromData(GenrateOtpModel(userInfoModel.MobileNo,it.data.stgOneHitId,it.data.stgTwoHitId))
+                 }
+             }
+         }*/
+        /* cibilViewModel.genrateOtpResponse.observe(viewLifecycleOwner) {
+             when (it) {
+                 is NetworkResult.Loading -> {
+                     ProgressDialog.instance!!.show(activitySDk)
+                 }
 
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                 is NetworkResult.Failure -> {
+                     ProgressDialog.instance!!.dismiss()
+                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
 
-                }
+                 }
 
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-                    val  action = CibilScoreFragmentDirections.actionCibilScoreFragmentToCiBilOtpFragment(it.data.stgOneHitId,it.data.stgTwoHitId,userInfoModel.MobileNo)
-                    findNavController().navigate(action)
-                }
-            }
-        }*/
+                 is NetworkResult.Success -> {
+                     ProgressDialog.instance!!.dismiss()
+                     val  action = CibilScoreFragmentDirections.actionCibilScoreFragmentToCiBilOtpFragment(it.data.stgOneHitId,it.data.stgTwoHitId,userInfoModel.MobileNo)
+                     findNavController().navigate(action)
+                 }
+             }
+         }*/
         cibilViewModel.getCibilResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -127,7 +125,8 @@ class CibilScoreFragment : Fragment(), OnClickListener {
                             mBinding.tvCreditLimit.text = "₹" + it.Data.CreditLimit
                             mBinding.tvCreditScore.text = it.Data.CreditScore.toString()
                             mBinding.tvResult.text = "Good"
-                            mBinding.smc.setPercentWithAnimation(it.Data.CreditScore)
+                            val percent = it.Data.CreditScore / 9
+                            mBinding.smc.setPercentWithAnimation(percent)
                         }
                     }
                 }
@@ -139,17 +138,19 @@ class CibilScoreFragment : Fragment(), OnClickListener {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
-
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
                 }
-
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
-                            activitySDk.checkSequenceNo(it.Data.SequenceNo)
+                            if (isSkip) {
+                                activitySDk.finishAffinity()
+                            } else {
+                                activitySDk.checkSequenceNo(it.Data.SequenceNo)
+                            }
                         }
                     }
                 }
@@ -157,48 +158,48 @@ class CibilScoreFragment : Fragment(), OnClickListener {
         }
     }
 
- /*   private fun processCibil() {
-     cibilViewModel.postFromData(
-         CibilResponseModel(mBinding.EtFullName.text.toString().trim(),
-             mBinding.etLastName.text.toString().trim(),
-             mBinding.etAddress.text.toString().trim(),
-             mBinding.etPanNumber.text.toString().trim(),
-             mBinding.EtPincode.text.toString().trim(),stateIDValue,cityName,userInfoModel.dateOfBirth,userInfoModel.Gender,userInfoModel.EmailId,userInfoModel.MobileNo,mBinding.cbIsMandate.isChecked,
-             SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)))
-    }
-*/
-   /* private fun setupStateAutoComplete() {
-        val stateNameList: List<String> = stateList.map { it.StateName }
-        val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, stateNameList)
-        mBinding.spState.setAdapter(adapter)
-        mBinding.spState.onItemClickListener =
-            AdapterView.OnItemClickListener { parent, view, position, id ->
-                stateIDValue = stateList[position].Id
-                cibilViewModel.callCity(stateIDValue)
-            }
-        cibilViewModel.cityResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
+    /*   private fun processCibil() {
+        cibilViewModel.postFromData(
+            CibilResponseModel(mBinding.EtFullName.text.toString().trim(),
+                mBinding.etLastName.text.toString().trim(),
+                mBinding.etAddress.text.toString().trim(),
+                mBinding.etPanNumber.text.toString().trim(),
+                mBinding.EtPincode.text.toString().trim(),stateIDValue,cityName,userInfoModel.dateOfBirth,userInfoModel.Gender,userInfoModel.EmailId,userInfoModel.MobileNo,mBinding.cbIsMandate.isChecked,
+                SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)))
+       }
+   */
+    /* private fun setupStateAutoComplete() {
+         val stateNameList: List<String> = stateList.map { it.StateName }
+         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, stateNameList)
+         mBinding.spState.setAdapter(adapter)
+         mBinding.spState.onItemClickListener =
+             AdapterView.OnItemClickListener { parent, view, position, id ->
+                 stateIDValue = stateList[position].Id
+                 cibilViewModel.callCity(stateIDValue)
+             }
+         cibilViewModel.cityResponse.observe(viewLifecycleOwner) {
+             when (it) {
+                 is NetworkResult.Loading -> {
+                     ProgressDialog.instance!!.show(activitySDk)
+                 }
 
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                 is NetworkResult.Failure -> {
+                     ProgressDialog.instance!!.dismiss()
+                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
 
-                }
+                 }
 
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-                    cityList = it.data
-                    setupCityAutoComplete()
+                 is NetworkResult.Success -> {
+                     ProgressDialog.instance!!.dismiss()
+                     cityList = it.data
+                     setupCityAutoComplete()
 
-                }
-            }
-        }
+                 }
+             }
+         }
 
 
-    }*/
+     }*/
 
     /*private fun setupCityAutoComplete() {
         val cityNameList: List<String> = cityList.map { it.CityName }
@@ -215,12 +216,14 @@ class CibilScoreFragment : Fragment(), OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btEmandate -> {
+                isSkip = false
                 cibilViewModel.cibilActivityComplete(
                     SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
                 )
             }
 
             R.id.tvSkip -> {
+                isSkip = true
                 cibilViewModel.cibilActivityComplete(
                     SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
                 )

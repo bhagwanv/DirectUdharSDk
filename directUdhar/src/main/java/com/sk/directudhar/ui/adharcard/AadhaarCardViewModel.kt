@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.utils.Network
+import com.sk.directudhar.utils.SingleLiveEvent
 import com.sk.directudhar.utils.Utils.Companion.AADHAAR_VALIDATE_SUCCESSFULLY
 import com.sk.directudhar.utils.Utils.Companion.isValidAadhaar
 import com.sk.directudhar.utils.Utils.Companion.toast
@@ -18,11 +19,11 @@ import javax.inject.Inject
 class AadhaarCardViewModel @Inject constructor(private val repository: AadhaarCardRepository) :
     ViewModel() {
 
-    private val aadhaarResultResult = MutableLiveData<String>()
-    fun getAadhaarResult(): LiveData<String> = aadhaarResultResult
+    private val aadhaarResultResult = SingleLiveEvent<String>()
+    fun getAadhaarResult(): SingleLiveEvent<String> = aadhaarResultResult
 
-    private var _postDataResponse = MutableLiveData<NetworkResult<AadhaarUpdateResponseModel>>()
-    val postResponse: LiveData<NetworkResult<AadhaarUpdateResponseModel>> = _postDataResponse
+    private var _postDataResponse = SingleLiveEvent<NetworkResult<AadhaarUpdateResponseModel>>()
+    val postResponse: SingleLiveEvent<NetworkResult<AadhaarUpdateResponseModel>> = _postDataResponse
 
     fun validateAadhaar(aadhaarNumber: String, tnCchecked: Boolean) {
         if (aadhaarNumber.isNullOrEmpty()) {

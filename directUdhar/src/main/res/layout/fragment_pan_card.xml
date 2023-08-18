@@ -162,7 +162,6 @@
                 android:layout_height="48dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bg_squre_btn_corner"
-                android:backgroundTint="@color/bg_color_gray_variant1"
                 android:gravity="center"
                 android:maxLines="1"
                 android:paddingHorizontal="16dp"

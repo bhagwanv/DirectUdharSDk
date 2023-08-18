@@ -1,14 +1,13 @@
 package com.sk.directudhar.ui.businessDetails
 
-data class BusinessDetailsVerifyElectricityBillResponseModel(val Data: BusinessDetails,
+data class BusinessDetailsVerifyElectricityBillResponseModel(val Data: Data,
                                                              val Msg: String,
-                                                             val Result: Boolean,
-                                                             val DynamicData: String)
+                                                             val Result: Boolean)
 
-data class BusinessDetails(
+data class Data(
     val bill_no: String,
     val bill_due_date: String,
-    val consumer_number: Int,
+    val consumer_number: String,
     val bill_amount: String,
     val bill_issue_date: String,
     val mobile_number: String,
@@ -20,3 +19,4 @@ data class BusinessDetails(
     val bill_date: String,
 
     )
+

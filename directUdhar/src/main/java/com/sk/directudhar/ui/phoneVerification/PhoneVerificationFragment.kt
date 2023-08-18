@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentPhoneVerificationBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
@@ -42,7 +44,9 @@ class PhoneVerificationFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentPhoneVerificationBinding.inflate(inflater, container, false)
+        if (mBinding == null) {
+            mBinding = FragmentPhoneVerificationBinding.inflate(inflater, container, false)
+        }
         val component = DaggerApplicationComponent.builder().build()
         component.injectPhoneVerification(this)
         phoneVerificationViewModel = ViewModelProvider(
@@ -58,6 +62,21 @@ class PhoneVerificationFragment : Fragment() {
         mBinding!!.etMobileNumber.text = mobileNumber
         setToolBar()
         setObserver()
+
+        mBinding!!.cbTermsOfUse.setOnClickListener {
+            if (mBinding!!.cbTermsOfUse.isChecked) {
+                mBinding!!.btnGenOtp.isClickable = true
+                mBinding!!.btnGenOtp.isEnabled = true
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                mBinding!!.btnGenOtp.backgroundTintList = tintList
+            } else {
+                mBinding!!.btnGenOtp.isClickable = false
+                mBinding!!.btnGenOtp.isEnabled = false
+                val tintList =
+                    ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                mBinding!!.btnGenOtp.backgroundTintList = tintList
+            }
+        }
         mBinding!!.btnGenOtp.setOnClickListener {
             var mobileNumber = mBinding!!.etMobileNumber.text.toString()
             if (mobileNumber.isNullOrEmpty()) {

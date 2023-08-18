@@ -5,10 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentPhoneVerificationBinding
 import com.sk.directudhar.ui.applyloan.ApplyLoanFragmentArgs
@@ -47,23 +49,35 @@ class CibilPhoneVerificationFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentPhoneVerificationBinding.inflate(inflater, container, false)
-            initView()
+            val component = DaggerApplicationComponent.builder().build()
+            component.injectCibilPhoneVerification(this)
+            phoneVerificationViewModel = ViewModelProvider(
+                this,
+                phoneVerificationFactory
+            )[CibilPhoneVerificationViewModel::class.java]
         }
+        initView()
         return mBinding!!.root
     }
 
     private fun initView() {
-        val component = DaggerApplicationComponent.builder().build()
-        component.injectCibilPhoneVerification(this)
-        phoneVerificationViewModel = ViewModelProvider(
-            this,
-            phoneVerificationFactory
-        )[CibilPhoneVerificationViewModel::class.java]
-
         mBinding!!.etMobileNumber.text = args.mobileNo
         setToolBar()
         setObserver()
-
+        mBinding!!.cbTermsOfUse.setOnClickListener {
+            if (mBinding!!.cbTermsOfUse.isChecked) {
+                mBinding!!.btnGenOtp.isClickable = true
+                mBinding!!.btnGenOtp.isEnabled = true
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                mBinding!!.btnGenOtp.backgroundTintList = tintList
+            } else {
+                mBinding!!.btnGenOtp.isClickable = false
+                mBinding!!.btnGenOtp.isEnabled = false
+                val tintList =
+                    ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                mBinding!!.btnGenOtp.backgroundTintList = tintList
+            }
+        }
         mBinding!!.btnGenOtp.setOnClickListener {
             var mobileNumber = mBinding!!.etMobileNumber.text.toString()
             if (mobileNumber.isNullOrEmpty()) {

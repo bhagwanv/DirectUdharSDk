@@ -2,6 +2,7 @@ package com.sk.directudhar.ui.phoneVerification
 
 import android.content.Context
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,7 @@ import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
+import com.sk.directudhar.utils.Utils.Companion.countdownDuration
 import com.sk.directudhar.utils.Utils.Companion.toast
 import org.json.JSONObject
 import javax.inject.Inject
@@ -38,6 +40,7 @@ class OtpVerificationFragment : Fragment() {
     private var mobileNumber = ""
     private var accountId: Long = 0
     private var flag: Int = 0
+    private lateinit var countDownTimer: CountDownTimer
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -51,8 +54,9 @@ class OtpVerificationFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentOtpVerificationBinding.inflate(inflater, container, false)
-            initView()
         }
+        initView()
+        startCountdown()
         return mBinding!!.root
     }
 
@@ -74,6 +78,9 @@ class OtpVerificationFragment : Fragment() {
             } else {
                 phoneVerificationViewModel.callOtpVerify(args.mobileNumber, otp, args.txnNo)
             }
+        }
+        mBinding!!.tvResend.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
@@ -115,5 +122,19 @@ class OtpVerificationFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         mBinding!!.unbind()
+    }
+
+    private fun startCountdown() {
+        countDownTimer = object : CountDownTimer(countdownDuration, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsRemaining = millisUntilFinished / 1000
+                mBinding!!.tvTimer.text = "$secondsRemaining seconds"
+            }
+            override fun onFinish() {
+                mBinding!!.tvResend.visibility = View.VISIBLE
+                mBinding!!.tvTimer.visibility = View.GONE
+            }
+        }
+        countDownTimer.start()
     }
 }

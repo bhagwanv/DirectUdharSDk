@@ -79,12 +79,21 @@
                     android:text="If you didn't received code!"
                     android:textColor="@color/holo_gray_dark" />
                 <androidx.appcompat.widget.AppCompatTextView
-                    android:id="@+id/tvTermsOfUse"
+                    android:id="@+id/tvResend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
                     android:justificationMode="inter_word"
+                    android:visibility="gone"
                     android:text="Resend"
+                    android:textColor="@color/colorAccent" />
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvTimer"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:justificationMode="inter_word"
+                    android:text="00:00"
                     android:textColor="@color/colorAccent" />
             </LinearLayout>
 

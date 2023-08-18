@@ -82,21 +82,22 @@ class PanCardFragment : Fragment(), OnClickListener {
         panCardViewModel = ViewModelProvider(this, panCardFactory)[PanCardViewModel::class.java]
         mBinding.btnVerifyPanCard.setOnClickListener(this)
 
-
         mBinding.linearLayout.setOnClickListener {
             askPermission()
         }
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
+                    ProgressDialog.instance!!.show(activitySDk)
                     val data: Intent? = result.data
                     val filePath = data!!.getStringExtra(Utils.FILE_PATH).toString()
                     val myBitmap = BitmapFactory.decodeFile(filePath)
                     mBinding.imPanImage.setImageBitmap(myBitmap)
                     lifecycleScope.launch {
                         val body = ImageProcessing.uploadMultipart(filePath, activitySDk)
-                        panCardViewModel.uploadPanCard(SharePrefs.getInstance(activitySDk)
-                            ?.getInt(SharePrefs.LEAD_MASTERID)!!,
+                        panCardViewModel.uploadPanCard(
+                            SharePrefs.getInstance(activitySDk)
+                                ?.getInt(SharePrefs.LEAD_MASTERID)!!,
                             body,
                         )
                     }
@@ -104,12 +105,9 @@ class PanCardFragment : Fragment(), OnClickListener {
                     Log.d("Result:", "Cancel")
                 }
             }
-        panCardViewModel.panCardResponse.observe(activitySDk) {
+        panCardViewModel.panCardImageUploadResponse.observe(activitySDk) {
             when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
-
+                is NetworkResult.Loading -> {}
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
@@ -118,15 +116,15 @@ class PanCardFragment : Fragment(), OnClickListener {
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                        if(it.Result){
+                        if (it.Result) {
                             imageUrl = it.Data.ImageUrl
                             Picasso.get().load(imageUrl)
                                 .into(mBinding.imPanImage)
-                            activitySDk.toast("Done")
+                            activitySDk.toast(it.Msg)
                             mBinding.imPanImage.visibility = View.VISIBLE
                             mBinding.llDefaultImage.visibility = View.GONE
-                        }else{
-                             activitySDk.toast(it.Msg)
+                        } else {
+                            activitySDk.toast(it.Msg)
                             mBinding.imPanImage.visibility = View.VISIBLE
                             mBinding.llDefaultImage.visibility = View.GONE
                         }
@@ -147,8 +145,6 @@ class PanCardFragment : Fragment(), OnClickListener {
                     imageUrl,
                 )
                 panCardViewModel.updatePanInfo(model)
-                mBinding.ivRight.visibility=View.VISIBLE
-                mBinding.btnVerifyPanCard.setText("Next")
             }
         })
 
@@ -174,8 +170,9 @@ class PanCardFragment : Fragment(), OnClickListener {
                 }
             }
         }
-        mBinding!!.etPanNumber.addTextChangedListener(aadhaarTextWatcher)
+        mBinding.etPanNumber.addTextChangedListener(aadhaarTextWatcher)
     }
+
     private fun askPermission() {
         val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(
@@ -233,11 +230,13 @@ class PanCardFragment : Fragment(), OnClickListener {
         override fun afterTextChanged(s: Editable?) {
             val panNumber = s.toString().trim()
             if (panNumber.length < 10) {
-                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
-                mBinding!!.btnVerifyPanCard.backgroundTintList = tintList
+                mBinding.ivRight.visibility = View.GONE
+                //  val tintList = ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                // mBinding.btnVerifyPanCard.backgroundTintList = tintList
             } else {
-                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
-                mBinding!!.btnVerifyPanCard.backgroundTintList = tintList
+                mBinding.ivRight.visibility = View.VISIBLE
+                // val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                //  mBinding.btnVerifyPanCard.backgroundTintList = tintList
                 panNo = panNumber
             }
         }

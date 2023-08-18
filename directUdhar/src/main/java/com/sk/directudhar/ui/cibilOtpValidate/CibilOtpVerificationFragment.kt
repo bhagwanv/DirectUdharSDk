@@ -2,11 +2,13 @@ package com.sk.directudhar.ui.cibilOtpValidate
 
 import android.content.Context
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentCibilOtpVerificationBinding
@@ -16,6 +18,7 @@ import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
+import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
@@ -47,8 +50,10 @@ class CibilOtpVerificationFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentCibilOtpVerificationBinding.inflate(inflater, container, false)
-            initView()
+
         }
+        initView()
+        startCountdown()
         return mBinding!!.root
     }
 
@@ -71,6 +76,9 @@ class CibilOtpVerificationFragment : Fragment() {
                 phoneVerificationViewModel.callOtpVerify(CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)
                     ?.getInt(SharePrefs.LEAD_MASTERID)!!,args.mobileNumber,args.stgOneHitId,args.stgTwoHitId,otp))
             }
+        }
+        mBinding!!.tvResend.setOnClickListener {
+            findNavController().popBackStack()
         }
     }
 
@@ -112,5 +120,19 @@ class CibilOtpVerificationFragment : Fragment() {
     override fun onDestroy() {
         super.onDestroy()
         mBinding!!.unbind()
+    }
+
+    private fun startCountdown() {
+       val countDownTimer = object : CountDownTimer(Utils.countdownDuration, 1000) {
+            override fun onTick(millisUntilFinished: Long) {
+                val secondsRemaining = millisUntilFinished / 1000
+                mBinding!!.tvTimer.text = "$secondsRemaining seconds"
+            }
+            override fun onFinish() {
+                mBinding!!.tvResend.visibility = View.VISIBLE
+                mBinding!!.tvTimer.visibility = View.GONE
+            }
+        }
+        countDownTimer.start()
     }
 }

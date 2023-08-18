@@ -29,6 +29,8 @@
                     android:background="@drawable/background_linearlayout"
                     android:fontFamily="@font/urbanist_medium"
                     android:hint="GST Number"
+                    android:inputType="textCapCharacters"
+                    android:textAllCaps="true"
                     android:maxLength="15"
                     android:maxLines="1"
                     android:padding="16dp"
@@ -281,7 +283,6 @@
                 android:id="@+id/llCustomerNumber"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
                 android:layout_marginVertical="10dp"
                 android:visibility="gone"
                 app:cardCornerRadius="10dp"
@@ -322,37 +323,62 @@
                             android:visibility="gone" />
 
                     </RelativeLayout>
+                    <RelativeLayout
+                        android:id="@+id/rlServiceProviders"
+                        android:layout_width="match_parent"
+                        android:layout_height="45dp"
+                        android:layout_marginVertical="10dp"
+                        android:background="@drawable/background_edittext"
+                        android:visibility="visible">
+
+                        <androidx.appcompat.widget.AppCompatSpinner
+                            android:id="@+id/spServiceProvider"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="20dp"
+                            android:background="@android:color/transparent"
+                            android:hint="Bank"
+                            android:inputType="none"
+                            android:spinnerMode="dropdown"
+                            android:textAllCaps="true" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentRight="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginEnd="20dp"
+                            android:background="@drawable/arrow_up" />
+                    </RelativeLayout>
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/btnVerifyBill"
+                        android:layout_width="100dp"
+                        android:layout_height="30dp"
+                        android:layout_gravity="right"
+                        android:layout_marginTop="10dp"
+                        android:background="@drawable/bg_squre_btn_corner"
+                        android:fontFamily="@font/urbanist_bold"
+                        android:gravity="center"
+                        android:maxLines="1"
+                        android:paddingHorizontal="16dp"
+                        android:text="Verify"
+                        android:textAllCaps="false"
+                        android:textColor="@color/white"
+                        android:textSize="16sp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/tvCustomerName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone"
+                        android:text="Customer name"
+                        android:textColor="@color/colorAccent" />
+
                 </LinearLayout>
+
+
             </androidx.cardview.widget.CardView>
 
-
-            <RelativeLayout
-                android:id="@+id/rlServiceProviders"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/background_edittext"
-                android:visibility="gone">
-
-                <androidx.appcompat.widget.AppCompatSpinner
-                    android:id="@+id/spServiceProvider"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
-                    android:background="@android:color/transparent"
-                    android:hint="Bank"
-                    android:inputType="none"
-                    android:spinnerMode="dropdown"
-                    android:textAllCaps="true" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
-                    android:background="@drawable/arrow_up" />
-            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/rlUploadStatement"

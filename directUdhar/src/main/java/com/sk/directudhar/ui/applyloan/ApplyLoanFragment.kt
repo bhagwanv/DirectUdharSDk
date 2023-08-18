@@ -34,7 +34,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
 
     lateinit var activitySDk: MainActivitySDk
 
-    private lateinit var mBinding: FragmentApplyLoanBinding
+    private  var mBinding: FragmentApplyLoanBinding?=null
 
     lateinit var applyLoanViewModel: ApplyLoanViewModel
 
@@ -70,9 +70,11 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        mBinding = FragmentApplyLoanBinding.inflate(inflater, container, false)
+        if (mBinding == null) {
+            mBinding = FragmentApplyLoanBinding.inflate(inflater, container, false)
+        }
         initView()
-        return mBinding.root
+        return mBinding!!.root
     }
 
     private fun initView() {
@@ -86,20 +88,20 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
             SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
         )
 
-        mBinding.btnNext.setOnClickListener(this)
-        mBinding.cbTermsOfUse.setOnClickListener {
-            if (mBinding.cbTermsOfUse.isChecked) {
-                mBinding.btnNext.isClickable = true
-                mBinding.btnNext.isEnabled = true
+        mBinding!!.btnNext.setOnClickListener(this)
+        mBinding!!.cbTermsOfUse.setOnClickListener {
+            if (mBinding!!.cbTermsOfUse.isChecked) {
+                mBinding!!.btnNext.isClickable = true
+                mBinding!!.btnNext.isEnabled = true
                 val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
-                mBinding.btnNext.backgroundTintList = tintList
+                mBinding!!.btnNext.backgroundTintList = tintList
             } else {
-                mBinding.btnNext.isClickable = false
-                mBinding.btnNext.isEnabled= false
-                mBinding.cbTermsOfUse.isChecked = false
+                mBinding!!.btnNext.isClickable = false
+                mBinding!!.btnNext.isEnabled = false
+                mBinding!!.cbTermsOfUse.isChecked = false
                 val tintList =
                     ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
-                mBinding.btnNext.backgroundTintList = tintList
+                mBinding!!.btnNext.backgroundTintList = tintList
             }
 
         }
@@ -114,65 +116,44 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
+
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
 
                 }
+
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.Data.let {
-                        mBinding.etFirstName.setText(it.FirstName)
-                        mBinding.etLastName.setText(it.LastName)
-                        mBinding.etAlternateNumber.setText(it.MobileNo)
-                        mBinding.etEmailId.setText(it.EmailId)
-                        mBinding.etPinCode.setText(it.PinCode)
-                        mBinding.etFlatNo.setText(it.FlatNo)
-                        mBinding.etState.setText(it.StateCode)
-                        mBinding.etCity.setText(it.City)
-                        //mBinding.etAddress.setText(it.Address)
-                        gender =  it.Gender
-                        panNumber =  it.PanNumber
+                        mBinding!!.etFirstName.setText(it.FirstName)
+                        mBinding!!.etLastName.setText(it.LastName)
+                        mBinding!!.etAlternateNumber.setText(it.MobileNo)
+                        mBinding!!.etEmailId.setText(it.EmailId)
+                        mBinding!!.etPinCode.setText(it.PinCode)
+                        mBinding!!.etFlatNo.setText(it.FlatNo)
+                        mBinding!!.etState.setText(it.StateCode)
+                        mBinding!!.etCity.setText(it.City)
+                        //mBinding!!.etAddress.setText(it.Address)
+                        gender = it.Gender
+                        panNumber = it.PanNumber
                         dateOfBirth = it.dateOfBirth
-                       /* model = PostCreditBeurauRequestModel(
-                            it.MobileNo,
-                            it.City,
-                            it.EmailId,
-                            it.FirstName,
-                            "",
-                            it.Gender,
-                            it.LastName,
-                            it.LeadMasterId,
-                            it.MobileNo,
-                            it.PanNumber,
-                            it.PinCode,
-                            it.StateCode,
-                            it.dateOfBirth
-                        )*/
+                        /* model = PostCreditBeurauRequestModel(
+                             it.MobileNo,
+                             it.City,
+                             it.EmailId,
+                             it.FirstName,
+                             "",
+                             it.Gender,
+                             it.LastName,
+                             it.LeadMasterId,
+                             it.MobileNo,
+                             it.PanNumber,
+                             it.PinCode,
+                             it.StateCode,
+                             it.dateOfBirth
+                         )*/
 
-                    }
-                }
-            }
-        }
-
-        applyLoanViewModel.postCreditBeurauResponse.observe(viewLifecycleOwner) {
-            when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
-
-                is NetworkResult.Failure -> {
-                    ProgressDialog.instance!!.dismiss()
-                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-
-                }
-
-                is NetworkResult.Success -> {
-                    ProgressDialog.instance!!.dismiss()
-
-
-                    it.data.Data.let {
-                        activitySDk.toast("SuccessFully ${it.stgOneHitId}")
                     }
                 }
             }
@@ -182,7 +163,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
             if (!result.equals(SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             } else {
-                if (mBinding.cbTermsOfUse.isChecked) {
+                if (mBinding!!.cbTermsOfUse.isChecked) {
                     applyLoanViewModel.postCreditBeurau(model)
                 } else {
                     activitySDk.toast("Checked terms and condition")
@@ -196,23 +177,25 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
+
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
                 }
+
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                        if (it.Result){
+                        if (it.Result) {
                             activitySDk.toast(it.Msg)
                             val action =
                                 ApplyLoanFragmentDirections.actionApplyLoanFragmentToCibilPhoneVerificationFragment(
                                     it.Data.stgOneHitId,
                                     it.Data.stgTwoHitId,
-                                    mBinding.etAlternateNumber.text.toString()
+                                    mBinding!!.etAlternateNumber.text.toString()
                                 )
                             findNavController().navigate(action)
-                        }else{
+                        } else {
                             activitySDk.toast(it.Msg)
                         }
                     }
@@ -226,13 +209,13 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     private fun setupStateAutoComplete() {
         val stateNameList: List<String> = stateList.map { it.StateName }
         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, stateNameList)
-        mBinding.spState.setAdapter(adapter)
-        /*mBinding.spState.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+        mBinding!!.spState.setAdapter(adapter)
+        /*mBinding!!.spState.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             stateIDValue = stateList[position].Id
             applyLoanViewModel.callCity(stateIDValue)
         }*/
 
-        mBinding.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        mBinding!!.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View,
@@ -255,6 +238,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
                 }
+
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
@@ -273,13 +257,13 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     private fun setupCityAutoComplete() {
         val cityNameList: List<String> = cityList.map { it.CityName }
         val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, cityNameList)
-        mBinding.SpCity.setAdapter(adapter)
-        /*mBinding.SpCity.onItemClickListener = OnItemClickListener { parent, view, position, id ->
+        mBinding!!.SpCity.setAdapter(adapter)
+        /*mBinding!!.SpCity.onItemClickListener = OnItemClickListener { parent, view, position, id ->
             cityIDValue = cityList[position].Id
             applyLoanViewModel.callCity(cityIDValue)
         }*/
 
-        mBinding.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+        mBinding!!.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
                 parent: AdapterView<*>,
                 view: View,
@@ -302,15 +286,15 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnNext -> {
-               // println("NavType>>${args.navType}")
-                val firstName = mBinding.etFirstName.text.toString()
-                val lastName = mBinding.etLastName.text.toString()
-                val mobileNo = mBinding.etAlternateNumber.text.toString()
-                val city = mBinding.etCity.text.toString()
-                val emailId = mBinding.etEmailId.text.toString()
-                val pinCode = mBinding.etPinCode.text.toString()
-                val flatNo = mBinding.etFlatNo.text.toString()
-                val state = mBinding.etState.text.toString()
+                // println("NavType>>${args.navType}")
+                val firstName = mBinding!!.etFirstName.text.toString()
+                val lastName = mBinding!!.etLastName.text.toString()
+                val mobileNo = mBinding!!.etAlternateNumber.text.toString()
+                val city = mBinding!!.etCity.text.toString()
+                val emailId = mBinding!!.etEmailId.text.toString()
+                val pinCode = mBinding!!.etPinCode.text.toString()
+                val flatNo = mBinding!!.etFlatNo.text.toString()
+                val state = mBinding!!.etState.text.toString()
                 model = PostCreditBeurauRequestModel(
                     mobileNo,
                     city,
@@ -326,9 +310,9 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     state,
                     dateOfBirth
                 )
-               /* val action =
-                    ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
-                findNavController().navigate(action)*/
+                /* val action =
+                     ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
+                 findNavController().navigate(action)*/
                 /*  val action = ApplyLoanFragmentDirections.(
                           )
                   findNavController().navigate(action)*/

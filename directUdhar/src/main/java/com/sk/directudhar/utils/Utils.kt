@@ -13,8 +13,8 @@ class Utils(private var context: Context) {
     companion object {
         val BASE_URL = "https://udhaarservice.shopkirana.in/"
         var CLIENT_CREDENTIALS = "client_credentials"
-        var SECRETKEY = "88662f90-43c2-5fc5-6d77-9b80f1bf3337"
-        var APIKYYE = "95f883fa-b4df-0cff-ce1b-f7608f88f075"
+        var SECRETKEY = "33226599-ff53-7da1-85ec-0e3463b0af45"
+        var APIKYYE = "71fa337c-323f-a5e7-0792-4748bcaf6956"
         var AADHAAR_VALIDATE_SUCCESSFULLY = "AADHAAR_VALIDATE_SUCCESSFULLY"
         var BUSINESS_VALIDATE_SUCCESSFULLY = "BUSINESS_VALIDATE_SUCCESSFULLY"
         var AADHAAR_OTP_VALIDATE_SUCCESSFULLY = "AADHAAR_OTP_VALIDATE_SUCCESSFULLY"
@@ -37,7 +37,7 @@ class Utils(private var context: Context) {
         var PROCESS_TEXT = "By Clicking Apply now i agree to the terms and  condition " +
                 "and authorize Direct Udhar to send promotional communication to me "
         var  EAGREEMENT_OTP_VALIDATE_SUCCESSFULLY ="EAGREEMENT_OTP_VALIDATE_SUCCESSFULLY"
-        val countdownDuration: Long = 50000
+        val countdownDuration: Long = 30000
 
         fun Context.toast(message: CharSequence) =
             Toast.makeText(this, message, Toast.LENGTH_SHORT).show()

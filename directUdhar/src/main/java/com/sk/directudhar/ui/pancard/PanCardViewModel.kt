@@ -9,6 +9,7 @@ import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
+import com.sk.directudhar.utils.SingleLiveEvent
 import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -20,18 +21,18 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
 
     private val panCardResult = MutableLiveData<String>()
 
-    private var _panCardResponse = MutableLiveData<NetworkResult<PanCardUplodResponseModel>>()
-    val panCardResponse: LiveData<NetworkResult<PanCardUplodResponseModel>> = _panCardResponse
+    private var _panCardImageUploadResponse = SingleLiveEvent<NetworkResult<PanCardUplodResponseModel>>()
+    val panCardImageUploadResponse: SingleLiveEvent<NetworkResult<PanCardUplodResponseModel>> = _panCardImageUploadResponse
 
-    private var _updatePanInfoResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
-    val updatePanInfoResponse: LiveData<NetworkResult<InitiateAccountModel>> = _updatePanInfoResponse
+    private var _updatePanInfoResponse = SingleLiveEvent<NetworkResult<InitiateAccountModel>>()
+    val updatePanInfoResponse: SingleLiveEvent<NetworkResult<InitiateAccountModel>> = _updatePanInfoResponse
 
     fun getPanCard(): LiveData<String> = panCardResult
     fun uploadPanCard(leadMasterId:Int ,body: MultipartBody.Part) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
                 repository.uploadPanCard(leadMasterId,body).collect() {
-                    _panCardResponse.postValue(it)
+                    _panCardImageUploadResponse.postValue(it)
                 }
             }
         } else {

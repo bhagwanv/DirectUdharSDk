@@ -8,6 +8,7 @@ import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
+import com.sk.directudhar.utils.SingleLiveEvent
 import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,23 +20,23 @@ import javax.inject.Inject
 class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanRepository) :
     ViewModel() {
 
-    private val putValidResult = MutableLiveData<String>()
-    fun getValidResult(): LiveData<String> = putValidResult
+    private val putValidResult = SingleLiveEvent<String>()
+    fun getValidResult(): SingleLiveEvent<String> = putValidResult
 
-    private var _stateResponse = MutableLiveData<NetworkResult<ArrayList<StateModel>>>()
-    val stateResponse: LiveData<NetworkResult<ArrayList<StateModel>>> = _stateResponse
+    private var _stateResponse = SingleLiveEvent<NetworkResult<ArrayList<StateModel>>>()
+    val stateResponse: SingleLiveEvent<NetworkResult<ArrayList<StateModel>>> = _stateResponse
 
-    private var _cityResponse = MutableLiveData<NetworkResult<ArrayList<CityModel>>>()
-    val cityResponse: LiveData<NetworkResult<ArrayList<CityModel>>> = _cityResponse
+    private var _cityResponse = SingleLiveEvent<NetworkResult<ArrayList<CityModel>>>()
+    val cityResponse: SingleLiveEvent<NetworkResult<ArrayList<CityModel>>> = _cityResponse
 
-    private var _postDataResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
-    val postResponse: LiveData<NetworkResult<InitiateAccountModel>> = _postDataResponse
+    private var _postDataResponse = SingleLiveEvent<NetworkResult<InitiateAccountModel>>()
+    val postResponse: SingleLiveEvent<NetworkResult<InitiateAccountModel>> = _postDataResponse
 
-    private var _getPersonalInformationResponse = MutableLiveData<NetworkResult<GetPersonalInformationResponseModel>>()
-    val getPersonalInformationResponse: LiveData<NetworkResult<GetPersonalInformationResponseModel>> = _getPersonalInformationResponse
+    private var _getPersonalInformationResponse = SingleLiveEvent<NetworkResult<GetPersonalInformationResponseModel>>()
+    val getPersonalInformationResponse: SingleLiveEvent<NetworkResult<GetPersonalInformationResponseModel>> = _getPersonalInformationResponse
 
-    private var _postCreditBeurauResponse = MutableLiveData<NetworkResult<PostCreditBeurauResponseModel>>()
-    val postCreditBeurauResponse: LiveData<NetworkResult<PostCreditBeurauResponseModel>> = _postCreditBeurauResponse
+    private var _postCreditBeurauResponse = SingleLiveEvent<NetworkResult<PostCreditBeurauResponseModel>>()
+    val postCreditBeurauResponse: SingleLiveEvent<NetworkResult<PostCreditBeurauResponseModel>> = _postCreditBeurauResponse
 
 
 
