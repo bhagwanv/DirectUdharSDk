@@ -49,5 +49,13 @@ class CibilRepository @Inject constructor(private val apiServices: APIServices) 
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
+    suspend fun cibilActivityComplete(leadMasterID: Int)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.cibilActivityComplete(leadMasterID)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
 
 }

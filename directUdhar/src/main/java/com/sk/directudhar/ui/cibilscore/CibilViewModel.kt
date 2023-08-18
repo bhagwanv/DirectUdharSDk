@@ -41,6 +41,9 @@ class CibilViewModel @Inject constructor(private val repository: CibilRepository
 
     fun getCiBilResult(): LiveData<String> = cibilResult
 
+    private var _cibilActivityComplete = MutableLiveData<NetworkResult<CibilActivityCompleteResponseModel>>()
+    val cibilActivityCompleteResponse: LiveData<NetworkResult<CibilActivityCompleteResponseModel>> = _cibilActivityComplete
+
 
   /*  fun performValidation(cibilRequestModel: CibilResponseModel) {
         if (cibilRequestModel.FirstName.isNullOrEmpty()) {
@@ -120,6 +123,19 @@ class CibilViewModel @Inject constructor(private val repository: CibilRepository
             viewModelScope.launch {
                 repository.getUserCreditInfo(leadMasterID).collect() {
                     putCibilResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+
+    }
+
+    fun cibilActivityComplete(leadMasterID:Int) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.cibilActivityComplete(leadMasterID).collect() {
+                    _cibilActivityComplete.postValue(it)
                 }
             }
         } else {
