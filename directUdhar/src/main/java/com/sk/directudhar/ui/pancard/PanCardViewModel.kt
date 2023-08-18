@@ -20,15 +20,14 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
 
     private val panCardResult = MutableLiveData<String>()
 
-    private var _panCardResponse = MutableLiveData<NetworkResult<JsonObject>>()
-    val panCardResponse: LiveData<NetworkResult<JsonObject>> = _panCardResponse
+    private var _panCardResponse = MutableLiveData<NetworkResult<PanCardUplodResponseModel>>()
+    val panCardResponse: LiveData<NetworkResult<PanCardUplodResponseModel>> = _panCardResponse
 
     private var _updatePanInfoResponse = MutableLiveData<NetworkResult<InitiateAccountModel>>()
     val updatePanInfoResponse: LiveData<NetworkResult<InitiateAccountModel>> = _updatePanInfoResponse
 
     fun getPanCard(): LiveData<String> = panCardResult
     fun uploadPanCard(leadMasterId:Int ,body: MultipartBody.Part) {
-
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
                 repository.uploadPanCard(leadMasterId,body).collect() {
@@ -38,8 +37,6 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
         } else {
             (MyApplication.context)!!.toast("No internet connectivity")
         }
-
-
     }
 
     fun updatePanInfo(model: UpdatePanInfoRequestModel) {

@@ -57,7 +57,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
                 android:padding="10dp">
-                <com.sk.directudhar.utils.DirectUdhaarOtpFourDigitView
+                <com.sk.directudhar.utils.DirectUdhaarOtpView
                     android:id="@+id/customOTPView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

@@ -120,6 +120,7 @@ class MainActivitySDk : AppCompatActivity() {
                             initiateAccountModel.Data.LeadMasterId
                         )
                          checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }

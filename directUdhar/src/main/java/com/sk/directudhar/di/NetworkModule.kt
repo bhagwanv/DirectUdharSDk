@@ -40,7 +40,8 @@ object NetworkModule {
                     if (!request.url.toString().contains("/token") &&
                         !request.url.toString().contains("/Borrower/PanImageUpload")&&
                         !request.url.toString().contains("/Borrower/ManuallyUploadAadharCard")&&
-                        !request.url.toString().contains("/Borrower/BankPassBookUpload")
+                        !request.url.toString().contains("/Borrower/BankPassBookUpload")&&
+                        !request.url.toString().contains("/Borrower/PanImageUpload")
                             ) {
                         try {
                             val jsonObject = JSONObject()

@@ -131,10 +131,20 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
-                            println("JSON ::" + it.Data.consumerData)
-                            val json = JSONObject(it.Data.consumerData.toString());
-                            val reqJson = JSONObject()
-                            /*val jsonFeatures = JSONObject()
+                          // var consumerData = it.Data.get("consumerData")
+                            val reqJson = JSONObject(it.Data.toString());
+                            //val consumerData1 = JSONObject(consumerData.toString());
+                            //val reqJson = JSONObject()
+                           /* val jsonFeatures = JSONObject()
+                            jsonFeatures.put("enableAbortResponse", true)
+                            jsonFeatures.put("enableExpressPay", false)
+                            jsonFeatures.put("enableMerTxnDetails", true)
+                            jsonFeatures.put("siDetailsAtMerchantEnd", true)
+                            jsonFeatures.put("enableSI", true)
+                            reqJson.put("features", jsonFeatures)
+                            reqJson.put("consumerData", consumerData1)*/
+                        /*    val reqJson = JSONObject()
+                            val jsonFeatures = JSONObject()
                             jsonFeatures.put("enableAbortResponse", true)
                             jsonFeatures.put("enableExpressPay", false)
                             jsonFeatures.put("enableMerTxnDetails", true)
@@ -188,11 +198,10 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                                 "ADHO"
                             ) //  Available options DAIL, WEEK, MNTH, QURT, MIAN, YEAR, BIMN and ADHO
 
-                            reqJson.put("consumerData", jsonConsumerData)
-                            Log.d("jsonConsumerData>>>>>", jsonConsumerData.toString());
-                            Log.d("reqJson >>>>>", reqJson.toString());*/
-                          //  reqJson.put("consumerData", json)
-                            callEmadate(json)
+                            reqJson.put("consumerData", jsonConsumerData)*/
+
+                            Log.d("reqJson!!!!!! >>>>>", reqJson.toString())
+                            callEmadate(reqJson)
                         } else {
                             activitySDk.toast(it.Msg)
                         }

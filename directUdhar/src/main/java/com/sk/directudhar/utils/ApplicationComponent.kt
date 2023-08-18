@@ -12,6 +12,8 @@ import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
 import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment
 import com.sk.directudhar.ui.approvalpending.ApprovalPendingFragment
 import com.sk.directudhar.ui.businessDetails.BusinessDetailsFragment
+import com.sk.directudhar.ui.cibilOtpValidate.CibilOtpVerificationFragment
+import com.sk.directudhar.ui.cibilOtpValidate.CibilPhoneVerificationFragment
 import com.sk.directudhar.ui.kyc.KycFailedFragment
 import com.sk.directudhar.ui.kyc.KycSuccessFragment
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
@@ -34,7 +36,9 @@ interface ApplicationComponent {
     fun inject(mainActivitySDk: MainActivitySDk)
     fun injectMyAccount(fragment: MyAccountFragment)
     fun injectPhoneVerification(fragment: PhoneVerificationFragment)
+    fun injectCibilPhoneVerification(fragment: CibilPhoneVerificationFragment)
     fun injectOtpVerify(fragment: OtpVerificationFragment)
+    fun injectCibilOtpVerify(fragment: CibilOtpVerificationFragment)
     fun injectApplyLoan(fragment: ApplyLoanFragment)
     fun injectPanCard(fragment: PanCardFragment)
     fun injectAadhaarCard(fragment: AadhaarCardFragment)

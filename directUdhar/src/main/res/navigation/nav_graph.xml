@@ -43,6 +43,43 @@
             android:name="TxnNo"
             app:argType="string" />
     </fragment>
+
+    <fragment
+        android:id="@+id/cibilPhoneVerificationFragment"
+        android:name="com.sk.directudhar.ui.cibilOtpValidate.CibilPhoneVerificationFragment"
+        android:label="Phone Verification"
+        tools:layout="@layout/fragment_phone_verification">
+        <action
+            android:id="@+id/actionCibilPhoneVerificationFragment"
+            app:destination="@id/cibilOtpVerificationFragment" />
+
+        <argument
+            android:name="stgOneHitId"
+            app:argType="string" />
+        <argument
+            android:name="stgTwoHitId"
+            app:argType="string" />
+        <argument
+            android:name="mobileNo"
+            app:argType="string" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/cibilOtpVerificationFragment"
+        android:name="com.sk.directudhar.ui.cibilOtpValidate.CibilOtpVerificationFragment"
+        android:label="Phone Verification"
+        tools:layout="@layout/fragment_cibil_otp_verification">
+        <argument
+            android:name="mobileNumber"
+            app:argType="string" />
+        <argument
+            android:name="stgOneHitId"
+            app:argType="string" />
+        <argument
+            android:name="stgTwoHitId"
+            app:argType="string" />
+    </fragment>
     <fragment
         android:id="@+id/myAccountFragment"
         android:name="com.sk.directudhar.ui.myaccount.MyAccountFragment"
@@ -63,8 +100,8 @@
             android:name="navType"
             app:argType="string" />
         <action
-            android:id="@+id/action_ApplyLoanFragment_to_BusinessDetailsFragment"
-            app:destination="@id/businessDetailsFragment" />
+            android:id="@+id/action_ApplyLoanFragment_to_CibilPhoneVerificationFragment"
+            app:destination="@id/cibilPhoneVerificationFragment" />
     </fragment>
 
     <fragment

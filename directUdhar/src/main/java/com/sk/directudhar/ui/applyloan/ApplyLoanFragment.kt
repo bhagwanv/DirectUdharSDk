@@ -13,11 +13,13 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentApplyLoanBinding
+import com.sk.directudhar.ui.cibilOtpValidate.CibilPhoneVerificationFragmentDirections
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
@@ -54,7 +56,9 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     lateinit var model: PostCreditBeurauRequestModel
     private var leadMasterId: Int = 0
     private val args: ApplyLoanFragmentArgs by navArgs()
-
+    private var gender = ""
+    private var panNumber = ""
+    private var dateOfBirth = ""
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -127,7 +131,10 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                         mBinding.etState.setText(it.StateCode)
                         mBinding.etCity.setText(it.City)
                         //mBinding.etAddress.setText(it.Address)
-                        model = PostCreditBeurauRequestModel(
+                        gender =  it.Gender
+                        panNumber =  it.PanNumber
+                        dateOfBirth = it.dateOfBirth
+                       /* model = PostCreditBeurauRequestModel(
                             it.MobileNo,
                             it.City,
                             it.EmailId,
@@ -141,7 +148,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                             it.PinCode,
                             it.StateCode,
                             it.dateOfBirth
-                        )
+                        )*/
 
                     }
                 }
@@ -174,7 +181,6 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         applyLoanViewModel.getValidResult().observe(activitySDk, Observer { result ->
             if (!result.equals(SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
-                applyLoanViewModel.postCreditBeurau(model)
             } else {
                 if (mBinding.cbTermsOfUse.isChecked) {
                     applyLoanViewModel.postCreditBeurau(model)
@@ -199,7 +205,13 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     it.data.let {
                         if (it.Result){
                             activitySDk.toast(it.Msg)
-                            activitySDk.checkSequenceNo(19)
+                            val action =
+                                ApplyLoanFragmentDirections.actionApplyLoanFragmentToCibilPhoneVerificationFragment(
+                                    it.Data.stgOneHitId,
+                                    it.Data.stgTwoHitId,
+                                    mBinding.etAlternateNumber.text.toString()
+                                )
+                            findNavController().navigate(action)
                         }else{
                             activitySDk.toast(it.Msg)
                         }
@@ -290,8 +302,8 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnNext -> {
-                println("NavType>>${args.navType}")
-                /*val firstName = mBinding.etFirstName.text.toString()
+               // println("NavType>>${args.navType}")
+                val firstName = mBinding.etFirstName.text.toString()
                 val lastName = mBinding.etLastName.text.toString()
                 val mobileNo = mBinding.etAlternateNumber.text.toString()
                 val city = mBinding.etCity.text.toString()
@@ -305,16 +317,15 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     emailId,
                     firstName,
                     flatNo,
-                    it.Gender,
+                    gender,
                     lastName,
                     leadMasterId,
                     mobileNo,
-                    it.PanNumber,
+                    panNumber,
                     pinCode,
                     state,
-                    it.dateOfBirth
+                    dateOfBirth
                 )
-               */
                /* val action =
                     ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
                 findNavController().navigate(action)*/

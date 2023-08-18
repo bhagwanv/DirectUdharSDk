@@ -1,33 +1,15 @@
 package com.sk.directudhar.ui.businessDetails
 
-import com.google.gson.annotations.SerializedName
-
 data class BusinessDetailsRequestModel(
     val LeadId: Int,
     val GSTNo: String,
+    val BusinessTypeId: Int,
     val BusinessName: String,
-    val BusinessType: ArrayList<BusinessType>,
+    val Partners: ArrayList<BusinessType>,
     val BusinessTurnOver: String,
     val BusinessIncorporationDate: String,
     val IncomSlab: String,
     val ownershipType: String,
 )
-data class BusinessType(val PartnerName:String,val PartnerNumber:String)
 
-/*class BusinessType{
-    @SerializedName("PartnerName")
-    var PartnerName=""
-    @SerializedName("PartnerNumber")
-    var PartnerNumber = 0
-    constructor(PartnerName:String){
-        this.PartnerName = PartnerName
-    }
-    constructor(PartnerNumber:Int){
-        this.PartnerNumber = PartnerNumber
-    }
-
-    constructor(toString: String, toInt: Int){
-        this.PartnerName = toString
-        this.PartnerNumber = toInt
-    }
-}*/
+data class BusinessType(val PartnerName: String, val PartnerNumber: String)
