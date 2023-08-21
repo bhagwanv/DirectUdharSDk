@@ -37,7 +37,6 @@ class OtpVerificationFragment : Fragment() {
     private val args: OtpVerificationFragmentArgs by navArgs()
 
     private lateinit var phoneVerificationViewModel: PhoneVerificationViewModel
-    private var mobileNumber = ""
     private var accountId: Long = 0
     private var flag: Int = 0
     private lateinit var countDownTimer: CountDownTimer
@@ -80,7 +79,7 @@ class OtpVerificationFragment : Fragment() {
             }
         }
         mBinding!!.tvResend.setOnClickListener {
-            findNavController().popBackStack()
+            phoneVerificationViewModel.callGenOtp(args.mobileNumber)
         }
     }
 
@@ -107,12 +106,40 @@ class OtpVerificationFragment : Fragment() {
                             activitySDk.toast(it.Msg)
                             activitySDk.checkSequenceNo(it.Data.SequenceNo)
                         } else {
+                            mBinding!!.customOTPView.clearOTP()
                             activitySDk.toast(it.Msg)
                         }
                     }
                 }
             }
         }
+
+        phoneVerificationViewModel.getGenOptResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    activitySDk.toast(it.errorMessage)
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.Result) {
+                            startCountdown()
+                            activitySDk.toast(it.Msg)
+                        } else {
+                            activitySDk.toast(it.Msg)
+                        }
+                    }
+
+                }
+            }
+        }
+
     }
 
     private fun setToolBar() {
@@ -125,6 +152,8 @@ class OtpVerificationFragment : Fragment() {
     }
 
     private fun startCountdown() {
+        mBinding!!.tvResend.visibility = View.GONE
+        mBinding!!.tvTimer.visibility = View.VISIBLE
         countDownTimer = object : CountDownTimer(countdownDuration, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsRemaining = millisUntilFinished / 1000

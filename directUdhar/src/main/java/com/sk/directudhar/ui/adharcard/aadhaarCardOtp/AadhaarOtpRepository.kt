@@ -2,6 +2,7 @@ package com.sk.directudhar.ui.adharcard.aadhaarCardOtp
 
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.di.APIServices
+import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
@@ -23,4 +24,12 @@ class AadhaarOtpRepository @Inject constructor(private val apiServices: APIServi
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
+    suspend fun updateAadhaarInfo(updateAadhaarInfoRequestModel: UpdateAadhaarInfoRequestModel)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.updateAadhaarInfo(updateAadhaarInfoRequestModel)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
 }

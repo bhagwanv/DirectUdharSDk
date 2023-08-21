@@ -7,6 +7,9 @@ import android.provider.MediaStore
 import android.widget.Toast
 import java.text.SimpleDateFormat
 import java.util.Locale
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
 
 class Utils(private var context: Context) {
 
@@ -57,6 +60,15 @@ class Utils(private var context: Context) {
                 return false
             }
             return true
+        }
+        fun isValidPanCardNo(panCardNo: String?): Boolean {
+            val regex = "[A-Z]{5}[0-9]{4}[A-Z]{1}"
+            val p: Pattern = Pattern.compile(regex)
+            if (panCardNo == null) {
+                return false
+            }
+            val m: Matcher = p.matcher(panCardNo)
+            return m.matches()
         }
 
         fun getPath(context: Context, uri: Uri?): String? {

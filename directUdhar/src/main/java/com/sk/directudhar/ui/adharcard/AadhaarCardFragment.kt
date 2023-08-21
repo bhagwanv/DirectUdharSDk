@@ -45,8 +45,8 @@ class AadhaarCardFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentAadhaarCardBinding.inflate(inflater, container, false)
-            initView()
         }
+        initView()
         return mBinding!!.root
     }
 
@@ -59,6 +59,8 @@ class AadhaarCardFragment : Fragment() {
         setToolBar()
         setObserver()
         mBinding!!.cbTermsOfUse.setOnClickListener {
+            aadharNo = mBinding!!.etAadhaarNumber.text.toString().trim()
+            aadharNo = aadharNo.replace(" ","")
             if (!aadharNo.isNullOrEmpty()) {
                 if (mBinding!!.cbTermsOfUse.isChecked) {
                     mBinding!!.btnVerifyAadhaar.isClickable = true
@@ -79,8 +81,10 @@ class AadhaarCardFragment : Fragment() {
             }
         }
         mBinding!!.btnVerifyAadhaar.setOnClickListener {
+            aadharNo = mBinding!!.etAadhaarNumber.text.toString().trim()
+            aadharNo = aadharNo.replace(" ","")
             aadhaarCardViewModel.validateAadhaar(
-                mBinding!!.etAadhaarNumber.text.toString(),
+                aadharNo,
                 mBinding!!.cbTermsOfUse.isChecked
             )
         }
@@ -93,15 +97,13 @@ class AadhaarCardFragment : Fragment() {
     }
 
     private fun setObserver() {
-        mBinding!!.etAadhaarNumber.addTextChangedListener(aadhaarTextWatcher)
-
         aadhaarCardViewModel.getAadhaarResult().observe(activitySDk) { result ->
             if (result.equals(Utils.AADHAAR_VALIDATE_SUCCESSFULLY)) {
                 aadhaarCardViewModel.updateAadhaarInfo(
                     UpdateAadhaarInfoRequestModel(
-                        leadMasterId = SharePrefs.getInstance(activitySDk)
-                            ?.getInt(SharePrefs.LEAD_MASTERID)!!,
-                        aadharNo = aadharNo
+                        aadharNo,
+                         SharePrefs.getInstance(activitySDk)
+                            ?.getInt(SharePrefs.LEAD_MASTERID)!!
                     )
                 )
             } else {

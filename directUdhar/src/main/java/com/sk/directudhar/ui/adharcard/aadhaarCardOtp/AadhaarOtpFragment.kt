@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -14,6 +15,7 @@ import androidx.navigation.fragment.navArgs
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadharOtpBinding
+import com.sk.directudhar.ui.adharcard.AadhaarCardFragmentDirections
 import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
@@ -24,7 +26,6 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 class AadhaarOtpFragment : Fragment() {
-
     private lateinit var activitySDk: MainActivitySDk
     private var mBinding: FragmentAadharOtpBinding? = null
     private lateinit var aadhaarOtpViewModel: AadhaarOtpViewModel
@@ -45,8 +46,8 @@ class AadhaarOtpFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentAadharOtpBinding.inflate(inflater, container, false)
-            initView()
         }
+        initView()
         return mBinding!!.root
     }
 
@@ -60,7 +61,13 @@ class AadhaarOtpFragment : Fragment() {
         setObserver()
         startCountdown()
         mBinding!!.tvResendAadhaarOtp.setOnClickListener {
-            findNavController().popBackStack()
+            aadhaarOtpViewModel.updateAadhaarInfo(
+                UpdateAadhaarInfoRequestModel(
+                    args.aadhaarNumber,
+                   SharePrefs.getInstance(activitySDk)
+                        ?.getInt(SharePrefs.LEAD_MASTERID)!!,
+                )
+            )
         }
 
         mBinding!!.btnVerifyAadhaarOtp.setOnClickListener {
@@ -92,6 +99,7 @@ class AadhaarOtpFragment : Fragment() {
                             val action = AadhaarOtpFragmentDirections.actionAadhaarOtpFragmentToKycSuccessFragment("ByOtp")
                             findNavController().navigate(action)
                         } else {
+                            mBinding!!.customOTPView.clearOTP()
                             if (it.Msg=="otp not matched"){
                                  activitySDk.toast(it.Msg)
                             }else{
@@ -116,6 +124,30 @@ class AadhaarOtpFragment : Fragment() {
                 )
             } else {
                 activitySDk.toast(result)
+            }
+        }
+        aadhaarOtpViewModel.putOtpResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.Result!!){
+                            startCountdown()
+                            activitySDk.toast(it.Msg!!)
+                        }else{
+                            activitySDk.toast(it.Msg!!)
+                        }
+                    }
+                }
             }
         }
     }
@@ -162,6 +194,8 @@ class AadhaarOtpFragment : Fragment() {
     }
 
     private fun startCountdown() {
+        mBinding!!.tvResendAadhaarOtp.visibility = View.GONE
+        mBinding!!.tvTimer.visibility = View.VISIBLE
        val countDownTimer = object : CountDownTimer(Utils.countdownDuration, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsRemaining = millisUntilFinished / 1000

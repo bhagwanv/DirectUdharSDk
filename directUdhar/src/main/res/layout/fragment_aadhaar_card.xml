@@ -78,7 +78,7 @@
                         android:text="Aadhaar" />
 
 
-                    <androidx.appcompat.widget.AppCompatEditText
+                    <com.sk.directudhar.ui.adharcard.AadhaarFormattingTextWatcher
                         android:id="@+id/etAadhaarNumber"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -87,10 +87,18 @@
                         android:hint="1234 1234 1234"
                         android:fontFamily="@font/urbanist_medium"
                         android:inputType="numberSigned"
-                        android:maxLength="12"
                         android:maxLines="1"
+                        app:groupLength="4"
+                        app:numberOfGroups="3"
                         android:textSize="16sp" />
 
+                    <!-- <com.example.myapplication.FormattedNumberEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:groupLength="4"
+        app:groupSeparator=" "
+        app:numberOfGroups="5"
+        app:prefix="LT" />-->
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>

@@ -59,8 +59,6 @@ class PanCardFragment : Fragment(), OnClickListener {
     lateinit var imageChooseBottomDialog: BottomSheetDialog
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
 
-    var panNo: String = ""
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -124,6 +122,7 @@ class PanCardFragment : Fragment(), OnClickListener {
                             mBinding.imPanImage.visibility = View.VISIBLE
                             mBinding.llDefaultImage.visibility = View.GONE
                         } else {
+                            imageUrl = ""
                             activitySDk.toast(it.Msg)
                             mBinding.imPanImage.visibility = View.VISIBLE
                             mBinding.llDefaultImage.visibility = View.GONE
@@ -133,13 +132,11 @@ class PanCardFragment : Fragment(), OnClickListener {
             }
         }
 
-
-
         panCardViewModel.getPanCard().observe(activitySDk, Observer { result ->
             if (!result.equals(Utils.SuccessType)) {
                 Toast.makeText(activitySDk, result, Toast.LENGTH_SHORT).show()
             } else {
-                var model = UpdatePanInfoRequestModel(
+                val model = UpdatePanInfoRequestModel(
                     SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
                     mBinding.etPanNumber.text.toString().trim(),
                     imageUrl,
@@ -203,7 +200,6 @@ class PanCardFragment : Fragment(), OnClickListener {
                     intent.putExtra(Utils.IS_GALLERY_OPTION, true)
                     resultLauncher?.launch(intent)
                 }
-
                 override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>) {
                     askPermission()
                 }
@@ -213,7 +209,7 @@ class PanCardFragment : Fragment(), OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnVerifyPanCard -> {
-                panCardViewModel.performValidation(mBinding.etPanNumber.text.toString())
+                panCardViewModel.performValidation(mBinding.etPanNumber.text.toString(),imageUrl)
             }
         }
     }
@@ -229,15 +225,10 @@ class PanCardFragment : Fragment(), OnClickListener {
 
         override fun afterTextChanged(s: Editable?) {
             val panNumber = s.toString().trim()
-            if (panNumber.length < 10) {
-                mBinding.ivRight.visibility = View.GONE
-                //  val tintList = ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
-                // mBinding.btnVerifyPanCard.backgroundTintList = tintList
-            } else {
+            if (Utils.isValidPanCardNo(panNumber)){
                 mBinding.ivRight.visibility = View.VISIBLE
-                // val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
-                //  mBinding.btnVerifyPanCard.backgroundTintList = tintList
-                panNo = panNumber
+            }else{
+                mBinding.ivRight.visibility = View.GONE
             }
         }
     }
