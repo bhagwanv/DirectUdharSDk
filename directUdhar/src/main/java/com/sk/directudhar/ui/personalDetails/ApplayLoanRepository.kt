@@ -1,11 +1,9 @@
-package com.sk.directudhar.ui.applyloan
+package com.sk.directudhar.ui.personalDetails
 
-import androidx.lifecycle.ViewModelProvider
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.di.APIServices
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
-import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class ApplayLoanRepository @Inject constructor(private val apiServices: APIServices) {
@@ -50,7 +48,4 @@ class ApplayLoanRepository @Inject constructor(private val apiServices: APIServi
         }.catch { e ->
             emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
         }
-
-
-
 }

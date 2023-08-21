@@ -12,18 +12,16 @@ import com.sk.directudhar.ui.agreement.SignSessionRequestModel
 import com.sk.directudhar.ui.agreement.SignSessionResponseModel
 import com.sk.directudhar.ui.agreement.agreementOtp.AgreementOtpResponseModel
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpResquestModel
-import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
+import com.sk.directudhar.ui.personalDetails.ApplyLoanRequestModel
 import com.sk.directudhar.ui.businessDetails.BusinessDetailsVerifyElectricityBillRequestModel
 import okhttp3.MultipartBody
-import com.sk.directudhar.ui.applyloan.CityModel
-import com.sk.directudhar.ui.applyloan.GetPersonalInformationResponseModel
-import com.sk.directudhar.ui.applyloan.PostCreditBeurauRequestModel
-import com.sk.directudhar.ui.applyloan.PostCreditBeurauResponseModel
-import com.sk.directudhar.ui.applyloan.StateModel
+import com.sk.directudhar.ui.personalDetails.CityModel
+import com.sk.directudhar.ui.personalDetails.GetPersonalInformationResponseModel
+import com.sk.directudhar.ui.personalDetails.PostCreditBeurauRequestModel
+import com.sk.directudhar.ui.personalDetails.PostCreditBeurauResponseModel
+import com.sk.directudhar.ui.personalDetails.StateModel
 import com.sk.directudhar.ui.businessDetails.BusinessDetailsVerifyElectricityBillResponseModel
 import com.sk.directudhar.ui.cibilscore.CibilResponseModel
-import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilResponceModel
-import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
 import com.sk.directudhar.ui.approvalpending.DisplayDisbursalAmountResponse
 import com.sk.directudhar.ui.businessDetails.BusinessDetailsRequestModel
 import com.sk.directudhar.ui.businessDetails.BusinessDetailsResponseModel
@@ -31,10 +29,8 @@ import com.sk.directudhar.ui.businessDetails.BusinessTypeListResponse
 import com.sk.directudhar.ui.businessDetails.GSTDetailsResponse
 import com.sk.directudhar.ui.businessDetails.StatementFileResponse
 import com.sk.directudhar.ui.cibilscore.CibilActivityCompleteResponseModel
-import com.sk.directudhar.ui.cibilOtpValidate.CibilGetOTPRequestModel
-import com.sk.directudhar.ui.cibilOtpValidate.CibilOTPVerifyRequestModel
-import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOTPResponceModel
-import com.sk.directudhar.ui.cibilscore.cibiotp.PostOTPRequestModel
+import com.sk.directudhar.ui.cibilGenerate.CibilGetOTPRequestModel
+import com.sk.directudhar.ui.cibilGenerate.CibilOTPVerifyRequestModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.ui.mandate.BankListResponse
 import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
@@ -107,11 +103,11 @@ interface APIServices {
     @POST("api/Borrower/AadharVerification")
     suspend fun aadharVerification(@Body aadharVerificationRequestModel: AadharVerificationRequestModel): InitiateAccountModel
 
-    @POST("api/Borrower/PostCreditBeurau")
+/*    @POST("api/Borrower/PostCreditBeurau")
     suspend fun PostCreditScore(@Body cibilRequestModel: CibilResponseModel): CiBilResponceModel
 
     @POST("api/Borrower/OTPGeneratRequest")
-    suspend fun OTPGeneratRequest(@Body genrateOtpModel: GenrateOtpModel): CiBilOTPResponceModel
+    suspend fun OTPGeneratRequest(@Body genrateOtpModel: GenrateOtpModel): CiBilOTPResponceModel*/
 
     @GET("api/Application/DisplayDisbursalAmount")
     suspend fun displayDisbursalAmount(@Query("LeadMasterId") LeadMasterId: Int): DisplayDisbursalAmountResponse
@@ -134,8 +130,8 @@ interface APIServices {
         @Query("flag") flag: Int
     ): ArrayList<UdharStatementModel>
 
-    @POST("api/Borrower/OTPValidationRequest")
-    suspend fun OTPPostOTPRequest(@Body postOTPRequestModel: PostOTPRequestModel): InitiateAccountModel
+  /*  @POST("api/Borrower/OTPValidationRequest")
+    suspend fun OTPPostOTPRequest(@Body postOTPRequestModel: PostOTPRequestModel): InitiateAccountModel*/
 
     @GET("api/borrower/GetAgreement")
     suspend fun getAgreement(@Query("LeadMasterId") leadMasterId: Int): AgreementResponseModel
@@ -212,6 +208,4 @@ interface APIServices {
 
     @POST("api/eSign/eSignSessionAsync")
     suspend fun eSignSessionAsync(@Body signSessionRequestModel: SignSessionRequestModel): SignSessionResponseModel
-
-
 }

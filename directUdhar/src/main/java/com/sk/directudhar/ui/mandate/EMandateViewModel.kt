@@ -1,18 +1,11 @@
 package com.sk.directudhar.ui.mandate
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.gson.Gson
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
-import com.sk.directudhar.ui.applyloan.ApplayLoanRepository
-import com.sk.directudhar.ui.applyloan.ApplyLoanRequestModel
-import com.sk.directudhar.ui.applyloan.CityModel
-import com.sk.directudhar.ui.applyloan.StateModel
-import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.utils.Network
 import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast

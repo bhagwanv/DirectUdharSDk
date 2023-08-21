@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.cibilOtpValidate
+package com.sk.directudhar.ui.cibilGenerate
 
 import android.content.Context
 import android.os.Bundle
@@ -8,11 +8,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentCibilOtpVerificationBinding
-import com.sk.directudhar.databinding.FragmentOtpVerificationBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
@@ -24,7 +22,7 @@ import javax.inject.Inject
 
 class CibilOtpVerificationFragment : Fragment() {
     @Inject
-    lateinit var phoneVerificationFactory: CibilPhoneVerificationFactory
+    lateinit var cibilGenerateFactory: CibilGenerateFactory
 
     @Inject
     lateinit var dialog: AppDialogClass
@@ -32,11 +30,7 @@ class CibilOtpVerificationFragment : Fragment() {
     lateinit var activitySDk: MainActivitySDk
     private var mBinding: FragmentCibilOtpVerificationBinding? = null
     private val args: CibilOtpVerificationFragmentArgs by navArgs()
-
-    private lateinit var phoneVerificationViewModel: CibilPhoneVerificationViewModel
-    private var mobileNumber = ""
-    private var accountId: Long = 0
-    private var flag: Int = 0
+    private lateinit var cibilGenerateViewModel: CibilGenerateViewModel
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -61,10 +55,10 @@ class CibilOtpVerificationFragment : Fragment() {
         mBinding!!.tvMsg.text = "Enter the verification code we just sent to ${args.mobileNumber}"
         val component = DaggerApplicationComponent.builder().build()
         component.injectCibilOtpVerify(this)
-        phoneVerificationViewModel = ViewModelProvider(
+        cibilGenerateViewModel = ViewModelProvider(
             this,
-            phoneVerificationFactory
-        )[CibilPhoneVerificationViewModel::class.java]
+            cibilGenerateFactory
+        )[CibilGenerateViewModel::class.java]
         setToolBar()
         setObserver()
 
@@ -73,17 +67,21 @@ class CibilOtpVerificationFragment : Fragment() {
             if (otp.isNullOrEmpty()) {
                 activitySDk.toast("Please enter otp")
             } else {
-                phoneVerificationViewModel.callOtpVerify(CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)
-                    ?.getInt(SharePrefs.LEAD_MASTERID)!!,args.mobileNumber,args.stgOneHitId,args.stgTwoHitId,otp))
+                /*cibilGenerateViewModel.callOtpVerify(
+                    CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,args.mobileNumber,args.stgOneHitId,args.stgTwoHitId,otp)
+                )*/
             }
         }
         mBinding!!.tvResend.setOnClickListener {
-            findNavController().popBackStack()
+            startCountdown()
+            /*cibilGenerateViewModel.callOtpVerify(
+                    CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,args.mobileNumber,args.stgOneHitId,args.stgTwoHitId,otp)
+                )*/
         }
     }
 
     private fun setObserver() {
-        phoneVerificationViewModel.getOptVerifyResponse.observe(viewLifecycleOwner) {
+        cibilGenerateViewModel.getOptVerifyResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
                     ProgressDialog.instance!!.show(activitySDk)
@@ -105,6 +103,7 @@ class CibilOtpVerificationFragment : Fragment() {
                             activitySDk.toast(it.Msg)
                             activitySDk.checkSequenceNo(it.Data.SequenceNo)
                         } else {
+                            mBinding!!.customOTPView.clearOTP()
                             activitySDk.toast(it.Msg)
                         }
                     }
@@ -123,6 +122,8 @@ class CibilOtpVerificationFragment : Fragment() {
     }
 
     private fun startCountdown() {
+        mBinding!!.tvResend.visibility = View.GONE
+        mBinding!!.tvTimer.visibility = View.VISIBLE
        val countDownTimer = object : CountDownTimer(Utils.countdownDuration, 1000) {
             override fun onTick(millisUntilFinished: Long) {
                 val secondsRemaining = millisUntilFinished / 1000

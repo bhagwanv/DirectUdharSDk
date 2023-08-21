@@ -11,7 +11,8 @@ enum class SequenceEnumClass(val sequence:Int ) {
     SUCCESS(12),
     APPRAVAL_PENDING(17),
     MY_ACCOUNT(18),
-    BUSINESS_DETAILS(2);
+    BUSINESS_DETAILS(2),
+    CIBIL_GENERATE(20034);
 
     companion object {
         infix fun from(value: Int): SequenceEnumClass? = SequenceEnumClass.values().firstOrNull {

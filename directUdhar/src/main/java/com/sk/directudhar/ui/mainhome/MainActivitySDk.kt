@@ -141,6 +141,7 @@ class MainActivitySDk : AppCompatActivity() {
             SequenceEnumClass.SUCCESS -> navigateViewCall(R.id.SuccessFragment)
             SequenceEnumClass.PAN_CARD -> navigateViewCall(R.id.PanCardFragment)
             SequenceEnumClass.MY_ACCOUNT -> navigateViewCall(R.id.myAccountFragment)
+            SequenceEnumClass.CIBIL_GENERATE -> navigateViewCall(R.id.cibilGenerateFragment)
             else -> {
                 this.toast("Sequence Not Found")
             }

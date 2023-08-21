@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.applyloan
+package com.sk.directudhar.ui.personalDetails
 
 data class ApplyLoanRequestModel(
     val Name: String,

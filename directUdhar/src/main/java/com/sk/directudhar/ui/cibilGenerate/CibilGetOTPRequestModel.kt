@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.cibilOtpValidate
+package com.sk.directudhar.ui.cibilGenerate
 
 data class CibilGetOTPRequestModel(
     val LeadMasterId: Int,

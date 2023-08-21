@@ -13,8 +13,8 @@ import androidx.navigation.fragment.findNavController
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentCibilScoreBinding
-import com.sk.directudhar.ui.applyloan.CityModel
-import com.sk.directudhar.ui.applyloan.StateModel
+import com.sk.directudhar.ui.personalDetails.CityModel
+import com.sk.directudhar.ui.personalDetails.StateModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog

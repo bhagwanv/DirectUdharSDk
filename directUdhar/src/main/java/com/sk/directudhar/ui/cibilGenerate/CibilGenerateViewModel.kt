@@ -1,7 +1,5 @@
-package com.sk.directudhar.ui.cibilOtpValidate
+package com.sk.directudhar.ui.cibilGenerate
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sk.directudhar.MyApplication
@@ -16,7 +14,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class CibilPhoneVerificationViewModel @Inject constructor(private val repository: CibilPhoneVerificationRepository) :
+class CibilGenerateViewModel @Inject constructor(private val repository: CibilGenerateRepository) :
     ViewModel() {
 
     private var putGenOptResponse =
@@ -30,7 +28,7 @@ class CibilPhoneVerificationViewModel @Inject constructor(private val repository
         putOptVerifyResponse
 
 
-    fun callGenOtp(cibilGetOTPRequestModel:CibilGetOTPRequestModel) {
+    fun callGenOtp(cibilGetOTPRequestModel: CibilGetOTPRequestModel) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
                 repository.getOtp(cibilGetOTPRequestModel).collect {
@@ -42,12 +40,12 @@ class CibilPhoneVerificationViewModel @Inject constructor(private val repository
         }
     }
 
-    fun callOtpVerify(cibilOTPVerifyRequestModel : CibilOTPVerifyRequestModel) {
+    fun callOtpVerify(cibilOTPVerifyRequestModel : CibilGenerateRequestModel) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                repository.getOtpVerify(cibilOTPVerifyRequestModel).collect {
+                /*repository.getOtpVerify(cibilOTPVerifyRequestModel).collect {
                     putOptVerifyResponse.postValue(it)
-                }
+                }*/
             }
         } else {
             (MyApplication.context)!!.toast("No internet connectivity")

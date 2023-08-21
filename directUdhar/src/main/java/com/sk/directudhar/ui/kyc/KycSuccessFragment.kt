@@ -14,7 +14,6 @@ import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.sk.directudhar.ui.applyloan.ApplyLoanFragmentArgs
 
 import javax.inject.Inject
 

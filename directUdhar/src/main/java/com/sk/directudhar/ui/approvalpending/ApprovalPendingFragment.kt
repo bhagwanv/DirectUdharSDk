@@ -113,7 +113,5 @@ class ApprovalPendingFragment:Fragment() {
                 }
             }
         }
-
-
     }
 }

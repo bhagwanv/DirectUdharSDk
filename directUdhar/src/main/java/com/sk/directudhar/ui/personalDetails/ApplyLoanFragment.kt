@@ -1,4 +1,4 @@
-package com.sk.directudhar.ui.applyloan
+package com.sk.directudhar.ui.personalDetails
 
 import android.content.Context
 import android.os.Bundle
@@ -13,13 +13,11 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentApplyLoanBinding
-import com.sk.directudhar.ui.cibilOtpValidate.CibilPhoneVerificationFragmentDirections
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
@@ -188,13 +186,10 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     it.data.let {
                         if (it.Result) {
                             activitySDk.toast(it.Msg)
-                            val action =
-                                ApplyLoanFragmentDirections.actionApplyLoanFragmentToCibilPhoneVerificationFragment(
-                                    it.Data.stgOneHitId,
-                                    it.Data.stgTwoHitId,
-                                    mBinding!!.etAlternateNumber.text.toString()
-                                )
-                            findNavController().navigate(action)
+                            /*val action =
+                                ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
+                            findNavController().navigate(action)*/
+                            activitySDk.checkSequenceNo(it.DynamicData.SequenceNo)
                         } else {
                             activitySDk.toast(it.Msg)
                         }

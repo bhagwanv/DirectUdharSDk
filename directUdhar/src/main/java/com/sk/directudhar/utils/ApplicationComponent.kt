@@ -7,13 +7,12 @@ import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment
 import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadFragment
 import com.sk.directudhar.ui.agreement.EAgreementOptionsFragment
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment
-import com.sk.directudhar.ui.applyloan.ApplyLoanFragment
+import com.sk.directudhar.ui.personalDetails.ApplyLoanFragment
 import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
-import com.sk.directudhar.ui.cibilscore.cibiotp.CiBilOtpFragment
 import com.sk.directudhar.ui.approvalpending.ApprovalPendingFragment
 import com.sk.directudhar.ui.businessDetails.BusinessDetailsFragment
-import com.sk.directudhar.ui.cibilOtpValidate.CibilOtpVerificationFragment
-import com.sk.directudhar.ui.cibilOtpValidate.CibilPhoneVerificationFragment
+import com.sk.directudhar.ui.cibilGenerate.CibilGenerateFragment
+import com.sk.directudhar.ui.cibilGenerate.CibilOtpVerificationFragment
 import com.sk.directudhar.ui.kyc.KycFailedFragment
 import com.sk.directudhar.ui.kyc.KycSuccessFragment
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
@@ -36,7 +35,6 @@ interface ApplicationComponent {
     fun inject(mainActivitySDk: MainActivitySDk)
     fun injectMyAccount(fragment: MyAccountFragment)
     fun injectPhoneVerification(fragment: PhoneVerificationFragment)
-    fun injectCibilPhoneVerification(fragment: CibilPhoneVerificationFragment)
     fun injectOtpVerify(fragment: OtpVerificationFragment)
     fun injectCibilOtpVerify(fragment: CibilOtpVerificationFragment)
     fun injectApplyLoan(fragment: ApplyLoanFragment)
@@ -46,7 +44,6 @@ interface ApplicationComponent {
     fun injectAadhaarOtp(fragment: AadhaarOtpFragment)
     fun injectEMandate(fragment: EMandateFragment)
     fun injectCiBil(fragment: CibilScoreFragment)
-    fun injectCiBilOTP(fragment: CiBilOtpFragment)
     fun injectApprovalPending(fragment: ApprovalPendingFragment)
     fun injectSuccessPending(fragment: SuccessFragment)
     fun injectBankMandate(fragment: BankMandateFragment)
@@ -58,5 +55,6 @@ interface ApplicationComponent {
     fun injectKycSuccess(fragment: KycSuccessFragment)
     fun injectEAgreementOptions(fragment: EAgreementOptionsFragment)
     fun injectEMandateSuccess(fragment: EMandateSuccessFragment)
+    fun injectCibilGenerate(fragment: CibilGenerateFragment)
 
 }

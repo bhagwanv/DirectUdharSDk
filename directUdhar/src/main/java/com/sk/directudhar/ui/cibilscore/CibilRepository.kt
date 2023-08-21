@@ -2,8 +2,6 @@ package com.sk.directudhar.ui.cibilscore
 
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.di.APIServices
-import com.sk.directudhar.ui.agreement.SignSessionRequestModel
-import com.sk.directudhar.ui.cibilscore.cibiotp.GenrateOtpModel
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
@@ -33,23 +31,6 @@ class CibilRepository @Inject constructor(private val apiServices: APIServices) 
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
-
-    suspend fun postData(cibilRequestModel: CibilResponseModel)  = flow {
-        emit(NetworkResult.Loading(true))
-        val response = apiServices.PostCreditScore(cibilRequestModel)
-        emit(NetworkResult.Success(response))
-    }.catch { e ->
-        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
-    }
-
-    suspend fun genrateData(genrateOtpModel: GenrateOtpModel)  = flow {
-        emit(NetworkResult.Loading(true))
-        val response = apiServices.OTPGeneratRequest(genrateOtpModel)
-        emit(NetworkResult.Success(response))
-    }.catch { e ->
-        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
-    }
-
     suspend fun cibilActivityComplete(leadMasterID: Int)  = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.cibilActivityComplete(leadMasterID)
