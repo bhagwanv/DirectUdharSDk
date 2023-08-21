@@ -45,8 +45,8 @@ class AadhaarCardFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentAadhaarCardBinding.inflate(inflater, container, false)
-            initView()
         }
+        initView()
         return mBinding!!.root
     }
 

@@ -45,8 +45,8 @@ class AadhaarOtpFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentAadharOtpBinding.inflate(inflater, container, false)
-            initView()
         }
+        initView()
         return mBinding!!.root
     }
 

@@ -57,8 +57,8 @@ class AadhaarManuallyUploadFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentAadhaarManuallyUplaodBinding.inflate(inflater, container, false)
-            initView()
         }
+        initView()
         return mBinding!!.root
     }
 

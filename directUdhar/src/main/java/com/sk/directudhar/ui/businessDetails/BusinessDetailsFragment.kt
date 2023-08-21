@@ -311,6 +311,7 @@ class BusinessDetailsFragment : Fragment() {
 
                     if (ownerShipArray[position] == "Owned") {
                         mBinding.rlSpManualBillUploadType.visibility = View.VISIBLE
+                        mBinding.llCustomerNumber.visibility = View.VISIBLE
                     } else {
                         mBinding.rlSpManualBillUploadType.visibility = View.GONE
                         mBinding.llCustomerNumber.visibility = View.GONE
@@ -338,9 +339,7 @@ class BusinessDetailsFragment : Fragment() {
                     } else {
                         mBinding.llCustomerNumber.visibility = View.GONE
                     }
-
                 }
-
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // Code to perform some action when nothing is selected
                 }
