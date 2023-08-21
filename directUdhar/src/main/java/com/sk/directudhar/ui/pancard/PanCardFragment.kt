@@ -228,7 +228,7 @@ class PanCardFragment : Fragment(), OnClickListener {
             if (Utils.isValidPanCardNo(panNumber)){
                 mBinding.ivRight.visibility = View.VISIBLE
             }else{
-                mBinding.ivRight.visibility = View.VISIBLE
+                mBinding.ivRight.visibility = View.GONE
             }
         }
     }
