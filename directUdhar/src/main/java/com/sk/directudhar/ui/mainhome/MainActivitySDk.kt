@@ -1,9 +1,6 @@
 package com.sk.directudhar.ui.mainhome
 
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -23,7 +20,6 @@ import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
-
 
 class MainActivitySDk : AppCompatActivity() {
 
@@ -160,11 +156,12 @@ class MainActivitySDk : AppCompatActivity() {
     val callback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (navController.graph.startDestination == navController.currentDestination?.id) {
+                /*if (navController.graph.startDestination == navController.currentDestination?.id) {
                     finish()
                 } else {
                     navController.popBackStack()
-                }
+                }*/
+                finish()
             }
         }
 
