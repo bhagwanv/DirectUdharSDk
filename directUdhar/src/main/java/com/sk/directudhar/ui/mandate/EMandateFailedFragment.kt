@@ -44,6 +44,6 @@ class EMandateFailedFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.toolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "E-Mandate"
     }
 }

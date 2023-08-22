@@ -28,10 +28,10 @@ class CibilGenerateViewModel @Inject constructor(private val repository: CibilGe
         putOptVerifyResponse
 
 
-    fun callGenOtp(cibilGetOTPRequestModel: CibilGetOTPRequestModel) {
+    fun callGenOtp(leadMasterId: Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                repository.getOtp(cibilGetOTPRequestModel).collect {
+                repository.getOtp(leadMasterId).collect {
                     putGenOptResponse.postValue(it)
                 }
             }
@@ -40,12 +40,12 @@ class CibilGenerateViewModel @Inject constructor(private val repository: CibilGe
         }
     }
 
-    fun callOtpVerify(cibilOTPVerifyRequestModel : CibilGenerateRequestModel) {
+    fun callOtpVerify(cibilOTPVerifyRequestModel : CibilOTPVerifyRequestModel) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
-                /*repository.getOtpVerify(cibilOTPVerifyRequestModel).collect {
+                repository.getOtpVerify(cibilOTPVerifyRequestModel).collect {
                     putOptVerifyResponse.postValue(it)
-                }*/
+                }
             }
         } else {
             (MyApplication.context)!!.toast("No internet connectivity")

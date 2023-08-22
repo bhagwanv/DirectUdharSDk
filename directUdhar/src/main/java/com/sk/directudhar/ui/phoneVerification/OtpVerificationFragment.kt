@@ -143,7 +143,8 @@ class OtpVerificationFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.ivDateFilterToolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "Phone Verification"
+        activitySDk.toolbar.navigationIcon = null
     }
 
     override fun onDestroy() {

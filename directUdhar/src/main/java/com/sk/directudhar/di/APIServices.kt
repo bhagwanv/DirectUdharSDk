@@ -167,9 +167,9 @@ interface APIServices {
     @GET("api/Borrower/ValidateOtp")
     suspend fun getOtpVerify(@Query("MobileNo") mobile: String,@Query("Otp") Otp: String,@Query("TxnNo") txnNo: String): OtpVerifyResponseModel
 
-    @POST("api/Borrower/OTPGeneratRequest")
-    suspend fun getCibilOtp(@Body cibilGetOTPRequestModel: CibilGetOTPRequestModel): PhoneVerifyResponseModel
-    @POST("api/Borrower/OTPValidationRequest")
+   /* @POST("api/Borrower/OTPGeneratRequest")
+    suspend fun getCibilOtp(@Body cibilGetOTPRequestModel: CibilGetOTPRequestModel): PhoneVerifyResponseModel*/
+    @POST("api/Borrower/CibilOTPValidate")
     suspend fun getCibilOtpVerify(@Body cibilOTPVerifyRequestModel : CibilOTPVerifyRequestModel): OtpVerifyResponseModel
 
 
@@ -208,4 +208,7 @@ interface APIServices {
 
     @POST("api/eSign/eSignSessionAsync")
     suspend fun eSignSessionAsync(@Body signSessionRequestModel: SignSessionRequestModel): SignSessionResponseModel
+
+    @GET("api/Borrower/CibilOTPGenerate")
+    suspend fun cibilOTPGenerate(@Query("LeadMasterId") leadMasterId: Int): PhoneVerifyResponseModel
 }

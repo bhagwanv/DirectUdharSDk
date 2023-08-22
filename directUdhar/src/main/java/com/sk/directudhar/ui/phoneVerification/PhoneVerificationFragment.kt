@@ -123,7 +123,7 @@ class PhoneVerificationFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.ivDateFilterToolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "Phone Verification"
     }
 
     override fun onDestroy() {

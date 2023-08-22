@@ -67,15 +67,15 @@ class CibilOtpVerificationFragment : Fragment() {
             if (otp.isNullOrEmpty()) {
                 activitySDk.toast("Please enter otp")
             } else {
-                /*cibilGenerateViewModel.callOtpVerify(
-                    CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,args.mobileNumber,args.stgOneHitId,args.stgTwoHitId,otp)
-                )*/
+                cibilGenerateViewModel.callOtpVerify(
+                    CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,args.stgOneHitId,args.stgTwoHitId,otp)
+                )
             }
         }
         mBinding!!.tvResend.setOnClickListener {
             startCountdown()
             /*cibilGenerateViewModel.callOtpVerify(
-                    CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,args.mobileNumber,args.stgOneHitId,args.stgTwoHitId,otp)
+                    CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,args.stgOneHitId,args.stgTwoHitId,otp)
                 )*/
         }
     }
@@ -113,7 +113,7 @@ class CibilOtpVerificationFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.ivDateFilterToolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "OTP Verification"
     }
 
     override fun onDestroy() {

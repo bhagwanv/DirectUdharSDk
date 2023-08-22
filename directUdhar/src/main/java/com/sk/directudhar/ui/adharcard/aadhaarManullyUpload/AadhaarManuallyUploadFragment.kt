@@ -108,7 +108,7 @@ class AadhaarManuallyUploadFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.ivDateFilterToolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "Aadhar Verification Manual"
     }
 
     private fun setObserver() {

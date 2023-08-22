@@ -142,7 +142,7 @@ class AadhaarCardFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.ivDateFilterToolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "Aadhar Verification"
     }
 
     private val aadhaarTextWatcher = object : TextWatcher {

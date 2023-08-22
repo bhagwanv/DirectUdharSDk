@@ -262,12 +262,9 @@ class UdharStatementFragment : Fragment() {
 
     private fun setToolBar(visibleFilterIcon: Boolean) {
         if (visibleFilterIcon) {
-            activitySDk.ivDateFilterToolbar.visibility = View.VISIBLE
+            activitySDk.toolbarTitle.text = "Udhar"
         } else {
-            activitySDk.ivDateFilterToolbar.visibility = View.GONE
-        }
-        activitySDk.ivDateFilterToolbar.setOnClickListener {
-            filterDialog()
+            activitySDk.toolbarTitle.text = "Udhar"
         }
     }
 
