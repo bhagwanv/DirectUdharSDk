@@ -62,6 +62,8 @@ class MainActivitySDk : AppCompatActivity() {
         toolbar = findViewById(R.id.toolbar)
         toolbarTitle = findViewById(R.id.toolbarTitle)
         setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)
+        supportActionBar?.setDisplayShowHomeEnabled(false)
     }
 
     private fun initView() {
