@@ -159,7 +159,7 @@ class MyAccountFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.ivDateFilterToolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "My Account"
     }
 
     private fun initRecyclerViewAdapter(data: ArrayList<UdharStatementModel>) {

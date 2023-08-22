@@ -42,7 +42,7 @@ class EMandateSuccessFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.toolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "E-mandate Setup"
     }
 
 }

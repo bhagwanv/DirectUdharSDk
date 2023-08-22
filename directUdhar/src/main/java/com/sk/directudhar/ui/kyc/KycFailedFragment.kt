@@ -51,6 +51,6 @@ class KycFailedFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.toolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "KYC Failed"
     }
 }

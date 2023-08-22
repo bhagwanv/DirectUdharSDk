@@ -14,6 +14,7 @@ import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
+import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
@@ -55,10 +56,8 @@ class CibilGenerateFragment : Fragment() {
         setToolBar()
         setObserver()
         mBinding!!.btnGenerateCibil.setOnClickListener {
-            /*cibilGenerateViewModel.callGenOtp(
-                CibilGetOTPRequestModel(SharePrefs.getInstance(activitySDk)
-                    ?.getInt(SharePrefs.LEAD_MASTERID)!!)
-            )*/
+            cibilGenerateViewModel.callGenOtp(SharePrefs.getInstance(activitySDk)
+                ?.getInt(SharePrefs.LEAD_MASTERID)!!)
         }
     }
 
@@ -97,7 +96,7 @@ class CibilGenerateFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.ivDateFilterToolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = "Cibil Generate"
     }
 
     override fun onDestroy() {
