@@ -108,7 +108,13 @@ class OtpVerificationFragment : Fragment() {
                             activitySDk.checkSequenceNo(it.Data.SequenceNo)
                         } else {
                             mBinding!!.customOTPView.clearOTP()
-                            activitySDk.toast(it.Msg)
+                            //activitySDk.toast(it.Msg)
+                            dialog.alertDialog(activitySDk,it.Msg,"Yes")
+                           /* dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
+                                override fun onContinueClicked() {
+
+                                }
+                            })*/
                         }
                     }
                 }
@@ -134,7 +140,8 @@ class OtpVerificationFragment : Fragment() {
                             startCountdown()
                             activitySDk.toast(it.Msg)
                         } else {
-                            activitySDk.toast(it.Msg)
+                            dialog.alertDialog(activitySDk,it.Msg,"Yes")
+                          //  activitySDk.toast(it.Msg)
                         }
                     }
 

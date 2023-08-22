@@ -7,7 +7,9 @@ import androidx.lifecycle.viewModelScope
 import com.google.gson.JsonObject
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
+import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadResponseModel
 import com.sk.directudhar.utils.Network
+import com.sk.directudhar.utils.SingleLiveEvent
 import com.sk.directudhar.utils.Utils
 import com.sk.directudhar.utils.Utils.Companion.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -34,6 +36,9 @@ class BusinessDetailsViewModel @Inject constructor(private val repository: Busin
 
     private var _verifyElectricityBillResponse = MutableLiveData<NetworkResult<BusinessDetailsVerifyElectricityBillResponseModel>>()
     val verifyElectricityBillResponse: LiveData<NetworkResult<BusinessDetailsVerifyElectricityBillResponseModel>> = _verifyElectricityBillResponse
+
+    private var putUploadBillResponse = SingleLiveEvent<NetworkResult<ManuallyUploadBillResponseModel>>()
+    val getUploadBillResponse: SingleLiveEvent<NetworkResult<ManuallyUploadBillResponseModel>> = putUploadBillResponse
 
 
     fun addBusinessDetail(businessDetailsRequestModel: BusinessDetailsRequestModel) {
@@ -116,6 +121,18 @@ class BusinessDetailsViewModel @Inject constructor(private val repository: Busin
             viewModelScope.launch {
                 repository.verifyElectricityBill(model).collect() {
                     _verifyElectricityBillResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun uploadBillManual(body: MultipartBody.Part,leadMasterId:Int) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.uploadBillManual(body,leadMasterId).collect() {
+                    putUploadBillResponse.postValue(it)
                 }
             }
         } else {

@@ -5,9 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
+import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentCibiGenerateBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
@@ -53,11 +55,33 @@ class CibilGenerateFragment : Fragment() {
     }
 
     private fun initView() {
+        mBinding!!.etMobileNumber.text = SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
         setToolBar()
         setObserver()
         mBinding!!.btnGenerateCibil.setOnClickListener {
-            cibilGenerateViewModel.callGenOtp(SharePrefs.getInstance(activitySDk)
-                ?.getInt(SharePrefs.LEAD_MASTERID)!!)
+            if (mBinding!!.cbTermsOfUse.isChecked) {
+                cibilGenerateViewModel.callGenOtp(
+                    SharePrefs.getInstance(activitySDk)
+                        ?.getInt(SharePrefs.LEAD_MASTERID)!!
+                )
+            }else{
+                activitySDk.toast("Please Check Term and Condition")
+            }
+        }
+
+        mBinding!!.cbTermsOfUse.setOnClickListener {
+            if (mBinding!!.cbTermsOfUse.isChecked) {
+                mBinding!!.btnGenerateCibil.isClickable = true
+                mBinding!!.btnGenerateCibil.isEnabled = true
+                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                mBinding!!.btnGenerateCibil.backgroundTintList = tintList
+            } else {
+                mBinding!!.btnGenerateCibil.isClickable = false
+                mBinding!!.btnGenerateCibil.isEnabled = false
+                val tintList =
+                    ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                mBinding!!.btnGenerateCibil.backgroundTintList = tintList
+            }
         }
     }
 
@@ -96,11 +120,14 @@ class CibilGenerateFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.toolbarTitle.text = "Cibil Generate"
+        activitySDk.toolbar.visibility = View.GONE
+        activitySDk.toolbarTitle.text = ""
+        activitySDk.toolbar.navigationIcon = null
     }
 
     override fun onDestroy() {
         super.onDestroy()
         mBinding!!.unbind()
+        activitySDk.toolbar.visibility = View.VISIBLE
     }
 }

@@ -10,6 +10,9 @@ data class BusinessDetailsRequestModel(
     val BusinessIncorporationDate: String,
     val IncomSlab: String,
     val ownershipType: String,
+    val DocumentNumber: String,
+    val ElectricityBillUrl: String,
+    val BankPassBookUrl: String,
 )
 
 data class BusinessType(val PartnerName: String, val PartnerNumber: String)

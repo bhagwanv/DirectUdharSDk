@@ -133,7 +133,7 @@ class CibilOtpVerificationFragment : Fragment() {
                             stgOneHitId = it.Data.stgOneHitId
                             stgTwoHitId = it.Data.stgTwoHitId
                         } else {
-                            dialog.accountCreatedDialog(activitySDk,it.Msg,"Yes")
+                            dialog.alertDialog(activitySDk,it.Msg,"Yes")
                             //activitySDk.toast(it.Msg)
                         }
                     }

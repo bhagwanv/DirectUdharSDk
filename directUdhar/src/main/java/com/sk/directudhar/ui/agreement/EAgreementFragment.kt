@@ -48,10 +48,14 @@ class EAgreementFragment : Fragment() {
         if (mBinding == null) {
             mBinding = FragmentEAgreementBinding.inflate(inflater, container, false)
             initView()
+            setToolBar()
         }
         return mBinding!!.root
     }
-
+    private fun setToolBar() {
+        activitySDk.toolbarTitle.text = "Agreement"
+        activitySDk.toolbar.navigationIcon = null
+    }
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectAgreement(this)
@@ -66,13 +70,17 @@ class EAgreementFragment : Fragment() {
             )
         )
 
-        mBinding!!.cbAuthorize.setOnClickListener {
-            if (mBinding!!.cbAuthorize.isChecked) {
-                mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
+        mBinding!!.cbTermsOfUse.setOnClickListener {
+            if (mBinding!!.cbTermsOfUse.isChecked) {
+                mBinding!!.btnIAgree.isEnabled = true
+                mBinding!!.btnIAgree.isClickable = true
+               // mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
                 val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
                 mBinding!!.btnIAgree.backgroundTintList = tintList
             } else {
-                mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
+                mBinding!!.btnIAgree.isEnabled = false
+                mBinding!!.btnIAgree.isClickable = false
+              //  mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
                 val tintList =
                     ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
                 mBinding!!.btnIAgree.backgroundTintList = tintList
@@ -81,7 +89,7 @@ class EAgreementFragment : Fragment() {
         }
 
         mBinding!!.btnIAgree.setOnClickListener {
-            if (mBinding!!.cbAuthorize.isChecked) {
+            if (mBinding!!.cbTermsOfUse.isChecked) {
                 val action =
                     EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOptionsFragment(htmlDoc)
                 findNavController().navigate(action)

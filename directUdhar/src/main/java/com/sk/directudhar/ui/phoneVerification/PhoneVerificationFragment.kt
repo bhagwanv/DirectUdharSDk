@@ -1,7 +1,12 @@
 package com.sk.directudhar.ui.phoneVerification
 
 import android.content.Context
+import android.graphics.Color
+import android.graphics.Paint
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
+import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,6 +63,13 @@ class PhoneVerificationFragment : Fragment() {
     }
 
     private fun initView() {
+        mBinding!!.tvTermsOfUse.setOnClickListener {
+
+        }
+         val text = SpannableString("By Proceeding, you agree Terms & Conditions.")
+        //text.setSpan(UnderlineSpan(), 25, 44, 0)
+        text.setSpan(ForegroundColorSpan(Color.BLUE), 25, 44, 0)
+        mBinding!!.tvTermsOfUse.text = text
         mobileNumber = SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
         mBinding!!.etMobileNumber.text = mobileNumber
         setToolBar()
@@ -113,7 +125,13 @@ class PhoneVerificationFragment : Fragment() {
                                 )
                             findNavController().navigate(action)
                         } else {
-                            activitySDk.toast(it.Msg)
+                            //activitySDk.toast(it.Msg)
+                            dialog.alertDialog(activitySDk,it.Msg,"Yes")
+                           /* dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
+                                override fun onContinueClicked() {
+
+                                }
+                            })*/
                         }
                     }
 

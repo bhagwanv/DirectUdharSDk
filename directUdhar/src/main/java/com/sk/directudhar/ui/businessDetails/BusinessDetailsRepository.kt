@@ -50,4 +50,11 @@ class BusinessDetailsRepository @Inject constructor(private val apiServices: API
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
+    suspend fun uploadBillManual(body: MultipartBody.Part,leadMasterId: Int)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.uploadBillManual(body,leadMasterId)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 }

@@ -27,6 +27,7 @@ import com.sk.directudhar.ui.businessDetails.BusinessDetailsRequestModel
 import com.sk.directudhar.ui.businessDetails.BusinessDetailsResponseModel
 import com.sk.directudhar.ui.businessDetails.BusinessTypeListResponse
 import com.sk.directudhar.ui.businessDetails.GSTDetailsResponse
+import com.sk.directudhar.ui.businessDetails.ManuallyUploadBillResponseModel
 import com.sk.directudhar.ui.businessDetails.StatementFileResponse
 import com.sk.directudhar.ui.cibilscore.CibilActivityCompleteResponseModel
 import com.sk.directudhar.ui.cibilGenerate.CibilGetOTPRequestModel
@@ -212,4 +213,8 @@ interface APIServices {
 
     @GET("api/Borrower/CibilOTPGenerate")
     suspend fun cibilOTPGenerate(@Query("LeadMasterId") leadMasterId: Int): GenCibilOtpResponseModel
+    @Multipart
+    @POST("api/Borrower/ElectricityImageUpload")
+    suspend fun uploadBillManual(@Part body: MultipartBody.Part,@Query("LeadMasterId") leadMasterId:Int): ManuallyUploadBillResponseModel
+
 }

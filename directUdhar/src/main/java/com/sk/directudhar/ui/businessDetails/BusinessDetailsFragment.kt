@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.DatePickerDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -34,6 +35,8 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentBusinessDetailsBinding
+import com.sk.directudhar.image.ImageCaptureActivity
+import com.sk.directudhar.image.ImageProcessing
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
@@ -90,7 +93,11 @@ class BusinessDetailsFragment : Fragment() {
     var customerNumber = ""
     var serviceProvideName = ""
     var businessTypeId = 0
-
+    var uploadType = ""
+    var uploadBillImage = ""
+    var isUploadBillImage = false
+    var isCustomerNumber = false
+    var uploadBankPassBookImage = ""
     private val BUFFER_SIZE = 1024 * 2
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -111,7 +118,14 @@ class BusinessDetailsFragment : Fragment() {
         initView()
         spinnerView()
         setObserber()
+        setToolBar()
         return mBinding.root
+    }
+
+    private fun setToolBar() {
+        activitySDk.toolbarTitle.text = "Business Details"
+        activitySDk.toolbar.navigationIcon = null
+
     }
 
     private fun initView() {
@@ -135,7 +149,7 @@ class BusinessDetailsFragment : Fragment() {
         mBinding.btnVerifyBill.setOnClickListener {
             if (mBinding.etCustomerNumber.text.toString().isNullOrEmpty()) {
                 activitySDk.toast("Please Enter Customer Number")
-            } else if (serviceProvideName.isNullOrEmpty()||serviceProvideName=="None") {
+            } else if (serviceProvideName.isNullOrEmpty() || serviceProvideName == "None") {
                 activitySDk.toast("Please select Service Provide name")
             } else {
                 val model = BusinessDetailsVerifyElectricityBillRequestModel(
@@ -146,28 +160,6 @@ class BusinessDetailsFragment : Fragment() {
                 businessDetailsViewModel.verifyElectricityBill(model)
             }
         }
-
-        /*  mBinding.etCustomerNumber.addTextChangedListener(object : TextWatcher {
-              override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-              override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                  if (s.isNullOrEmpty()) {
-                      activitySDk.toast("Please Enter Customer Number")
-                  } else if (s.length == 10) {
-                      isVerifyElectricityBill = false
-                      customerNumber = s.toString()
-                      mBinding.rlServiceProviders.visibility = View.VISIBLE
-                  } else {
-                      isVerifyElectricityBill = false
-                      mBinding.ivRightElectrycityBill.visibility = View.GONE
-                      mBinding.rlServiceProviders.visibility = View.GONE
-                  }
-
-              }
-
-              override fun afterTextChanged(s: Editable) {
-              }
-          })*/
-
 
         mBinding.tvBusinessIncorporationDate.setOnClickListener {
             showDatePicker(mBinding.tvBusinessIncorporationDate)
@@ -188,9 +180,18 @@ class BusinessDetailsFragment : Fragment() {
                 mBusinessType.forEach {
                     println(it.PartnerName + "    " + it.PartnerNumber)
                 }
-                var gstNumber = mBinding.etGstNumber.text.toString()
-                var businessName = mBinding.etBusinessName.text.toString()
-                var businessTurnover = mBinding.etBusinessTurnover.text.toString()
+                val gstNumber = mBinding.etGstNumber.text.toString()
+                val businessName = mBinding.etBusinessName.text.toString()
+                val businessTurnover = mBinding.etBusinessTurnover.text.toString()
+                if (isCustomerNumber) {
+                    if (isVerifyElectricityBill) {
+                        customerNumber = mBinding.etCustomerNumber.text.toString()
+                    }
+                } else {
+                    if (!isUploadBillImage) {
+                        uploadBillImage = ""
+                    }
+                }
                 mBusinessDetailsRequestModel = BusinessDetailsRequestModel(
                     leadMasterId,
                     gstNumber,
@@ -200,7 +201,10 @@ class BusinessDetailsFragment : Fragment() {
                     businessTurnover,
                     mBusinessIncorporationDate,
                     mIncomeSlab,
-                    mOwnershipType
+                    mOwnershipType,
+                    customerNumber,
+                    uploadBillImage,
+                    uploadBankPassBookImage
                 )
                 businessDetailsViewModel.validateBusinessDetails(
                     mBusinessDetailsRequestModel,
@@ -213,26 +217,19 @@ class BusinessDetailsFragment : Fragment() {
                 e.printStackTrace()
             }
         }
-
-
-        mBinding.llBillUplod.visibility = View.GONE
-
-        mBinding.llCustomerNumber.visibility = View.VISIBLE
-
-        // mBinding.etCustomerNumber.addTextChangedListener(aadhaarTextWatcher)
-
-        mBinding.llBillUplod.setOnClickListener {
-            //askPermission()
-        }
         businessDetailsViewModel.getBusinessTypeList()
         mBinding.tvAddMoreView.setOnClickListener {
             addMoreView(false)
         }
-
-
-        mBinding.tvUploadStatement.setOnClickListener {
-            askPermission1()
+        mBinding.llUploadBillManual.setOnClickListener {
+            uploadType = "bill"
+            askPermission()
         }
+        mBinding.tvUploadStatement.setOnClickListener {
+            uploadType = "statement"
+            askPermission()
+        }
+
     }
 
 
@@ -247,9 +244,9 @@ class BusinessDetailsFragment : Fragment() {
             "Owned by parents",
             "Owned by Spouse"
         )
-       /* "Electricity bill upload",
-        "Upload Bill Manual",*/
-        val manualBillUploadArray = listOf("Customer Number")
+        /* "Electricity bill upload",
+         "Upload Bill Manual",*/
+        val manualBillUploadArray = listOf("Customer Number", "Upload Bill Manual")
         mServiceProvider = ServiceProvide.getServiceProvider()
         mServiceProvider.forEach {
             mSpiServiceProvider.add(it.Name)
@@ -312,10 +309,8 @@ class BusinessDetailsFragment : Fragment() {
 
                     if (ownerShipArray[position] == "Owned") {
                         mBinding.rlSpManualBillUploadType.visibility = View.VISIBLE
-                        mBinding.llCustomerNumber.visibility = View.VISIBLE
                     } else {
                         mBinding.rlSpManualBillUploadType.visibility = View.GONE
-                        mBinding.llCustomerNumber.visibility = View.GONE
                     }
                 }
 
@@ -336,11 +331,16 @@ class BusinessDetailsFragment : Fragment() {
                     id: Long
                 ) {
                     if (manualBillUploadArray[position] == "Customer Number") {
+                        isCustomerNumber = true
                         mBinding.llCustomerNumber.visibility = View.VISIBLE
+                        mBinding.llUploadBillManual.visibility = View.GONE
                     } else {
+                        isCustomerNumber = false
                         mBinding.llCustomerNumber.visibility = View.GONE
+                        mBinding.llUploadBillManual.visibility = View.VISIBLE
                     }
                 }
+
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // Code to perform some action when nothing is selected
                 }
@@ -527,29 +527,42 @@ class BusinessDetailsFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == AppCompatActivity.RESULT_OK) {
                     val data: Intent? = result.data
-                    data?.data.let {
-                        val path = getFilePathFromURI(it)
+                    if (uploadType == "bill") {
+                        val filePath = data!!.getStringExtra(Utils.FILE_PATH).toString()
+                        val myBitmap = BitmapFactory.decodeFile(filePath)
+                        mBinding.imBillImage.setImageBitmap(myBitmap)
                         lifecycleScope.launch {
-                            val compressedImageFile =
-                                Compressor.compress(activitySDk, File(path)) {}
-                            val requestFile: RequestBody =
-                                compressedImageFile.asRequestBody("*/*".toMediaTypeOrNull())
-                            val body: MultipartBody.Part =
-                                MultipartBody.Part.createFormData(
-                                    "file",
-                                    compressedImageFile.name,
-                                    requestFile
-                                )
-                            businessDetailsViewModel.bankPassBookUpload(
-                                SharePrefs.getInstance(
-                                    activitySDk
-                                )!!.getInt(SharePrefs.LEAD_MASTERID), body
+                            ProgressDialog.instance!!.show(activitySDk)
+                            val body = ImageProcessing.uploadMultipart(filePath, activitySDk)
+                            businessDetailsViewModel.uploadBillManual(
+                                body, SharePrefs.getInstance(activitySDk)
+                                    ?.getInt(SharePrefs.LEAD_MASTERID)!!
                             )
+                        }
+                    } else {
+                        data?.data.let {
+                            val path = getFilePathFromURI(it)
+                            lifecycleScope.launch {
+                                val compressedImageFile =
+                                    Compressor.compress(activitySDk, File(path)) {}
+                                val requestFile: RequestBody =
+                                    compressedImageFile.asRequestBody("*/*".toMediaTypeOrNull())
+                                val body: MultipartBody.Part =
+                                    MultipartBody.Part.createFormData(
+                                        "file",
+                                        compressedImageFile.name,
+                                        requestFile
+                                    )
+                                businessDetailsViewModel.bankPassBookUpload(
+                                    SharePrefs.getInstance(
+                                        activitySDk
+                                    )!!.getInt(SharePrefs.LEAD_MASTERID), body
+                                )
+                            }
                         }
                     }
                 }
             }
-
 
         businessDetailsViewModel.bankPassBookUploadResponse.observe(viewLifecycleOwner) {
             when (it) {
@@ -566,6 +579,7 @@ class BusinessDetailsFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
+                            uploadBankPassBookImage = it.Data.ImageUrl
                             mBinding.rlSuccessfullyUpload.visibility = View.VISIBLE
                             mBinding.rlUploadStatement.visibility = View.GONE
                             activitySDk.toast(it.Msg)
@@ -597,12 +611,13 @@ class BusinessDetailsFragment : Fragment() {
                     it.data.let {
                         if (it.Result) {
                             isVerifyElectricityBill = true
-                            if (!it.Data.consumer_name.isNullOrEmpty()){
+                            if (!it.Data.consumer_name.isNullOrEmpty()) {
                                 mBinding.tvCustomerName.visibility = View.VISIBLE
                                 mBinding.tvCustomerName.text = it.Data.consumer_name
                             }
                             mBinding.ivRightElectrycityBill.visibility = View.VISIBLE
                         } else {
+                            isVerifyElectricityBill = false
                             mBinding.ivRightElectrycityBill.visibility = View.GONE
                         }
                     }
@@ -611,10 +626,43 @@ class BusinessDetailsFragment : Fragment() {
             }
         }
 
+        businessDetailsViewModel.getUploadBillResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
 
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    mBinding.imBillImage.visibility = View.GONE
+                    mBinding.llDefaultImage.visibility = View.VISIBLE
+                    activitySDk.toast("Upload failed")
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.Result) {
+                            isUploadBillImage = true
+                            uploadBillImage = it.Data.ImageUrl
+                            // activitySDk.toast(it.Msg)
+                            mBinding.imBillImage.visibility = View.VISIBLE
+                            mBinding.llDefaultImage.visibility = View.GONE
+                        } else {
+                            isUploadBillImage = false
+                            uploadBillImage = ""
+                            mBinding.imBillImage.visibility = View.GONE
+                            mBinding.llDefaultImage.visibility = View.VISIBLE
+                            activitySDk.toast(it.Msg)
+                        }
+                    }
+
+                }
+            }
+        }
     }
 
-    private fun askPermission1() {
+    private fun askPermission() {
         val permissions = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             arrayOf(
                 Manifest.permission.CAMERA,
@@ -637,13 +685,22 @@ class BusinessDetailsFragment : Fragment() {
             options,
             object : PermissionHandler() {
                 override fun onGranted() {
-                    val intent = Intent(Intent.ACTION_GET_CONTENT)
-                    intent.type = "application/pdf"
-                    resultLauncher!!.launch(intent)
+                    if (uploadType == "bill") {
+                        val tsLong = System.currentTimeMillis() / 1000
+                        val fileName = "aadhaarImage_" + tsLong + ".png"
+                        val intent = Intent(activitySDk, ImageCaptureActivity::class.java)
+                        intent.putExtra(Utils.FILE_NAME, fileName)
+                        intent.putExtra(Utils.IS_GALLERY_OPTION, false)
+                        resultLauncher?.launch(intent)
+                    } else {
+                        val intent = Intent(Intent.ACTION_GET_CONTENT)
+                        intent.type = "application/pdf"
+                        resultLauncher!!.launch(intent)
+                    }
                 }
 
                 override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>) {
-                    askPermission1()
+                    askPermission()
                 }
             })
 

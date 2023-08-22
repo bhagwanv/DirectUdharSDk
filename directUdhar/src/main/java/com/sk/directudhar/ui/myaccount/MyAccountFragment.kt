@@ -147,12 +147,8 @@ class MyAccountFragment : Fragment() {
                     val `object` = JSONObject(it.data.toString())
 
                     val msg = `object`.getString("Msg")
-                    dialog.accountCreatedDialog(activitySDk, msg, "OK")
-                    dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
-                        override fun onContinueClicked() {
+                    dialog.alertDialog(activitySDk, msg, "OK")
 
-                        }
-                    })
                 }
             }
         }

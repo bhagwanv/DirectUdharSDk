@@ -1,9 +1,6 @@
 package com.sk.directudhar.ui.agreement
 
-import android.content.ActivityNotFoundException
 import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -72,7 +69,6 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
             if (verificationType.isEmpty()) {
                 activitySDk.toast("Please Select Verification Mode")
             } else if (verificationType == "BY_AADHAAR_VERIFY") {
-
                 eAgreementViewModel.eSignSessionAsync(
                     SignSessionRequestModel(
                         SharePrefs.getInstance(
@@ -148,8 +144,10 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
     }
 
     private fun callWeb(urlString: String) {
+        val action = EAgreementOptionsFragmentDirections.actionEAgreementOptionsFragmentToESignWebviewFragment(urlString)
+       findNavController().navigate(action)
         // val urlString = "http://mysuperwebsite"
-        val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+      /*  val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         intent.setPackage("com.android.chrome")
         try {
@@ -158,7 +156,7 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
             // Chrome browser presumably not installed and open Kindle Browser
             intent.setPackage(null)
             activitySDk.startActivity(intent)
-        }
+        }*/
     }
 
     override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {

@@ -276,12 +276,24 @@
             android:name="Agreementhtml"
             app:argType="string" />
 
-
         <action
             android:id="@+id/action_EAgreementOptionsFragment_to_EAgreementOtpFragment"
             app:destination="@id/EAgreementOtpFragment" />
-    </fragment>
 
+        <action
+            android:id="@+id/action_EAgreementOptionsFragment_to_ESignWebviewFragment"
+            app:destination="@id/ESignWebviewFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ESignWebviewFragment"
+        android:name="com.sk.directudhar.ui.agreement.ESignWebviewFragment"
+        android:label="Agreement"
+        tools:layout="@layout/fragment_esign_webview">
+        <argument
+            android:name="URL"
+            app:argType="string" />
+
+    </fragment>
     <fragment
         android:id="@+id/cibilGenerateFragment"
         android:name="com.sk.directudhar.ui.cibilGenerate.CibilGenerateFragment"
