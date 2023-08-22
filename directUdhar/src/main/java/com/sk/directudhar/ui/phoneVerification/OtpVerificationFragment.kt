@@ -40,7 +40,7 @@ class OtpVerificationFragment : Fragment() {
     private var accountId: Long = 0
     private var flag: Int = 0
     private lateinit var countDownTimer: CountDownTimer
-
+    private var txnNo = ""
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -60,6 +60,7 @@ class OtpVerificationFragment : Fragment() {
     }
 
     private fun initView() {
+        txnNo = args.txnNo
         mBinding!!.tvMsg.text = "Enter the verification code we just sent to ${args.mobileNumber}"
         val component = DaggerApplicationComponent.builder().build()
         component.injectOtpVerify(this)
@@ -75,7 +76,7 @@ class OtpVerificationFragment : Fragment() {
             if (otp.isNullOrEmpty()) {
                 activitySDk.toast("Please enter otp")
             } else {
-                phoneVerificationViewModel.callOtpVerify(args.mobileNumber, otp, args.txnNo)
+                phoneVerificationViewModel.callOtpVerify(args.mobileNumber, otp, txnNo)
             }
         }
         mBinding!!.tvResend.setOnClickListener {
@@ -129,6 +130,7 @@ class OtpVerificationFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
+                            txnNo = it.Data.TxnNo
                             startCountdown()
                             activitySDk.toast(it.Msg)
                         } else {

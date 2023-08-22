@@ -31,6 +31,7 @@ import com.sk.directudhar.ui.businessDetails.StatementFileResponse
 import com.sk.directudhar.ui.cibilscore.CibilActivityCompleteResponseModel
 import com.sk.directudhar.ui.cibilGenerate.CibilGetOTPRequestModel
 import com.sk.directudhar.ui.cibilGenerate.CibilOTPVerifyRequestModel
+import com.sk.directudhar.ui.cibilGenerate.GenCibilOtpResponseModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
 import com.sk.directudhar.ui.mandate.BankListResponse
 import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
@@ -210,5 +211,5 @@ interface APIServices {
     suspend fun eSignSessionAsync(@Body signSessionRequestModel: SignSessionRequestModel): SignSessionResponseModel
 
     @GET("api/Borrower/CibilOTPGenerate")
-    suspend fun cibilOTPGenerate(@Query("LeadMasterId") leadMasterId: Int): PhoneVerifyResponseModel
+    suspend fun cibilOTPGenerate(@Query("LeadMasterId") leadMasterId: Int): GenCibilOtpResponseModel
 }

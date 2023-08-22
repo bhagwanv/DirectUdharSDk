@@ -72,7 +72,12 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
             mBinding = FragmentApplyLoanBinding.inflate(inflater, container, false)
         }
         initView()
+        setToolBar()
         return mBinding!!.root
+    }
+    private fun setToolBar() {
+        activitySDk.toolbarTitle.text = "Personal Details"
+        activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {

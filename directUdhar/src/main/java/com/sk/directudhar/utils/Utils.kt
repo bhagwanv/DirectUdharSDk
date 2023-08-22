@@ -83,6 +83,19 @@ class Utils(private var context: Context) {
             return s
         }
 
+        fun isValidGSTNo(str: String?): Boolean {
+            // Regex to check valid
+            val regex = ("^[0-9]{2}[A-Z]{5}[0-9]{4}"
+                    + "[A-Z]{1}[1-9A-Z]{1}"
+                    + "Z[0-9A-Z]{1}$")
+            val p = Pattern.compile(regex)
+            if (str == null) {
+                return false
+            }
+            val m = p.matcher(str)
+            return m.matches()
+        }
+
         fun simpleDateFormate(inputDate: String, inputFormat: String, outputFormat: String): String? {
             return try {
                 val inputFormats = SimpleDateFormat(inputFormat, Locale.getDefault())

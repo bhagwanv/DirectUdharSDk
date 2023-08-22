@@ -18,8 +18,8 @@ class CibilGenerateViewModel @Inject constructor(private val repository: CibilGe
     ViewModel() {
 
     private var putGenOptResponse =
-        SingleLiveEvent<NetworkResult<PhoneVerifyResponseModel>>()
-    val getGenOptResponse: SingleLiveEvent<NetworkResult<PhoneVerifyResponseModel>> =
+        SingleLiveEvent<NetworkResult<GenCibilOtpResponseModel>>()
+    val getGenOptResponse: SingleLiveEvent<NetworkResult<GenCibilOtpResponseModel>> =
         putGenOptResponse
 
     private var putOptVerifyResponse =

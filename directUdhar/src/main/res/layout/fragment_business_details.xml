@@ -309,6 +309,8 @@
                             android:id="@+id/etCustomerNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:inputType="textCapCharacters"
+                            android:textAllCaps="true"
                             android:background="@drawable/background_edittext"
                             android:hint="1234 567 125" />
 

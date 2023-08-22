@@ -81,8 +81,8 @@ class CibilGenerateFragment : Fragment() {
                             val action =
                                 CibilGenerateFragmentDirections.actionCibilGenerateFragmentToCibilOtpVerificationFragment(
                                     "",
-                                    "",
-                                    "",
+                                    it.Data.stgOneHitId,
+                                    it.Data.stgTwoHitId,
                                 )
                             findNavController().navigate(action)
                         } else {

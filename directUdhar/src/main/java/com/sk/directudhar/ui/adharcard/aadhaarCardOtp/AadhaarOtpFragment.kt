@@ -31,7 +31,7 @@ class AadhaarOtpFragment : Fragment() {
     private lateinit var aadhaarOtpViewModel: AadhaarOtpViewModel
     private var otp: String = ""
     private val args: AadhaarOtpFragmentArgs by navArgs()
-
+     private var requestedId = ""
     @Inject
     lateinit var aadhaarOtpFactory: AadhaarOtpFactory
 
@@ -52,6 +52,7 @@ class AadhaarOtpFragment : Fragment() {
     }
 
     private fun initView() {
+        requestedId = args.requestId
         val component = DaggerApplicationComponent.builder().build()
         component.injectAadhaarOtp(this)
         aadhaarOtpViewModel =
@@ -115,7 +116,7 @@ class AadhaarOtpFragment : Fragment() {
             if (result.equals(Utils.AADHAAR_OTP_VALIDATE_SUCCESSFULLY)) {
                 aadhaarOtpViewModel.aadharVerification(
                     AadharVerificationRequestModel(
-                        otp, args.requestId, UpdateAadhaarInfoRequestModel(
+                        otp, requestedId, UpdateAadhaarInfoRequestModel(
                             leadMasterId = SharePrefs.getInstance(activitySDk)
                                 ?.getInt(SharePrefs.LEAD_MASTERID)!!,
                             aadharNo = args.aadhaarNumber
@@ -141,6 +142,7 @@ class AadhaarOtpFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result!!){
+                            requestedId = it.DynamicData?.request_id!!
                             startCountdown()
                             activitySDk.toast(it.Msg!!)
                         }else{
@@ -153,7 +155,8 @@ class AadhaarOtpFragment : Fragment() {
     }
 
     private fun setToolBar() {
-        activitySDk.toolbarTitle.text = "Aadhar Verification"
+        activitySDk.toolbarTitle.text = "Aadhaar Verification"
+        activitySDk.toolbar.navigationIcon = null
     }
 
     /*private val aadhaarOtpTextWatcher = object : TextWatcher {

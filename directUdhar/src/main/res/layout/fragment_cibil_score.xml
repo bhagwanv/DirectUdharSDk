@@ -3,6 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -91,10 +95,10 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
                 android:fontFamily="@font/urbanist_regular"
-                android:visibility="gone"
                 android:text="Your credit score for jul 23"
                 android:textColor="@color/text_color_gray_variant2"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                android:visibility="gone" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="wrap_content"
@@ -143,5 +147,6 @@
                 android:textSize="22sp"
                 android:textStyle="bold" />
         </LinearLayout>
+    </ScrollView>
 
 </layout>
