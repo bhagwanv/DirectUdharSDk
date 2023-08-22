@@ -71,9 +71,13 @@ class PanCardFragment : Fragment(), OnClickListener {
     ): View {
         mBinding = FragmentPanCardBinding.inflate(inflater, container, false)
         initView()
+        setToolBar()
         return mBinding.root
     }
-
+    private fun setToolBar() {
+        activitySDk.toolbarTitle.text = "Pan Verification"
+        activitySDk.toolbar.navigationIcon = null
+    }
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectPanCard(this)

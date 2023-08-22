@@ -50,7 +50,14 @@ class CibilScoreFragment : Fragment(), OnClickListener {
     ): View {
         mBinding = FragmentCibilScoreBinding.inflate(inflater, container, false)
         initView()
+        setToolBar()
         return mBinding.root
+    }
+
+    private fun setToolBar() {
+        activitySDk.toolbarTitle.text = "CIBIL information"
+        activitySDk.toolbar.navigationIcon = null
+
     }
 
     private fun initView() {

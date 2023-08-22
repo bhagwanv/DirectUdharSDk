@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentCibilOtpVerificationBinding
@@ -31,7 +32,8 @@ class CibilOtpVerificationFragment : Fragment() {
     private var mBinding: FragmentCibilOtpVerificationBinding? = null
     private val args: CibilOtpVerificationFragmentArgs by navArgs()
     private lateinit var cibilGenerateViewModel: CibilGenerateViewModel
-
+    private var stgOneHitId = ""
+    private var stgTwoHitId = ""
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -52,6 +54,8 @@ class CibilOtpVerificationFragment : Fragment() {
     }
 
     private fun initView() {
+        stgOneHitId = args.stgOneHitId
+        stgTwoHitId = args.stgTwoHitId
         mBinding!!.tvMsg.text = "Enter the verification code we just sent to ${args.mobileNumber}"
         val component = DaggerApplicationComponent.builder().build()
         component.injectCibilOtpVerify(this)
@@ -68,15 +72,14 @@ class CibilOtpVerificationFragment : Fragment() {
                 activitySDk.toast("Please enter otp")
             } else {
                 cibilGenerateViewModel.callOtpVerify(
-                    CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,args.stgOneHitId,args.stgTwoHitId,otp)
+                    CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,stgOneHitId,stgTwoHitId,otp)
                 )
             }
         }
         mBinding!!.tvResend.setOnClickListener {
             startCountdown()
-            /*cibilGenerateViewModel.callOtpVerify(
-                    CibilOTPVerifyRequestModel(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!,args.stgOneHitId,args.stgTwoHitId,otp)
-                )*/
+            cibilGenerateViewModel.callGenOtp(SharePrefs.getInstance(activitySDk)?.getInt(SharePrefs.LEAD_MASTERID)!!)
+
         }
     }
 
@@ -110,10 +113,40 @@ class CibilOtpVerificationFragment : Fragment() {
                 }
             }
         }
+
+        cibilGenerateViewModel.getGenOptResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    activitySDk.toast(it.errorMessage)
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.Result) {
+                            activitySDk.toast(it.Msg)
+                            stgOneHitId = it.Data.stgOneHitId
+                            stgTwoHitId = it.Data.stgTwoHitId
+                        } else {
+                            dialog.accountCreatedDialog(activitySDk,it.Msg,"Yes")
+                            //activitySDk.toast(it.Msg)
+                        }
+                    }
+
+                }
+            }
+        }
+
     }
 
     private fun setToolBar() {
-        activitySDk.toolbarTitle.text = "OTP Verification"
+        activitySDk.toolbarTitle.text = "CIBIL OTP Verification"
+        activitySDk.toolbar.navigationIcon = null
     }
 
     override fun onDestroy() {

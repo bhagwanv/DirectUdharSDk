@@ -119,7 +119,8 @@ class BusinessDetailsFragment : Fragment() {
         mBinding.etGstNumber.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                if (s.length == 15) {
+                if (Utils.isValidGSTNo(s.toString())) {
+                    mBinding.ivRightGST.visibility = View.VISIBLE
                     businessDetailsViewModel.getGSTDetails(s.toString())
                 } else {
                     isGSTVerify = false
