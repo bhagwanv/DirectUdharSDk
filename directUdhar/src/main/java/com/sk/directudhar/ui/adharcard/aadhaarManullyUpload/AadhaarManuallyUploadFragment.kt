@@ -120,6 +120,7 @@ class AadhaarManuallyUploadFragment : Fragment() {
                     val myBitmap = BitmapFactory.decodeFile(filePath)
                     mBinding!!.imAadhaarImage.setImageBitmap(myBitmap)
                     lifecycleScope.launch {
+                        ProgressDialog.instance!!.show(activitySDk)
                         val body = ImageProcessing.uploadMultipart(filePath, activitySDk)
                         aadhaarOtpViewModel.uploadAadhaarImage(
                             body, SharePrefs.getInstance(activitySDk)
@@ -133,9 +134,7 @@ class AadhaarManuallyUploadFragment : Fragment() {
 
         aadhaarOtpViewModel.getUploadImageResponse.observe(viewLifecycleOwner) {
             when (it) {
-                is NetworkResult.Loading -> {
-                    ProgressDialog.instance!!.show(activitySDk)
-                }
+                is NetworkResult.Loading -> {}
 
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
