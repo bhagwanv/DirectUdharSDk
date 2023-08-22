@@ -1,6 +1,7 @@
 package com.sk.directudhar.ui.pancard
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -14,10 +15,10 @@ import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -26,8 +27,6 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentPanCardBinding
-import com.sk.directudhar.image.ImageCaptureActivity
-import com.sk.directudhar.image.ImageProcessing
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
@@ -37,9 +36,11 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import com.sk.directudhar.utils.permission.PermissionHandler
 import com.sk.directudhar.utils.permission.Permissions
 import com.squareup.picasso.Picasso
-import kotlinx.coroutines.launch
 import java.io.File
 import javax.inject.Inject
+import com.github.dhaval2404.imagepicker.ImagePicker
+import com.sk.directudhar.image.ImageProcessing
+import kotlinx.coroutines.launch
 
 class PanCardFragment : Fragment(), OnClickListener {
 
@@ -58,6 +59,7 @@ class PanCardFragment : Fragment(), OnClickListener {
     private lateinit var cameraLauncher: ActivityResultLauncher<Intent>
     lateinit var imageChooseBottomDialog: BottomSheetDialog
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
+    private var startForProfileImageResult: ActivityResultLauncher<Intent>? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -78,6 +80,7 @@ class PanCardFragment : Fragment(), OnClickListener {
         val component = DaggerApplicationComponent.builder().build()
         component.injectPanCard(this)
         panCardViewModel = ViewModelProvider(this, panCardFactory)[PanCardViewModel::class.java]
+        setObserber()
         mBinding.btnVerifyPanCard.setOnClickListener(this)
 
         mBinding.linearLayout.setOnClickListener {
@@ -91,18 +94,50 @@ class PanCardFragment : Fragment(), OnClickListener {
                     val filePath = data!!.getStringExtra(Utils.FILE_PATH).toString()
                     val myBitmap = BitmapFactory.decodeFile(filePath)
                     mBinding.imPanImage.setImageBitmap(myBitmap)
-                    lifecycleScope.launch {
+                    /*lifecycleScope.launch {
                         val body = ImageProcessing.uploadMultipart(filePath, activitySDk)
                         panCardViewModel.uploadPanCard(
                             SharePrefs.getInstance(activitySDk)
                                 ?.getInt(SharePrefs.LEAD_MASTERID)!!,
                             body,
                         )
-                    }
+                    }*/
                 } else if (result.resultCode == AppCompatActivity.RESULT_CANCELED) {
                     Log.d("Result:", "Cancel")
                 }
             }
+
+        startForProfileImageResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                val resultCode = result.resultCode
+                val data = result.data
+
+                if (resultCode == Activity.RESULT_OK) {
+                    //Image Uri will not be null for RESULT_OK
+                    val fileUri = data?.data!!
+
+                    mBinding.imPanImage.visibility = View.VISIBLE
+                    mBinding.imPanImage.setImageURI(fileUri)
+
+                    lifecycleScope.launch {
+                        val body = ImageProcessing.uploadMultipart(data?.data!!.path!!, activitySDk)
+                        panCardViewModel.uploadPanCard(
+                            SharePrefs.getInstance(activitySDk)
+                                ?.getInt(SharePrefs.LEAD_MASTERID)!!,
+                            body,
+                        )
+                    }
+                } else if (resultCode == ImagePicker.RESULT_ERROR) {
+                    activitySDk.toast("${ImagePicker.getError(data)}")
+                } else {
+                    activitySDk.toast("Task Cancelled")
+                }
+            }
+
+        mBinding.etPanNumber.addTextChangedListener(aadhaarTextWatcher)
+    }
+
+    private fun setObserber() {
         panCardViewModel.panCardImageUploadResponse.observe(activitySDk) {
             when (it) {
                 is NetworkResult.Loading -> {}
@@ -167,7 +202,6 @@ class PanCardFragment : Fragment(), OnClickListener {
                 }
             }
         }
-        mBinding.etPanNumber.addTextChangedListener(aadhaarTextWatcher)
     }
 
     private fun askPermission() {
@@ -193,13 +227,25 @@ class PanCardFragment : Fragment(), OnClickListener {
             options,
             object : PermissionHandler() {
                 override fun onGranted() {
-                    val tsLong = System.currentTimeMillis() / 1000
+                    /*val tsLong = System.currentTimeMillis() / 1000
                     var fileName = "panImage_" + tsLong + ".png"
                     val intent = Intent(activitySDk, ImageCaptureActivity::class.java)
                     intent.putExtra(Utils.FILE_NAME, fileName)
                     intent.putExtra(Utils.IS_GALLERY_OPTION, true)
-                    resultLauncher?.launch(intent)
+                    resultLauncher?.launch(intent)*/
+                    ImagePicker.with(activitySDk)
+                        .crop()
+                        .compress(1024)         //Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(
+                            1080,
+                            1080
+                        )  //Final image resolution will be less than 1080 x 1080(Optional)
+                        .createIntent { intent ->
+                            startForProfileImageResult!!.launch(intent)
+                        }
+
                 }
+
                 override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>) {
                     askPermission()
                 }
@@ -209,7 +255,7 @@ class PanCardFragment : Fragment(), OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnVerifyPanCard -> {
-                panCardViewModel.performValidation(mBinding.etPanNumber.text.toString(),imageUrl)
+                panCardViewModel.performValidation(mBinding.etPanNumber.text.toString(), imageUrl)
             }
         }
     }
@@ -225,9 +271,9 @@ class PanCardFragment : Fragment(), OnClickListener {
 
         override fun afterTextChanged(s: Editable?) {
             val panNumber = s.toString().trim()
-            if (Utils.isValidPanCardNo(panNumber)){
+            if (Utils.isValidPanCardNo(panNumber)) {
                 mBinding.ivRight.visibility = View.VISIBLE
-            }else{
+            } else {
                 mBinding.ivRight.visibility = View.GONE
             }
         }
