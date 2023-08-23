@@ -33,6 +33,7 @@ class MainActivitySDk : AppCompatActivity() {
     lateinit var navHostFragment: NavHostFragment
     lateinit var toolbar: Toolbar
     lateinit var toolbarTitle: TextView
+    var privacyPolicyText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -88,7 +89,21 @@ class MainActivitySDk : AppCompatActivity() {
                     ProgressDialog.instance!!.dismiss()
                     SharePrefs.getInstance(this)
                         ?.putString(SharePrefs.TOKEN, it.data.access_token)
+                    mainViewModel.getPrivacyPolicy()
                     mainViewModel.getAccountInitiateResponse(mobilNumber)
+                }
+            }
+        }
+        mainViewModel.getPrivacyPolicyResponse.observe(this) {
+            when (it) {
+                is NetworkResult.Loading -> {}
+                is NetworkResult.Failure -> {}
+                is NetworkResult.Success -> {
+                   it.data.let {
+                       if (it.Result){
+                           privacyPolicyText =it.Data
+                       }
+                   }
                 }
             }
         }
@@ -116,8 +131,10 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                      //  checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                        checkSequenceNo(2)
+                       // checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                        checkSequenceNo(3)
+                       // checkSequenceNo(20034)
+                       //      checkSequenceNo(6)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }

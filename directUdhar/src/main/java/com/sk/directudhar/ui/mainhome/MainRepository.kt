@@ -24,5 +24,12 @@ class MainRepository @Inject constructor(private val apiServices: APIServices) {
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
 
+    suspend fun getPrivacyPolicy()  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.getPrivacyPolicy()
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 
 }

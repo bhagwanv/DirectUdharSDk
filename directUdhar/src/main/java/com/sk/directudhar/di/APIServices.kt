@@ -34,6 +34,7 @@ import com.sk.directudhar.ui.cibilGenerate.CibilGetOTPRequestModel
 import com.sk.directudhar.ui.cibilGenerate.CibilOTPVerifyRequestModel
 import com.sk.directudhar.ui.cibilGenerate.GenCibilOtpResponseModel
 import com.sk.directudhar.ui.mainhome.InitiateAccountModel
+import com.sk.directudhar.ui.mainhome.PrivacyPolicyResponse
 import com.sk.directudhar.ui.mandate.BankListResponse
 import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
 import com.sk.directudhar.ui.mandate.EMandateAddResponseModel
@@ -217,4 +218,6 @@ interface APIServices {
     @POST("api/Borrower/ElectricityImageUpload")
     suspend fun uploadBillManual(@Part body: MultipartBody.Part,@Query("LeadMasterId") leadMasterId:Int): ManuallyUploadBillResponseModel
 
+    @GET("api/Borrower/GetPrivacyPolicy")
+    suspend fun getPrivacyPolicy(): PrivacyPolicyResponse
 }

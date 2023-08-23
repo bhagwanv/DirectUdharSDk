@@ -1,15 +1,15 @@
 package com.sk.directudhar.ui.phoneVerification
 
+import android.R.attr.checked
 import android.content.Context
 import android.graphics.Color
-import android.graphics.Paint
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.text.style.UnderlineSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.CompoundButton
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -24,6 +24,7 @@ import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
+
 
 class PhoneVerificationFragment : Fragment() {
     @Inject
@@ -59,24 +60,34 @@ class PhoneVerificationFragment : Fragment() {
             phoneVerificationFactory
         )[PhoneVerificationViewModel::class.java]
         initView()
+        termsAndConditions()
         return mBinding!!.root
     }
-
-    private fun initView() {
-        mBinding!!.tvTermsOfUse.setOnClickListener {
-
-        }
-         val text = SpannableString("By Proceeding, you agree Terms & Conditions.")
-        //text.setSpan(UnderlineSpan(), 25, 44, 0)
+   fun termsAndConditions(){
+        dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
+            override fun onContinueClicked(isAgree: Boolean) {
+                mBinding!!.cbTermsOfUse.isChecked = isAgree
+            }
+        })
+        val text = SpannableString("By Proceeding, you agree Terms & Conditions.")
         text.setSpan(ForegroundColorSpan(Color.BLUE), 25, 44, 0)
         mBinding!!.tvTermsOfUse.text = text
+        mBinding!!.tvTermsOfUse.setOnClickListener {
+            if (!activitySDk.privacyPolicyText.isNullOrEmpty()){
+                dialog.termsAndAgreementPopUp(activitySDk, activitySDk.privacyPolicyText)
+            }else{
+                activitySDk.toast("No Privacy Policy Found")
+            }
+        }
+    }
+    private fun initView() {
         mobileNumber = SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
         mBinding!!.etMobileNumber.text = mobileNumber
         setToolBar()
         setObserver()
 
-        mBinding!!.cbTermsOfUse.setOnClickListener {
-            if (mBinding!!.cbTermsOfUse.isChecked) {
+        mBinding!!.cbTermsOfUse.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.isChecked) {
                 mBinding!!.btnGenOtp.isClickable = true
                 mBinding!!.btnGenOtp.isEnabled = true
                 val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
@@ -89,6 +100,7 @@ class PhoneVerificationFragment : Fragment() {
                 mBinding!!.btnGenOtp.backgroundTintList = tintList
             }
         }
+
         mBinding!!.btnGenOtp.setOnClickListener {
             var mobileNumber = mBinding!!.etMobileNumber.text.toString()
             if (mobileNumber.isNullOrEmpty()) {
@@ -126,12 +138,7 @@ class PhoneVerificationFragment : Fragment() {
                             findNavController().navigate(action)
                         } else {
                             //activitySDk.toast(it.Msg)
-                            dialog.alertDialog(activitySDk,it.Msg,"Yes")
-                           /* dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
-                                override fun onContinueClicked() {
-
-                                }
-                            })*/
+                            dialog.alertDialog(activitySDk, it.Msg, "Yes")
                         }
                     }
 

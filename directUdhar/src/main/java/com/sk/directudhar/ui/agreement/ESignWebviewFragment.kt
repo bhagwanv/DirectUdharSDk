@@ -9,11 +9,14 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import android.widget.ProgressBar
+import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.sk.directudhar.databinding.FragmentEsignWebviewBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import kotlinx.coroutines.launch
 
 
 class ESignWebviewFragment : Fragment() {
@@ -63,7 +66,7 @@ class ESignWebviewFragment : Fragment() {
         )
         mBinding!!.webview.webViewClient = object : WebViewClient() {
             override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
-                println("Start>>>>>>>>>>>>>>>>>")
+                println("Start>>>>>>>>>>>>>>>>>"+url)
                 view.loadUrl(url)
                 return false
             }
@@ -71,23 +74,29 @@ class ESignWebviewFragment : Fragment() {
             override fun onPageFinished(view: WebView, url: String) {
                 super.onPageFinished(view, url)
                // mBinding!!.pBar.visibility = View.GONE
-                println("finish>>>>>>>>>>>>")
             }
 
             override fun onPageCommitVisible(view: WebView?, url: String?) {
                 super.onPageCommitVisible(view, url)
                 mBinding!!.pBar.visibility = View.GONE
-                println("finish1212>>>>>>>>>>>>")
             }
 
         }
     }
-    private class JavaScriptInterface internal constructor(private val activitySDk: MainActivitySDk) {
+    private class JavaScriptInterface internal constructor(private val activitySDk: MainActivitySDk,) {
         @JavascriptInterface
         fun onSuccess(data: Boolean) {
-            activitySDk.checkSequenceNo(17)
+            activitySDk.lifecycleScope.launch {
+                activitySDk.checkSequenceNo(17)
+            }
+            println("onSuccess>>>>>>>>>>>>>>>>>>>>>>>>"+data)
+          /*  val action =
+                ESignWebviewFragmentDirections.actionESignWebviewFragmentToApprovalPendingFragment()
+            findNavController().navigate(action)*/
+            //activitySDk.checkSequenceNo(17)
         }
     }
+
     override fun onDestroy() {
         activitySDk.toolbar.visibility=View.VISIBLE
         super.onDestroy()

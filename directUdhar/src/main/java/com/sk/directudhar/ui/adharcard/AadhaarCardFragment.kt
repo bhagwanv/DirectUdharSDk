@@ -1,9 +1,12 @@
 package com.sk.directudhar.ui.adharcard
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
+import android.text.SpannableString
 import android.text.TextWatcher
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,6 +19,7 @@ import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadhaarCardBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
@@ -29,7 +33,8 @@ class AadhaarCardFragment : Fragment() {
     private var mBinding: FragmentAadhaarCardBinding? = null
     private lateinit var aadhaarCardViewModel: AadhaarCardViewModel
     var aadharNo: String = ""
-
+    @Inject
+    lateinit var dialog: AppDialogClass
     @Inject
     lateinit var aadhaarCardFactory: AadhaarCardFactory
 
@@ -47,9 +52,26 @@ class AadhaarCardFragment : Fragment() {
             mBinding = FragmentAadhaarCardBinding.inflate(inflater, container, false)
         }
         initView()
+        termsAndConditions()
         return mBinding!!.root
     }
-
+    fun termsAndConditions(){
+        dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
+            override fun onContinueClicked(isAgree: Boolean) {
+                mBinding!!.cbTermsOfUse.isChecked = isAgree
+            }
+        })
+        val text = SpannableString("By Proceeding, you agree Terms & Conditions.")
+        text.setSpan(ForegroundColorSpan(Color.BLUE), 25, 44, 0)
+        mBinding!!.tvTermsOfUse.text = text
+        mBinding!!.tvTermsOfUse.setOnClickListener {
+            if (!activitySDk.privacyPolicyText.isNullOrEmpty()){
+                dialog.termsAndAgreementPopUp(activitySDk, activitySDk.privacyPolicyText)
+            }else{
+                activitySDk.toast("No Privacy Policy Found")
+            }
+        }
+    }
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectAadhaarCard(this)
@@ -58,11 +80,12 @@ class AadhaarCardFragment : Fragment() {
 
         setToolBar()
         setObserver()
-        mBinding!!.cbTermsOfUse.setOnClickListener {
+
+        mBinding!!.cbTermsOfUse.setOnCheckedChangeListener { buttonView, isChecked ->
             aadharNo = mBinding!!.etAadhaarNumber.text.toString().trim()
             aadharNo = aadharNo.replace(" ","")
             if (!aadharNo.isNullOrEmpty()) {
-                if (mBinding!!.cbTermsOfUse.isChecked) {
+                if (buttonView.isChecked) {
                     mBinding!!.btnVerifyAadhaar.isClickable = true
                     mBinding!!.btnVerifyAadhaar.isEnabled = true
                     val tintList =
@@ -80,6 +103,7 @@ class AadhaarCardFragment : Fragment() {
                 activitySDk.toast("Please enter aadhaar number")
             }
         }
+
         mBinding!!.btnVerifyAadhaar.setOnClickListener {
             aadharNo = mBinding!!.etAadhaarNumber.text.toString().trim()
             aadharNo = aadharNo.replace(" ","")
