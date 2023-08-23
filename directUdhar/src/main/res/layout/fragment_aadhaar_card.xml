@@ -10,12 +10,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
+            android:layout_margin="@dimen/screen_horizantal_margin_16dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="21dp"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -50,59 +51,64 @@
                         android:text="Verify the Aadhar number and name against the UIDAI"
                         android:textColor="@color/text_color_black_variant1"
                         android:fontFamily="@font/urbanist_regular"
+                        android:layout_marginTop="8dp"
                         android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
 
-            <androidx.cardview.widget.CardView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="4dp"
-                android:layout_marginVertical="24dp"
-                android:background="@color/white1"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="2dp">
-
-                <LinearLayout
+                android:layout_marginTop="22dp">
+                <androidx.cardview.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="10dp">
+                    android:layout_marginHorizontal="4dp"
+                    android:layout_marginVertical="24dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardElevation="2dp">
 
-                    <androidx.appcompat.widget.AppCompatTextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:fontFamily="@font/urbanist_regular"
-                        android:textColor="@color/text_color_black_variant1"
-                        android:textSize="14sp"
-                        android:text="Aadhaar" />
-
-
-                    <com.sk.directudhar.ui.adharcard.AadhaarFormattingTextWatcher
-                        android:id="@+id/etAadhaarNumber"
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="10dp"
-                        android:background="@drawable/background_edittext"
-                        android:hint="1234 1234 1234"
-                        android:fontFamily="@font/urbanist_medium"
-                        android:inputType="numberSigned"
-                        android:maxLines="1"
-                        app:groupLength="4"
-                        app:numberOfGroups="3"
-                        android:textSize="16sp" />
+                        android:orientation="vertical"
+                        android:background="@color/white1"
+                        android:padding="10dp">
 
-                    <!-- <com.example.myapplication.FormattedNumberEditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:groupLength="4"
-        app:groupSeparator=" "
-        app:numberOfGroups="5"
-        app:prefix="LT" />-->
+                        <androidx.appcompat.widget.AppCompatTextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:fontFamily="@font/urbanist_regular"
+                            android:textColor="@color/text_color_black_variant1"
+                            android:textSize="14sp"
+                            android:text="Aadhaar" />
 
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
 
+                        <com.sk.directudhar.ui.adharcard.AadhaarFormattingTextWatcher
+                            android:id="@+id/etAadhaarNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/background_edittext"
+                            android:hint="1234 1234 1234"
+                            android:fontFamily="@font/urbanist_medium"
+                            android:inputType="numberSigned"
+                            android:maxLines="1"
+                            app:groupLength="4"
+                            app:numberOfGroups="3"
+                            android:textSize="16sp" />
+
+                        <!-- <com.example.myapplication.FormattedNumberEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:groupLength="4"
+            app:groupSeparator=" "
+            app:numberOfGroups="5"
+            app:prefix="LT" />-->
+
+                    </LinearLayout>
+                </androidx.cardview.widget.CardView>
+            </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/tvManuallyUploadAadhaar"
@@ -110,6 +116,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="Manual upload"
+                android:layout_marginTop="16dp"
                 android:fontFamily="@font/urbanist_semibold"
                 android:textColor="@color/colorPrimary"
                 android:textSize="16sp" />
@@ -118,7 +125,7 @@
                 android:id="@+id/rl_cb_terms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
+                android:layout_marginTop="29dp"
                 android:orientation="horizontal">
 
                 <CheckBox
@@ -126,6 +133,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:backgroundTint="@color/holo_gray_dark"
+                    android:layout_marginStart="-8dp"
                     android:checked="false" />
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -134,7 +142,7 @@
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/urbanist_regular"
                     android:text="By Proceeding, you agree Terms &amp; Conditions."
-                    android:textColor="@color/holo_gray_dark" />
+                    android:textColor="@color/bg_color_gray_variant1" />
             </LinearLayout>
 
             <androidx.appcompat.widget.AppCompatButton
@@ -143,6 +151,7 @@
                 android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
+                android:layout_marginTop="27dp"
                 android:background="@drawable/bg_squre_btn_corner"
                 android:backgroundTint="@color/bg_color_gray_variant1"
                 android:gravity="center"

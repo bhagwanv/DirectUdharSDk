@@ -68,7 +68,7 @@ class PhoneVerificationFragment : Fragment() {
         }
          val text = SpannableString("By Proceeding, you agree Terms & Conditions.")
         //text.setSpan(UnderlineSpan(), 25, 44, 0)
-        text.setSpan(ForegroundColorSpan(Color.BLUE), 25, 44, 0)
+        text.setSpan(ForegroundColorSpan(ContextCompat.getColor(activitySDk, R.color.blue_variant1)), 25, 44, 0)
         mBinding!!.tvTermsOfUse.text = text
         mobileNumber = SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
         mBinding!!.etMobileNumber.text = mobileNumber

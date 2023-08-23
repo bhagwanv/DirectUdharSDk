@@ -9,13 +9,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="32dp"
+            android:layout_margin="@dimen/screen_horizantal_margin_16dp"
             android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_marginTop="21dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/ivU"
@@ -48,6 +48,7 @@
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_color_black_variant1"
                         android:textFontWeight="2"
+                        android:layout_marginTop="8dp"
                         android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
@@ -55,13 +56,12 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_marginTop="71dp"
+                android:orientation="vertical">
                 <com.sk.directudhar.utils.DirectUdhaarOtpFourDigitView
                     android:id="@+id/customOTPView"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp" />
+                    android:layout_height="wrap_content" />
 
             </LinearLayout>
 
@@ -69,32 +69,36 @@
                 android:id="@+id/rl_cb_terms"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginVertical="10dp"
-                android:layout_marginBottom="24dp"
+                android:layout_marginTop="71dp"
+                android:gravity="center"
                 android:orientation="horizontal">
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:justificationMode="inter_word"
                     android:text="If you didn't received code!"
-                    android:textColor="@color/holo_gray_dark" />
+                    android:fontFamily="@font/urbanist_regular"
+                    android:textSize="12sp"
+                    android:textColor="@color/text_color_black_variant1" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvResend"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:justificationMode="inter_word"
                     android:visibility="gone"
                     android:text="Resend"
+                    android:textStyle="bold"
+                    android:fontFamily="@font/urbanist_semibold"
+                    android:textSize="12sp"
                     android:textColor="@color/colorAccent" />
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/tvTimer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="5dp"
-                    android:justificationMode="inter_word"
                     android:text="00:00"
+                    android:fontFamily="@font/urbanist_regular"
+                    android:textSize="12sp"
                     android:textColor="@color/colorAccent" />
             </LinearLayout>
 
@@ -107,6 +111,7 @@
                 android:background="@drawable/bg_squre_btn_corner"
                 android:gravity="center"
                 android:maxLines="1"
+                android:layout_marginTop="28dp"
                 android:paddingHorizontal="16dp"
                 android:text="Verify OTP"
                 android:textAllCaps="false"

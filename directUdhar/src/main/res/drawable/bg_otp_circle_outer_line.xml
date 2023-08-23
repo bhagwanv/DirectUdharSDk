@@ -3,7 +3,7 @@
     <corners android:radius="20dp" /> <!-- Radius of rounded corners -->
     <stroke
         android:width="0.5dp"
-        android:color="@color/text_color_gray_variant2" />
+        android:color="@color/white1" />
 
     <padding
         android:bottom="8dp"
