@@ -46,7 +46,12 @@ class EAgreementOtpFragment : Fragment() {
     ): View? {
         mBinding = FragmentAgreementOtpBinding.inflate(inflater, container, false)
         initView()
+        setToolBar()
         return mBinding.root
+    }
+    private fun setToolBar() {
+        activitySDk.toolbarTitle.text = "OTP Verification"
+        activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {

@@ -1,6 +1,7 @@
 package com.sk.directudhar.ui.adharcard.aadhaarManullyUpload
 
 import android.Manifest
+import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
@@ -10,7 +11,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CompoundButton
+import androidx.activity.result.ActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -19,10 +20,10 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadhaarManuallyUplaodBinding
-import com.sk.directudhar.image.ImageCaptureActivity
 import com.sk.directudhar.image.ImageProcessing
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFactory
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpViewModel
@@ -46,6 +47,8 @@ class AadhaarManuallyUploadFragment : Fragment() {
     private lateinit var aadhaarOtpViewModel: AadhaarOtpViewModel
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
     private var isUploadAadhaar = false
+    private var startForProfileImageResult: ActivityResultLauncher<Intent>? = null
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -118,7 +121,7 @@ class AadhaarManuallyUploadFragment : Fragment() {
                     val data: Intent? = result.data
                     val filePath = data!!.getStringExtra(Utils.FILE_PATH).toString()
                     val myBitmap = BitmapFactory.decodeFile(filePath)
-                    mBinding!!.imAadhaarImage.setImageBitmap(myBitmap)
+                    /*mBinding!!.imAadhaarImage.setImageBitmap(myBitmap)
                     lifecycleScope.launch {
                         ProgressDialog.instance!!.show(activitySDk)
                         val body = ImageProcessing.uploadMultipart(filePath, activitySDk)
@@ -126,9 +129,34 @@ class AadhaarManuallyUploadFragment : Fragment() {
                             body, SharePrefs.getInstance(activitySDk)
                                 ?.getInt(SharePrefs.LEAD_MASTERID)!!
                         )
-                    }
+                    }*/
                 } else if (result.resultCode == AppCompatActivity.RESULT_CANCELED) {
                     Log.d("Result:", "Cancel")
+                }
+            }
+
+        startForProfileImageResult =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result: ActivityResult ->
+                val resultCode = result.resultCode
+                val data = result.data
+
+                if (resultCode == Activity.RESULT_OK) {
+                    //Image Uri will not be null for RESULT_OK
+                    val fileUri = data?.data!!
+                    mBinding!!.imAadhaarImage.visibility = View.VISIBLE
+                    mBinding!!.imAadhaarImage.setImageURI(fileUri)
+                    lifecycleScope.launch {
+                        ProgressDialog.instance!!.show(activitySDk)
+                        val body = ImageProcessing.uploadMultipart(data.data!!.path!!, activitySDk)
+                        aadhaarOtpViewModel.uploadAadhaarImage(
+                            body, SharePrefs.getInstance(activitySDk)
+                                ?.getInt(SharePrefs.LEAD_MASTERID)!!
+                        )
+                    }
+                } else if (resultCode == ImagePicker.RESULT_ERROR) {
+                    activitySDk.toast("${ImagePicker.getError(data)}")
+                } else {
+                    activitySDk.toast("Task Cancelled")
                 }
             }
 
@@ -190,12 +218,22 @@ class AadhaarManuallyUploadFragment : Fragment() {
             options,
             object : PermissionHandler() {
                 override fun onGranted() {
-                    val tsLong = System.currentTimeMillis() / 1000
+                    /*val tsLong = System.currentTimeMillis() / 1000
                     var fileName = "aadhaarImage_" + tsLong + ".png"
                     val intent = Intent(activitySDk, ImageCaptureActivity::class.java)
                     intent.putExtra(Utils.FILE_NAME, fileName)
                     intent.putExtra(Utils.IS_GALLERY_OPTION, false)
-                    resultLauncher?.launch(intent)
+                    resultLauncher?.launch(intent)*/
+                    ImagePicker.with(activitySDk)
+                        .crop()
+                        .compress(1024)         //Final image size will be less than 1 MB(Optional)
+                        .maxResultSize(
+                            1080,
+                            1080
+                        )  //Final image resolution will be less than 1080 x 1080(Optional)
+                        .createIntent { intent ->
+                            startForProfileImageResult!!.launch(intent)
+                        }
                 }
 
                 override fun onDenied(context: Context?, deniedPermissions: ArrayList<String>) {
