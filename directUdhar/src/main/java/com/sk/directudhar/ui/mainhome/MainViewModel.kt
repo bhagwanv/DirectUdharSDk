@@ -9,6 +9,7 @@ import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.data.TokenResponse
 import com.sk.directudhar.utils.Network
+import com.sk.directudhar.utils.SingleLiveEvent
 import com.sk.directudhar.utils.Utils.Companion.toast
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -24,6 +25,8 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
     private var _initiateResponse = MutableLiveData<NetworkResult<JsonObject>>()
     val accountInitiateResponse: LiveData<NetworkResult<JsonObject>> = _initiateResponse
 
+    private var putPrivacyPolicyResponse = SingleLiveEvent<NetworkResult<PrivacyPolicyResponse>>()
+    val getPrivacyPolicyResponse: SingleLiveEvent<NetworkResult<PrivacyPolicyResponse>> = putPrivacyPolicyResponse
     fun callToken(password: String, secretkey: String, apikey: String) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
@@ -41,6 +44,18 @@ class MainViewModel @Inject constructor(private val repository: MainRepository) 
             viewModelScope.launch {
                 repository.getAccountInitiate(mobilNumber).collect {
                     _initiateResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun getPrivacyPolicy() {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.getPrivacyPolicy().collect {
+                    putPrivacyPolicyResponse.postValue(it)
                 }
             }
         } else {

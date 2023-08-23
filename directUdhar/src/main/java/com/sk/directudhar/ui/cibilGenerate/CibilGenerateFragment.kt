@@ -1,7 +1,10 @@
 package com.sk.directudhar.ui.cibilGenerate
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -51,9 +54,26 @@ class CibilGenerateFragment : Fragment() {
             )[CibilGenerateViewModel::class.java]
         }
         initView()
+        termsAndConditions()
         return mBinding!!.root
     }
-
+    fun termsAndConditions(){
+        dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
+            override fun onContinueClicked(isAgree: Boolean) {
+                mBinding!!.cbTermsOfUse.isChecked = isAgree
+            }
+        })
+        val text = SpannableString("I have read and agree to Credit Score Terms of Use and hereby appoint Direct Udhaar as my authorised representative to receive my credit...")
+        text.setSpan(ForegroundColorSpan(Color.BLUE), 69, 83, 0)
+        mBinding!!.tvTermsOfUse.text = text
+        mBinding!!.tvTermsOfUse.setOnClickListener {
+            if (!activitySDk.privacyPolicyText.isNullOrEmpty()){
+                dialog.termsAndAgreementPopUp(activitySDk, activitySDk.privacyPolicyText)
+            }else{
+                activitySDk.toast("No Privacy Policy Found")
+            }
+        }
+    }
     private fun initView() {
         mBinding!!.etMobileNumber.text = SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
         setToolBar()
@@ -68,9 +88,8 @@ class CibilGenerateFragment : Fragment() {
                 activitySDk.toast("Please Check Term and Condition")
             }
         }
-
-        mBinding!!.cbTermsOfUse.setOnClickListener {
-            if (mBinding!!.cbTermsOfUse.isChecked) {
+        mBinding!!.cbTermsOfUse.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (buttonView.isChecked) {
                 mBinding!!.btnGenerateCibil.isClickable = true
                 mBinding!!.btnGenerateCibil.isEnabled = true
                 val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)

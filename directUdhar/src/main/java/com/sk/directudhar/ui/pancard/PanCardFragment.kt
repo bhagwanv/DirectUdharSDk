@@ -178,7 +178,7 @@ class PanCardFragment : Fragment(), OnClickListener {
                 val model = UpdatePanInfoRequestModel(
                     SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID),
                     mBinding.etPanNumber.text.toString().trim(),
-                    imageUrl,
+                    mBinding.etFatherName.text.toString().trim(),
                 )
                 panCardViewModel.updatePanInfo(model)
             }
@@ -259,7 +259,7 @@ class PanCardFragment : Fragment(), OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnVerifyPanCard -> {
-                panCardViewModel.performValidation(mBinding.etPanNumber.text.toString(), imageUrl)
+                panCardViewModel.performValidation(mBinding.etPanNumber.text.toString(), mBinding.etFatherName.text.toString())
             }
         }
     }

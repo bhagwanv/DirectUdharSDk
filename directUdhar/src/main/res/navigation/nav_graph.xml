@@ -292,7 +292,9 @@
         <argument
             android:name="URL"
             app:argType="string" />
-
+        <action
+            android:id="@+id/action_ESignWebviewFragment_to_ApprovalPendingFragment"
+            app:destination="@id/ApprovalPendingFragment" />
     </fragment>
     <fragment
         android:id="@+id/cibilGenerateFragment"

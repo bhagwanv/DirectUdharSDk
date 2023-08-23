@@ -61,13 +61,13 @@ class PanCardViewModel @Inject constructor(private val repository: PanCardReposi
 
     }
 
-    fun performValidation(panNumber: String,imageUrl:String) {
+    fun performValidation(panNumber: String,fatherName:String) {
         if (panNumber.isNullOrEmpty()) {
             panCardResult.value = "Please Enter PanNumber"
         } else if (!Utils.isValidPanCardNo(panNumber)) {
             panCardResult.value = "Please Enter Valid PanNumber"
-        } else if (imageUrl.isNullOrEmpty()) {
-            panCardResult.value = "Please upload Pan card image"
+        } else if (fatherName.isNullOrEmpty()) {
+            panCardResult.value = "Please enter father name"
         }else {
             panCardResult.value = SuccessType
         }
