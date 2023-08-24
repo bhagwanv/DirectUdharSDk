@@ -1,6 +1,7 @@
 package com.sk.directudhar.ui.mainhome
 
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -33,6 +34,7 @@ class MainActivitySDk : AppCompatActivity() {
     lateinit var navHostFragment: NavHostFragment
     lateinit var toolbar: Toolbar
     lateinit var toolbarTitle: TextView
+    lateinit var toolbarBackBtn: ImageView
     var privacyPolicyText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -58,6 +60,7 @@ class MainActivitySDk : AppCompatActivity() {
         navController = navHostFragment.navController
         toolbar = findViewById(R.id.toolbar)
         toolbarTitle = findViewById(R.id.toolbarTitle)
+        toolbarBackBtn = findViewById(R.id.backBtnToolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setDisplayShowHomeEnabled(false)
