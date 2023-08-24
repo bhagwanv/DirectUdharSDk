@@ -191,9 +191,6 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     it.data.let {
                         if (it.Result) {
                             activitySDk.toast(it.Msg)
-                            /*val action =
-                                ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
-                            findNavController().navigate(action)*/
                             activitySDk.checkSequenceNo(it.DynamicData.SequenceNo)
                         } else {
                             activitySDk.toast(it.Msg)
@@ -287,7 +284,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         when (v.id) {
             R.id.btnNext -> {
                 // println("NavType>>${args.navType}")
-                val firstName = mBinding!!.etFirstName.text.toString()
+                /*val firstName = mBinding!!.etFirstName.text.toString()
                 val lastName = mBinding!!.etLastName.text.toString()
                 val mobileNo = mBinding!!.etAlternateNumber.text.toString()
                 val city = mBinding!!.etCity.text.toString()
@@ -310,13 +307,8 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     state,
                     dateOfBirth
                 )
-                /* val action =
-                     ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
-                 findNavController().navigate(action)*/
-                /*  val action = ApplyLoanFragmentDirections.(
-                          )
-                  findNavController().navigate(action)*/
-                applyLoanViewModel.performValidation()
+                applyLoanViewModel.performValidation()*/
+                activitySDk.checkSequenceNo(2)
             }
         }
     }

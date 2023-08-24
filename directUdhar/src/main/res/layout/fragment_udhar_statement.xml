@@ -31,7 +31,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnDownload"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="58dp"
                 android:layout_alignParentBottom="true"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="16dp"
