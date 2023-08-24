@@ -5,8 +5,11 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.graphics.BitmapFactory
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -28,6 +31,7 @@ import com.sk.directudhar.image.ImageProcessing
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFactory
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpViewModel
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
@@ -42,6 +46,10 @@ import javax.inject.Inject
 class AadhaarManuallyUploadFragment : Fragment() {
     @Inject
     lateinit var aadhaarOtpFactory: AadhaarOtpFactory
+
+    @Inject
+    lateinit var dialog: AppDialogClass
+
     private lateinit var activitySDk: MainActivitySDk
     private var mBinding: FragmentAadhaarManuallyUplaodBinding? = null
     private lateinit var aadhaarOtpViewModel: AadhaarOtpViewModel
@@ -72,10 +80,13 @@ class AadhaarManuallyUploadFragment : Fragment() {
             ViewModelProvider(this, aadhaarOtpFactory)[AadhaarOtpViewModel::class.java]
         setToolBar()
         setObserver()
+        termsAndConditions()
         mBinding!!.btnVerifyAadhaar.setOnClickListener {
             if (isUploadAadhaar) {
                 val action =
-                    AadhaarManuallyUploadFragmentDirections.actionAadhaarManuallyUploadFragmentToKycSuccessFragment("ByManuallyUpload")
+                    AadhaarManuallyUploadFragmentDirections.actionAadhaarManuallyUploadFragmentToKycSuccessFragment(
+                        "ByManuallyUpload"
+                    )
                 findNavController().navigate(action)
             } else {
                 val action =
@@ -107,7 +118,24 @@ class AadhaarManuallyUploadFragment : Fragment() {
         mBinding!!.linearLayout.setOnClickListener {
             askPermission()
         }
+    }
 
+    fun termsAndConditions(){
+        dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
+            override fun onContinueClicked(isAgree: Boolean) {
+                mBinding!!.cbTermsOfUse.isChecked = isAgree
+            }
+        })
+        val text = SpannableString("By Proceeding, you agree Terms & Conditions.")
+        text.setSpan(ForegroundColorSpan(Color.BLUE), 25, 44, 0)
+        mBinding!!.tvTermsOfUse.text = text
+        mBinding!!.tvTermsOfUse.setOnClickListener {
+            if (!activitySDk.privacyPolicyText.isNullOrEmpty()){
+                dialog.termsAndAgreementPopUp(activitySDk, activitySDk.privacyPolicyText)
+            }else{
+                activitySDk.toast("No Privacy Policy Found")
+            }
+        }
     }
 
     private fun setToolBar() {

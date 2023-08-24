@@ -5,91 +5,136 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="none"
         android:background="@color/bg_color_white">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="32dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/screen_horizantal_margin_16dp"
             android:orientation="vertical">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etFirstName"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="First name"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:padding="16dp">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etLastName"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="First name"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="Last name"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:padding="16dp">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etAlternateNumber"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="Last name"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="Alternet Mobile Number*"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:padding="16dp">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etEmailId"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etAlternateNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="Alternet Mobile Number*"
+                    android:maxLength="10"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="E-mail ID*"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:padding="16dp">
 
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etEmailId"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="E-mail ID*"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etFlatNo"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="Flat/ Building Number*"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:padding="16dp">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etPinCode"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etFlatNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="Flat/ Building Number*"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="Pin Code*"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:padding="16dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etPinCode"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="Pin Code*"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginVertical="10dp"
                 android:background="@drawable/background_edittext"
                 android:visibility="gone">
@@ -114,29 +159,44 @@
                     android:background="@drawable/arrow_up" />
             </RelativeLayout>
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etState"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="State*"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:padding="16dp">
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etCity"
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etState"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="State*"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="City*"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:padding="16dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etCity"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="City*"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
@@ -220,17 +280,18 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp">
+                android:layout_marginTop="36dp">
 
                 <CheckBox
                     android:id="@+id/cbTermsOfUse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="3dp"
+                    android:layout_marginStart="-8dp"
                     android:backgroundTint="@color/holo_gray_dark"
                     android:checked="false" />
 
                 <TextView
+                    android:id="@+id/tvTermsOfUse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -238,19 +299,20 @@
                     android:layout_toRightOf="@+id/cbCheck"
                     android:text="By Proceeding, you agree Terms &amp;  Conditions. " />
             </LinearLayout>
+
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnNext"
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="30dp"
-                android:layout_marginBottom="16dp"
+                android:layout_marginTop="33dp"
+                android:layout_marginBottom="33dp"
                 android:background="@drawable/bg_squre_btn_corner"
                 android:backgroundTint="@color/bg_color_gray_variant1"
-                android:fontFamily="@font/urbanist_bold"
-                android:gravity="center"
                 android:clickable="false"
                 android:enabled="false"
+                android:fontFamily="@font/urbanist_bold"
+                android:gravity="center"
                 android:maxLines="1"
                 android:paddingHorizontal="16dp"
                 android:text="Next"

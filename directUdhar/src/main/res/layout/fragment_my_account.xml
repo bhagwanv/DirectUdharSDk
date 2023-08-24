@@ -287,7 +287,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnUpgrade"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:layout_marginBottom="16dp"
@@ -302,7 +302,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnViewStatement"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@drawable/bg_squre_btn_corner"
                 android:gravity="center"
@@ -315,7 +315,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnContinueShopping"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_squre_btn_corner"
@@ -329,7 +329,7 @@
             <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnEmandateRequest"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
+                android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="16dp"
                 android:background="@drawable/bg_squre_btn_corner"

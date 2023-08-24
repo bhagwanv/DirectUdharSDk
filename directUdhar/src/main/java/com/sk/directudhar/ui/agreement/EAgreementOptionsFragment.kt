@@ -53,8 +53,25 @@ class EAgreementOptionsFragment : Fragment() {
             mBinding = FragmentEAgreementOptionsBinding.inflate(inflater, container, false)
         }
         initView()
+        setToolBar()
         return mBinding!!.root
     }
+
+
+    private fun setToolBar() {
+        activitySDk.toolbarTitle.text = "Agreement"
+        activitySDk.toolbar.navigationIcon = null
+        activitySDk.toolbarBackBtn.visibility = View.VISIBLE
+        activitySDk.toolbarBackBtn.setOnClickListener {
+            activitySDk.checkSequenceNo(10037)
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        activitySDk.toolbarBackBtn.visibility = View.GONE
+    }
+
 
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
@@ -66,7 +83,7 @@ class EAgreementOptionsFragment : Fragment() {
             activitySDk
         )?.getInt(SharePrefs.LEAD_MASTERID)!!
         //mBinding!!.radioOTP.setOnCheckedChangeListener(this)
-       // mBinding!!.radioAadhaar.setOnCheckedChangeListener(this)
+        // mBinding!!.radioAadhaar.setOnCheckedChangeListener(this)
 
         mBinding!!.btnNext.setOnClickListener {
             if (verificationType.isEmpty()) {
@@ -163,7 +180,8 @@ class EAgreementOptionsFragment : Fragment() {
                             mBinding!!.ivUncheck.visibility = View.GONE
                             mBinding!!.ivUncheckOTP.visibility = View.VISIBLE
                             mBinding!!.ivRightOTP.visibility = View.GONE
-                            val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                            val tintList =
+                                ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
                             mBinding!!.btnNext.backgroundTintList = tintList
                             mBinding!!.cvAadhaarEsign.visibility = View.VISIBLE
                             mBinding!!.cvOtpVerification.visibility = View.GONE
@@ -173,7 +191,8 @@ class EAgreementOptionsFragment : Fragment() {
                             mBinding!!.ivUncheck.visibility = View.VISIBLE
                             mBinding!!.ivUncheckOTP.visibility = View.GONE
                             mBinding!!.ivRightOTP.visibility = View.VISIBLE
-                            val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                            val tintList =
+                                ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
                             mBinding!!.btnNext.backgroundTintList = tintList
                             mBinding!!.cvAadhaarEsign.visibility = View.GONE
                             mBinding!!.cvOtpVerification.visibility = View.VISIBLE

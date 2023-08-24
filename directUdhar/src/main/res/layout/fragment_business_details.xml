@@ -4,36 +4,36 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/bg_color_white">
+        android:layout_height="wrap_content"
+        android:background="@color/bg_color_white"
+        android:scrollbars="none">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginHorizontal="30dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginBottom="60dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/screen_horizantal_margin_16dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_linearlayout"
-                android:orientation="horizontal">
+                android:layout_height="58dp"
+                android:background="@drawable/background_edittext"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="16dp">
 
                 <androidx.appcompat.widget.AppCompatEditText
                     android:id="@+id/etGstNumber"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="0.4"
-                    android:background="@drawable/background_linearlayout"
+                    android:background="@null"
                     android:fontFamily="@font/urbanist_medium"
                     android:hint="GST Number"
                     android:inputType="textCapCharacters"
-                    android:textAllCaps="true"
                     android:maxLength="15"
                     android:maxLines="1"
-                    android:padding="16dp"
+                    android:textAllCaps="true"
                     android:textSize="12sp" />
 
                 <androidx.appcompat.widget.AppCompatImageView
@@ -46,41 +46,52 @@
                     android:visibility="gone" />
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etBusinessName"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="Business Name"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="16dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etBusinessName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="Business Name"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/background_edittext">
+                android:layout_height="58dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_edittext"
+                android:gravity="center_vertical"
+                android:paddingVertical="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="24dp">
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spBusinessType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:background="@android:color/transparent"
-                    android:hint="Bank"
                     android:inputType="none"
                     android:spinnerMode="dropdown"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
                     android:background="@drawable/arrow_up" />
 
             </RelativeLayout>
@@ -89,18 +100,28 @@
                 android:id="@+id/llBusinessType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:orientation="vertical">
-                <androidx.appcompat.widget.AppCompatEditText
-                    android:id="@+id/etBusinessTypeName"
+
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="58dp"
                     android:background="@drawable/background_edittext"
-                    android:fontFamily="@font/urbanist_medium"
-                    android:hint="Proprietor Name"
-                    android:maxLines="1"
-                    android:padding="16dp"
-                    android:textSize="12sp" />
+                    android:gravity="center_vertical"
+                    android:paddingHorizontal="24dp"
+                    android:paddingVertical="16dp">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etBusinessTypeName"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:fontFamily="@font/urbanist_medium"
+                        android:hint="Proprietor Name"
+                        android:maxLines="1"
+                        android:textSize="12sp" />
+
+                </LinearLayout>
 
                 <RelativeLayout
                     android:id="@+id/rlPanNumber"
@@ -109,19 +130,28 @@
                     android:layout_marginTop="10dp"
                     android:visibility="visible">
 
-                    <androidx.appcompat.widget.AppCompatEditText
-                        android:id="@+id/etBusinessTypePanNumber"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
+                        android:layout_height="58dp"
                         android:background="@drawable/background_edittext"
-                        android:fontFamily="@font/urbanist_medium"
-                        android:hint="Pan Number"
-                        android:inputType="textCapCharacters"
-                        android:textAllCaps="true"
-                        android:maxLength="10"
-                        android:maxLines="1"
-                        android:padding="16dp"
-                        android:textSize="12sp" />
+                        android:gravity="center_vertical"
+                        android:paddingHorizontal="24dp"
+                        android:paddingVertical="16dp">
+
+                        <androidx.appcompat.widget.AppCompatEditText
+                            android:id="@+id/etBusinessTypePanNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@null"
+                            android:fontFamily="@font/urbanist_medium"
+                            android:hint="Pan Number"
+                            android:inputType="textCapCharacters"
+                            android:maxLength="10"
+                            android:maxLines="1"
+                            android:textAllCaps="true"
+                            android:textSize="12sp" />
+
+                    </LinearLayout>
 
                     <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/ivPanVerifyRight"
@@ -154,79 +184,103 @@
                 android:visibility="gone" />
 
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/etBusinessTurnover"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@drawable/background_edittext"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="Business Turnover"
-                android:inputType="number"
-                android:maxLines="1"
-                android:padding="16dp"
-                android:textSize="12sp" />
-
-            <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/tvBusinessIncorporationDate"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="58dp"
                 android:layout_marginTop="10dp"
                 android:background="@drawable/background_edittext"
-                android:drawableRight="@drawable/ic_date"
-                android:fontFamily="@font/urbanist_medium"
-                android:hint="Business Incorporation Date"
-                android:maxLines="1"
-                android:padding="12dp"
-                android:textSize="12sp" />
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="16dp">
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etBusinessTurnover"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="Business Turnover"
+                    android:inputType="number"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="58dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_edittext"
+                android:gravity="center_vertical"
+                android:paddingHorizontal="24dp"
+                android:paddingVertical="16dp">
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/tvBusinessIncorporationDate"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:drawableEnd="@drawable/ic_date"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="Business Incorporation Date"
+                    android:maxLines="1"
+                    android:textSize="12sp" />
+
+            </LinearLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/background_edittext">
+                android:layout_height="58dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_edittext"
+                android:gravity="center_vertical"
+                android:paddingVertical="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="24dp">
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spIncomeSlab"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:background="@android:color/transparent"
                     android:inputType="none"
                     android:spinnerMode="dropdown"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
                     android:background="@drawable/arrow_up" />
             </RelativeLayout>
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginVertical="10dp"
-                android:background="@drawable/background_edittext">
+                android:layout_height="58dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/background_edittext"
+                android:gravity="center_vertical"
+                android:paddingVertical="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="24dp">
 
                 <androidx.appcompat.widget.AppCompatSpinner
                     android:id="@+id/spOwnerShipType"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="20dp"
                     android:background="@android:color/transparent"
-                    android:hint="Bank"
                     android:inputType="none"
                     android:spinnerMode="dropdown"
-                    android:textAllCaps="true" />
+                    android:textAllCaps="true"
+                    android:textSize="12sp" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
-                    android:layout_marginEnd="20dp"
                     android:background="@drawable/arrow_up" />
             </RelativeLayout>
 
@@ -234,6 +288,7 @@
                 android:id="@+id/rlSpManualBillUploadType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
                 android:orientation="vertical"
                 android:visibility="gone">
 
@@ -247,28 +302,27 @@
 
                 <RelativeLayout
                     android:layout_width="match_parent"
-                    android:layout_height="45dp"
-                    android:layout_marginVertical="10dp"
+                    android:layout_height="58dp"
+                    android:layout_marginTop="10dp"
                     android:background="@drawable/background_edittext"
-                    >
+                    android:gravity="center_vertical"
+                    android:padding="16dp">
 
                     <androidx.appcompat.widget.AppCompatSpinner
                         android:id="@+id/spManualBillUploadType"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="20dp"
                         android:background="@android:color/transparent"
-                        android:hint="Bank"
                         android:inputType="none"
                         android:spinnerMode="dropdown"
-                        android:textAllCaps="true" />
+                        android:textAllCaps="true"
+                        android:textSize="12sp" />
 
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
-                        android:layout_marginEnd="20dp"
                         android:background="@drawable/arrow_up" />
                 </RelativeLayout>
 
@@ -292,8 +346,8 @@
                         android:id="@+id/imBillImage"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:scaleType="fitXY"
                         android:adjustViewBounds="true"
+                        android:scaleType="fitXY"
                         android:visibility="gone" />
 
                     <LinearLayout
@@ -316,7 +370,6 @@
                             android:fontFamily="@font/urbanist_regular"
                             android:text="Upload Bill"
                             android:textColor="@color/colorPrimary"
-                            android:textFontWeight="2"
                             android:textSize="12sp" />
                     </LinearLayout>
                 </LinearLayout>
@@ -325,6 +378,7 @@
                     android:id="@+id/llCustomerNumber"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="2dp"
                     android:layout_marginVertical="10dp"
                     android:visibility="gone"
                     app:cardCornerRadius="10dp"
@@ -334,27 +388,31 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:orientation="vertical"
-                        android:padding="15dp">
+                        android:padding="16dp">
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/urbanist_regular"
                             android:text="Customer Number"
                             android:textColor="@color/text_color_black_variant1" />
 
                         <RelativeLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp">
+                            android:layout_height="47dp"
+                            android:layout_marginTop="10dp"
+                            android:background="@drawable/background_edittext"
+                            android:gravity="center_vertical"
+                            android:padding="13dp">
 
                             <androidx.appcompat.widget.AppCompatEditText
                                 android:id="@+id/etCustomerNumber"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@null"
+                                android:hint="1234 567 125"
                                 android:inputType="textCapCharacters"
-                                android:textAllCaps="true"
-                                android:background="@drawable/background_edittext"
-                                android:hint="1234 567 125" />
+                                android:textAllCaps="true" />
 
                             <ImageView
                                 android:id="@+id/ivRightElectrycityBill"
@@ -367,33 +425,36 @@
                                 android:visibility="gone" />
 
                         </RelativeLayout>
+
+
                         <RelativeLayout
                             android:id="@+id/rlServiceProviders"
                             android:layout_width="match_parent"
-                            android:layout_height="45dp"
-                            android:layout_marginVertical="10dp"
+                            android:layout_height="47dp"
+                            android:layout_marginTop="10dp"
                             android:background="@drawable/background_edittext"
+                            android:gravity="center_vertical"
+                            android:padding="13dp"
                             android:visibility="visible">
 
                             <androidx.appcompat.widget.AppCompatSpinner
                                 android:id="@+id/spServiceProvider"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginStart="20dp"
                                 android:background="@android:color/transparent"
-                                android:hint="Bank"
                                 android:inputType="none"
                                 android:spinnerMode="dropdown"
-                                android:textAllCaps="true" />
+                                android:textAllCaps="true"
+                                android:textSize="12sp" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_alignParentRight="true"
                                 android:layout_centerVertical="true"
-                                android:layout_marginEnd="20dp"
                                 android:background="@drawable/arrow_up" />
                         </RelativeLayout>
+
                         <androidx.appcompat.widget.AppCompatButton
                             android:id="@+id/btnVerifyBill"
                             android:layout_width="100dp"
@@ -408,15 +469,16 @@
                             android:text="Verify"
                             android:textAllCaps="false"
                             android:textColor="@color/white"
-                            android:textSize="16sp" />
+                            android:textSize="12sp" />
 
                         <androidx.appcompat.widget.AppCompatTextView
                             android:id="@+id/tvCustomerName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:visibility="gone"
+                            android:fontFamily="@font/urbanist_regular"
                             android:text="Customer name"
-                            android:textColor="@color/colorAccent" />
+                            android:textColor="@color/colorAccent"
+                            android:visibility="gone" />
 
                     </LinearLayout>
 
@@ -427,11 +489,11 @@
             </LinearLayout>
 
 
-
             <LinearLayout
                 android:id="@+id/rlUploadStatement"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="22dp"
                 android:orientation="vertical">
 
                 <androidx.appcompat.widget.AppCompatTextView
@@ -457,7 +519,6 @@
                     android:textSize="12sp" />
 
             </LinearLayout>
-
 
 
             <RelativeLayout
@@ -495,8 +556,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="58dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="16dp"
-                android:layout_marginBottom="40dp"
+                android:layout_marginTop="30dp"
                 android:background="@drawable/bg_squre_btn_corner"
                 android:fontFamily="@font/urbanist_bold"
                 android:gravity="center"
@@ -506,6 +566,11 @@
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:layout_marginTop="16dp" />
 
         </LinearLayout>
     </ScrollView>

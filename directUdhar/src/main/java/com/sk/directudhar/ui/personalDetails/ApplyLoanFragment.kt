@@ -1,7 +1,10 @@
 package com.sk.directudhar.ui.personalDetails
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
@@ -71,6 +74,10 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         if (mBinding == null) {
             mBinding = FragmentApplyLoanBinding.inflate(inflater, container, false)
         }
+        val component = DaggerApplicationComponent.builder().build()
+        component.injectApplyLoan(this)
+        applyLoanViewModel =
+            ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
         initView()
         setToolBar()
         return mBinding!!.root
@@ -83,13 +90,11 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     private fun initView() {
         leadMasterId = SharePrefs.getInstance(activitySDk)
             ?.getInt(SharePrefs.LEAD_MASTERID)!!
-        val component = DaggerApplicationComponent.builder().build()
-        component.injectApplyLoan(this)
-        applyLoanViewModel =
-            ViewModelProvider(this, applyLoanFactory)[ApplyLoanViewModel::class.java]
         applyLoanViewModel.getPersonalInformation(
             SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
         )
+
+        termsAndConditions()
 
         mBinding!!.btnNext.setOnClickListener(this)
         mBinding!!.cbTermsOfUse.setOnClickListener {
@@ -191,9 +196,6 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     it.data.let {
                         if (it.Result) {
                             activitySDk.toast(it.Msg)
-                            /*val action =
-                                ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
-                            findNavController().navigate(action)*/
                             activitySDk.checkSequenceNo(it.DynamicData.SequenceNo)
                         } else {
                             activitySDk.toast(it.Msg)
@@ -204,7 +206,23 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         }
 
     }
-
+    fun termsAndConditions(){
+        dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
+            override fun onContinueClicked(isAgree: Boolean) {
+                mBinding!!.cbTermsOfUse.isChecked = isAgree
+            }
+        })
+        val text = SpannableString("By Proceeding, you agree Terms & Conditions.")
+        text.setSpan(ForegroundColorSpan(Color.BLUE), 25, 44, 0)
+        mBinding!!.tvTermsOfUse.text = text
+        mBinding!!.tvTermsOfUse.setOnClickListener {
+            if (!activitySDk.privacyPolicyText.isNullOrEmpty()){
+                dialog.termsAndAgreementPopUp(activitySDk, activitySDk.privacyPolicyText)
+            }else{
+                activitySDk.toast("No Privacy Policy Found")
+            }
+        }
+    }
 
     private fun setupStateAutoComplete() {
         val stateNameList: List<String> = stateList.map { it.StateName }
@@ -310,12 +328,6 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     state,
                     dateOfBirth
                 )
-                /* val action =
-                     ApplyLoanFragmentDirections.actionApplyLoanFragmentToBusinessDetailsFragment()
-                 findNavController().navigate(action)*/
-                /*  val action = ApplyLoanFragmentDirections.(
-                          )
-                  findNavController().navigate(action)*/
                 applyLoanViewModel.performValidation()
             }
         }

@@ -31,6 +31,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
@@ -126,7 +127,15 @@ class BusinessDetailsFragment : Fragment() {
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Business Details"
         activitySDk.toolbar.navigationIcon = null
+        activitySDk.toolbarBackBtn.visibility = View.VISIBLE
+        activitySDk.toolbarBackBtn.setOnClickListener{
+            activitySDk.checkSequenceNo(14)
+        }
+    }
 
+    override fun onPause() {
+        super.onPause()
+        activitySDk.toolbarBackBtn.visibility = View.GONE
     }
 
     private fun initView() {

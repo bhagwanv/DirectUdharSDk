@@ -57,7 +57,6 @@ class CibilScoreFragment : Fragment(), OnClickListener {
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "CIBIL information"
         activitySDk.toolbar.navigationIcon = null
-
     }
 
     private fun initView() {
@@ -232,11 +231,11 @@ class CibilScoreFragment : Fragment(), OnClickListener {
 
             R.id.tvSkip -> {
                 isSkip = true
-                val  action = CibilScoreFragmentDirections.actionCibilScoreFragmentToEAgreementFragment()
-                findNavController().navigate(action)
-                /*cibilViewModel.cibilActivityComplete(
+               /* val  action = CibilScoreFragmentDirections.actionCibilScoreFragmentToEAgreementFragment()
+                findNavController().navigate(action)*/
+                cibilViewModel.cibilActivityComplete(
                     SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
-                )*/
+                )
             }
         }
     }

@@ -144,9 +144,13 @@ class CibilGenerateFragment : Fragment() {
         activitySDk.toolbar.navigationIcon = null
     }
 
+    override fun onPause() {
+        super.onPause()
+        activitySDk.toolbar.visibility = View.VISIBLE
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         mBinding!!.unbind()
-        activitySDk.toolbar.visibility = View.VISIBLE
     }
 }

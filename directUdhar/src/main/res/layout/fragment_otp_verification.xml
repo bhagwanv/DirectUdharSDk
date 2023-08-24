@@ -39,6 +39,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Enter Code"
+                        android:fontFamily="@font/urbanist_semibold"
                         android:textColor="@color/text_color_black_variant1"
                         android:textSize="16sp" />
 
@@ -47,8 +48,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:textColor="@color/text_color_black_variant1"
-                        android:textFontWeight="2"
                         android:layout_marginTop="8dp"
+                        android:fontFamily="@font/urbanist_regular"
                         android:textSize="14sp" />
                 </LinearLayout>
             </RelativeLayout>
@@ -114,6 +115,7 @@
                 android:layout_marginTop="28dp"
                 android:paddingHorizontal="16dp"
                 android:text="Verify OTP"
+                android:fontFamily="@font/urbanist_semibold"
                 android:textAllCaps="false"
                 android:textColor="@color/white"
                 android:textSize="16sp" />
