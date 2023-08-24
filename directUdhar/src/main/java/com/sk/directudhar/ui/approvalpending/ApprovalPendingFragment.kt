@@ -55,7 +55,13 @@ class ApprovalPendingFragment : Fragment() {
         approvalPendingViewModel =
             ViewModelProvider(this, approvalPendingFactory)[ApprovalPendingViewModel::class.java]
         initView()
+        setToolBar()
         return mBinding.root
+    }
+
+    private fun setToolBar() {
+        activitySDk.toolbarTitle.text = "Approval Pending"
+        activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {
