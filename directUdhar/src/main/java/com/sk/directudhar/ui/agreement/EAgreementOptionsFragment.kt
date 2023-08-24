@@ -74,7 +74,7 @@ class EAgreementOptionsFragment : Fragment() {
             } else if (verificationType == "BY_AADHAAR_VERIFY") {
                 eAgreementViewModel.eSignSessionAsync(
                     SignSessionRequestModel(
-                        leadMasterId, args.agreementhtml
+                        leadMasterId
                     )
                 )
             } else if (verificationType == "BY_MOBILE_OTP") {

@@ -117,6 +117,7 @@
                     <androidx.appcompat.widget.AppCompatTextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginTop="20dp"
                         android:text="Father's name as per PAN"
                         android:textColor="@color/text_color_black_variant1"/>
@@ -125,6 +126,7 @@
                         android:id="@+id/etFatherName"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:visibility="gone"
                         android:layout_marginTop="10dp"
                         android:hint="Father's name as per PAN"
                         android:maxLength="10"
@@ -142,7 +144,7 @@
                 android:layout_marginVertical="16dp"
                 android:background="@drawable/background_edittext"
                 android:gravity="center"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:orientation="horizontal"
                 app:layout_constraintBottom_toTopOf="@+id/rl_cb_terms"
                 app:layout_constraintEnd_toEndOf="parent"

@@ -9,5 +9,7 @@ data class GSTDetailsResponse(
 
 
 data class GSTDetails(
-    val Name: String
+    val BusinessName: String,
+    val BusinessType: String,
+    val BusinessIncDate: String
 )

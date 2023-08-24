@@ -29,6 +29,7 @@ import com.sk.directudhar.ui.businessDetails.BusinessDetailsResponseModel
 import com.sk.directudhar.ui.businessDetails.BusinessTypeListResponse
 import com.sk.directudhar.ui.businessDetails.GSTDetailsResponse
 import com.sk.directudhar.ui.businessDetails.ManuallyUploadBillResponseModel
+import com.sk.directudhar.ui.businessDetails.PanCardVerificationResponseModel
 import com.sk.directudhar.ui.businessDetails.StatementFileResponse
 import com.sk.directudhar.ui.cibilscore.CibilActivityCompleteResponseModel
 import com.sk.directudhar.ui.cibilGenerate.CibilGetOTPRequestModel
@@ -229,5 +230,8 @@ interface APIServices {
 
     @POST("api/ICICIeMandate/EMandateVerification")
     suspend fun eMandateVerification(@Body eMandateVerificationRequestModel: EMandateVerificationRequestModel): EMandateVerificationResponse
+
+    @GET("api/Borrower/PanVerfication")
+    suspend fun panVerification(@Query("LeadMasterId") leadMasterId:Int,@Query("PanNo") PanNo:String): PanCardVerificationResponseModel
 
 }

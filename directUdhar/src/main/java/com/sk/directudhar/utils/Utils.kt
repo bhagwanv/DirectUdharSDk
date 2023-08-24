@@ -4,9 +4,15 @@ import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import android.provider.MediaStore
+import android.util.Log
 import android.widget.Toast
+import java.text.DateFormat
+import java.text.ParseException
 import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
 import java.util.Locale
+import java.util.TimeZone
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 
@@ -112,6 +118,32 @@ class Utils(private var context: Context) {
                     e.printStackTrace()
                     return ""
                 }
+            }
+        }
+
+        fun getCurrentDate1(): String? {
+            val cal = Calendar.getInstance()
+            val df = SimpleDateFormat("EEE,MMM dd yyyy", Locale.ENGLISH)
+            return df.format(cal.time)
+        }
+
+        fun getDateFormat(serverDate: String, requiredFormat: String): String? {
+            return if (!serverDate.isNullOrEmpty()) {
+                var serverFormat = "dd/MM/YYYY"
+                val originalFormat: DateFormat = SimpleDateFormat(serverFormat, Locale.ENGLISH)
+                originalFormat.timeZone = TimeZone.getDefault()
+                val targetFormat: DateFormat = SimpleDateFormat(requiredFormat, Locale.ENGLISH)
+                var date: Date? = null
+                var formattedDate: String? = ""
+                try {
+                    date = originalFormat.parse(serverDate)
+                    formattedDate = targetFormat.format(date)
+                } catch (e: ParseException) {
+                    e.printStackTrace()
+                }
+                formattedDate
+            } else {
+                "null"
             }
         }
     }

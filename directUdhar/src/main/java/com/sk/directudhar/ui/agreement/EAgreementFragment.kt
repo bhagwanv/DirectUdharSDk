@@ -29,7 +29,10 @@ class EAgreementFragment : Fragment() {
     private var mBinding: FragmentEAgreementBinding? = null
 
     private lateinit var eAgreementViewModel: EAgreementViewModel
-    private var htmlDoc:String = ""
+    private var htmlDoc: String = ""
+    var mobileNo = ""
+    var leadMasterId = 0
+    var isEsignAadhaar = false
 
     @Inject
     lateinit var eAgreementFactory: EAgreementFactory
@@ -47,40 +50,44 @@ class EAgreementFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentEAgreementBinding.inflate(inflater, container, false)
-            initView()
-            setToolBar()
         }
+        initView()
+        setToolBar()
+        setObserber()
         return mBinding!!.root
     }
+
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Agreement"
         activitySDk.toolbar.navigationIcon = null
     }
+
     private fun initView() {
         val component = DaggerApplicationComponent.builder().build()
         component.injectAgreement(this)
         eAgreementViewModel =
             ViewModelProvider(this, eAgreementFactory)[EAgreementViewModel::class.java]
-
-        setObserber()
-
+        mobileNo = SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
+        leadMasterId = SharePrefs.getInstance(
+            activitySDk
+        )?.getInt(SharePrefs.LEAD_MASTERID)!!
         eAgreementViewModel.getAgreement(
             SharePrefs.getInstance(activitySDk)!!.getInt(
                 SharePrefs.LEAD_MASTERID
             )
         )
-
+        eAgreementViewModel.isEsignOrAgreementWithOtp(leadMasterId)
         mBinding!!.cbTermsOfUse.setOnClickListener {
             if (mBinding!!.cbTermsOfUse.isChecked) {
                 mBinding!!.btnIAgree.isEnabled = true
                 mBinding!!.btnIAgree.isClickable = true
-               // mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
+                // mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
                 val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
                 mBinding!!.btnIAgree.backgroundTintList = tintList
             } else {
                 mBinding!!.btnIAgree.isEnabled = false
                 mBinding!!.btnIAgree.isClickable = false
-              //  mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
+                //  mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
                 val tintList =
                     ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
                 mBinding!!.btnIAgree.backgroundTintList = tintList
@@ -89,13 +96,26 @@ class EAgreementFragment : Fragment() {
         }
 
         mBinding!!.btnIAgree.setOnClickListener {
-            if (mBinding!!.cbTermsOfUse.isChecked) {
-                val action =
-                    EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOptionsFragment(htmlDoc)
-                findNavController().navigate(action)
+            if (isEsignAadhaar) {
+                eAgreementViewModel.eSignSessionAsync(
+                    SignSessionRequestModel(
+                        leadMasterId
+                    )
+                )
             } else {
-                activitySDk.toast("Please click checkbox to Agree term & Conditions")
+                if (mobileNo.isEmpty()) {
+                    activitySDk.toast("Mobile Number Not Found")
+                } else {
+                    eAgreementViewModel.sendOtp(mobileNo)
+                }
             }
+            /* if (mBinding!!.cbTermsOfUse.isChecked) {
+                 val action =
+                     EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOptionsFragment(htmlDoc)
+                 findNavController().navigate(action)
+             } else {
+                 activitySDk.toast("Please click checkbox to Agree term & Conditions")
+             }*/
 
         }
 
@@ -116,22 +136,92 @@ class EAgreementFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-
                     if (it.data != null) {
                         htmlDoc = it.data.Data!!.Agreementhtml!!
-                        mBinding!!.tvTermCondition.text = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                            Html.fromHtml(it.data.Data!!.Agreementhtml, Html.FROM_HTML_MODE_COMPACT)
-                        } else {
-                            Html.fromHtml(it.data.Data!!.Agreementhtml)
+                        mBinding!!.tvTermCondition.text =
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                Html.fromHtml(
+                                    it.data.Data!!.Agreementhtml,
+                                    Html.FROM_HTML_MODE_COMPACT
+                                )
+                            } else {
+                                Html.fromHtml(it.data.Data!!.Agreementhtml)
+                            }
+                    }
+                }
+            }
+        }
+
+        eAgreementViewModel.sendOtpResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    if (it.data.Result!!) {
+                        if (it.data.Data != null) {
+                            val action =
+                                it.data.Data.let { it1 ->
+                                    EAgreementOptionsFragmentDirections.actionEAgreementOptionsFragmentToEAgreementOtpFragment(
+                                        it1!!.TxnNo!!,
+                                        mobileNo
+                                    )
+                                }
+                            findNavController().navigate(action)
                         }
-                       /* mBinding!!.tvTermCondition.webViewClient = WebViewClient()
-                        mBinding!!.tvTermCondition.loadDataWithBaseURL(
-                            null,
-                            it.data.Data,
-                            "text/html",
-                            "UTF-8",
-                            null
-                        )*/
+                    }
+                }
+            }
+        }
+
+        eAgreementViewModel.signSessionResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.Result) {
+                            val action =
+                                EAgreementOptionsFragmentDirections.actionEAgreementOptionsFragmentToESignWebviewFragment(
+                                    it.Data
+                                )
+                            findNavController().navigate(action)
+                        }
+                    }
+                }
+            }
+        }
+
+        eAgreementViewModel.getEsignOrAgreementWithOtpOptionResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        isEsignAadhaar = it.Data.IsEsign
                     }
                 }
             }
