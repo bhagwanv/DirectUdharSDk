@@ -32,4 +32,12 @@ class EAgreementRepository @Inject constructor(private val apiServices: APIServi
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
+
+    suspend fun isEsignOrAgreementWithOtp(leadMasterId:Int)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.isEsignOrAgreementWithOtp(leadMasterId)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 }

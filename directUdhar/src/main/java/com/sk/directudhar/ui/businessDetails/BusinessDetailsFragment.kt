@@ -167,7 +167,7 @@ class BusinessDetailsFragment : Fragment() {
 
         mBinding.btnNext.setOnClickListener {
             try {
-                val mBusinessType: ArrayList<BusinessType> = ArrayList()
+                /*val mBusinessType: ArrayList<BusinessType> = ArrayList()
                 mBusinessType.clear()
                 for (i in mProprietorNameList.indices) {
                     mBusinessType.add(
@@ -179,7 +179,11 @@ class BusinessDetailsFragment : Fragment() {
                 }
                 mBusinessType.forEach {
                     println(it.PartnerName + "    " + it.PartnerNumber)
-                }
+                }*/
+                val sBusinessTypeName = mBinding.etBusinessTypeName.text.toString()
+                val sBusinessTypePanNumber = mBinding.etBusinessTypePanNumber.text.toString()
+                val mBusinessType: ArrayList<BusinessType> = ArrayList()
+                mBusinessType.add(BusinessType(sBusinessTypeName, sBusinessTypePanNumber))
                 val gstNumber = mBinding.etGstNumber.text.toString()
                 val businessName = mBinding.etBusinessName.text.toString()
                 val businessTurnover = mBinding.etBusinessTurnover.text.toString()
@@ -218,9 +222,9 @@ class BusinessDetailsFragment : Fragment() {
             }
         }
         businessDetailsViewModel.getBusinessTypeList()
-        mBinding.tvAddMoreView.setOnClickListener {
-            addMoreView(false)
-        }
+        /* mBinding.tvAddMoreView.setOnClickListener {
+             addMoreView(false)
+         }*/
         mBinding.llUploadBillManual.setOnClickListener {
             uploadType = "bill"
             askPermission()
@@ -229,7 +233,22 @@ class BusinessDetailsFragment : Fragment() {
             uploadType = "statement"
             askPermission()
         }
-
+        mBinding.etBusinessTypePanNumber.addTextChangedListener( object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                // Not used
+            }
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                // Not used
+            }
+            override fun afterTextChanged(s: Editable?) {
+                val panNumber = s.toString().trim()
+                if (Utils.isValidPanCardNo(panNumber)) {
+                    mBinding.ivPanVerifyRight.visibility = View.VISIBLE
+                } else {
+                    mBinding.ivPanVerifyRight.visibility = View.GONE
+                }
+            }
+        })
     }
 
 
@@ -263,12 +282,16 @@ class BusinessDetailsFragment : Fragment() {
                     id: Long
                 ) {
                     businessTypeId = mBusinessTypeList[position].Id
-                    if (mBusinessTypeList[position].Id == 1) {
-                        mBinding.tvAddMoreView.visibility = View.GONE
-                    } else {
-                        mBinding.tvAddMoreView.visibility = View.VISIBLE
+                    when (businessTypeId) {
+                        1 -> mBinding.etBusinessTypeName.hint = "Proprietor Name"
+                        2 -> mBinding.etBusinessTypeName.hint = "Partner Name"
+                        3 -> mBinding.etBusinessTypeName.hint = "Partner Name"
+                        4 -> mBinding.etBusinessTypeName.hint = "Chairman Name"
+                        5 -> mBinding.etBusinessTypeName.hint = "Director Name"
+                        6 -> mBinding.etBusinessTypeName.hint = "Karta Name"
+                        else -> mBinding.etBusinessTypeName.hint = "Name"
                     }
-                    addMoreView(true)
+                    mBinding.llBusinessType.visibility = View.VISIBLE
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
@@ -276,8 +299,7 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
 
-        val incomeAdapter =
-            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, incomeSlabArray)
+        val incomeAdapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, incomeSlabArray)
         mBinding.spIncomeSlab.adapter = incomeAdapter
         mBinding.spIncomeSlab.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -288,7 +310,6 @@ class BusinessDetailsFragment : Fragment() {
             ) {
                 mIncomeSlab = incomeSlabArray[position]
             }
-
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Code to perform some action when nothing is selected
             }

@@ -95,7 +95,7 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
         callChannelList()
 
         //eMandateViewModel.callBankList()
-        /* eMandateViewModel.bankListResponse.observe(viewLifecycleOwner) {
+         eMandateViewModel.getEMandateVerificationResponse.observe(viewLifecycleOwner) {
              when (it) {
                  is NetworkResult.Loading -> {
                      ProgressDialog.instance!!.show(activitySDk)
@@ -106,15 +106,14 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                  }
                  is NetworkResult.Success -> {
                      ProgressDialog.instance!!.dismiss()
-                     if (it.data != null) {
-                         bankList = it.data.liveBankList as MutableList<LiveBank>
-                         setupBank()
-                     } else {
-                         activitySDk.toast("Bank not available")
+                     it.data.let {
+                         if (it.Result){
+                             
+                         }
                      }
                  }
              }
-         }*/
+         }
 
         eMandateViewModel.eMandateAddResponse.observe(viewLifecycleOwner) {
             when (it) {
@@ -371,10 +370,12 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
 
     override fun wlCheckoutPaymentResponse(response: JSONObject) {
         Log.d("In wlCheckoutPaymentResponse()", response.toString());
+        eMandateViewModel.eMandateVerification(EMandateVerificationRequestModel(leadMasterId,response))
     }
 
     override fun wlCheckoutPaymentError(response: JSONObject) {
         Log.d("In wlCheckoutPaymentError()", response.toString());
+        eMandateViewModel.eMandateVerification(EMandateVerificationRequestModel(leadMasterId,response))
     }
 }
 

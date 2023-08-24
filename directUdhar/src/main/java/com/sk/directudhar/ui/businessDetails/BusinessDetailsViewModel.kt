@@ -83,7 +83,14 @@ class BusinessDetailsViewModel @Inject constructor(private val repository: Busin
             businessValidResult.value = "Please enter business incorporation date"
         }else if(model.IncomSlab.isNullOrEmpty()){
             businessValidResult.value = "Please enter income slab"
-        }/*else if(etCustomerNumber.isNullOrEmpty()){
+        }else if(model.Partners[0].PartnerName.isNullOrEmpty()){
+            businessValidResult.value = "Please enter Partner Name"
+        }else if(model.Partners[0].BusinessPan.isNullOrEmpty()){
+            businessValidResult.value = "Please enter Pan Number"
+        }else if(!Utils.isValidPanCardNo(model.Partners[0].BusinessPan)){
+            businessValidResult.value = "Please Enter Valid PanNumber"
+        }
+        /*else if(etCustomerNumber.isNullOrEmpty()){
             businessValidResult.value = "Please Customer Number"
         }else if(!isVerifyElectricityBill){
             businessValidResult.value = "Please verify Customer Number"

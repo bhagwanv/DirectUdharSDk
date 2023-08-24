@@ -23,4 +23,12 @@ class EMandateRepository @Inject constructor(private val apiServices: APIService
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
     }
+
+    suspend fun eMandateVerification(eMandateVerificationRequestModel: EMandateVerificationRequestModel)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.eMandateVerification(eMandateVerificationRequestModel)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
 }

@@ -7,6 +7,7 @@ import com.sk.directudhar.ui.adharcard.UpdateAadhaarInfoRequestModel
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadharVerificationRequestModel
 import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadResponseModel
 import com.sk.directudhar.ui.agreement.AgreementResponseModel
+import com.sk.directudhar.ui.agreement.EsignOrAgreementWithOtpOptionResponse
 import com.sk.directudhar.ui.agreement.SendOtpResponseModel
 import com.sk.directudhar.ui.agreement.SignSessionRequestModel
 import com.sk.directudhar.ui.agreement.SignSessionResponseModel
@@ -38,6 +39,8 @@ import com.sk.directudhar.ui.mainhome.PrivacyPolicyResponse
 import com.sk.directudhar.ui.mandate.BankListResponse
 import com.sk.directudhar.ui.mandate.EMandateAddRequestModel
 import com.sk.directudhar.ui.mandate.EMandateAddResponseModel
+import com.sk.directudhar.ui.mandate.EMandateVerificationRequestModel
+import com.sk.directudhar.ui.mandate.EMandateVerificationResponse
 import com.sk.directudhar.ui.myaccount.MyAccountDetailsModel
 import com.sk.directudhar.ui.myaccount.UdharStatementModel
 import com.sk.directudhar.ui.myaccount.udharStatement.DownloadLedgerReportResquestModel
@@ -220,4 +223,11 @@ interface APIServices {
 
     @GET("api/Borrower/GetPrivacyPolicy")
     suspend fun getPrivacyPolicy(): PrivacyPolicyResponse
+
+    @GET("api/Borrower/IsEsignOrAggrementWithOtp")
+    suspend fun isEsignOrAgreementWithOtp(@Query("LeadMasterId") leadMasterId:Int): EsignOrAgreementWithOtpOptionResponse
+
+    @POST("api/ICICIeMandate/EMandateVerification")
+    suspend fun eMandateVerification(@Body eMandateVerificationRequestModel: EMandateVerificationRequestModel): EMandateVerificationResponse
+
 }

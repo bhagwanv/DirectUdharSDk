@@ -23,7 +23,7 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 
-class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeListener {
+class EAgreementOptionsFragment : Fragment() {
     lateinit var activitySDk: MainActivitySDk
 
     private var mBinding: FragmentEAgreementOptionsBinding? = null
@@ -36,6 +36,7 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
     lateinit var eAgreementFactory: EAgreementFactory
 
     var mobileNo = ""
+    var leadMasterId = 0
     var verificationType = ""
 
     override fun onAttach(context: Context) {
@@ -50,8 +51,8 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
     ): View {
         if (mBinding == null) {
             mBinding = FragmentEAgreementOptionsBinding.inflate(inflater, container, false)
-            initView()
         }
+        initView()
         return mBinding!!.root
     }
 
@@ -61,9 +62,11 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
         eAgreementViewModel =
             ViewModelProvider(this, eAgreementFactory)[EAgreementViewModel::class.java]
         mobileNo = SharePrefs.getInstance(activitySDk)?.getString(SharePrefs.MOBILE_NUMBER)!!
-
-        mBinding!!.radioOTP.setOnCheckedChangeListener(this)
-        mBinding!!.radioAadhaar.setOnCheckedChangeListener(this)
+        leadMasterId = SharePrefs.getInstance(
+            activitySDk
+        )?.getInt(SharePrefs.LEAD_MASTERID)!!
+        //mBinding!!.radioOTP.setOnCheckedChangeListener(this)
+       // mBinding!!.radioAadhaar.setOnCheckedChangeListener(this)
 
         mBinding!!.btnNext.setOnClickListener {
             if (verificationType.isEmpty()) {
@@ -71,9 +74,7 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
             } else if (verificationType == "BY_AADHAAR_VERIFY") {
                 eAgreementViewModel.eSignSessionAsync(
                     SignSessionRequestModel(
-                        SharePrefs.getInstance(
-                            activitySDk
-                        )?.getInt(SharePrefs.LEAD_MASTERID)!!, args.agreementhtml
+                        leadMasterId, args.agreementhtml
                     )
                 )
             } else if (verificationType == "BY_MOBILE_OTP") {
@@ -86,7 +87,7 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
                 activitySDk.toast("Something went wrong!")
             }
         }
-
+        eAgreementViewModel.isEsignOrAgreementWithOtp(leadMasterId)
         setObserver()
     }
 
@@ -141,25 +142,69 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
                 }
             }
         }
+
+        eAgreementViewModel.getEsignOrAgreementWithOtpOptionResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.Data.IsEsign) {
+                            verificationType = "BY_AADHAAR_VERIFY"
+                            mBinding!!.ivRight.visibility = View.VISIBLE
+                            mBinding!!.ivUncheck.visibility = View.GONE
+                            mBinding!!.ivUncheckOTP.visibility = View.VISIBLE
+                            mBinding!!.ivRightOTP.visibility = View.GONE
+                            val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                            mBinding!!.btnNext.backgroundTintList = tintList
+                            mBinding!!.cvAadhaarEsign.visibility = View.VISIBLE
+                            mBinding!!.cvOtpVerification.visibility = View.GONE
+                        } else {
+                            verificationType = "BY_MOBILE_OTP"
+                            mBinding!!.ivRight.visibility = View.GONE
+                            mBinding!!.ivUncheck.visibility = View.VISIBLE
+                            mBinding!!.ivUncheckOTP.visibility = View.GONE
+                            mBinding!!.ivRightOTP.visibility = View.VISIBLE
+                            val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                            mBinding!!.btnNext.backgroundTintList = tintList
+                            mBinding!!.cvAadhaarEsign.visibility = View.GONE
+                            mBinding!!.cvOtpVerification.visibility = View.VISIBLE
+                        }
+                    }
+
+                }
+            }
+        }
     }
 
     private fun callWeb(urlString: String) {
-        val action = EAgreementOptionsFragmentDirections.actionEAgreementOptionsFragmentToESignWebviewFragment(urlString)
-       findNavController().navigate(action)
+        val action =
+            EAgreementOptionsFragmentDirections.actionEAgreementOptionsFragmentToESignWebviewFragment(
+                urlString
+            )
+        findNavController().navigate(action)
         // val urlString = "http://mysuperwebsite"
-      /*  val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.setPackage("com.android.chrome")
-        try {
-            activitySDk.startActivity(intent)
-        } catch (ex: ActivityNotFoundException) {
-            // Chrome browser presumably not installed and open Kindle Browser
-            intent.setPackage(null)
-            activitySDk.startActivity(intent)
-        }*/
+        /*  val intent = Intent(Intent.ACTION_VIEW, Uri.parse(urlString))
+          intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+          intent.setPackage("com.android.chrome")
+          try {
+              activitySDk.startActivity(intent)
+          } catch (ex: ActivityNotFoundException) {
+              // Chrome browser presumably not installed and open Kindle Browser
+              intent.setPackage(null)
+              activitySDk.startActivity(intent)
+          }*/
     }
 
-    override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
+    /*override fun onCheckedChanged(buttonView: CompoundButton?, isChecked: Boolean) {
         if (isChecked) {
             if (R.id.radioAadhaar == buttonView!!.id) {
                 verificationType = "BY_AADHAAR_VERIFY"
@@ -181,7 +226,7 @@ class EAgreementOptionsFragment : Fragment(), CompoundButton.OnCheckedChangeList
                 mBinding!!.btnNext.backgroundTintList = tintList
             }
         }
-    }
+    }*/
 
     override fun onDestroy() {
         super.onDestroy()
