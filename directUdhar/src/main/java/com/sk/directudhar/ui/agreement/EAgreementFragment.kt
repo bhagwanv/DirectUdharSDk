@@ -1,9 +1,12 @@
 package com.sk.directudhar.ui.agreement
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.text.Html
+import android.text.SpannableString
+import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +20,7 @@ import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEAgreementBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
@@ -24,8 +28,10 @@ import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
 class EAgreementFragment : Fragment() {
-    lateinit var activitySDk: MainActivitySDk
+    @Inject
+    lateinit var dialog: AppDialogClass
 
+    lateinit var activitySDk: MainActivitySDk
     private var mBinding: FragmentEAgreementBinding? = null
 
     private lateinit var eAgreementViewModel: EAgreementViewModel
@@ -63,7 +69,7 @@ class EAgreementFragment : Fragment() {
             ViewModelProvider(this, eAgreementFactory)[EAgreementViewModel::class.java]
 
         setObserber()
-
+        termsAndConditions()
         eAgreementViewModel.getAgreement(
             SharePrefs.getInstance(activitySDk)!!.getInt(
                 SharePrefs.LEAD_MASTERID
@@ -99,6 +105,12 @@ class EAgreementFragment : Fragment() {
 
         }
 
+    }
+
+    fun termsAndConditions(){
+        val text = SpannableString("By Proceeding, you agree agreement.")
+        text.setSpan(ForegroundColorSpan(ContextCompat.getColor(activitySDk, R.color.text_color_black_variant1)), 25, 35, 0)
+        mBinding!!.tvTermsOfUse.text = text
     }
 
     private fun setObserber() {
