@@ -17,11 +17,11 @@ import javax.inject.Inject
 class EAgreementViewModel @Inject constructor(private val repository: EAgreementRepository) :
     ViewModel() {
 
-    private var _agreementResponse = MutableLiveData<NetworkResult<AgreementResponseModel>>()
-    val agreementResponse: LiveData<NetworkResult<AgreementResponseModel>> = _agreementResponse
+    private var _agreementResponse = SingleLiveEvent<NetworkResult<AgreementResponseModel>>()
+    val agreementResponse: SingleLiveEvent<NetworkResult<AgreementResponseModel>> = _agreementResponse
 
-    private var _sendOtpResponse = MutableLiveData<NetworkResult<SendOtpResponseModel>>()
-    val sendOtpResponse: LiveData<NetworkResult<SendOtpResponseModel>> = _sendOtpResponse
+    private var _sendOtpResponse = SingleLiveEvent<NetworkResult<SendOtpResponseModel>>()
+    val sendOtpResponse: SingleLiveEvent<NetworkResult<SendOtpResponseModel>> = _sendOtpResponse
 
     private var _signSessionResponse = SingleLiveEvent<NetworkResult<SignSessionResponseModel>>()
     val signSessionResponse: SingleLiveEvent<NetworkResult<SignSessionResponseModel>> = _signSessionResponse

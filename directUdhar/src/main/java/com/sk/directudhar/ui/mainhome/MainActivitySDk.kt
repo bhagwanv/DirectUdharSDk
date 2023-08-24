@@ -33,8 +33,8 @@ class MainActivitySDk : AppCompatActivity() {
     lateinit var mobilNumber: String
     lateinit var navHostFragment: NavHostFragment
     lateinit var toolbar: Toolbar
-    lateinit var toolbarBackBtn: ImageView
     lateinit var toolbarTitle: TextView
+    lateinit var toolbarBackBtn: ImageView
     var privacyPolicyText = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,11 +102,11 @@ class MainActivitySDk : AppCompatActivity() {
                 is NetworkResult.Loading -> {}
                 is NetworkResult.Failure -> {}
                 is NetworkResult.Success -> {
-                    it.data.let {
-                        if (it.Result) {
-                            privacyPolicyText = it.Data
-                        }
-                    }
+                   it.data.let {
+                       if (it.Result){
+                           privacyPolicyText =it.Data
+                       }
+                   }
                 }
             }
         }
@@ -174,11 +174,11 @@ class MainActivitySDk : AppCompatActivity() {
     val callback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                /* if (navController.graph.startDestination == navController.currentDestination?.id) {
-                     finish()
-                 } else {
-                     navController.popBackStack()
-                 }*/
+                /*if (navController.graph.startDestination == navController.currentDestination?.id) {
+                    finish()
+                } else {
+                    navController.popBackStack()
+                }*/
                 finish()
             }
         }

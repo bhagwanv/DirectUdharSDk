@@ -87,49 +87,53 @@
                             android:textColor="@color/text_color_black_variant1" />
 
 
-                        <RelativeLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="10dp">
-
-                            <androidx.appcompat.widget.AppCompatEditText
-                                android:id="@+id/etPanNumber"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:background="@drawable/background_edittext"
-                                android:fontFamily="@font/urbanist_regular"
-                                android:hint="JKMPS4653E"
-                                android:inputType="textCapCharacters"
-                                android:maxLength="10"
-                                android:textAllCaps="true" />
-
-                            <ImageView
-                                android:id="@+id/ivRight"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_alignParentRight="true"
-                                android:layout_centerVertical="true"
-                                android:layout_marginEnd="20dp"
-                                android:background="@drawable/pancard_verify_right"
-                                android:visibility="gone" />
-
-                        </RelativeLayout>
-
-                        <androidx.appcompat.widget.AppCompatTextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="20dp"
-                            android:text="Father's name as per PAN"
-                            android:textColor="@color/text_color_black_variant1" />
-
-                        <androidx.appcompat.widget.AppCompatEditText
-                            android:id="@+id/etFatherName"
+                        <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="10dp"
-                            android:background="@drawable/background_edittext"
-                            android:hint="Father's name as per PAN"
-                            android:maxLength="10" />
+                            android:orientation="vertical">
+
+                            <RelativeLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="vertical">
+
+                                <androidx.appcompat.widget.AppCompatEditText
+                                    android:id="@+id/etPanNumber"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:background="@drawable/background_edittext"
+                                    android:fontFamily="@font/urbanist_regular"
+                                    android:hint="JKMPS4653E"
+                                    android:inputType="textCapCharacters"
+                                    android:maxLength="10"
+                                    android:textAllCaps="true" />
+
+                                <ImageView
+                                    android:id="@+id/ivRight"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerVertical="true"
+                                    android:layout_marginEnd="20dp"
+                                    android:background="@drawable/pancard_verify_right"
+                                    android:visibility="gone" />
+
+                            </RelativeLayout>
+
+                            <androidx.appcompat.widget.AppCompatEditText
+                                android:id="@+id/etFatherName"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="10dp"
+                                android:background="@drawable/background_edittext"
+                                android:hint="Father's name as per PAN"
+                                android:maxLength="10"
+                                android:visibility="gone" />
+
+
+                        </LinearLayout>
+
 
                     </LinearLayout>
                 </androidx.cardview.widget.CardView>
@@ -144,7 +148,7 @@
                 android:background="@drawable/background_edittext"
                 android:gravity="center"
                 android:orientation="horizontal"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintBottom_toTopOf="@+id/rl_cb_terms"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"

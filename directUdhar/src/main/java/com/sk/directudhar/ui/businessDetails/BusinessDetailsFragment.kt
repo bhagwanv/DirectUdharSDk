@@ -99,6 +99,7 @@ class BusinessDetailsFragment : Fragment() {
     var isUploadBillImage = false
     var isCustomerNumber = false
     var uploadBankPassBookImage = ""
+    var isPanVerify = false
     private val BUFFER_SIZE = 1024 * 2
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -148,6 +149,12 @@ class BusinessDetailsFragment : Fragment() {
                 } else {
                     isGSTVerify = false
                     mBinding.ivRightGST.visibility = View.GONE
+                    mBinding.tvBusinessIncorporationDate.isEnabled = true
+                    mBinding.tvBusinessIncorporationDate.isClickable = true
+                    mBinding.spBusinessType.isEnabled = true
+                    mBinding.spBusinessType.isClickable = true
+                    mBinding.tvBusinessIncorporationDate.text = ""
+                    mBinding.etBusinessName.setText("")
                 }
             }
 
@@ -191,8 +198,8 @@ class BusinessDetailsFragment : Fragment() {
                 }*/
                 val sBusinessTypeName = mBinding.etBusinessTypeName.text.toString()
                 val sBusinessTypePanNumber = mBinding.etBusinessTypePanNumber.text.toString()
-                val mBusinessType: ArrayList<BusinessType> = ArrayList()
-                mBusinessType.add(BusinessType(sBusinessTypeName, sBusinessTypePanNumber))
+                val mBusinessTypeList: ArrayList<BusinessType> = ArrayList()
+                mBusinessTypeList.add(BusinessType(sBusinessTypeName, sBusinessTypePanNumber))
                 val gstNumber = mBinding.etGstNumber.text.toString()
                 val businessName = mBinding.etBusinessName.text.toString()
                 val businessTurnover = mBinding.etBusinessTurnover.text.toString()
@@ -210,7 +217,7 @@ class BusinessDetailsFragment : Fragment() {
                     gstNumber,
                     businessTypeId,
                     businessName,
-                    mBusinessType,
+                    mBusinessTypeList,
                     businessTurnover,
                     mBusinessIncorporationDate,
                     mIncomeSlab,
@@ -225,6 +232,7 @@ class BusinessDetailsFragment : Fragment() {
                     false,
                     customerNumber,
                     isVerifyElectricityBill,
+                    isPanVerify,
                 )
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -254,7 +262,8 @@ class BusinessDetailsFragment : Fragment() {
             override fun afterTextChanged(s: Editable?) {
                 val panNumber = s.toString().trim()
                 if (Utils.isValidPanCardNo(panNumber)) {
-                    mBinding.ivPanVerifyRight.visibility = View.VISIBLE
+                    businessDetailsViewModel.panVerification(leadMasterId, panNumber)
+                    // mBinding.ivPanVerifyRight.visibility = View.VISIBLE
                 } else {
                     mBinding.ivPanVerifyRight.visibility = View.GONE
                 }
@@ -293,9 +302,16 @@ class BusinessDetailsFragment : Fragment() {
                     id: Long
                 ) {
                     businessTypeId = mBusinessTypeList[position].Id
+                    mBinding.rlPanNumber.visibility = View.VISIBLE
                     when (businessTypeId) {
-                        1 -> mBinding.etBusinessTypeName.hint = "Proprietor Name"
-                        2 -> mBinding.etBusinessTypeName.hint = "Partner Name"
+                        1 -> {
+                            mBinding.etBusinessTypeName.hint = "Proprietor Name"
+                            mBinding.rlPanNumber.visibility = View.GONE
+                        }
+                        2 -> {
+                            mBinding.etBusinessTypeName.hint = "Partner Name"
+                            mBinding.rlPanNumber.visibility = View.GONE
+                        }
                         3 -> mBinding.etBusinessTypeName.hint = "Partner Name"
                         4 -> mBinding.etBusinessTypeName.hint = "Chairman Name"
                         5 -> mBinding.etBusinessTypeName.hint = "Director Name"
@@ -487,7 +503,27 @@ class BusinessDetailsFragment : Fragment() {
                     it.data.let {
                         if (it.Result) {
                             isGSTVerify = true
-                            mBinding.etBusinessName.setText(it.Data.Name)
+                            mBinding.etBusinessName.setText(it.Data.BusinessName)
+                            if (!it.Data.BusinessType.isNullOrEmpty()) {
+                                for (position in mBusinessType.indices) {
+                                    if (mBusinessTypeList[position].Name.toLowerCase() == it.Data.BusinessType.toLowerCase()) {
+                                        mBinding.spBusinessType.setSelection(position)
+                                        mBinding.spBusinessType.isEnabled = false
+                                        mBinding.spBusinessType.isClickable = false
+                                        break
+                                    }
+                                }
+                            }
+                            if (!it.Data.BusinessIncDate.isNullOrEmpty()) {
+                                mBinding.tvBusinessIncorporationDate.isEnabled = false
+                                mBinding.tvBusinessIncorporationDate.isClickable = false
+                                mBinding.tvBusinessIncorporationDate.text = it.Data.BusinessIncDate
+                                mBusinessIncorporationDate = Utils.getDateFormat(
+                                    it.Data.BusinessIncDate,
+                                    "yyyy-MM-dd'T'HH:mm:ss"
+                                )!!
+                                println("mBusinessIncorporationDate>>"+mBusinessIncorporationDate)
+                            }
                             mBinding.ivRightGST.visibility = View.VISIBLE
                         } else {
                             mBinding.ivRightGST.visibility = View.GONE
@@ -688,6 +724,34 @@ class BusinessDetailsFragment : Fragment() {
                             mBinding.imBillImage.visibility = View.GONE
                             mBinding.llDefaultImage.visibility = View.VISIBLE
                             activitySDk.toast(it.Msg)
+                        }
+                    }
+
+                }
+            }
+        }
+
+        businessDetailsViewModel.getPanVerificationResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.Result) {
+                            isPanVerify = true
+                            mBinding.ivPanVerifyRight.visibility = View.VISIBLE
+                        } else {
+                            isPanVerify = false
+                            mBinding.ivPanVerifyRight.visibility = View.GONE
                         }
                     }
 

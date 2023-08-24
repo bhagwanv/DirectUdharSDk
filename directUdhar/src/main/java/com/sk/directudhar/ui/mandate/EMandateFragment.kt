@@ -17,6 +17,7 @@ import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEMandateBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
@@ -38,6 +39,8 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
     @Inject
     lateinit var eMandateFactory: EMandateFactory
 
+    @Inject
+    lateinit var dialog: AppDialogClass
     // var bankList = mutableListOf<LiveBank>()
 
 
@@ -95,25 +98,29 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
         callChannelList()
 
         //eMandateViewModel.callBankList()
-         eMandateViewModel.getEMandateVerificationResponse.observe(viewLifecycleOwner) {
-             when (it) {
-                 is NetworkResult.Loading -> {
-                     ProgressDialog.instance!!.show(activitySDk)
-                 }
-                 is NetworkResult.Failure -> {
-                     ProgressDialog.instance!!.dismiss()
-                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
-                 }
-                 is NetworkResult.Success -> {
-                     ProgressDialog.instance!!.dismiss()
-                     it.data.let {
-                         if (it.Result){
-                             
-                         }
-                     }
-                 }
-             }
-         }
+        eMandateViewModel.getEMandateVerificationResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.Result) {
+                          activitySDk.checkSequenceNo(it.Data.SequenceNo)
+                        }else{
+                            dialog.alertDialog(activitySDk,it.Msg,"Yes")
+                        }
+                    }
+                }
+            }
+        }
 
         eMandateViewModel.eMandateAddResponse.observe(viewLifecycleOwner) {
             when (it) {
@@ -131,79 +138,69 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                     it.data.let {
                         if (it.Result) {
                             // var consumerData = it.Data.get("consumerData")
-                           val reqJson = JSONObject(it.Data.toString());
+                            val reqJson = JSONObject(it.Data.toString());
                             Log.d("reqJson!!!!!! >>>>>", reqJson.toString())
                             callEmadate(reqJson)
 
-                            //val consumerData1 = JSONObject(consumerData.toString());
-                            //val reqJson = JSONObject()
-                            /* val jsonFeatures = JSONObject()
-                             jsonFeatures.put("enableAbortResponse", true)
-                             jsonFeatures.put("enableExpressPay", false)
-                             jsonFeatures.put("enableMerTxnDetails", true)
-                             jsonFeatures.put("siDetailsAtMerchantEnd", true)
-                             jsonFeatures.put("enableSI", true)
-                             reqJson.put("features", jsonFeatures)
-                             reqJson.put("consumerData", consumerData1)*/
-                              /*  val reqJson = JSONObject()
-                                val jsonFeatures = JSONObject()
-                                jsonFeatures.put("enableAbortResponse", true)
-                                jsonFeatures.put("enableExpressPay", false)
-                                jsonFeatures.put("enableMerTxnDetails", true)
-                                jsonFeatures.put("siDetailsAtMerchantEnd", true)
-                                jsonFeatures.put("enableSI", true)
-                                reqJson.put("features", jsonFeatures)
-                                val jsonConsumerData = JSONObject()
-                                jsonConsumerData.put(
-                                    "deviceId",
-                                    "AndroidSH1"
-                                )
-                                jsonConsumerData.put(
-                                    "token",
-                                    "e1d45b684d49d9c6dfccbab8a6062e9ad6054ec0cc8cf7e1b29b640b7a45fa4c"
-                                )
-                                jsonConsumerData.put("paymentMode", "netBanking")
-                                jsonConsumerData.put(
-                                    "merchantLogoUrl",
-                                    "https://images.crunchbase.com/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/fejsnr7iw4upe286qgpq"
-                                )
-                                jsonConsumerData.put("merchantId", "T883945")
-                                jsonConsumerData.put("currency", "INR")
-                                jsonConsumerData.put("consumerId", "consumerId1231")
-                                jsonConsumerData.put("consumerMobileNo", "")
-                                jsonConsumerData.put("consumerEmailId", "")
-                                jsonConsumerData.put("txnId", "T0001")
-                                val jArrayItems = JSONArray()
-                                val jsonItem1 = JSONObject()
-                                jsonItem1.put("itemId", "first")
-                                jsonItem1.put("amount", "1")
-                                jsonItem1.put("comAmt", "1")
-                                jArrayItems.put(jsonItem1)
-                                jsonConsumerData.put("items", jArrayItems)
-                                val jsonCustomStyle = JSONObject()
-                                jsonCustomStyle.put("PRIMARY_COLOR_CODE", "#45beaa")
-                                jsonCustomStyle.put("SECONDARY_COLOR_CODE", "#ffffff")
-                                jsonCustomStyle.put("BUTTON_COLOR_CODE_1", "#2d8c8c")
-                                jsonCustomStyle.put("BUTTON_COLOR_CODE_2", "#ffffff")
-                                jsonConsumerData.put("customStyle", jsonCustomStyle)
-                                jsonConsumerData.put(
-                                    "accountType",
-                                    "Saving"
-                                ) //Required for eNACH registration this is mandatory field
+                            /*  val reqJson = JSONObject()
+                              val jsonFeatures = JSONObject()
+                              jsonFeatures.put("enableAbortResponse", true)
+                              jsonFeatures.put("enableExpressPay", false)
+                              jsonFeatures.put("enableMerTxnDetails", true)
+                              jsonFeatures.put("siDetailsAtMerchantEnd", true)
+                              jsonFeatures.put("enableSI", true)
+                              reqJson.put("features", jsonFeatures)
+                              val jsonConsumerData = JSONObject()
+                              jsonConsumerData.put(
+                                  "deviceId",
+                                  "AndroidSH1"
+                              )
+                              jsonConsumerData.put(
+                                  "token",
+                                  "8eed1d3c4364c533d7112c381e1e85c46d29643f629f9199f9a63803bfce5404"
+                              )
+                              jsonConsumerData.put("paymentMode", "netBanking")
+                              jsonConsumerData.put(
+                                  "merchantLogoUrl",
+                                  "https://images.crunchbase.com/image/upload/c_lpad,h_170,w_170,f_auto,b_white,q_auto:eco,dpr_1/fejsnr7iw4upe286qgpq"
+                              )
+                              jsonConsumerData.put("merchantId", "T883945")
+                              jsonConsumerData.put("currency", "INR")
+                              jsonConsumerData.put("consumerId", "3425543534132523523212")
+                              jsonConsumerData.put("consumerMobileNo", "")
+                              jsonConsumerData.put("consumerEmailId", "")
+                              jsonConsumerData.put("txnId", "T10343534624202")
+                              val jArrayItems = JSONArray()
+                              val jsonItem1 = JSONObject()
+                              jsonItem1.put("itemId", "first")
+                              jsonItem1.put("amount", "1")
+                              jsonItem1.put("comAmt", "1")
+                              jArrayItems.put(jsonItem1)
+                              jsonConsumerData.put("items", jArrayItems)
+                              val jsonCustomStyle = JSONObject()
+                              jsonCustomStyle.put("PRIMARY_COLOR_CODE", "#45beaa")
+                              jsonCustomStyle.put("SECONDARY_COLOR_CODE", "#ffffff")
+                              jsonCustomStyle.put("BUTTON_COLOR_CODE_1", "#2d8c8c")
+                              jsonCustomStyle.put("BUTTON_COLOR_CODE_2", "#ffffff")
+                              jsonConsumerData.put("customStyle", jsonCustomStyle)
+                              jsonConsumerData.put(
+                                  "accountType",
+                                  "Saving"
+                              ) //Required for eNACH registration this is mandatory field
 
-                                jsonConsumerData.put("debitStartDate", "11-08-2023")
-                                jsonConsumerData.put("debitEndDate", "09-10-2023")
-                                jsonConsumerData.put("maxAmount", "1000")
-                                jsonConsumerData.put("amountType", "M")
-                                jsonConsumerData.put(
-                                    "frequency",
-                                    "ADHO"
-                                ) //  Available options DAIL, WEEK, MNTH, QURT, MIAN, YEAR, BIMN and ADHO
+                              jsonConsumerData.put("debitStartDate", "24-08-2023")
+                              jsonConsumerData.put("debitEndDate", "09-10-2024")
+                              jsonConsumerData.put("maxAmount", "1000")
+                              jsonConsumerData.put("amountType", "M")
+                              jsonConsumerData.put(
+                                  "frequency",
+                                  "ADHO"
+                              ) //  Available options DAIL, WEEK, MNTH, QURT, MIAN, YEAR, BIMN and ADHO
 
-                            reqJson.put("consumerData", jsonConsumerData)
-                            Log.d("reqJson!!!!!! >>>>>", reqJson.toString())
+                          reqJson.put("consumerData", jsonConsumerData)
+                          Log.d("reqJson!!!!!! >>>>>", reqJson.toString())
 
-                            callEmadate(reqJson)*/
+                          callEmadate(reqJson)*/
                             /*  it.Data.let {
                                   val reqJson = JSONObject()
                                   val jsonFeatures = JSONObject()
@@ -370,12 +367,22 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
 
     override fun wlCheckoutPaymentResponse(response: JSONObject) {
         Log.d("In wlCheckoutPaymentResponse()", response.toString());
-        eMandateViewModel.eMandateVerification(EMandateVerificationRequestModel(leadMasterId,response))
+        eMandateViewModel.eMandateVerification(
+            EMandateVerificationRequestModel(
+                leadMasterId,
+                MandateRegisterResDc(response.getString("msg"), response.getString("merchant_code"))
+            )
+        )
     }
 
     override fun wlCheckoutPaymentError(response: JSONObject) {
         Log.d("In wlCheckoutPaymentError()", response.toString());
-        eMandateViewModel.eMandateVerification(EMandateVerificationRequestModel(leadMasterId,response))
+        eMandateViewModel.eMandateVerification(
+            EMandateVerificationRequestModel(
+                leadMasterId,
+                MandateRegisterResDc(response.getString("msg"), response.getString("merchant_code"))
+            )
+        )
     }
 }
 

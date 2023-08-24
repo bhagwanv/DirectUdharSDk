@@ -5,6 +5,7 @@ import com.sk.directudhar.di.APIServices
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import okhttp3.MultipartBody
+import retrofit2.http.Query
 import javax.inject.Inject
 
 
@@ -53,6 +54,14 @@ class BusinessDetailsRepository @Inject constructor(private val apiServices: API
     suspend fun uploadBillManual(body: MultipartBody.Part,leadMasterId: Int)  = flow {
         emit(NetworkResult.Loading(true))
         val response = apiServices.uploadBillManual(body,leadMasterId)
+        emit(NetworkResult.Success(response))
+    }.catch { e ->
+        emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
+    }
+
+    suspend fun panVerification(leadMasterId:Int,panNo:String)  = flow {
+        emit(NetworkResult.Loading(true))
+        val response = apiServices.panVerification(leadMasterId,panNo)
         emit(NetworkResult.Success(response))
     }.catch { e ->
         emit(NetworkResult.Failure(e.message ?: "Unknown Error"))
