@@ -26,6 +26,9 @@ class EAgreementViewModel @Inject constructor(private val repository: EAgreement
     private var _signSessionResponse = SingleLiveEvent<NetworkResult<SignSessionResponseModel>>()
     val signSessionResponse: SingleLiveEvent<NetworkResult<SignSessionResponseModel>> = _signSessionResponse
 
+    private var putEsignOrAgreementWithOtpOptionResponse = SingleLiveEvent<NetworkResult<EsignOrAgreementWithOtpOptionResponse>>()
+    val getEsignOrAgreementWithOtpOptionResponse: SingleLiveEvent<NetworkResult<EsignOrAgreementWithOtpOptionResponse>> = putEsignOrAgreementWithOtpOptionResponse
+
     fun getAgreement(leadMasterId:Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
             viewModelScope.launch {
@@ -55,6 +58,18 @@ class EAgreementViewModel @Inject constructor(private val repository: EAgreement
             viewModelScope.launch {
                 repository.eSignSessionAsync(signSessionRequestModel).collect() {
                     _signSessionResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun isEsignOrAgreementWithOtp(leadMasterId:Int) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.isEsignOrAgreementWithOtp(leadMasterId).collect() {
+                    putEsignOrAgreementWithOtpOptionResponse.postValue(it)
                 }
             }
         } else {

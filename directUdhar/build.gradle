@@ -5,11 +5,9 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'androidx.navigation.safeargs'
 }
-
 android {
     namespace 'com.sk.directudhar'
     compileSdk 33
-
     android {
         buildFeatures {
             buildConfig = true

@@ -89,7 +89,50 @@
                 android:id="@+id/llBusinessType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:orientation="vertical">
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/etBusinessTypeName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/background_edittext"
+                    android:fontFamily="@font/urbanist_medium"
+                    android:hint="Proprietor Name"
+                    android:maxLines="1"
+                    android:padding="16dp"
+                    android:textSize="12sp" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:visibility="visible">
+
+                    <androidx.appcompat.widget.AppCompatEditText
+                        android:id="@+id/etBusinessTypePanNumber"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/background_edittext"
+                        android:fontFamily="@font/urbanist_medium"
+                        android:hint="Pan Number"
+                        android:inputType="textCapCharacters"
+                        android:textAllCaps="true"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:padding="16dp"
+                        android:textSize="12sp" />
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/ivPanVerifyRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="24dp"
+                        android:background="@drawable/pancard_verify_right"
+                        android:visibility="gone" />
+
+                </RelativeLayout>
 
             </LinearLayout>
 

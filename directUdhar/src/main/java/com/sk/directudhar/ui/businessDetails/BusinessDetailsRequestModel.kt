@@ -15,4 +15,4 @@ data class BusinessDetailsRequestModel(
     val BankPassBookUrl: String,
 )
 
-data class BusinessType(val PartnerName: String, val PartnerNumber: String)
+data class BusinessType(val PartnerName: String, val BusinessPan: String)

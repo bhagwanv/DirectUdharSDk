@@ -24,19 +24,21 @@
                 android:textSize="16sp" />
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvAadhaarEsign"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
+                android:visibility="gone"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
-                <RadioButton
+              <!--  <RadioButton
                     android:id="@+id/radioAadhaar"
                     android:paddingStart="10dp"
                     android:button="@android:color/transparent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
-
+-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -99,20 +101,21 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
+                android:id="@+id/cvOtpVerification"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginBottom="16dp"
+                android:visibility="gone"
+                android:layout_margin="16dp"
                 app:cardCornerRadius="12dp"
                 app:cardElevation="4dp">
 
-                <RadioButton
+              <!--  <RadioButton
                     android:id="@+id/radioOTP"
                     android:paddingStart="10dp"
                     android:button="@android:color/transparent"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"/>
-
+-->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
