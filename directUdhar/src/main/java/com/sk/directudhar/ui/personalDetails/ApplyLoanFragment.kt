@@ -284,7 +284,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         when (v.id) {
             R.id.btnNext -> {
                 // println("NavType>>${args.navType}")
-                /*val firstName = mBinding!!.etFirstName.text.toString()
+                val firstName = mBinding!!.etFirstName.text.toString()
                 val lastName = mBinding!!.etLastName.text.toString()
                 val mobileNo = mBinding!!.etAlternateNumber.text.toString()
                 val city = mBinding!!.etCity.text.toString()
@@ -307,8 +307,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     state,
                     dateOfBirth
                 )
-                applyLoanViewModel.performValidation()*/
-                activitySDk.checkSequenceNo(2)
+                applyLoanViewModel.performValidation()
             }
         }
     }

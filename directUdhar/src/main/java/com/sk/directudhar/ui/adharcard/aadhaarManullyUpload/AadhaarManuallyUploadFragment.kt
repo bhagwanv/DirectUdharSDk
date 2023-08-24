@@ -75,7 +75,9 @@ class AadhaarManuallyUploadFragment : Fragment() {
         mBinding!!.btnVerifyAadhaar.setOnClickListener {
             if (isUploadAadhaar) {
                 val action =
-                    AadhaarManuallyUploadFragmentDirections.actionAadhaarManuallyUploadFragmentToKycSuccessFragment("ByManuallyUpload")
+                    AadhaarManuallyUploadFragmentDirections.actionAadhaarManuallyUploadFragmentToKycSuccessFragment(
+                        "ByManuallyUpload"
+                    )
                 findNavController().navigate(action)
             } else {
                 val action =
@@ -107,7 +109,6 @@ class AadhaarManuallyUploadFragment : Fragment() {
         mBinding!!.linearLayout.setOnClickListener {
             askPermission()
         }
-
     }
 
     private fun setToolBar() {

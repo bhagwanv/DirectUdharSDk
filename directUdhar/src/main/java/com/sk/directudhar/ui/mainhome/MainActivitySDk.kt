@@ -1,6 +1,7 @@
 package com.sk.directudhar.ui.mainhome
 
 import android.os.Bundle
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
@@ -32,6 +33,7 @@ class MainActivitySDk : AppCompatActivity() {
     lateinit var mobilNumber: String
     lateinit var navHostFragment: NavHostFragment
     lateinit var toolbar: Toolbar
+    lateinit var toolbarBackBtn: ImageView
     lateinit var toolbarTitle: TextView
     var privacyPolicyText = ""
 
@@ -58,6 +60,7 @@ class MainActivitySDk : AppCompatActivity() {
         navController = navHostFragment.navController
         toolbar = findViewById(R.id.toolbar)
         toolbarTitle = findViewById(R.id.toolbarTitle)
+        toolbarBackBtn = findViewById(R.id.backBtnToolbar)
         setSupportActionBar(toolbar)
         supportActionBar?.setDisplayHomeAsUpEnabled(false)
         supportActionBar?.setDisplayShowHomeEnabled(false)
@@ -99,11 +102,11 @@ class MainActivitySDk : AppCompatActivity() {
                 is NetworkResult.Loading -> {}
                 is NetworkResult.Failure -> {}
                 is NetworkResult.Success -> {
-                   it.data.let {
-                       if (it.Result){
-                           privacyPolicyText =it.Data
-                       }
-                   }
+                    it.data.let {
+                        if (it.Result) {
+                            privacyPolicyText = it.Data
+                        }
+                    }
                 }
             }
         }
@@ -131,8 +134,8 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                      //  checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                        checkSequenceNo(14)
+                        checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }
@@ -171,11 +174,11 @@ class MainActivitySDk : AppCompatActivity() {
     val callback: OnBackPressedCallback =
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                /*if (navController.graph.startDestination == navController.currentDestination?.id) {
-                    finish()
-                } else {
-                    navController.popBackStack()
-                }*/
+                /* if (navController.graph.startDestination == navController.currentDestination?.id) {
+                     finish()
+                 } else {
+                     navController.popBackStack()
+                 }*/
                 finish()
             }
         }

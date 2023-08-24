@@ -25,20 +25,21 @@ import javax.inject.Inject
 import kotlin.math.roundToInt
 import kotlin.math.roundToLong
 
-class ApprovalPendingFragment:Fragment() {
+class ApprovalPendingFragment : Fragment() {
 
     lateinit var activitySDk: MainActivitySDk
 
-    private lateinit var mBinding:FragmentApprovalPendingBinding
+    private lateinit var mBinding: FragmentApprovalPendingBinding
 
     lateinit var approvalPendingViewModel: ApprovalPendingViewModel
+
     @Inject
     lateinit var approvalPendingFactory: ApprovalPendingFactory
 
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        activitySDk= context as MainActivitySDk
+        activitySDk = context as MainActivitySDk
 
     }
 
@@ -49,24 +50,26 @@ class ApprovalPendingFragment:Fragment() {
         savedInstanceState: Bundle?
     ): View {
         mBinding = FragmentApprovalPendingBinding.inflate(inflater, container, false)
+        val component = DaggerApplicationComponent.builder().build()
+        component.injectApprovalPending(this)
+        approvalPendingViewModel =
+            ViewModelProvider(this, approvalPendingFactory)[ApprovalPendingViewModel::class.java]
         initView()
         return mBinding.root
     }
 
     private fun initView() {
+        setObserver()
+        mBinding.btContinueShopping.setOnClickListener {
+          //  approvalPendingViewModel.updateLeadSuccess(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID))
+            activitySDk.toast("Comming soon")
+        }
+    }
 
-        val component = DaggerApplicationComponent.builder().build()
-        component.injectApprovalPending(this)
-        approvalPendingViewModel =
-            ViewModelProvider(this, approvalPendingFactory)[ApprovalPendingViewModel::class.java]
-
-        /*Log.e("TAG", "initView:${SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)} ", )*/
-
-        approvalPendingViewModel.displayDisbursalAmount(SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID))
-
-
-
-
+    private fun setObserver() {
+        approvalPendingViewModel.displayDisbursalAmount(
+            SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
+        )
         approvalPendingViewModel.displayDisbursalAmountResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -78,11 +81,24 @@ class ApprovalPendingFragment:Fragment() {
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
 
                 }
+
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
 
                     if (it.data != null) {
-
+                        mBinding.tvLeadNumber.setText("Lead No.: " + it.data.LeadNo)
+                        mBinding.tvCreditLimit.setText("₹ " + it.data.CreditLimit.toString())
+                        mBinding.tvProcessingFee.setText("₹ " + it.data.ProcessingFee.toString())
+                        mBinding.tvGST.setText("₹ " + it.data.GSTAmount.toString())
+                        mBinding.tvDate.setText(it.data.CreatedDate)
+                        mBinding.tvDate.setText(
+                            "Applied Date: " + Utils.simpleDateFormate(
+                                it.data.CreatedDate,
+                                "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                                "dd MMM yyyy HH:mm a"
+                            )
+                        )
+                        mBinding.tvConvenienceFee.setText("Convenience Fee " + it.data.ConvenionFeeRate.toString() + " % will be Charge on every transaction")
                     }
                 }
             }
@@ -99,14 +115,15 @@ class ApprovalPendingFragment:Fragment() {
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
 
                 }
+
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
 
                     if (it.data.Result != null) {
                         activitySDk.checkSequenceNo(it.data.Data.SequenceNo)
 
-                    }else{
-                        if (it.data.Msg!=null){
+                    } else {
+                        if (it.data.Msg != null) {
                             activitySDk.toast(it.data.Msg)
                         }
                     }

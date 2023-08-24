@@ -5,7 +5,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="32dp"
+        android:padding="@dimen/screen_horizantal_margin_16dp"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -13,6 +13,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginTop="21dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -106,6 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
+            android:layout_marginBottom="27dp"
             app:layout_constraintBottom_toTopOf="@+id/btnVerifyAadhaar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
@@ -115,6 +117,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
+                android:layout_marginStart="-8dp"
                 android:backgroundTint="@color/holo_gray_dark"
                 android:checked="false" />
 
@@ -122,9 +125,8 @@
                 android:id="@+id/tvTermsOfUse"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
                 android:fontFamily="@font/urbanist_regular"
-                android:text="By Proceeding, you agree Terms &amp; Conditions.fdfd fdfd fdfdfdf ff "
+                android:text="By Proceeding, you agree Terms &amp; Conditions."
                 android:textColor="@color/holo_gray_dark"
                 android:textSize="12sp" />
         </LinearLayout>

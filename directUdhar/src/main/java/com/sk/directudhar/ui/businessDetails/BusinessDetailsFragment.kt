@@ -31,6 +31,7 @@ import androidx.appcompat.widget.AppCompatEditText
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
@@ -125,7 +126,15 @@ class BusinessDetailsFragment : Fragment() {
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Business Details"
         activitySDk.toolbar.navigationIcon = null
+        activitySDk.toolbarBackBtn.visibility = View.VISIBLE
+        activitySDk.toolbarBackBtn.setOnClickListener{
+            activitySDk.checkSequenceNo(14)
+        }
+    }
 
+    override fun onPause() {
+        super.onPause()
+        activitySDk.toolbarBackBtn.visibility = View.GONE
     }
 
     private fun initView() {
@@ -233,13 +242,15 @@ class BusinessDetailsFragment : Fragment() {
             uploadType = "statement"
             askPermission()
         }
-        mBinding.etBusinessTypePanNumber.addTextChangedListener( object : TextWatcher {
+        mBinding.etBusinessTypePanNumber.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
                 // Not used
             }
+
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 // Not used
             }
+
             override fun afterTextChanged(s: Editable?) {
                 val panNumber = s.toString().trim()
                 if (Utils.isValidPanCardNo(panNumber)) {
@@ -299,7 +310,8 @@ class BusinessDetailsFragment : Fragment() {
                 }
             }
 
-        val incomeAdapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, incomeSlabArray)
+        val incomeAdapter =
+            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, incomeSlabArray)
         mBinding.spIncomeSlab.adapter = incomeAdapter
         mBinding.spIncomeSlab.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(
@@ -310,6 +322,7 @@ class BusinessDetailsFragment : Fragment() {
             ) {
                 mIncomeSlab = incomeSlabArray[position]
             }
+
             override fun onNothingSelected(parent: AdapterView<*>) {
                 // Code to perform some action when nothing is selected
             }

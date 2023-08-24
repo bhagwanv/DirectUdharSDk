@@ -45,7 +45,7 @@
             android:fontFamily="@font/urbanist_regular"
             android:gravity="center"
             android:justificationMode="inter_word"
-            android:text="Congratulations on successfully completing your registration with Vaibhav Johari \nOur team is now diligently working behind the scenes to review your application and ensure that all necessary documents are in order.\nWhile the loan disbursal process may take a little time, please rest assured that our dedicated experts are committed to expediting the procedure while maintaining the highest standards of security and compliance."
+            android:text="Congratulations on successfully completing your registration.\nOur team is now diligently working behind the scenes to review your application and ensure that all necessary documents are in order.\nWhile the loan disbursal process may take a little time, please rest assured that our dedicated experts are committed to expediting the procedure while maintaining the highest standards of security and compliance."
             android:textAlignment="center"
             android:textColor="@color/text_color_black_variant1"
             android:textSize="14sp"
