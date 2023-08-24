@@ -17,6 +17,7 @@ import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEMandateBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
@@ -38,6 +39,8 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
     @Inject
     lateinit var eMandateFactory: EMandateFactory
 
+    @Inject
+    lateinit var dialog: AppDialogClass
     // var bankList = mutableListOf<LiveBank>()
 
 
@@ -110,7 +113,9 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
-
+                          activitySDk.checkSequenceNo(it.Data.SequenceNo)
+                        }else{
+                            dialog.alertDialog(activitySDk,it.Msg,"Yes")
                         }
                     }
                 }
