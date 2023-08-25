@@ -110,6 +110,14 @@
         <action
             android:id="@+id/action_EAgreementFragment_to_EAgreementOptionsFragment"
             app:destination="@id/EAgreementOptionsFragment" />
+
+        <action
+            android:id="@+id/action_EAgreementFragment_to_EAgreementOtpFragment"
+            app:destination="@id/EAgreementOtpFragment" />
+
+        <action
+            android:id="@+id/action_EAgreementFragment_to_ESignWebviewFragment"
+            app:destination="@id/ESignWebviewFragment" />
     </fragment>
 
     <fragment
