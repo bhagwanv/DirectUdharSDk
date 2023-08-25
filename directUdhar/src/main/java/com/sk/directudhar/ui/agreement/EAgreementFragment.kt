@@ -65,7 +65,7 @@ class EAgreementFragment : Fragment() {
 
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Agreement"
-       activitySDk.toolbar.navigationIcon = null
+        activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {
@@ -85,21 +85,25 @@ class EAgreementFragment : Fragment() {
         )
         eAgreementViewModel.isEsignOrAgreementWithOtp(leadMasterId)
         mBinding!!.cbTermsOfUse.setOnClickListener {
-            if (mBinding!!.cbTermsOfUse.isChecked) {
-                mBinding!!.btnIAgree.isEnabled = true
-                mBinding!!.btnIAgree.isClickable = true
-                // mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
-                val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
-                mBinding!!.btnIAgree.backgroundTintList = tintList
-            } else {
-                mBinding!!.btnIAgree.isEnabled = false
-                mBinding!!.btnIAgree.isClickable = false
-                //  mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
-                val tintList =
-                    ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
-                mBinding!!.btnIAgree.backgroundTintList = tintList
+            if (!htmlDoc.isNullOrEmpty()){
+                if (mBinding!!.cbTermsOfUse.isChecked) {
+                    mBinding!!.btnIAgree.isEnabled = true
+                    mBinding!!.btnIAgree.isClickable = true
+                    // mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_checkd_bg)
+                    val tintList = ContextCompat.getColorStateList(activitySDk, R.color.colorPrimary)
+                    mBinding!!.btnIAgree.backgroundTintList = tintList
+                } else {
+                    mBinding!!.btnIAgree.isEnabled = false
+                    mBinding!!.btnIAgree.isClickable = false
+                    //  mBinding!!.cbAuthorize.setBackgroundResource(R.drawable.checkbox_uncheckd_bg)
+                    val tintList =
+                        ContextCompat.getColorStateList(activitySDk, R.color.bg_color_gray_variant1)
+                    mBinding!!.btnIAgree.backgroundTintList = tintList
+                }
+            }else{
+                mBinding!!.cbTermsOfUse.isChecked = false
+                dialog.alertDialog(activitySDk,"No Agreement Found For Your Company","Yes")
             }
-
         }
 
         mBinding!!.btnIAgree.setOnClickListener {
@@ -128,9 +132,16 @@ class EAgreementFragment : Fragment() {
 
     }
 
-    fun termsAndConditions(){
+    fun termsAndConditions() {
         val text = SpannableString("By Proceeding, you agree agreement.")
-        text.setSpan(ForegroundColorSpan(ContextCompat.getColor(activitySDk, R.color.text_color_black_variant1)), 25, 35, 0)
+        text.setSpan(
+            ForegroundColorSpan(
+                ContextCompat.getColor(
+                    activitySDk,
+                    R.color.text_color_black_variant1
+                )
+            ), 25, 35, 0
+        )
         mBinding!!.tvTermsOfUse.text = text
     }
 
@@ -149,17 +160,21 @@ class EAgreementFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    if (it.data.Data != null) {
-                        htmlDoc = it.data.Data!!.Agreementhtml!!
-                        mBinding!!.tvTermCondition.text =
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                Html.fromHtml(
-                                    it.data.Data!!.Agreementhtml,
-                                    Html.FROM_HTML_MODE_COMPACT
-                                )
-                            } else {
-                                Html.fromHtml(it.data.Data!!.Agreementhtml)
-                            }
+                    it.data.let {
+                        if (it.Result) {
+                            htmlDoc = it.Data.Agreementhtml
+                            mBinding!!.tvTermCondition.text =
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                                    Html.fromHtml(
+                                        it.Data.Agreementhtml,
+                                        Html.FROM_HTML_MODE_COMPACT
+                                    )
+                                } else {
+                                    Html.fromHtml(it.Data.Agreementhtml)
+                                }
+                        } else {
+                            dialog.alertDialog(activitySDk, it.Msg, "Yes")
+                        }
                     }
                 }
             }
@@ -179,10 +194,11 @@ class EAgreementFragment : Fragment() {
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                        val action = EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOtpFragment(
-                                    it.Data!!.TxnNo!!,
-                                    mobileNo
-                                )
+                        val action =
+                            EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOtpFragment(
+                                it.Data!!.TxnNo!!,
+                                mobileNo
+                            )
                         findNavController().navigate(action)
                     }
                 }

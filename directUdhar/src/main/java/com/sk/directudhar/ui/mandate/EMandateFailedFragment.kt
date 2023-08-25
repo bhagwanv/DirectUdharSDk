@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.sk.directudhar.databinding.FragmentEmandateFailedBinding
 import com.sk.directudhar.databinding.FragmentKycFailedBinding
 import com.sk.directudhar.databinding.FragmentKycSuccessBinding
@@ -39,12 +40,12 @@ class EMandateFailedFragment : Fragment() {
     private fun initView() {
         setToolBar()
         mBinding!!.tvResendBtn.setOnClickListener {
-            activitySDk.checkSequenceNo(9)
+            activitySDk.checkSequenceNo(6)
         }
     }
 
     private fun setToolBar() {
-        activitySDk.toolbarTitle.text = "KYC Failed"
+        activitySDk.toolbarTitle.text = "E-Mandate"
         activitySDk.toolbar.navigationIcon = null
     }
 }

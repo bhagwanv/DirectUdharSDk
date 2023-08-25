@@ -13,9 +13,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEMandateBinding
+import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadFragmentDirections
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.AppDialogClass
 import com.sk.directudhar.utils.DaggerApplicationComponent
@@ -73,7 +75,7 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
 
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "E-Mandate Setup"
-       activitySDk.toolbar.navigationIcon = null
+        activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {
@@ -120,9 +122,14 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
-                          activitySDk.checkSequenceNo(it.Data.SequenceNo)
-                        }else{
-                            dialog.alertDialog(activitySDk,it.Msg,"Yes")
+                            val action = EMandateFragmentDirections.actionEMandateFragmentToEMandateSuccessFragment(it.Data.SequenceNo.toString())
+                            findNavController().navigate(action)
+                            // activitySDk.checkSequenceNo(it.Data.SequenceNo)
+                        } else {
+                            val action =
+                                EMandateFragmentDirections.actionEMandateFragmentToEMandateFailedFragment()
+                            findNavController().navigate(action)
+                            // dialog.alertDialog(activitySDk,it.Msg,"Yes")
                         }
                     }
                 }
@@ -345,15 +352,6 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
     override fun onClick(v: View) {
         when (v.id) {
             R.id.btnNext -> {
-                /*eMandateViewModel.callEmandateAdd(
-                    EMandateAddRequestModel(
-                        leadMasterId,
-                        "HDFC bank",
-                        "HDFC0003812",
-                        "Saving",
-                        "Net"
-                    )
-                )*/
                 eMandateViewModel.performValidation(
                     EMandateAddRequestModel(
                         leadMasterId,
@@ -364,7 +362,6 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                         channelType
                     )
                 )
-
             }
         }
     }
