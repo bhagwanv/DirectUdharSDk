@@ -6,6 +6,7 @@ import com.sk.directudhar.ui.adharcard.AadhaarCardFragment
 import com.sk.directudhar.ui.adharcard.aadhaarCardOtp.AadhaarOtpFragment
 import com.sk.directudhar.ui.adharcard.aadhaarManullyUpload.AadhaarManuallyUploadFragment
 import com.sk.directudhar.ui.agreement.EAgreementOptionsFragment
+import com.sk.directudhar.ui.agreement.ESignWebviewFragment
 import com.sk.directudhar.ui.agreement.agreementOtp.EAgreementOtpFragment
 import com.sk.directudhar.ui.personalDetails.ApplyLoanFragment
 import com.sk.directudhar.ui.cibilscore.CibilScoreFragment
@@ -48,6 +49,7 @@ interface ApplicationComponent {
     fun injectSuccessPending(fragment: SuccessFragment)
     fun injectBankMandate(fragment: BankMandateFragment)
     fun injectAgreement(fragment: EAgreementFragment)
+    fun injectESignAgreement(fragment: ESignWebviewFragment)
     fun injectAgreementOtp(fragment: EAgreementOtpFragment)
     fun injectUdharStatementFragment(fragment: UdharStatementFragment)
     fun injectAadhaarManuallyUpload(fragment: AadhaarManuallyUploadFragment)

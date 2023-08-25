@@ -234,4 +234,7 @@ interface APIServices {
     @GET("api/Borrower/PanVerfication")
     suspend fun panVerification(@Query("LeadMasterId") leadMasterId:Int,@Query("PanNo") PanNo:String): PanCardVerificationResponseModel
 
+    @POST("api/eSign/eSignDocumentsAsync")
+    suspend fun eSignDocumentsAsync(@Body jsonObject: JsonObject): JsonObject
+
 }

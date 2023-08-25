@@ -11,19 +11,26 @@ import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.gson.JsonObject
 import com.sk.directudhar.databinding.FragmentEsignWebviewBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
+import com.sk.directudhar.utils.DaggerApplicationComponent
+import com.sk.directudhar.utils.SharePrefs
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 
 class ESignWebviewFragment : Fragment() {
     lateinit var activitySDk: MainActivitySDk
     private var mBinding: FragmentEsignWebviewBinding? = null
     private val args: ESignWebviewFragmentArgs by navArgs()
-
+    private lateinit var eAgreementViewModel: EAgreementViewModel
+    @Inject
+    lateinit var eAgreementFactory: EAgreementFactory
     override fun onAttach(context: Context) {
         super.onAttach(context)
         activitySDk = context as MainActivitySDk
@@ -36,9 +43,13 @@ class ESignWebviewFragment : Fragment() {
     ): View {
         if (mBinding == null) {
             mBinding = FragmentEsignWebviewBinding.inflate(inflater, container, false)
-            initView()
-            setToolBar()
+            val component = DaggerApplicationComponent.builder().build()
+            component.injectESignAgreement(this)
+            eAgreementViewModel =
+                ViewModelProvider(this, eAgreementFactory)[EAgreementViewModel::class.java]
         }
+        initView()
+        setToolBar()
         return mBinding!!.root
     }
     private fun setToolBar() {
@@ -61,7 +72,8 @@ class ESignWebviewFragment : Fragment() {
         webSettings.javaScriptCanOpenWindowsAutomatically = true
         webSettings.cacheMode = WebSettings.LOAD_DEFAULT
         mBinding!!.webview.addJavascriptInterface(JavaScriptInterface(
-            activitySDk
+            activitySDk,
+             eAgreementViewModel
             ), "Android"
         )
         mBinding!!.webview.webViewClient = object : WebViewClient() {
@@ -83,10 +95,15 @@ class ESignWebviewFragment : Fragment() {
 
         }
     }
-    private class JavaScriptInterface internal constructor(private val activitySDk: MainActivitySDk,) {
+    private class JavaScriptInterface internal constructor(private val activitySDk: MainActivitySDk,private val eAgreementViewModel: EAgreementViewModel) {
         @JavascriptInterface
         fun onSuccess(data: Boolean) {
             activitySDk.lifecycleScope.launch {
+                var jsonObject = JsonObject()
+                jsonObject.addProperty("LeadMasterId",SharePrefs.getInstance(
+                    activitySDk
+                )?.getInt(SharePrefs.LEAD_MASTERID)!!)
+                eAgreementViewModel.eSignDocumentsAsync(jsonObject)
                 activitySDk.checkSequenceNo(17)
             }
             println("onSuccess>>>>>>>>>>>>>>>>>>>>>>>>"+data)

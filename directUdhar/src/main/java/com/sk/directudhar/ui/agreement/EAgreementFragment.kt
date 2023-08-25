@@ -178,17 +178,12 @@ class EAgreementFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    if (it.data.Result!!) {
-                        if (it.data.Data != null) {
-                            val action =
-                                it.data.Data.let { it1 ->
-                                    EAgreementOptionsFragmentDirections.actionEAgreementOptionsFragmentToEAgreementOtpFragment(
-                                        it1!!.TxnNo!!,
-                                        mobileNo
-                                    )
-                                }
-                            findNavController().navigate(action)
-                        }
+                    it.data.let {
+                        val action = EAgreementFragmentDirections.actionEAgreementFragmentToEAgreementOtpFragment(
+                                    it.Data!!.TxnNo!!,
+                                    mobileNo
+                                )
+                        findNavController().navigate(action)
                     }
                 }
             }
@@ -210,7 +205,7 @@ class EAgreementFragment : Fragment() {
                     it.data.let {
                         if (it.Result) {
                             val action =
-                                EAgreementOptionsFragmentDirections.actionEAgreementOptionsFragmentToESignWebviewFragment(
+                                EAgreementFragmentDirections.actionEAgreementFragmentToESignWebviewFragment(
                                     it.Data
                                 )
                             findNavController().navigate(action)
@@ -234,7 +229,8 @@ class EAgreementFragment : Fragment() {
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                        isEsignAadhaar = it.Data.IsEsign
+                        //isEsignAadhaar = it.Data.IsEsign
+                        isEsignAadhaar = true
                     }
                 }
             }

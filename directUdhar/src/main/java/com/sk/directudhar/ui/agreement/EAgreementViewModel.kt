@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.google.gson.JsonObject
 import com.sk.directudhar.MyApplication
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.utils.Network
@@ -28,6 +29,9 @@ class EAgreementViewModel @Inject constructor(private val repository: EAgreement
 
     private var putEsignOrAgreementWithOtpOptionResponse = SingleLiveEvent<NetworkResult<EsignOrAgreementWithOtpOptionResponse>>()
     val getEsignOrAgreementWithOtpOptionResponse: SingleLiveEvent<NetworkResult<EsignOrAgreementWithOtpOptionResponse>> = putEsignOrAgreementWithOtpOptionResponse
+
+    private var putESignDocumentsAsyncResponse = SingleLiveEvent<NetworkResult<JsonObject>>()
+    val getESignDocumentsAsyncResponse: SingleLiveEvent<NetworkResult<JsonObject>> = putESignDocumentsAsyncResponse
 
     fun getAgreement(leadMasterId:Int) {
         if (Network.checkConnectivity(MyApplication.context!!)) {
@@ -70,6 +74,18 @@ class EAgreementViewModel @Inject constructor(private val repository: EAgreement
             viewModelScope.launch {
                 repository.isEsignOrAgreementWithOtp(leadMasterId).collect() {
                     putEsignOrAgreementWithOtpOptionResponse.postValue(it)
+                }
+            }
+        } else {
+            (MyApplication.context)!!.toast("No internet connectivity")
+        }
+    }
+
+    fun eSignDocumentsAsync(jsonObject: JsonObject) {
+        if (Network.checkConnectivity(MyApplication.context!!)) {
+            viewModelScope.launch {
+                repository.eSignDocumentsAsync(jsonObject).collect() {
+                    putESignDocumentsAsyncResponse.postValue(it)
                 }
             }
         } else {
