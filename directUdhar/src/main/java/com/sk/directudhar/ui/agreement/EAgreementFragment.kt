@@ -229,8 +229,8 @@ class EAgreementFragment : Fragment() {
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
-                        //isEsignAadhaar = it.Data.IsEsign
-                        isEsignAadhaar = true
+                        isEsignAadhaar = it.Data.IsEsign
+                        //isEsignAadhaar = true
                     }
                 }
             }

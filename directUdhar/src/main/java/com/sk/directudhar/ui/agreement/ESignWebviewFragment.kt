@@ -9,6 +9,7 @@ import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import android.widget.Toast
 import androidx.navigation.fragment.findNavController
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -16,9 +17,11 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.gson.JsonObject
+import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEsignWebviewBinding
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
+import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -94,12 +97,34 @@ class ESignWebviewFragment : Fragment() {
             }
 
         }
+
+        eAgreementViewModel.getESignDocumentsAsyncResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    ProgressDialog.instance!!.dismiss()
+                    it.data.let {
+                        if (it.get("Result").asBoolean){
+                            activitySDk.checkSequenceNo(17)
+                        }
+                    }
+                }
+            }
+        }
     }
     private class JavaScriptInterface internal constructor(private val activitySDk: MainActivitySDk,private val eAgreementViewModel: EAgreementViewModel) {
         @JavascriptInterface
         fun onSuccess(data: Boolean) {
             activitySDk.lifecycleScope.launch {
-                var jsonObject = JsonObject()
+                val jsonObject = JsonObject()
                 jsonObject.addProperty("LeadMasterId",SharePrefs.getInstance(
                     activitySDk
                 )?.getInt(SharePrefs.LEAD_MASTERID)!!)
