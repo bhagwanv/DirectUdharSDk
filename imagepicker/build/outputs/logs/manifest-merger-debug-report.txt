@@ -1,0 +1,73 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:1:1-41:12
+INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:1:1-41:12
+INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:1:1-41:12
+	package
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:2:5-48
+		INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:1:11-69
+application
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:4:5-28:19
+activity#com.github.dhaval2404.imagepicker.ImagePickerActivity
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:6:9-9:68
+	android:screenOrientation
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:8:13-52
+	android:theme
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:9:13-65
+	android:name
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:7:13-48
+activity#com.yalantis.ucrop.UCropActivity
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:11:9-14:72
+	android:screenOrientation
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:13:13-49
+	android:theme
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:14:13-69
+	android:name
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:12:13-60
+provider#com.github.dhaval2404.imagepicker.ImagePickerFileProvider
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:16:9-26:20
+	android:grantUriPermissions
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:20:13-47
+	android:authorities
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:18:13-72
+	android:exported
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:19:13-37
+	android:name
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:17:13-85
+meta-data#android.support.FILE_PROVIDER_PATHS
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:22:13-24:71
+	android:resource
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:24:17-68
+	android:name
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:23:17-67
+queries
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:30:5-39:15
+intent#action:name:android.media.action.IMAGE_CAPTURE
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:32:9-34:18
+action#android.media.action.IMAGE_CAPTURE
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:33:13-73
+	android:name
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:33:21-70
+intent#action:name:android.intent.action.OPEN_DOCUMENT_TREE
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:36:9-38:18
+action#android.intent.action.OPEN_DOCUMENT_TREE
+ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:37:13-79
+	android:name
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:37:21-76
+uses-sdk
+INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+		ADDED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+		INJECTED from C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml

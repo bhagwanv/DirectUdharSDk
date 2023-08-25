@@ -1,0 +1,65 @@
+1<?xml version="1.0" encoding="utf-8"?>
+2<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+3    package="com.github.dhaval2404.imagepicker" >
+4
+5    <uses-sdk android:minSdkVersion="19" />
+5-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml
+6
+7    <queries>
+7-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:30:5-39:15
+8
+9        <!-- Query Camera Packages -->
+10        <intent>
+10-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:32:9-34:18
+11            <action android:name="android.media.action.IMAGE_CAPTURE" />
+11-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:33:13-73
+11-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:33:21-70
+12        </intent>
+13        <!-- Query Open Document -->
+14        <intent>
+14-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:36:9-38:18
+15            <action android:name="android.intent.action.OPEN_DOCUMENT_TREE" />
+15-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:37:13-79
+15-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:37:21-76
+16        </intent>
+17    </queries>
+18
+19    <application>
+19-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:4:5-28:19
+20        <activity
+20-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:6:9-9:68
+21            android:name="com.github.dhaval2404.imagepicker.ImagePickerActivity"
+21-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:7:13-48
+22            android:screenOrientation="unspecified"
+22-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:8:13-52
+23            android:theme="@style/Theme.Transparent.ImagePicker" />
+23-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:9:13-65
+24        <activity
+24-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:11:9-14:72
+25            android:name="com.yalantis.ucrop.UCropActivity"
+25-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:12:13-60
+26            android:screenOrientation="portrait"
+26-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:13:13-49
+27            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+27-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:14:13-69
+28
+29        <provider
+29-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:16:9-26:20
+30            android:name="com.github.dhaval2404.imagepicker.ImagePickerFileProvider"
+30-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:17:13-85
+31            android:authorities="${applicationId}.imagepicker.provider"
+31-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:18:13-72
+32            android:exported="false"
+32-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:19:13-37
+33            android:grantUriPermissions="true" >
+33-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:20:13-47
+34            <meta-data
+34-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:22:13-24:71
+35                android:name="android.support.FILE_PROVIDER_PATHS"
+35-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:23:17-67
+36                android:resource="@xml/image_picker_provider_paths" />
+36-->C:\Users\Mongo\AndroidStudioProjects\SK Project\DirectUdharSDk\imagepicker\src\main\AndroidManifest.xml:24:17-68
+37        </provider>
+38    </application>
+39
+40</manifest>
