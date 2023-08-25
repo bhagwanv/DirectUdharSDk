@@ -49,6 +49,7 @@ android {
 }
 
 dependencies {
+    implementation project(':imagepicker')
     implementation 'androidx.core:core-ktx:1.8.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.9.0'
@@ -100,5 +101,4 @@ dependencies {
     implementation 'id.zelory:compressor:3.0.1'
     implementation files("libs/weipl_checkout.aar")
     implementation "com.android.volley:volley:1.2.1"
-    implementation 'com.github.dhaval2404:imagepicker:2.1'
 }

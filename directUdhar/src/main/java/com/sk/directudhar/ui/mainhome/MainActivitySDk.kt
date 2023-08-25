@@ -102,11 +102,11 @@ class MainActivitySDk : AppCompatActivity() {
                 is NetworkResult.Loading -> {}
                 is NetworkResult.Failure -> {}
                 is NetworkResult.Success -> {
-                   it.data.let {
-                       if (it.Result){
-                           privacyPolicyText =it.Data
-                       }
-                   }
+                    it.data.let {
+                        if (it.Result) {
+                            privacyPolicyText = it.Data
+                        }
+                    }
                 }
             }
         }
@@ -134,8 +134,7 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                     // checkSequenceNo(initiateAccountModel.Data.SequenceNo)
-                      checkSequenceNo(9)
+                         checkSequenceNo(initiateAccountModel.Data.SequenceNo)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }

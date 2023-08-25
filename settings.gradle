@@ -17,3 +17,4 @@ dependencyResolutionManagement {
 rootProject.name = "DirectUdharSDK"
 include ':app'
 include ':directUdhar'
+include ':imagepicker'

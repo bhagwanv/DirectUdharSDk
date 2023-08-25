@@ -23,10 +23,12 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentPanCardBinding
+import com.sk.directudhar.image.ImageProcessing
 import com.sk.directudhar.ui.mainhome.MainActivitySDk
 import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
@@ -38,8 +40,6 @@ import com.sk.directudhar.utils.permission.Permissions
 import com.squareup.picasso.Picasso
 import java.io.File
 import javax.inject.Inject
-import com.github.dhaval2404.imagepicker.ImagePicker
-import com.sk.directudhar.image.ImageProcessing
 import kotlinx.coroutines.launch
 
 class PanCardFragment : Fragment(), OnClickListener {
