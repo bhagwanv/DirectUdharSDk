@@ -61,7 +61,7 @@ class ApprovalPendingFragment : Fragment() {
 
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Approval Pending"
-        activitySDk.toolbar.navigationIcon = null
+       activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {

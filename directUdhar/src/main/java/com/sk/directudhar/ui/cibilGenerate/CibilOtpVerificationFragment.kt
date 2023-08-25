@@ -146,7 +146,7 @@ class CibilOtpVerificationFragment : Fragment() {
 
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "CIBIL OTP Verification"
-        activitySDk.toolbar.navigationIcon = null
+       activitySDk.toolbar.navigationIcon = null
     }
 
     override fun onDestroy() {

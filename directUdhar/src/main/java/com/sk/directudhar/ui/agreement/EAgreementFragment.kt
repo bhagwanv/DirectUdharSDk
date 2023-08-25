@@ -65,7 +65,7 @@ class EAgreementFragment : Fragment() {
 
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Agreement"
-        activitySDk.toolbar.navigationIcon = null
+       activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {
@@ -149,7 +149,7 @@ class EAgreementFragment : Fragment() {
 
                 is NetworkResult.Success -> {
                     ProgressDialog.instance!!.dismiss()
-                    if (it.data != null) {
+                    if (it.data.Data != null) {
                         htmlDoc = it.data.Data!!.Agreementhtml!!
                         mBinding!!.tvTermCondition.text =
                             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

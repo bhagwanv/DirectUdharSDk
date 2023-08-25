@@ -55,7 +55,7 @@ class KycSuccessFragment : Fragment() {
 
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "KYC Completed"
-        activitySDk.toolbar.navigationIcon = null
+       activitySDk.toolbar.navigationIcon = null
     }
 
 }

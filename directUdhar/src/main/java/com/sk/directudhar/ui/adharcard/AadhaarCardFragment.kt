@@ -167,7 +167,7 @@ class AadhaarCardFragment : Fragment() {
 
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Aadhaar Verification"
-        activitySDk.toolbar.navigationIcon = null
+       activitySDk.toolbar.navigationIcon = null
 
     }
 

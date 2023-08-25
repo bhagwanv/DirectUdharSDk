@@ -15,7 +15,6 @@
 
 
     </androidx.appcompat.widget.Toolbar>-->
-
     <include
         android:id="@+id/toolbar"
         layout="@layout/udhar_toolbar"/>
