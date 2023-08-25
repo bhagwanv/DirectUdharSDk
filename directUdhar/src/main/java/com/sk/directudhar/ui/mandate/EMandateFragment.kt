@@ -67,7 +67,13 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
         WLCheckoutActivity.setPaymentResponseListener(this)
         WLCheckoutActivity.preloadData(activitySDk)
         initView()
+        setToolBar()
         return mBinding.root
+    }
+
+    private fun setToolBar() {
+        activitySDk.toolbarTitle.text = "E-Mandate Setup"
+        activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {
