@@ -231,11 +231,9 @@ class CibilScoreFragment : Fragment(), OnClickListener {
 
             R.id.tvSkip -> {
                 isSkip = true
+                activitySDk.finishAffinity()
                /* val  action = CibilScoreFragmentDirections.actionCibilScoreFragmentToEAgreementFragment()
                 findNavController().navigate(action)*/
-                cibilViewModel.cibilActivityComplete(
-                    SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
-                )
             }
         }
     }

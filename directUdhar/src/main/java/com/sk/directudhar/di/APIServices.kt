@@ -231,7 +231,7 @@ interface APIServices {
     @POST("api/ICICIeMandate/EMandateVerification")
     suspend fun eMandateVerification(@Body eMandateVerificationRequestModel: EMandateVerificationRequestModel): EMandateVerificationResponse
 
-    @GET("api/Borrower/PanVerfication")
+    @GET("api/Borrower/PanVerification")
     suspend fun panVerification(@Query("LeadMasterId") leadMasterId:Int,@Query("PanNo") PanNo:String): PanCardVerificationResponseModel
 
     @POST("api/eSign/eSignDocumentsAsync")

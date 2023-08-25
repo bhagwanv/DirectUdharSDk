@@ -134,7 +134,8 @@ class MainActivitySDk : AppCompatActivity() {
                             SharePrefs.LEAD_MASTERID,
                             initiateAccountModel.Data.LeadMasterId
                         )
-                         checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                      checkSequenceNo(initiateAccountModel.Data.SequenceNo)
+                     // checkSequenceNo(6)
                     } else {
                         this.toast(initiateAccountModel.Msg)
                     }

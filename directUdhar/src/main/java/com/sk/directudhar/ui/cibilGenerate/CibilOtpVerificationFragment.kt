@@ -103,7 +103,7 @@ class CibilOtpVerificationFragment : Fragment() {
                                 SharePrefs.LEAD_MASTERID,
                                 it.Data.LeadMasterId
                             )
-                            activitySDk.toast(it.Msg)
+                           // activitySDk.toast(it.Msg)
                             activitySDk.checkSequenceNo(it.Data.SequenceNo)
                         } else {
                             mBinding!!.customOTPView.clearOTP()
