@@ -87,6 +87,7 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                         leadMasterId,
                         mBinding.etBankName.text.toString().trim(),
                         mBinding.etIfscCode.text.toString().trim(),
+                        mBinding.etAccountNumber.text.toString().trim(),
                         accountType,
                         channelType
                     )
@@ -352,6 +353,7 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
                         leadMasterId,
                         mBinding.etBankName.text.toString().trim(),
                         mBinding.etIfscCode.text.toString().trim(),
+                        mBinding.etAccountNumber.text.toString().trim(),
                         accountType,
                         channelType
                     )

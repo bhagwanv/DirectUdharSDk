@@ -40,6 +40,8 @@ class EMandateViewModel @Inject constructor(private val repository: EMandateRepo
             eMandateResult.value = "Please Enter Ifsc Code"
         } else if (eMandateAddRequestModel.AccountType.isNullOrEmpty()) {
             eMandateResult.value = "Please select Account Type"
+        }else if (eMandateAddRequestModel.AccountNumber.isNullOrEmpty()) {
+            eMandateResult.value = "Please enter Account number"
         } else if (eMandateAddRequestModel.Channel.isNullOrEmpty()) {
             eMandateResult.value = "Please select Channel "
         } else {
