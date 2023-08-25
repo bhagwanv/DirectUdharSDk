@@ -39,11 +39,12 @@ class EMandateFailedFragment : Fragment() {
     private fun initView() {
         setToolBar()
         mBinding!!.tvResendBtn.setOnClickListener {
-          //  activitySDk.checkSequenceNo(5)
+            activitySDk.checkSequenceNo(9)
         }
     }
 
     private fun setToolBar() {
-        activitySDk.toolbarTitle.text = "E-Mandate"
+        activitySDk.toolbarTitle.text = "KYC Failed"
+        activitySDk.toolbar.navigationIcon = null
     }
 }

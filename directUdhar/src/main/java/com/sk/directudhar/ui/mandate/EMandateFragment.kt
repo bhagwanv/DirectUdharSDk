@@ -73,7 +73,7 @@ class EMandateFragment : Fragment(), OnClickListener, WLCheckoutActivity.Payment
 
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "E-Mandate Setup"
-        activitySDk.toolbar.navigationIcon = null
+       activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {

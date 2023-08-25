@@ -127,15 +127,15 @@ class BusinessDetailsFragment : Fragment() {
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Business Details"
         activitySDk.toolbar.navigationIcon = null
-        activitySDk.toolbarBackBtn.visibility = View.VISIBLE
+       /* activitySDk.toolbarBackBtn.visibility = View.VISIBLE
         activitySDk.toolbarBackBtn.setOnClickListener{
             activitySDk.checkSequenceNo(14)
-        }
+        }*/
     }
 
     override fun onPause() {
         super.onPause()
-        activitySDk.toolbarBackBtn.visibility = View.GONE
+       // activitySDk.toolbarBackBtn.visibility = View.GONE
     }
 
     private fun initView() {

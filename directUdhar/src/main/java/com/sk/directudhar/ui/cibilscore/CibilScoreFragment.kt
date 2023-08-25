@@ -56,7 +56,7 @@ class CibilScoreFragment : Fragment(), OnClickListener {
 
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "CIBIL information"
-        activitySDk.toolbar.navigationIcon = null
+       activitySDk.toolbar.navigationIcon = null
     }
 
     private fun initView() {
