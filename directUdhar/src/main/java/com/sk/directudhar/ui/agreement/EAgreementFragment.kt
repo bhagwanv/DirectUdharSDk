@@ -10,12 +10,17 @@ import android.text.style.ForegroundColorSpan
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.JavascriptInterface
+import android.webkit.WebSettings
+import android.webkit.WebView
 import android.webkit.WebViewClient
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
+import com.google.gson.JsonObject
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentEAgreementBinding
@@ -25,6 +30,7 @@ import com.sk.directudhar.utils.DaggerApplicationComponent
 import com.sk.directudhar.utils.ProgressDialog
 import com.sk.directudhar.utils.SharePrefs
 import com.sk.directudhar.utils.Utils.Companion.toast
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class EAgreementFragment : Fragment() {
@@ -146,6 +152,35 @@ class EAgreementFragment : Fragment() {
     }
 
     private fun setObserber() {
+        val webSettings = mBinding!!.webview.settings
+        webSettings.javaScriptEnabled = true
+        webSettings.allowFileAccess = true
+        webSettings.databaseEnabled = true
+        webSettings.domStorageEnabled = true
+        webSettings.allowContentAccess = true
+        webSettings.setSupportMultipleWindows(true)
+        webSettings.allowFileAccessFromFileURLs = true
+        webSettings.allowUniversalAccessFromFileURLs = true
+        webSettings.userAgentString = "Android Mozilla/5.0 AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30"
+        webSettings.javaScriptCanOpenWindowsAutomatically = true
+        webSettings.cacheMode = WebSettings.LOAD_DEFAULT
+        webSettings.loadWithOverviewMode = true;
+        webSettings.useWideViewPort = true;
+        mBinding!!.webview.webViewClient = object : WebViewClient() {
+            override fun shouldOverrideUrlLoading(view: WebView, url: String): Boolean {
+                view.loadUrl(url)
+                return false
+            }
+
+            override fun onPageFinished(view: WebView, url: String) {
+                super.onPageFinished(view, url)
+                // mBinding!!.pBar.visibility = View.GONE
+            }
+            override fun onPageCommitVisible(view: WebView?, url: String?) {
+                super.onPageCommitVisible(view, url)
+                mBinding!!.pBar.visibility = View.GONE
+            }
+        }
         eAgreementViewModel.agreementResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -162,16 +197,8 @@ class EAgreementFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
-                            htmlDoc = it.Data.Agreementhtml
-                            mBinding!!.tvTermCondition.text =
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                                    Html.fromHtml(
-                                        it.Data.Agreementhtml,
-                                        Html.FROM_HTML_MODE_COMPACT
-                                    )
-                                } else {
-                                    Html.fromHtml(it.Data.Agreementhtml)
-                                }
+                            htmlDoc = it.Data.AgreementfilePath
+                            mBinding!!.webview.loadUrl(htmlDoc)
                         } else {
                             dialog.alertDialog(activitySDk, it.Msg, "Yes")
                         }
