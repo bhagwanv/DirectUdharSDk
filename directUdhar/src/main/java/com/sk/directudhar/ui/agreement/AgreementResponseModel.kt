@@ -9,5 +9,6 @@ data class AgreementResponseModel(
    var DynamicData: String
 )
 data class AgreementData(
+    var AgreementfilePath: String,
     var Agreementhtml: String
 )
