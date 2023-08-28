@@ -23,7 +23,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
-import com.github.dhaval2404.imagepicker.ImagePicker
+import com.sk.imagepicker.ImagePicker
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentAadhaarManuallyUplaodBinding
