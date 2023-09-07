@@ -5,19 +5,19 @@ import android.graphics.Color
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.fragment.navArgs
-import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
 import com.sk.directudhar.databinding.FragmentApplyLoanBinding
@@ -30,16 +30,13 @@ import com.sk.directudhar.utils.Utils.Companion.SuccessType
 import com.sk.directudhar.utils.Utils.Companion.toast
 import javax.inject.Inject
 
-
 class ApplyLoanFragment : Fragment(), OnClickListener {
 
     lateinit var activitySDk: MainActivitySDk
 
-    private  var mBinding: FragmentApplyLoanBinding?=null
+    private var mBinding: FragmentApplyLoanBinding? = null
 
     lateinit var applyLoanViewModel: ApplyLoanViewModel
-
-    lateinit var proceedBottomDialog: BottomSheetDialog
 
     @Inject
     lateinit var applyLoanFactory: ApplyLoanFactory
@@ -52,11 +49,11 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
 
 
     private var cityIDValue: Int = 0
-    private var stateIDValue: Int = 0
-    private var vintageValue: String = ""
+    private var stateCode: String = ""
+    private var stateNameValue: String = ""
+    private var cityNameValue: String = ""
     lateinit var model: PostCreditBeurauRequestModel
     private var leadMasterId: Int = 0
-    private val args: ApplyLoanFragmentArgs by navArgs()
     private var gender = ""
     private var panNumber = ""
     private var dateOfBirth = ""
@@ -82,6 +79,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
         setToolBar()
         return mBinding!!.root
     }
+
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Personal Details"
         activitySDk.toolbar.navigationIcon = null
@@ -90,6 +88,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
     private fun initView() {
         leadMasterId = SharePrefs.getInstance(activitySDk)
             ?.getInt(SharePrefs.LEAD_MASTERID)!!
+
         applyLoanViewModel.getPersonalInformation(
             SharePrefs.getInstance(activitySDk)!!.getInt(SharePrefs.LEAD_MASTERID)
         )
@@ -146,22 +145,9 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                         gender = it.Gender
                         panNumber = it.PanNumber
                         dateOfBirth = it.dateOfBirth
-                        /* model = PostCreditBeurauRequestModel(
-                             it.MobileNo,
-                             it.City,
-                             it.EmailId,
-                             it.FirstName,
-                             "",
-                             it.Gender,
-                             it.LastName,
-                             it.LeadMasterId,
-                             it.MobileNo,
-                             it.PanNumber,
-                             it.PinCode,
-                             it.StateCode,
-                             it.dateOfBirth
-                         )*/
-
+                        cityNameValue = it.City
+                        stateCode = it.StateCode
+                        applyLoanViewModel.callState()
                     }
                 }
             }
@@ -205,52 +191,6 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
             }
         }
 
-    }
-    fun termsAndConditions(){
-        dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
-            override fun onContinueClicked(isAgree: Boolean) {
-                mBinding!!.cbTermsOfUse.isChecked = isAgree
-            }
-        })
-        val text = SpannableString("By Proceeding, you agree Terms & Conditions.")
-        text.setSpan(ForegroundColorSpan(Color.BLUE), 25, 44, 0)
-        mBinding!!.tvTermsOfUse.text = text
-        mBinding!!.tvTermsOfUse.setOnClickListener {
-            if (!activitySDk.privacyPolicyText.isNullOrEmpty()){
-                dialog.termsAndAgreementPopUp(activitySDk, activitySDk.privacyPolicyText)
-            }else{
-                activitySDk.toast("No Privacy Policy Found")
-            }
-        }
-    }
-
-    private fun setupStateAutoComplete() {
-        val stateNameList: List<String> = stateList.map { it.StateName }
-        val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, stateNameList)
-        mBinding!!.spState.setAdapter(adapter)
-        /*mBinding!!.spState.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-            stateIDValue = stateList[position].Id
-            applyLoanViewModel.callCity(stateIDValue)
-        }*/
-
-        mBinding!!.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                Toast.makeText(
-                    activitySDk,
-                    "getString(R.string.selected_item)" + " " + stateList[position],
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Code to perform some action when nothing is selected
-            }
-        }
         applyLoanViewModel.cityResponse.observe(viewLifecycleOwner) {
             when (it) {
                 is NetworkResult.Loading -> {
@@ -263,42 +203,198 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                 }
 
                 is NetworkResult.Success -> {
+                    cityList.clear()
                     ProgressDialog.instance!!.dismiss()
-                    cityList = it.data
+                    cityList.add(CityModel(0, "Select City"))
+
+                    for (data in it.data) {
+                        cityList.add(data)
+                    }
                     setupCityAutoComplete()
 
                 }
             }
         }
+
+        applyLoanViewModel.stateResponse.observe(viewLifecycleOwner) {
+            when (it) {
+                is NetworkResult.Loading -> {
+                    ProgressDialog.instance!!.show(activitySDk)
+                }
+
+                is NetworkResult.Failure -> {
+                    ProgressDialog.instance!!.dismiss()
+                    Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                }
+
+                is NetworkResult.Success -> {
+                    stateList.clear()
+                    ProgressDialog.instance!!.dismiss()
+                    stateList.add(StateModel(0, "", "", "", "Select State", "", ""))
+                    for (data in it.data) {
+                        stateList.add(data)
+                    }
+                    setupStateAutoComplete()
+                }
+            }
+        }
+
+    }
+
+    fun termsAndConditions() {
+        dialog.setOnContinueCancelClick(object : AppDialogClass.OnContinueClicked {
+            override fun onContinueClicked(isAgree: Boolean) {
+                mBinding!!.cbTermsOfUse.isChecked = isAgree
+            }
+        })
+        val text = SpannableString("By Proceeding, you agree Terms & Conditions.")
+        text.setSpan(ForegroundColorSpan(Color.BLUE), 25, 44, 0)
+        mBinding!!.tvTermsOfUse.text = text
+        mBinding!!.tvTermsOfUse.setOnClickListener {
+            if (!activitySDk.privacyPolicyText.isNullOrEmpty()) {
+                dialog.termsAndAgreementPopUp(activitySDk, activitySDk.privacyPolicyText)
+            } else {
+                activitySDk.toast("No Privacy Policy Found")
+            }
+        }
+    }
+
+    private fun setupStateAutoComplete() {
+        mBinding!!.rlState.visibility = View.VISIBLE
+        mBinding!!.rlCity.visibility = View.VISIBLE
+        mBinding!!.llEtState.visibility = View.GONE
+        mBinding!!.llEtCity.visibility = View.GONE
+
+
+        val stateNameList: List<String> = stateList.map { it.StateName }
+
+        mBinding!!.spState.apply {
+            this.context ?: return@apply
+            this.adapter = object : ArrayAdapter<Any>(
+                activitySDk,
+                R.layout.simple_custom_list_item,
+                stateNameList
+            ) {
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    return super.getDropDownView(position, convertView, parent).also {
+                    }
+                }
+
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    return super.getView(position, convertView, parent).apply {
+                        setPadding(0, paddingTop, paddingRight, paddingBottom)
+                    }
+                }
+            }
+            this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (position == 0) {
+                        (view as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                activitySDk, R.color.bg_color_gray_variant1
+                            )
+                        )
+                    } else {
+                        (view as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                activitySDk, R.color.text_color_black_variant1
+                            )
+                        )
+                    }
+                    stateCode = stateList[position].StateCode
+                    stateNameValue = stateList[position].StateName
+                    applyLoanViewModel.callCity(stateList[position].Id)
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Code to perform some action when nothing is selected
+                }
+            }
+
+        }
+
+        var pos = 0
+        for (i in stateList.indices) {
+            if (stateCode == stateList[i].StateCode) {
+                stateNameValue = stateList[i].StateName
+                pos = i
+                break
+            }
+        }
+        mBinding!!.spState.setSelection(pos)
     }
 
     private fun setupCityAutoComplete() {
         val cityNameList: List<String> = cityList.map { it.CityName }
-        val adapter = ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, cityNameList)
-        mBinding!!.SpCity.setAdapter(adapter)
-        /*mBinding!!.SpCity.onItemClickListener = OnItemClickListener { parent, view, position, id ->
-            cityIDValue = cityList[position].Id
-            applyLoanViewModel.callCity(cityIDValue)
-        }*/
-
-        mBinding!!.SpCity.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
+        mBinding!!.spCity.apply {
+            this.context ?: return@apply
+            this.adapter = object : ArrayAdapter<Any>(
+                activitySDk,
+                R.layout.simple_custom_list_item,
+                cityNameList
             ) {
-                Toast.makeText(
-                    activitySDk,
-                    "getString(R.string.selected_item)" + " " + stateList[position],
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    return super.getDropDownView(position, convertView, parent).also {
+                    }
+                }
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Code to perform some action when nothing is selected
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    return super.getView(position, convertView, parent).apply {
+                        setPadding(0, paddingTop, paddingRight, paddingBottom)
+                    }
+                }
+            }
+            this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
+                override fun onItemSelected(
+                    parent: AdapterView<*>,
+                    view: View,
+                    position: Int,
+                    id: Long
+                ) {
+                    if (position == 0) {
+                        (view as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                activitySDk, R.color.bg_color_gray_variant1
+                            )
+                        )
+                    } else {
+                        (view as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                activitySDk, R.color.text_color_black_variant1
+                            )
+                        )
+                    }
+                    cityIDValue = cityList[position].Id
+                    cityNameValue = cityList[position].CityName
+                }
+
+                override fun onNothingSelected(parent: AdapterView<*>) {
+                    // Code to perform some action when nothing is selected
+                }
             }
         }
+        var pos = 0
+        for (i in cityList.indices) {
+            if (cityNameValue == cityList[i].CityName) {
+                cityNameValue = cityList[i].CityName
+                pos = i
+                break
+            }
+        }
+        mBinding!!.spCity.setSelection(pos)
     }
 
     override fun onClick(v: View) {
@@ -308,14 +404,15 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                 val firstName = mBinding!!.etFirstName.text.toString()
                 val lastName = mBinding!!.etLastName.text.toString()
                 val mobileNo = mBinding!!.etAlternateNumber.text.toString()
-                val city = mBinding!!.etCity.text.toString()
+                var city = mBinding!!.etCity.text.toString()
                 val emailId = mBinding!!.etEmailId.text.toString()
                 val pinCode = mBinding!!.etPinCode.text.toString()
                 val flatNo = mBinding!!.etFlatNo.text.toString()
-                val state = mBinding!!.etState.text.toString()
+                val state = stateCode
+
                 model = PostCreditBeurauRequestModel(
                     mobileNo,
-                    city,
+                    cityNameValue,
                     emailId,
                     firstName,
                     flatNo,
@@ -328,7 +425,7 @@ class ApplyLoanFragment : Fragment(), OnClickListener {
                     state,
                     dateOfBirth
                 )
-                applyLoanViewModel.performValidation()
+                applyLoanViewModel.performValidation(model)
             }
         }
     }

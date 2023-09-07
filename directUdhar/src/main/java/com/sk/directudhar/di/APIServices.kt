@@ -77,7 +77,7 @@ interface APIServices {
     @GET("api/Borrower/GetLeadSequence")
     suspend fun initiate(@Query("MobileNo") MobileNo: String): JsonObject
 
-    @GET("api/StateMaster")
+    @GET("api/StateMaster/GetStateMasterList")
     suspend fun stateMaster(): ArrayList<StateModel>
 
     @GET("api/CityMaster/GetCityByStateId")

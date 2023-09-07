@@ -28,10 +28,10 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.AppCompatEditText
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sk.directudhar.R
 import com.sk.directudhar.data.NetworkResult
@@ -64,7 +64,6 @@ import java.util.Calendar
 import java.util.Locale
 import javax.inject.Inject
 
-
 class BusinessDetailsFragment : Fragment() {
     lateinit var activitySDk: MainActivitySDk
 
@@ -81,10 +80,9 @@ class BusinessDetailsFragment : Fragment() {
     private var isVerifyElectricityBill = false
 
     private var resultLauncher: ActivityResultLauncher<Intent>? = null
-    private var mBusinessTypeList: ArrayList<BusinessTypeList> = ArrayList()
+    private var mBusinessTypeList = mutableListOf<BusinessTypeList>()
     private var mServiceProvider: ArrayList<ServiceProvider> = ArrayList()
-    private var mSpiServiceProvider: ArrayList<String> = ArrayList()
-    private var mBusinessType: ArrayList<String> = ArrayList()
+    private var mBusinessType: List<String> = ArrayList()
     var mProprietorNameList = ArrayList<AppCompatEditText>()
     var mProprietorNumberList = ArrayList<AppCompatEditText>()
     lateinit var mBusinessDetailsRequestModel: BusinessDetailsRequestModel
@@ -127,15 +125,15 @@ class BusinessDetailsFragment : Fragment() {
     private fun setToolBar() {
         activitySDk.toolbarTitle.text = "Business Details"
         activitySDk.toolbar.navigationIcon = null
-       /* activitySDk.toolbarBackBtn.visibility = View.VISIBLE
-        activitySDk.toolbarBackBtn.setOnClickListener{
-            activitySDk.checkSequenceNo(14)
-        }*/
+        /* activitySDk.toolbarBackBtn.visibility = View.VISIBLE
+         activitySDk.toolbarBackBtn.setOnClickListener{
+             activitySDk.checkSequenceNo(14)
+         }*/
     }
 
     override fun onPause() {
         super.onPause()
-       // activitySDk.toolbarBackBtn.visibility = View.GONE
+        // activitySDk.toolbarBackBtn.visibility = View.GONE
     }
 
     private fun initView() {
@@ -161,7 +159,10 @@ class BusinessDetailsFragment : Fragment() {
             override fun afterTextChanged(s: Editable) {
             }
         })
-
+        mBinding.btnVerifyBill.isEnabled = true
+        mBinding.etCustomerNumber.isEnabled = true
+        mBinding.spManualBillUploadType.isEnabled = true
+        mBinding.spManualBillUploadType.isClickable = true
         mBinding.btnVerifyBill.setOnClickListener {
             if (mBinding.etCustomerNumber.text.toString().isNullOrEmpty()) {
                 activitySDk.toast("Please Enter Customer Number")
@@ -273,89 +274,206 @@ class BusinessDetailsFragment : Fragment() {
 
 
     fun spinnerView() {
+        setupInComeSlabSpinner()
+        setupOwnershipTypeSpinner()
+        setupManualBillUploadSpinner()
+        setupManualBillServiceProviderSpinner()
+    }
+
+    private fun setupBusinessTypeSpinner() {
+        mBusinessType = mBusinessTypeList.map { it.Name }
+        mBinding!!.spBusinessType.apply {
+            this.context ?: return@apply
+            this.adapter = object : ArrayAdapter<Any>(
+                activitySDk,
+                R.layout.simple_custom_list_item,
+                mBusinessType
+            ) {
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    return super.getDropDownView(position, convertView, parent).also {
+                    }
+                }
+
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    return super.getView(position, convertView, parent).apply {
+                        setPadding(0, paddingTop, paddingRight, paddingBottom)
+                    }
+                }
+            }
+            this.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>,
+                        view: View,
+                        position: Int,
+                        id: Long
+                    ) {
+                        if (position == 0) {
+                            (view as TextView).setTextColor(
+                                ContextCompat.getColor(
+                                    activitySDk, R.color.bg_color_gray_variant1
+                                )
+                            )
+                        } else {
+                            (view as TextView).setTextColor(
+                                ContextCompat.getColor(
+                                    activitySDk, R.color.text_color_black_variant1
+                                )
+                            )
+                        }
+                        businessTypeId = mBusinessTypeList[position].Id
+                        mBinding.rlPanNumber.visibility = View.VISIBLE
+                        when (businessTypeId) {
+                            1 -> {
+                                mBinding.etBusinessTypeName.hint = "Proprietor Name"
+                                mBinding.rlPanNumber.visibility = View.GONE
+                            }
+
+                            2 -> {
+                                mBinding.etBusinessTypeName.hint = "Partner Name"
+                                mBinding.rlPanNumber.visibility = View.GONE
+                            }
+
+                            3 -> mBinding.etBusinessTypeName.hint = "Partner Name"
+                            4 -> mBinding.etBusinessTypeName.hint = "Chairman Name"
+                            5 -> mBinding.etBusinessTypeName.hint = "Director Name"
+                            6 -> mBinding.etBusinessTypeName.hint = "Karta Name"
+                            else -> mBinding.etBusinessTypeName.hint = "Name"
+                        }
+                        mBinding.llBusinessType.visibility = View.VISIBLE
+                    }
+
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+                        // Code to perform some action when nothing is selected
+                    }
+                }
+        }
+    }
+
+    private fun setupInComeSlabSpinner() {
         val incomeSlabArray = listOf(
+            "Income Slab",
             "1 lac-3 lac",
             "3 lac-5 lac"
         )
-        val ownerShipArray = listOf(
-            "Rented",
-            "Owned",
-            "Owned by parents",
-            "Owned by Spouse"
-        )
-        /* "Electricity bill upload",
-         "Upload Bill Manual",*/
-        val manualBillUploadArray = listOf("Customer Number", "Upload Bill Manual")
-        mServiceProvider = ServiceProvide.getServiceProvider()
-        mServiceProvider.forEach {
-            mSpiServiceProvider.add(it.Name)
-        }
-        val businessAdapter =
-            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, mBusinessType)
-        mBinding.spBusinessType.adapter = businessAdapter
-        mBinding.spBusinessType.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
+
+        mBinding!!.spIncomeSlab.apply {
+            this.context ?: return@apply
+            this.adapter = object : ArrayAdapter<Any>(
+                activitySDk,
+                R.layout.simple_custom_list_item,
+                incomeSlabArray
+            ) {
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    return super.getDropDownView(position, convertView, parent).also {
+                    }
+                }
+
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    return super.getView(position, convertView, parent).apply {
+                        setPadding(0, paddingTop, paddingRight, paddingBottom)
+                    }
+                }
+            }
+            this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>,
                     view: View,
                     position: Int,
                     id: Long
                 ) {
-                    businessTypeId = mBusinessTypeList[position].Id
-                    mBinding.rlPanNumber.visibility = View.VISIBLE
-                    when (businessTypeId) {
-                        1 -> {
-                            mBinding.etBusinessTypeName.hint = "Proprietor Name"
-                            mBinding.rlPanNumber.visibility = View.GONE
-                        }
-                        2 -> {
-                            mBinding.etBusinessTypeName.hint = "Partner Name"
-                            mBinding.rlPanNumber.visibility = View.GONE
-                        }
-                        3 -> mBinding.etBusinessTypeName.hint = "Partner Name"
-                        4 -> mBinding.etBusinessTypeName.hint = "Chairman Name"
-                        5 -> mBinding.etBusinessTypeName.hint = "Director Name"
-                        6 -> mBinding.etBusinessTypeName.hint = "Karta Name"
-                        else -> mBinding.etBusinessTypeName.hint = "Name"
+                    if (position == 0) {
+                        (view as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                activitySDk, R.color.bg_color_gray_variant1
+                            )
+                        )
+                    } else {
+                        (view as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                activitySDk, R.color.text_color_black_variant1
+                            )
+                        )
                     }
-                    mBinding.llBusinessType.visibility = View.VISIBLE
+                    if (incomeSlabArray[position] == "Income Slab") {
+                        mIncomeSlab = "1 lac-3 lac"
+                    } else {
+                        mIncomeSlab = incomeSlabArray[position]
+                    }
                 }
 
                 override fun onNothingSelected(parent: AdapterView<*>) {
                     // Code to perform some action when nothing is selected
                 }
             }
-
-        val incomeAdapter =
-            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, incomeSlabArray)
-        mBinding.spIncomeSlab.adapter = incomeAdapter
-        mBinding.spIncomeSlab.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View,
-                position: Int,
-                id: Long
-            ) {
-                mIncomeSlab = incomeSlabArray[position]
-            }
-
-            override fun onNothingSelected(parent: AdapterView<*>) {
-                // Code to perform some action when nothing is selected
-            }
         }
+    }
 
-        val ownerShipAdapter =
-            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, ownerShipArray)
-        mBinding.spOwnerShipType.adapter = ownerShipAdapter
-        mBinding.spOwnerShipType.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
+    private fun setupOwnershipTypeSpinner() {
+        val ownerShipArray = listOf(
+            "Ownership type",
+            "Rented",
+            "Owned",
+            "Owned by parents",
+            "Owned by Spouse"
+        )
+
+        mBinding!!.spOwnerShipType.apply {
+            this.context ?: return@apply
+            this.adapter = object : ArrayAdapter<Any>(
+                activitySDk,
+                R.layout.simple_custom_list_item,
+                ownerShipArray
+            ) {
+                override fun getDropDownView(
+                    position: Int,
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    return super.getDropDownView(position, convertView, parent).also {
+                    }
+                }
+
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    return super.getView(position, convertView, parent).apply {
+                        setPadding(0, paddingTop, paddingRight, paddingBottom)
+                    }
+                }
+            }
+            this.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
                 override fun onItemSelected(
                     parent: AdapterView<*>,
                     view: View,
                     position: Int,
                     id: Long
                 ) {
-                    mOwnershipType = ownerShipArray[position]
+                    if (position == 0) {
+                        (view as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                activitySDk, R.color.bg_color_gray_variant1
+                            )
+                        )
+                    } else {
+                        (view as TextView).setTextColor(
+                            ContextCompat.getColor(
+                                activitySDk, R.color.text_color_black_variant1
+                            )
+                        )
+                    }
+
+                    if (ownerShipArray[position] == "Ownership type") {
+                        mOwnershipType = "Rented"
+                    } else {
+                        mOwnershipType = ownerShipArray[position]
+                    }
 
                     if (ownerShipArray[position] == "Owned") {
                         mBinding.rlSpManualBillUploadType.visibility = View.VISIBLE
@@ -368,55 +486,136 @@ class BusinessDetailsFragment : Fragment() {
                     // Code to perform some action when nothing is selected
                 }
             }
+        }
+    }
 
-        val manualBillUploadArrayAdapter =
-            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, manualBillUploadArray)
-        mBinding.spManualBillUploadType.adapter = manualBillUploadArrayAdapter
-        mBinding.spManualBillUploadType.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
+    private fun setupManualBillUploadSpinner() {
+        val manualBillUploadArray =
+            listOf("Electricity bill upload", "Customer Number", "Upload Bill Manual")
+
+
+        mBinding!!.spManualBillUploadType.apply {
+            this.context ?: return@apply
+            this.adapter = object : ArrayAdapter<Any>(
+                activitySDk,
+                R.layout.simple_custom_list_item,
+                manualBillUploadArray
+            ) {
+                override fun getDropDownView(
                     position: Int,
-                    id: Long
-                ) {
-                    if (manualBillUploadArray[position] == "Customer Number") {
-                        isCustomerNumber = true
-                        mBinding.llCustomerNumber.visibility = View.VISIBLE
-                        mBinding.llUploadBillManual.visibility = View.GONE
-                    } else {
-                        isCustomerNumber = false
-                        mBinding.llCustomerNumber.visibility = View.GONE
-                        mBinding.llUploadBillManual.visibility = View.VISIBLE
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    return super.getDropDownView(position, convertView, parent).also {
                     }
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Code to perform some action when nothing is selected
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    return super.getView(position, convertView, parent).apply {
+                        setPadding(0, paddingTop, paddingRight, paddingBottom)
+                    }
                 }
             }
+            this.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>,
+                        view: View,
+                        position: Int,
+                        id: Long
+                    ) {
+                        if (position == 0) {
+                            (view as TextView).setTextColor(
+                                ContextCompat.getColor(
+                                    activitySDk, R.color.bg_color_gray_variant1
+                                )
+                            )
+                        } else {
+                            (view as TextView).setTextColor(
+                                ContextCompat.getColor(
+                                    activitySDk, R.color.text_color_black_variant1
+                                )
+                            )
+                        }
+                        if (manualBillUploadArray[position] == "Electricity bill upload") {
+                            isCustomerNumber = false
+                            mBinding.llCustomerNumber.visibility = View.GONE
+                            mBinding.llUploadBillManual.visibility = View.GONE
+                        } else if (manualBillUploadArray[position] == "Customer Number") {
+                            isCustomerNumber = true
+                            mBinding.llCustomerNumber.visibility = View.VISIBLE
+                            mBinding.llUploadBillManual.visibility = View.GONE
+                        } else {
+                            isCustomerNumber = false
+                            mBinding.llCustomerNumber.visibility = View.GONE
+                            mBinding.llUploadBillManual.visibility = View.VISIBLE
+                        }
+                    }
 
-        val serviceProviderArrayAdapter =
-            ArrayAdapter(activitySDk, android.R.layout.simple_list_item_1, mSpiServiceProvider)
-        mBinding.spServiceProvider.adapter = serviceProviderArrayAdapter
-        mBinding.spServiceProvider.onItemSelectedListener =
-            object : AdapterView.OnItemSelectedListener {
-                override fun onItemSelected(
-                    parent: AdapterView<*>,
-                    view: View,
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+                        // Code to perform some action when nothing is selected
+                    }
+                }
+        }
+    }
+
+    private fun setupManualBillServiceProviderSpinner() {
+        mServiceProvider = ServiceProvide.getServiceProvider()
+
+        val mSpiServiceProvider: List<String> = mServiceProvider.map { it.Name }
+
+
+        mBinding!!.spServiceProvider.apply {
+            this.context ?: return@apply
+            this.adapter = object : ArrayAdapter<Any>(
+                activitySDk,
+                R.layout.simple_custom_list_item,
+                mSpiServiceProvider
+            ) {
+                override fun getDropDownView(
                     position: Int,
-                    id: Long
-                ) {
-                    Log.e("TAG", "onItemSelected: ")
-                    serviceProvideName = mServiceProvider[position].sortName
-
+                    convertView: View?,
+                    parent: ViewGroup
+                ): View {
+                    return super.getDropDownView(position, convertView, parent).also {
+                    }
                 }
 
-                override fun onNothingSelected(parent: AdapterView<*>) {
-                    // Code to perform some action when nothing is selected
+                override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
+                    return super.getView(position, convertView, parent).apply {
+                        setPadding(0, paddingTop, paddingRight, paddingBottom)
+                    }
                 }
             }
+            this.onItemSelectedListener =
+                object : AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(
+                        parent: AdapterView<*>,
+                        view: View,
+                        position: Int,
+                        id: Long
+                    ) {
+                        if (position == 0) {
+                            (view as TextView).setTextColor(
+                                ContextCompat.getColor(
+                                    activitySDk, R.color.bg_color_gray_variant1
+                                )
+                            )
+                        } else {
+                            (view as TextView).setTextColor(
+                                ContextCompat.getColor(
+                                    activitySDk, R.color.text_color_black_variant1
+                                )
+                            )
+                        }
+                        serviceProvideName = mServiceProvider[position].sortName
+                    }
 
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+                        // Code to perform some action when nothing is selected
+                    }
+                }
+        }
     }
 
     fun addMoreView(isClearView: Boolean) {
@@ -432,13 +631,14 @@ class BusinessDetailsFragment : Fragment() {
         lp.bottomMargin = 20
         var etName = AppCompatEditText(activitySDk)
         etName.hint = "Proprietor Name"
-        etName.background = resources.getDrawable(R.drawable.background_edittext)
+        etName.background = resources.getDrawable(com.sk.directudhar.R.drawable.background_edittext)
         etName.textSize = 12F
         etName.layoutParams = lp
         mProprietorNameList.add(etName)
         val etNumber = AppCompatEditText(activitySDk)
         etNumber.hint = "Number"
-        etNumber.background = resources.getDrawable(R.drawable.background_edittext)
+        etNumber.background =
+            resources.getDrawable(com.sk.directudhar.R.drawable.background_edittext)
         etNumber.textSize = 12F
         etNumber.inputType = InputType.TYPE_CLASS_NUMBER
         val maxLength = 10
@@ -522,7 +722,7 @@ class BusinessDetailsFragment : Fragment() {
                                     it.Data.BusinessIncDate,
                                     "yyyy-MM-dd'T'HH:mm:ss"
                                 )!!
-                                println("mBusinessIncorporationDate>>"+mBusinessIncorporationDate)
+                                println("mBusinessIncorporationDate>>" + mBusinessIncorporationDate)
                             }
                             mBinding.ivRightGST.visibility = View.VISIBLE
                         } else {
@@ -578,16 +778,11 @@ class BusinessDetailsFragment : Fragment() {
                     it.data.let {
                         if (it.Result) {
                             mBusinessTypeList.clear()
-                            mBusinessTypeList.addAll(it.Data)
-                            mBusinessTypeList.forEach {
-                                mBusinessType.add(it.Name)
+                            mBusinessTypeList.add(BusinessTypeList(0, "Business Type"))
+                            for (data in it.Data) {
+                                mBusinessTypeList.add(data)
                             }
-                            val businessAdapter = ArrayAdapter(
-                                activitySDk,
-                                android.R.layout.simple_list_item_1,
-                                mBusinessType
-                            )
-                            mBinding.spBusinessType.adapter = businessAdapter
+                            setupBusinessTypeSpinner()
                         }
                     }
                 }
@@ -673,6 +868,10 @@ class BusinessDetailsFragment : Fragment() {
                 is NetworkResult.Failure -> {
                     ProgressDialog.instance!!.dismiss()
                     Toast.makeText(activitySDk, it.errorMessage, Toast.LENGTH_SHORT).show()
+                    isVerifyElectricityBill = false
+                    mBinding.etCustomerNumber.text!!.clear()
+                    mBinding.tvCustomerName.text == ""
+                    mBinding.ivRightElectrycityBill.visibility = View.GONE
 
                 }
 
@@ -680,6 +879,12 @@ class BusinessDetailsFragment : Fragment() {
                     ProgressDialog.instance!!.dismiss()
                     it.data.let {
                         if (it.Result) {
+                            mBinding.btnVerifyBill.isEnabled = false
+                            mBinding.etCustomerNumber.isEnabled = false
+                            mBinding.spManualBillUploadType.isEnabled = false
+                            mBinding.spManualBillUploadType.isClickable = false
+                            mBinding.spServiceProvider.isClickable = false
+                            mBinding.spServiceProvider.isEnabled = false
                             isVerifyElectricityBill = true
                             if (!it.Data.consumer_name.isNullOrEmpty()) {
                                 mBinding.tvCustomerName.visibility = View.VISIBLE
@@ -688,6 +893,8 @@ class BusinessDetailsFragment : Fragment() {
                             mBinding.ivRightElectrycityBill.visibility = View.VISIBLE
                         } else {
                             isVerifyElectricityBill = false
+                            mBinding.etCustomerNumber.text!!.clear()
+                            mBinding.tvCustomerName.text == ""
                             mBinding.ivRightElectrycityBill.visibility = View.GONE
                         }
                     }

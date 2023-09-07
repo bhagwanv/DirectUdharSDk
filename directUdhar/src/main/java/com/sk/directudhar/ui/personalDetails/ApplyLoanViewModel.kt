@@ -38,7 +38,7 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
 
 
 
-    fun performValidation() {
+    fun performValidation(model: PostCreditBeurauRequestModel) {
        /* if (postCreditBeurauRequestModel.FirstName.isNullOrEmpty()) {
             logInResult.value = "Please Enter Name"
         } else if (applyLoanRequestModel.FirmName.isNullOrEmpty()) {
@@ -58,8 +58,14 @@ class ApplyLoanViewModel @Inject constructor(private val repository: ApplayLoanR
         } else {
             logInResult.value =SuccessType
         }*/
+        if (model.StateCode.isNullOrEmpty()) {
+            putValidResult.value = "Please Select State"
+        } else if (model.City.isNullOrEmpty()) {
+            putValidResult.value = "Please Select City "
+        } else {
+            putValidResult.value =SuccessType
+        }
 
-        putValidResult.value =SuccessType
     }
 
     fun postFromData(applyLoanRequestModel: ApplyLoanRequestModel) {
